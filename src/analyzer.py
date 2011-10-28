@@ -1,4 +1,5 @@
 # Written in Python 2
+# Ivan Gozali
 
 import jsparser
 import os
@@ -260,10 +261,16 @@ def traverse_AST(node, fn):
     Traverses the whole AST passed in as node, and applies the function fn
     to each node.
     
+    This function WILL NOT TRAVERSE THE varDecls attribute of the AST, because
+    the varDecls attribute is of type list, and as such does not get included.
+    
+    If we call count_nodes on the AST, the result will be the number of nodes 
+    in the AST minus the number of nodes in the AST's varDecl.
+    
     node - The head node of the AST
     fn   - A function that will be applied to every node in the AST.
     """
-    fn(node)
+    #fn(node)
     
     # If the current node has a list, then the elements of the list
     # will be of type jsparser.Node. Traverse all of them.
@@ -275,7 +282,7 @@ def traverse_AST(node, fn):
     # body or expression attribute. Try to look for them also.
     for key in node.__dict__.keys():
         attr = getattr(node, str(key))
-        
+        print(key)
         # Special handling for looping statements, otherwise it 
         # will recurse infinitely (especially the CONTINUE statement)
         if key == "target":
@@ -283,6 +290,14 @@ def traverse_AST(node, fn):
         
         if type(attr) == jsparser.Node:
             traverse_AST(attr, fn)
+
+def get_node_count(ast):
+    count = {'val':0}
+    def count_nodes(node):
+        print(node.type)
+        count['val'] += 1
+    traverse_AST(ast, count_nodes)
+    return count['val']
 
 @main
 def begin(*args):
@@ -294,44 +309,45 @@ def begin(*args):
     
     """
     # Test Path Test Case
-#    test_path = "C:\\PythonProjects\\ExtensionAnalyzer\\src\\test.js"    
-#    ast = create_AST(test_path)
-    #f = open("output.txt", "w")
-    #f.write(str(ast))
-#    
+    test_path = "C:\\PythonProjects\\ExtensionAnalyzer\\src\\test.js"    
+    ast = create_AST(test_path)
+    print("Count: {0}".format(get_node_count(ast)))
+#    f = open("output.txt", "w")
+#    f.write(str(ast))
+    
 #    glob = GlobalContainer(ast)
 #    def p(x):
 #        print(x.lineno)
 #        print(x.type)
-#        
+        
 #    traverse_AST(ast, p)
 #    fn_list = get_all_functions_in_global(ast)
     
 #    for f in fn_list:
 #        print(f)
-#    
+    
     # Chrome Path Test Case
     
-    chrome_path = get_chrome_extensions_path()
-    extension_path = os.path.join(chrome_path, "gighmmpiobklfepjocnamgkkbiglidom")
-    js_list = get_all_javascript_files_absolute(extension_path)
-    
-    total = 0
-    
-    print("Current extension directory: {0}".format(extension_path))
-    for js in js_list:
-        ast = create_AST(js)
-        print("JavaScript file: {0}".format(os.path.split(js)[1]))
-        
-        # Print information about the global frame
-        glob = GlobalContainer(ast)
-        print(glob)
-        total += len(glob.chrome_call_list)
-        
-        # Print information about all functions
-        fn_list = get_all_functions_in_global(ast)
-        for f in fn_list:
-            print(f)
-            total += len(f.chrome_call_list)
-    
-    print("Total Chrome calls found: " + str(total))
+#    chrome_path = get_chrome_extensions_path()
+#    extension_path = os.path.join(chrome_path, "gighmmpiobklfepjocnamgkkbiglidom")
+#    js_list = get_all_javascript_files_absolute(extension_path)
+#    
+#    total = 0
+#    
+#    print("Current extension directory: {0}".format(extension_path))
+#    for js in js_list:
+#        ast = create_AST(js)
+#        print("JavaScript file: {0}".format(os.path.split(js)[1]))
+#        
+#        # Print information about the global frame
+#        glob = GlobalContainer(ast)
+#        print(glob)
+#        total += len(glob.chrome_call_list)
+#        
+#        # Print information about all functions
+#        fn_list = get_all_functions_in_global(ast)
+#        for f in fn_list:
+#            print(f)
+#            total += len(f.chrome_call_list)
+#    
+#    print("Total Chrome calls found: " + str(total))
