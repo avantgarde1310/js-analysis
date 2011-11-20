@@ -282,7 +282,7 @@ def traverse_AST(node, fn):
     # body or expression attribute. Try to look for them also.
     for key in node.__dict__.keys():
         attr = getattr(node, str(key))
-        print(key)
+
         # Special handling for looping statements, otherwise it 
         # will recurse infinitely (especially the CONTINUE statement)
         if key == "target":
@@ -309,9 +309,9 @@ def begin(*args):
     
     """
     # Test Path Test Case
-    test_path = "C:\\PythonProjects\\ExtensionAnalyzer\\src\\test.js"    
-    ast = create_AST(test_path)
-    print("Count: {0}".format(get_node_count(ast)))
+#    test_path = "C:\\PythonProjects\\ExtensionAnalyzer\\src\\test.js"    
+#    ast = create_AST(test_path)
+#    print("Count: {0}".format(get_node_count(ast)))
 #    f = open("output.txt", "w")
 #    f.write(str(ast))
     
@@ -330,24 +330,25 @@ def begin(*args):
     
 #    chrome_path = get_chrome_extensions_path()
 #    extension_path = os.path.join(chrome_path, "gighmmpiobklfepjocnamgkkbiglidom")
-#    js_list = get_all_javascript_files_absolute(extension_path)
-#    
-#    total = 0
-#    
-#    print("Current extension directory: {0}".format(extension_path))
-#    for js in js_list:
-#        ast = create_AST(js)
-#        print("JavaScript file: {0}".format(os.path.split(js)[1]))
-#        
-#        # Print information about the global frame
-#        glob = GlobalContainer(ast)
-#        print(glob)
-#        total += len(glob.chrome_call_list)
-#        
-#        # Print information about all functions
-#        fn_list = get_all_functions_in_global(ast)
-#        for f in fn_list:
-#            print(f)
-#            total += len(f.chrome_call_list)
-#    
-#    print("Total Chrome calls found: " + str(total))
+    extension_path = '/home/devdatta/.config/chromium/Default/Extensions/gighmmpiobklfepjocnamgkkbiglidom'
+    js_list = get_all_javascript_files_absolute(extension_path)
+    
+    total = 0
+    
+    print("Current extension directory: {0}".format(extension_path))
+    for js in js_list:
+        ast = create_AST(js)
+        print("JavaScript file: {0}".format(os.path.split(js)[1]))
+        
+        # Print information about the global frame
+        glob = GlobalContainer(ast)
+        print(glob)
+        total += len(glob.chrome_call_list)
+        
+        # Print information about all functions
+        fn_list = get_all_functions_in_global(ast)
+        for f in fn_list:
+            print(f)
+            total += len(f.chrome_call_list)
+    
+    print("Total Chrome calls found: " + str(total))
