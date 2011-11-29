@@ -4,9 +4,7 @@ Created on Nov 2, 2011
 @author: Ivan Gozali
 '''
 
-from analyzer import main, create_AST
-import jsparser
-import sexp
+import pynarcissus.jsparser
 
 DEBUGGING = False
 SEPARATOR = '_R_'
@@ -17,7 +15,7 @@ def debugprint(str=""):
     if DEBUGGING:
         print(str)
 
-def traverse_AST_level(node, fn, level=0):
+def traverse_AST_level(node, fn, postfn, level=0):
     """
     Traverses the whole AST passed in as node, and applies the function fn
     to each node.
@@ -31,13 +29,14 @@ def traverse_AST_level(node, fn, level=0):
     node - The head node of the AST
     fn   - A function that will be applied to every node in the AST.
     """
-    fn(node, level)
+    if callable(fn):
+        fn(node, level)
     
     # If the current node has a list, then the elements of the list
     # will be of type jsparser.Node. Traverse all of them.
     if len(node) != 0:
         for elem in node:
-            traverse_AST_level(elem, fn, level+1)
+            traverse_AST_level(elem, fn, postfn, level+1)
     
     # Regardless of whether it has a list, it might contain a 
     # body or expression attribute. Try to look for them also.
@@ -49,9 +48,12 @@ def traverse_AST_level(node, fn, level=0):
         if key == "target":
             continue
         
-        if type(attr) == jsparser.Node:
-            traverse_AST_level(attr, fn, level+1)
+        if type(attr) == pynarcissus.jsparser.Node:
+            traverse_AST_level(attr, fn, postfn, level+1)
 
+    if callable(postfn):
+        postfn(node, level)
+    
 class Frame(object):
     """ Represents a frame in JavaScript. A frame could be the global
     scope, or a function scope. The frame network is represented as a
@@ -163,6 +165,41 @@ class Frame(object):
             frame_ptr = frame_ptr.parentFrame
         return frame_ptr
     
+    def get_frame_by_name(self, name_to_find):
+        """ Call this method on any frame to get any other frame by
+        its name.
+        
+        >>> frame = Frame()
+        >>> frame1 = Frame("frame1", frame)
+        >>> frame.childrenFrames.append(frame1)
+        >>> frame2 = Frame("frame2", frame1)
+        >>> frame1.childrenFrames.append(frame2)
+        >>> frame3 = Frame("frame3", frame)
+        >>> frame.childrenFrames.append(frame3)
+        >>> frame2.get_frame_by_name('frame3').name
+        'frame3'
+        >>> frame1.get_frame_by_name('frame2').name
+        'frame2'
+        """
+        class Namespace(object): pass
+        ns = Namespace()
+        ns.result_frame = None
+        
+        def get_frame_by_name_helper(frame):
+            if frame.name == name_to_find:
+                ns.result_frame = frame
+                raise Exception("Done")
+            for childFrame in frame.childrenFrames:
+                get_frame_by_name_helper(childFrame)
+            return
+
+        try:
+            get_frame_by_name_helper(self.get_global_frame())
+        except:
+            pass
+        return ns.result_frame
+        
+    
     def __str__(self):
         result = ""
         
@@ -266,7 +303,7 @@ class VarAssign(Variable):
     def __init__(self, var_node):
         try:
             init_val = var_node[0].initializer.value
-        except AttributeError, err:
+        except AttributeError:
             init_val = "undefined"
             
         Variable.__init__(self, var_node[0].value, init_val)
@@ -314,6 +351,12 @@ class Identifier(object):
     def set_name(self, new_name):
         self.name = new_name
         self.node.value = new_name
+        self.node.name = new_name
+
+def is_node_type(node, type):
+    if getattr(node, "type", None) == type:
+        return True
+    return False
 
 def create_frames(ast):
     # Closure trick in Python 2.7
@@ -321,21 +364,9 @@ def create_frames(ast):
     ns = Namespace()
     ns.frame = Frame()
     ns.current_frame = ns.frame
-    ns.current_level = 1
-    
-    def is_node_type(node, type):
-        if getattr(node, "type", None) == type:
-            return True
-        return False
     
     def create_frames_helper(node, level):
         if is_node_type(node, "FUNCTION"):
-            if ns.current_level > level:
-                level_difference = ns.current_level - level
-                for _ in range(level_difference // 2):
-                    ns.current_frame = ns.current_frame.parentFrame
-                
-                ns.current_level = level
             
             # Frame Creation
             # TODO: Temporary lambda handling
@@ -346,51 +377,25 @@ def create_frames(ast):
             new_frame = Frame(new_name, parent_frame, function)
             ns.current_frame.childrenFrames.append(new_frame)
             # End Frame Creation
-            
-            # Update current_frame and go into deeper level.
             ns.current_frame = new_frame
             
-            ns.current_level += 2
-            
         if is_node_type(node, "VAR"):
-            if ns.current_level > level:
-                level_difference = ns.current_level - level
-                for _ in range(level_difference // 2):
-                    ns.current_frame = ns.current_frame.parentFrame
-                
-                ns.current_level = level
+
             
             var = VarAssign(node)
             # debugprint("Before add variable: ", ns.current_frame)
             ns.current_frame.add_variable(var)
         
-        # TODO: Put identifiers in a list inside the corresponding frame.
-        if is_node_type(node, "IDENTIFIER"):
-            if ns.current_level > level:
-                level_difference = ns.current_level - level
-                for _ in range(level_difference // 2):
-                    ns.current_frame = ns.current_frame.parentFrame
-                
-                ns.current_level = level
-            # TODO: Need to filter out renamed identifiers.
-            # Question: Do we put identifiers here during frame creation, 
-            # or after we rename everything?
-            identifier = Identifier(node)
-            ns.current_frame.add_identifier(identifier)
-        
         if is_node_type(node, "CALL"):
-            if ns.current_level > level:
-                level_difference = ns.current_level - level
-                for _ in range(level_difference // 2):
-                    ns.current_frame = ns.current_frame.parentFrame
-                
-                ns.current_level = level
             
             call = Call(node)
             ns.current_frame.add_call(call)
             
+    def signal_function_end(node, level):
+        if is_node_type(node, "FUNCTION"):
+            ns.current_frame = ns.current_frame.parentFrame
         
-    traverse_AST_level(ast, create_frames_helper)
+    traverse_AST_level(ast, create_frames_helper, signal_function_end)
     return ns.frame
 
 def traverse_frames(frame, fn):
@@ -401,7 +406,7 @@ def traverse_frames(frame, fn):
     
     return
 
-def alpha_rename(frame):
+def alpha_rename(frame, ast):
     """
     Executes the alpha-renaming (or alpha-conversion) process on
     the AST and the scope tree.
@@ -479,8 +484,46 @@ def alpha_rename(frame):
     debugprint("Phase 4")
     traverse_frames(frame, rename_calls)
     
+    # Phase 4.5: Retrieve unrenamed identifiers
+    def retrieve_unrenamed_identifiers(ast, frame):
+        class Namespace(object): pass
+        ns = Namespace()
+        ns.current_frame = frame
+        
+        # FIXME: Incorrect identifier in frames.
+        def helper(node, level):
+            if is_node_type(node, "FUNCTION"):
+                current_name = node.name if getattr(node, "name", None) is not None else "lambda"
+                ns.current_frame = frame.get_frame_by_name(current_name)
+            
+            if is_node_type(node, "IDENTIFIER"):
+                if not isrenamed(node.value):
+                    identifier = Identifier(node)
+                    ns.current_frame.add_identifier(identifier)
+            return # helper
+        def signal_function_end(node, level):
+            if is_node_type(node, "FUNCTION"):
+                ns.current_frame = ns.current_frame.parentFrame
+        
+        traverse_AST_level(ast, helper, signal_function_end)
+        return # retrieve_unrenamed_identifiers
+    debugprint("Phase 4.5")
+    retrieve_unrenamed_identifiers(ast, frame)
+    
     # Phase 5: Rename unrenamed identifiers
+    def rename_unrenamed_identifiers(frame):
+        if type(frame) == Frame:
+            for identifier in frame.identifierList:
+                old_name = identifier.name
                 
+                # TODO: Might want to add isprimitive
+                
+                new_name = frame.lookup_variable(old_name)
+                debugprint("Lookup variable successful. {0}".format(new_name))
+                identifier.set_name(new_name if new_name is not None else "unknown")
+    debugprint("Phase 5")
+    traverse_frames(frame, rename_unrenamed_identifiers)
+    
     return frame
                 
 def isprimitive(token):
@@ -514,22 +557,3 @@ def isprimitive(token):
     except ValueError, TypeError:
         return False
 
-@main
-def run(*args):
-    ast_out = open("ast_out_newTest2.txt", "w")
-    ast = create_AST("C:\\PythonProjects\\ExtensionAnalyzer\\src\\tests\\newTest2.js")
-    
-    fr = create_frames(ast)
-    fr = alpha_rename(fr)
-    debugprint()
-    debugprint("Rename successful.")
-    debugprint()
-    print(fr)
-    ast_out.write(str(ast))
-    
-    
-    s = sexp.convert(ast)
-    print(s)
-    
-#    import doctest
-#    doctest.testmod(verbose=True)
