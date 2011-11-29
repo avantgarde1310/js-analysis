@@ -101,10 +101,21 @@ class Frame(object):
         self.varDecls.append(var)
     
     def add_call(self, call):
-        self.callList.append(call)
+        """ Adds a Call object to the current frame's callList.
+        Only adds unique calls.
+        """
+        if call not in self.callList:
+            self.callList.append(call)
     
     def add_identifier(self, identifier):
         self.identifierList.append(identifier)
+    
+    # TODO: First attempt to remove identifier to handle dot expressions
+    def remove_identifier(self, identifier_name):
+        for i in range(len(self.identifierList))[::-1]:
+            if self.identifierList[i].name == identifier_name:
+                self.identifierList.pop(i)
+                return
     
     def lookup_variable(self, identifier):
         """Attempts to find a variable in the current frame. If 
@@ -206,9 +217,9 @@ class Frame(object):
         result += "<<"
         result += self.name + "(" + str(self.id) + ")" + ", "
         result += (self.parentFrame.name if self.parentFrame is not None else "None") + ", "
-        result += str(self.varDecls) + ", "
-        result += str(self.callList) + ", "
-        result += str(self.identifierList) + ", "
+        result += "varDecls:" + str(self.varDecls) + ", "
+        result += "callList:" + str(self.callList) + ", "
+        result += "idenList:" + str(self.identifierList) + ", "
         
         result += "[\n\t"
         for frame in self.childrenFrames:
@@ -254,18 +265,55 @@ def isrenamed(name):
     return FUNCSEP in name or SEPARATOR in name
 
 class Call(object):
-    """ Represents a call statement in JavaScript """
+    """ Represents a call statement in JavaScript.
+    
+    There are two types of calls in JavaScript:
+    1. Calls containing dot expressions (eg. obj.append())
+    2. Calls without dot expressions (eg. reverseList(list))
+    
+    For case 1, the call object's name will be the leftmost 
+    identifier of the dot expresssion, and during renaming, will
+    be looked up through the variable declaration list.
+     
+    For case 2, the call object's name will be a function name, 
+    and will be looked up through the function list.
+    
+    """
     def __init__(self, node):
-        self.name = node[0].value
-        self.node = node
+        self.isdot = False
+        
+        # Handle dot expression calls
+        ptr = node[0]
+        while ptr.type == "DOT":
+            ptr = ptr[0]
+            self.isdot = True
+            
+        if self.isdot:
+            self.name = ptr.value
+            self.node = ptr
+        else:
+            self.name = node[0].value
+            self.node = node
+            
+        # Handle functions that are called immediately after 
+        # they're defined
+        if self.name == "(":
+            self.name = getattr(node, "name", "lambda")
     
     def set_name(self, new_name):
         self.name = new_name
-        self.node[0].value = new_name
+        if self.isdot:
+            self.node.value = new_name
+        else:
+            self.node[0].value = new_name
     
     def __str__(self):
         return str(self.name)
     __repr__ = __str__
+    
+    def __eq__(self, other):
+        return self.name == other.name
+        
     
 class Variable(object):
     """
@@ -293,30 +341,21 @@ class VarAssign(Variable):
     the var keyword. For example:
         var a = 5;
     
-    This object also keeps track of its node in the AST.
-    
-    TODO: The current implementation doesn't support variable assignment
-          statements of this form (that contains dot operators):
-              var b = c.attr;
-              var c = $(selector.attribute);
+    This object also keeps track of its node in the AST. This object only
+    keeps track of its left operand; it doesn't care about the right 
+    operand.
     """
     def __init__(self, var_node):
-        try:
-            init_val = var_node[0].initializer.value
-        except AttributeError:
-            init_val = "undefined"
-            
-        Variable.__init__(self, var_node[0].value, init_val)
+        # Check for "var a;" type statements
+        # Used in for-in statements
+        
+        Variable.__init__(self, var_node[0].value, "__var__")
         self.node = var_node
-    
+        
     def set_identifier(self, new_identifier):
         Variable.set_identifier(self, new_identifier)
         self.node[0].value = new_identifier
         self.node[0].name = new_identifier
-    
-    def set_value(self, new_value):
-        Variable.set_value(self, new_value)
-        self.node[0].initializer.value = new_value
         
     __repr__ = Variable.__str__
 
@@ -367,7 +406,6 @@ def create_frames(ast):
     
     def create_frames_helper(node, level):
         if is_node_type(node, "FUNCTION"):
-            
             # Frame Creation
             # TODO: Temporary lambda handling
             new_name = node.name if getattr(node, "name", None) is not None else "lambda"
@@ -380,14 +418,11 @@ def create_frames(ast):
             ns.current_frame = new_frame
             
         if is_node_type(node, "VAR"):
-
-            
             var = VarAssign(node)
             # debugprint("Before add variable: ", ns.current_frame)
             ns.current_frame.add_variable(var)
         
         if is_node_type(node, "CALL"):
-            
             call = Call(node)
             ns.current_frame.add_call(call)
             
@@ -418,18 +453,10 @@ def alpha_rename(frame, ast):
     1)  For all var assignment statements, change the left operand 
         to a unique identifier (oldname_frameID). Do this for all 
         assignment statements of this type.
-    2)  For all var assignment statements, evaluate the right operand
-        through the scope tree.
-    3)  For all other assignment statements, evaluate the left operand
-        through the scope tree.
-    4)  For all other assignment statements, evaluate the left operand
-        through the scope tree.
+    TODO:
     """
     
     # TODO: Handle infix expressions.
-    # TODO: Need to evaluate identifiers that are not part of assignment
-    #       statements
-    
     # Phase 1: Rename the left operands of assignment statements
     #          containing the var keyword.
     def rename_identifier_var(frame):
@@ -450,47 +477,34 @@ def alpha_rename(frame, ast):
             new_name = frame.name + FUNCSEP + str(frame.id)
             frame.set_name(new_name)
     
+    debugprint("Phase 2")
     traverse_frames(frame, rename_function)
     
-    # Phase 3: Rename the right operands of assignment statements
-    #          containing the var keyword
-    def evaluate_operand_var(frame):
-        if type(frame) == Frame:
-            for var in frame.varDecls:
-                value = var.value
-                
-                if isprimitive(value):
-                    debugprint("Value {0} is primitive, skipping.".format(value))
-                    continue
-                
-                debugprint("Renaming {0}".format(value))
-                new_value = frame.lookup_variable(value)
-                debugprint("Lookup variable successful. {0}".format(new_value))
-                var.set_value(new_value if new_value is not None else "unknown")
-    
-    debugprint("Phase 3")
-    traverse_frames(frame, evaluate_operand_var)
-    
-    # Phase 4: Rename calls
+    # Phase 3: Rename calls
     def rename_calls(frame):
         if type(frame) == Frame:
             for call in frame.callList:
                 name = call.name
                 
                 # TODO: Might want to add isprimitive
+                if isprimitive(name):
+                    continue
                 
-                new_name = frame.lookup_function(name)
-                call.set_name(new_name if new_name is not None else "unknown")
+                if call.isdot:
+                    new_name = frame.lookup_variable(name)
+                else:
+                    new_name = frame.lookup_function(name)
+                
+                call.set_name(new_name if new_name is not None else (name + FUNCSEP + "?"))
     debugprint("Phase 4")
     traverse_frames(frame, rename_calls)
     
-    # Phase 4.5: Retrieve unrenamed identifiers
+    # Phase 3.5: Retrieve unrenamed identifiers
     def retrieve_unrenamed_identifiers(ast, frame):
         class Namespace(object): pass
         ns = Namespace()
         ns.current_frame = frame
         
-        # FIXME: Incorrect identifier in frames.
         def helper(node, level):
             if is_node_type(node, "FUNCTION"):
                 current_name = node.name if getattr(node, "name", None) is not None else "lambda"
@@ -504,23 +518,25 @@ def alpha_rename(frame, ast):
         def signal_function_end(node, level):
             if is_node_type(node, "FUNCTION"):
                 ns.current_frame = ns.current_frame.parentFrame
-        
+            if is_node_type(node, "DOT"):
+                ns.current_frame.remove_identifier(node.value)
         traverse_AST_level(ast, helper, signal_function_end)
         return # retrieve_unrenamed_identifiers
     debugprint("Phase 4.5")
     retrieve_unrenamed_identifiers(ast, frame)
     
-    # Phase 5: Rename unrenamed identifiers
+    # Phase 4: Rename unrenamed identifiers
     def rename_unrenamed_identifiers(frame):
         if type(frame) == Frame:
             for identifier in frame.identifierList:
                 old_name = identifier.name
                 
                 # TODO: Might want to add isprimitive
-                
+                if isprimitive(old_name):
+                    continue
                 new_name = frame.lookup_variable(old_name)
                 debugprint("Lookup variable successful. {0}".format(new_name))
-                identifier.set_name(new_name if new_name is not None else "unknown")
+                identifier.set_name(new_name if new_name is not None else (old_name + SEPARATOR + "?"))
     debugprint("Phase 5")
     traverse_frames(frame, rename_unrenamed_identifiers)
     
@@ -547,8 +563,9 @@ def isprimitive(token):
     False
     """
     primitive_list = ['true', 'false',
-                      '__fparam__', 'undefined',
-                      'document', 'console']
+                      '__fparam__', '__var__', 'undefined',
+                      'document', 'console', 'chrome', "Object", '$',
+                      'window']
     if token in primitive_list:
         return True
     try:
