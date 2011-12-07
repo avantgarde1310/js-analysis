@@ -28,7 +28,7 @@ import subprocess
 import tempfile
 import copy
 try:
-    import dot_parser
+    import pydot.dot_parser as dot_parser
 except Exception, e:
     print "Couldn't import dot_parser, loading of dot files will not be possible."
     
