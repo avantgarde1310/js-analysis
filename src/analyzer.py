@@ -144,7 +144,14 @@ def create_AST(js_path):
     
     if is_javascript_file(js_file):
         return pynarcissus.jsparser.parse(open(js_path, "r").read(), js_file)
-    
+
+def create_AST_from_string(str):
+    """
+    Returns the AST corresponding to the JavaScript file specified as js_path.
+    js_path can be relative or absolute.
+    """
+    return pynarcissus.jsparser.parse(str, "fromString.js")
+
 # traverse_AST done. Need to check for missed nodes, though.
 def traverse_AST(node, fn):
     """
