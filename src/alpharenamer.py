@@ -8,14 +8,14 @@ import pynarcissus.jsparser
 
 DEBUGGING = False
 SEPARATOR = '_R_'
-FUNCSEP   = '_F_'
+FUNCSEP   = '_R_'
 
 def debugprint(str=""):
     global DEBUGGING
     if DEBUGGING:
         print(str)
 
-def traverse_AST_level(node, fn, postfn, level=0):
+def traverse_AST_level(node, fn=None, postfn=None, level=0):
     """
     Traverses the whole AST passed in as node, and applies the function fn
     to each node.
@@ -82,6 +82,7 @@ class Frame(object):
         
         self.parentFrame = parentFrame
         self.function = function
+        self.islambda = name.startswith("lambda")
         
         self.varDecls = list()
         self.callList = list()
@@ -92,6 +93,13 @@ class Frame(object):
         if function is not None and function.params != []:
             for var_name in function.params:
                 self.varDecls.append(FormalParam(var_name, function.params))
+    
+    @property
+    def calls_chrome(self):
+        for call in self.callList:
+            if call.name.startswith("chrome"):
+                return True
+        return False
     
     def add_variable(self, var):
         """Adds a Variable object to the current frame's varDecls
@@ -280,21 +288,20 @@ class Call(object):
     
     """
     def __init__(self, node):
-        self.isdot = False
+        self.name = node[0].value
+        self.node = node
         
-        # Handle dot expression calls
-        ptr = node[0]
-        while ptr.type == "DOT":
-            ptr = ptr[0]
-            self.isdot = True
-            
-        if self.isdot:
-            self.name = ptr.value
-            self.node = ptr
-        else:
-            self.name = node[0].value
-            self.node = node
-            
+        # Special handling for chrome calls.
+        complete_name = []
+        def append_name(node, level):
+            if node.type == "IDENTIFIER":
+                complete_name.append(node.value)
+        traverse_AST_level(node[0], append_name)
+        complete_name = ".".join(complete_name)
+#        print(complete_name)
+        if complete_name.startswith("chrome"):
+            self.name = complete_name
+        
         # Handle functions that are called immediately after 
         # they're defined
         if self.name == "(":
@@ -302,10 +309,7 @@ class Call(object):
     
     def set_name(self, new_name):
         self.name = new_name
-        if self.isdot:
-            self.node.value = new_name
-        else:
-            self.node[0].value = new_name
+        self.node[0].value = new_name
     
     def __str__(self):
         return str(self.name)
@@ -348,7 +352,6 @@ class VarAssign(Variable):
     def __init__(self, var_node):
         # Check for "var a;" type statements
         # Used in for-in statements
-        
         Variable.__init__(self, var_node[0].value, "__var__")
         self.node = var_node
         
@@ -490,10 +493,7 @@ def alpha_rename(frame, ast):
                 if isprimitive(name):
                     continue
                 
-                if call.isdot:
-                    new_name = frame.lookup_variable(name)
-                else:
-                    new_name = frame.lookup_function(name)
+                new_name = frame.lookup_function(name)
                 
                 call.set_name(new_name if new_name is not None else (name + FUNCSEP + "?"))
     debugprint("Phase 4")
@@ -563,11 +563,15 @@ def isprimitive(token):
     False
     """
     primitive_list = ['true', 'false',
-                      '__fparam__', '__var__', 'undefined',
-                      'document', 'console', 'chrome', "Object", '$',
+                      '__fparam__', '__var__', 'undefined']
+                      
+    extended_list =  ['document', 'console', 'chrome', "Object", '$',
                       'window']
     if token in primitive_list:
         return True
+    for word in extended_list:
+        if word in token:
+            return True
     try:
         float(token)
         return True
