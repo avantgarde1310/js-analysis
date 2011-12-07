@@ -99,7 +99,7 @@ def o(n, i, c, handledattrs=[]):
 
         elif n.type == "COMMA":
             check(subnodes=2)
-            return "(COMMA%s %s %s)" % (props(), o(n[0],i,c), o(n[1],i,c))
+            return "%s,%s" % (o(n[0],i,c), o(n[1],i,c))
 
         elif n.type == "DEBUGGER":
             return "(DEBUGGER%s)" % props()
