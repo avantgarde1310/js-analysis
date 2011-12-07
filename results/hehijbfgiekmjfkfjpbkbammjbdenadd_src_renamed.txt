@@ -1,0 +1,288 @@
+var ieObject_R_0 = null
+  function getLocalStorage_R_1(key_R_1,fnResponse_R_1) {
+  var request_R_1 = {    type_R_?:'GETLS',    key_R_1:key_R_1}
+    chrome.extension.sendRequest(request_R_1,fnResponse_R_1)
+}
+  function setLocalStorage_R_2(key_R_2,value_R_2,fnResponse_R_2) {
+  var request_R_2 = {    type_R_?:'SETLS',    key_R_2:key_R_2,    value_R_2:value_R_2}
+    if (typeof fnResponse_R_2 != 'undefined'){
+    chrome.extension.sendRequest(request_R_2,fnResponse_R_2)
+} else {
+    chrome.extension.sendRequest(request_R_2)
+})
+}
+  function onAddressKey_R_3(event_R_3) {
+  characterCode_R_3
+    if (event_R_3 && event_R_3.which){
+    characterCode_R_3 = event_R_3.which
+} else {
+    characterCode_R_3 = event_R_3.keyCode
+})
+    if (characterCode_R_3 == 13){
+          onAdd_R_8();
+      return false;
+})
+}
+  function xonAddressKey_R_4(event_R_4) {
+  characterCode_R_4
+    if (event_R_4 && event_R_4.which){
+    characterCode_R_4 = event_R_4.which
+} else {
+    characterCode_R_4 = event_R_4.keyCode
+})
+    if (characterCode_R_4 == 13){
+          xonAdd_R_13();
+      return false;
+})
+}
+  function setDirty_R_5(isDirty_R_5) {
+  if (isDirty_R_5){
+    window.onbeforeunload = onBeforeUnload_R_?
+} else {
+    window.onbeforeunload = null
+})
+}
+  function initializeAddressList_R_6() {
+  getLocalStorage_R_1('filterUrls',function (filterUrls_R_7) {
+    if (!filterUrls_R_7){
+      return
+})
+      var addressList_R_7 = document.getElementById_R_?('addressList')
+      for(var i_R_7 = 0;i_R_7 < filterUrls_R_7.length;i_R_7++){
+              addressList_R_7.add_R_?((NEW Option_R_? filterUrls_R_7[i_R_7],filterUrls_R_7[i_R_7]),null);
+}
+})
+}
+  function onAdd_R_8() {
+  var addressText_R_8 = document.getElementById_R_?('addressText')
+    var addressList_R_8 = document.getElementById('addressList')
+    var str_R_8 = addressText_R_8.value
+    if (str_R_8){
+          addressList_R_8.add_R_?((NEW Option_R_? str_R_8,str_R_8),null);
+      addressText_R_8.value = '';
+})
+    updateUrlStore_R_10()
+}
+  function onRemove_R_9() {
+  var addressList_R_9 = document.getElementById_R_?('addressList')
+    for(var i_R_9 = addressList_R_9.options.length - 1;i_R_9 >= 0;i_R_9--){
+          if (addressList_R_9.options[i_R_9].selected){
+                  addressList_R_9.removeChild_R_?(addressList_R_9.options[i_R_9]);
+});
+}
+    updateUrlStore_R_10()
+}
+  function updateUrlStore_R_10() {
+  var arrSelected_R_10 = []
+    var addressList_R_10 = document.getElementById_R_?('addressList')
+    for(var i_R_10 = 0;i_R_10 < addressList_R_10.options.length;i_R_10++){
+          arrSelected_R_10.push_R_?(addressList_R_10.options[i_R_10].value);
+}
+    setLocalStorage_R_2('filterUrls',arrSelected_R_10)
+}
+  function initializeAddressList_R_11() {
+  getLocalStorage_R_1('filterUrls',function (filterUrls_R_12) {
+    if (!filterUrls_R_12){
+      return
+})
+      var addressList_R_12 = document.getElementById_R_?('addressList')
+      for(var i_R_12 = 0;i_R_12 < filterUrls_R_12.length;i_R_12++){
+              addressList_R_12.add_R_?((NEW Option_R_? filterUrls_R_12[i_R_12],filterUrls_R_12[i_R_12]),null);
+}
+})
+}
+  function xonAdd_R_13() {
+  var addressText_R_13 = document.getElementById_R_?('xaddressText')
+    var exclusionList_R_13 = document.getElementById('exclusionList')
+    var str_R_13 = addressText_R_13.value
+    if (str_R_13){
+          exclusionList_R_13.add_R_?((NEW Option_R_? str_R_13,str_R_13),null);
+      addressText_R_13.value = '';
+})
+    xupdateUrlStore_R_15()
+}
+  function xonRemove_R_14() {
+  var exclusionList_R_14 = document.getElementById_R_?('exclusionList')
+    for(var i_R_14 = exclusionList_R_14.options.length - 1;i_R_14 >= 0;i_R_14--){
+          if (exclusionList_R_14.options[i_R_14].selected){
+                  exclusionList_R_14.removeChild_R_?(exclusionList_R_14.options[i_R_14]);
+});
+}
+    xupdateUrlStore_R_15()
+}
+  function xupdateUrlStore_R_15() {
+  var arrSelected_R_15 = []
+    var exclusionList_R_15 = document.getElementById_R_?('exclusionList')
+    for(var i_R_15 = 0;i_R_15 < exclusionList_R_15.options.length;i_R_15++){
+          arrSelected_R_15.push_R_?(exclusionList_R_15.options[i_R_15].value);
+}
+    setLocalStorage_R_2('exclusionUrls',arrSelected_R_15)
+}
+  function initializeExclusionList_R_16() {
+  getLocalStorage_R_1('exclusionUrls',function (filterUrls_R_17) {
+    if (!filterUrls_R_17){
+      return
+})
+      var exclusionList_R_17 = document.getElementById_R_?('exclusionList')
+      for(var i_R_17 = 0;i_R_17 < filterUrls_R_17.length;i_R_17++){
+              exclusionList_R_17.add_R_?((NEW Option_R_? filterUrls_R_17[i_R_17],filterUrls_R_17[i_R_17]),null);
+}
+})
+}
+  function updateChromePopupsEnabled_R_18() {
+  var checkbox_R_18 = document.getElementById_R_?('enableChromePopups')
+    if (checkbox_R_18.checked){
+    setLocalStorage_R_?('enableChromePopups',true)
+} else {
+    setLocalStorage_R_2('enableChromePopups',false)
+})
+}
+  function updateShowSearchBox_R_19() {
+  var checkbox_R_19 = document.getElementById_R_?('showSearchBox')
+    if (checkbox_R_19.checked){
+    setLocalStorage_R_?('showSearchBox',true)
+} else {
+    setLocalStorage_R_2('showSearchBox',false)
+})
+}
+  function updateDisableAutoSearch_R_20() {
+  var checkbox_R_20 = document.getElementById_R_?('disableAutoSearch')
+    if (checkbox_R_20.checked){
+    setLocalStorage_R_?('disableAutoSearch',true)
+} else {
+    setLocalStorage_R_2('disableAutoSearch',false)
+})
+}
+  function updateAutoUrlsEnabled_R_21() {
+  var checkbox_R_21 = document.getElementById_R_?('enableAutoUrls')
+    if (checkbox_R_21.checked){
+    setLocalStorage_R_?('enableAutoUrls',true)
+} else {
+    setLocalStorage_R_2('enableAutoUrls',false)
+})
+}
+  function initializeAutoUrlsEnabled_R_22() {
+  var el_R_22 = document.getElementById_R_?('enableAutoUrls')
+    getLocalStorage_R_1('enableAutoUrls',function (value_R_23) {
+    el_R_22.checked = value_R_23
+})
+    el_R_22.addEventListener_R_?('click',updateAutoUrlsEnabled_R_?,false)
+}
+  function initializeChromePopupsEnabled_R_24() {
+  var el_R_24 = document.getElementById_R_?('enableChromePopups')
+    getLocalStorage_R_1('enableChromePopups',function (value_R_25) {
+    el_R_24.checked = value_R_25
+})
+    el_R_24.addEventListener_R_?('click',updateChromePopupsEnabled_R_?,false)
+}
+  function initializeShowSearchBox_R_26() {
+  var el_R_26 = document.getElementById_R_?('showSearchBox')
+    getLocalStorage_R_1('showSearchBox',function (value_R_27) {
+    el_R_26.checked = value_R_27
+})
+    el_R_26.addEventListener_R_?('click',updateShowSearchBox_R_?,false)
+}
+  function initializeAutoSearch_R_28() {
+  var el_R_28 = document.getElementById_R_?('disableAutoSearch')
+    getLocalStorage_R_1('disableAutoSearch',function (value_R_29) {
+    el_R_28.checked = value_R_29
+})
+    el_R_28.addEventListener_R_?('click',updateDisableAutoSearch_R_?,false)
+}
+  function initializeUrlBox_R_30() {
+  var myUrl_R_30 = document.location.href
+    var regex_R_30 = (REGEXP '[?&]initial=([^&].*)' '')
+    var match_R_30 = myUrl_R_30.match_R_30(regex_R_30)
+    var el_R_30 = document.getElementById_R_?('addressText')
+    if (match_R_30){
+    el_R_30.value = decodeURIComponent_R_?(match_R_30[1])
+})
+    el_R_30.addEventListener_R_?('keypress',function (event_R_31) {
+    onAddressKey_R_3(event_R_31)
+},false)
+    el_R_30 = document.getElementById('xaddressText')
+    el_R_30.addEventListener('keypress',function (event_R_32) {
+    xonAddressKey_R_4(event_R_32)
+},false)
+}
+  var modes_R_0 = ['IE7S','IE8S','IE8F','IE9S','IE9F']
+  function modeClicked_R_33() {
+  var newMode_R_33 = 'IE7S'
+    for(var i_R_33 = 0;i_R_33 < modes_R_0.length;i_R_33++){
+          var el_R_33 = document.getElementById_R_?('mode' + modes_R_0[i_R_33]);
+      if (el_R_33.checked){
+                  newMode_R_33 = modes_R_0[i_R_33];
+          break;
+});
+}
+    var request_R_33 = {    type_R_?:'SETCOMPATMODE',    mode_R_?:newMode_R_33}
+    chrome.extension.sendRequest(request_R_33)
+    alert_R_?('Note: Chrome must be re-started for this change to take effect!')
+}
+  function initializeCompatMode_R_34() {
+  var request_R_34 = {    type_R_?:'GETCOMPATMODE'}
+    chrome.extension.sendRequest(request_R_34,function (result_R_35) {
+    if (!result_R_35){
+      result_R_35 = 'IE7S'
+})
+      for(var i_R_35 = 0;i_R_35 < modes_R_0.length;i_R_35++){
+              var el_R_35 = document.getElementById_R_?('mode' + modes_R_0[i_R_35]);
+        if (modes_R_0[i_R_35] == result_R_35){
+                      el_R_35.checked = true;
+} else {
+                      el_R_35.checked = false;
+});
+        el_R_35.addEventListener_R_?('click',modeClicked_R_?,false);
+}
+})
+}
+  function initLocalizedStrings_R_36() {
+  var keys_R_36 = []
+    var all_R_36 = document.getElementsByTagName_R_?('*')
+    for(var i_R_36 = 0;i_R_36 < all_R_36.length;i_R_36++){
+          var locText_R_36 = all_R_36[i_R_36].getAttribute_R_?('loctext');
+      if (locText_R_36){
+        keys_R_36.push_R_?(locText_R_36)
+});
+}
+    chrome.extension.sendRequest({    type_R_?:'GETLOCTEXT',    keys_R_36:keys_R_36},function (result_R_37) {
+    if (!result_R_37){
+      return
+})
+      var locStrings_R_37 = {}
+      for(var i_R_37 = 0;i_R_37 < all_R_36.length;i_R_37++){
+              var el_R_37 = all_R_36[i_R_37];
+        var locText_R_37 = el_R_37.getAttribute_R_?('loctext');
+        if (locText_R_37 && result_R_37[locText_R_37]){
+                      var attr_R_37 = el_R_37.getAttribute('locattr');
+            if (attr_R_37){
+              el_R_37.setAttribute_R_?(attr_R_37,result_R_37[locText_R_37])
+} else {
+              el_R_37.textContent = result_R_37[locText_R_37]
+});
+});
+}
+})
+}
+  function onOptions_R_38() {
+  var request_R_38 = {    type_R_?:'SHOWOPTIONS'}
+    chrome.extension.sendRequest(request_R_38)
+}
+  function init_R_39() {
+  initializeAddressList_R_6()
+    initializeExclusionList_R_16()
+    initializeAutoUrlsEnabled_R_22()
+    initializeChromePopupsEnabled_R_24()
+    initializeShowSearchBox_R_26()
+    initializeAutoSearch_R_28()
+    initializeUrlBox_R_30()
+    initializeCompatMode_R_34()
+    document.getElementById_R_?('addressText').focus_R_?()
+    document.getElementById('addButton').addEventListener_R_?('click',onAdd_R_?,false)
+    document.getElementById('removeButton').addEventListener('click',onRemove_R_?,false)
+    document.getElementById('xaddButton').addEventListener('click',xonAdd_R_?,false)
+    document.getElementById('xremoveButton').addEventListener('click',xonRemove_R_?,false)
+    document.getElementById('showIEOptions').addEventListener('click',onOptions_R_?,false)
+    initLocalizedStrings_R_36()
+}
+  window.onload = init_R_?

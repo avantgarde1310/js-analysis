@@ -1,0 +1,581 @@
+function injection_R_1() {
+  var pageLang_R_1 = '{{$pageLang}}'
+    var userLang_R_1 = '{{$userLang}}'
+    var autoTrans_R_1 = 'true' == '{{$autoTrans}}'
+    var uid_R_1 = '1E07F158C6FA4460B352973E9693B329'
+    var teId_R_1 = 'TE_' + uid_R_1
+    var cbId_R_1 = 'TECB_' + uid_R_1
+    function show_R_2() {
+    window.setTimeout_R_?(function () {
+      window[teId_R_1].showBanner_R_?(autoTrans_R_1)
+},10)
+}
+    function newElem_R_4() {
+    var elem_R_4 = (NEW google_R_?.translate.TranslateElement {      autoDisplay_R_?:false,      floatPosition_R_?:0,      multilanguagePage_R_?:true,      pageLanguage_R_?:pageLang_R_1})
+      elem_R_4.onTurnOffLanguageClick = function () {
+      var event_R_5 = document.createEvent_R_?('Event')
+        event_R_5.initEvent_R_?('te_disable_lang',true,true)
+        document.body.dispatchEvent_R_?(event_R_5)
+}
+      return elem_R_4
+}
+    if (window[teId_R_1]){
+          show_R_2();
+} else {
+          if (!window.google || !google_R_?.translate || !google_R_?.translate.TranslateElement){
+                  if (!window[cbId_R_1]){
+                          window[cbId_R_1] = function () {
+                window[teId_R_1] = newElem_R_4()
+                  show_R_2()
+};
+});
+          var s_R_1 = document.createElement_R_?('script');
+          s_R_1.src = 'http://translate.google.com/translate_a/element.js?cb=' + encodeURIComponent_R_?(cbId_R_1) + '&client=tee&hl=' + userLang_R_1;
+          document.getElementsByTagName_R_?('head')[0].appendChild_R_?(s_R_1);
+});
+})
+}
+  function injector_R_7() {
+  var s_R_7 = document.createElement_R_?('script')
+    s_R_7.innerHTML = '{{$content}}'
+    document.getElementsByTagName_R_?('head')[0].appendChild_R_?(s_R_7)
+    if (!'{{$noEvents}}'){
+          document.body.addEventListener_R_?('te_disable_lang',function (e_R_8) {
+        chrome.extension.sendRequest({          disabledLang_R_?:'{{$pageLang}}'})
+});
+})
+}
+  function () {
+  var c_R_9 = true var f_R_? = false var g_R_? = parseInt_R_? var h_R_? = window var i_R_? = chrome var j_R_? = 'length' var l_R_? = 'prototype' var m_R_? = 'replace' var p_R_? = 'save'
+    var r_R_9 = q_R_47('(function(){({{$code}})();})();',{    code_R_?:h_R_?.injection.toString_R_?()}) var s_R_? = q_R_?('(function(){({{$code}})();})();',{    code_R_?:h_R_?.injector.toString()})
+    delete h_R_?.injector
+    delete h_R_?.injection
+    function t_R_10(a_R_10,b_R_10,d_R_10,e_R_10) {
+    b_R_10 = {      pageLang_R_?:b_R_10,      userLang_R_?:d_R_10,      autoTrans_R_?:e_R_10}
+      b_R_10.content = u_R_49(q_R_47(r_R_9,b_R_10))
+      i_R_?.tabs.executeScript_R_?(a_R_10,{      code_R_?:q_R_?(s_R_?,b_R_10)})
+}
+    function v_R_11(a_R_11) {
+    var b_R_11 = {      noEvents_R_?:c_R_9,      content_R_?:u_R_49('window["_GOOG_TRANS_EXT_VER"] = "1";')}
+      i_R_?.tabs.executeScript_R_?(a_R_11,{      code_R_?:q_R_47(s_R_?,b_R_11)})
+}
+    function w_R_12(a_R_12) {
+    this.t = a_R_12
+      this.f = this.n = f_R_?
+}
+    function x_R_13(a_R_13) {
+    a_R_13.f = c_R_9
+}
+    function y_R_14(a_R_14,b_R_14,d_R_14) {
+    if (!a_R_14.n || a_R_14.f){
+              a_R_14.n = c_R_9;
+        a_R_14.u = b_R_14.url;
+        a_R_14.l = d_R_14 || 'page_load';
+        a_R_14.o = '';
+        z_R_15(a_R_14);
+})
+}
+    function z_R_15(a_R_15) {
+    navigator_R_?.platform.toLowerCase_R_?().indexOf_R_?('win') == 0 ? i_R_?.tabs.detectLanguage_R_?(a_R_15.t,A_R_51(a_R_15.m,a_R_15)) :a_R_15.m_R_?('und_non_win')
+}
+    w_R_?[l_R_?].m = function (a_R_16) {
+    if (!this.f){
+              if (!a_R_16 || a_R_16 == 'und' || a_R_16 == 'und_non_win' || a_R_16.match_R_?('invalid')){
+          a_R_16 = 'auto'
+});
+        this.o = a_R_16;
+        B_R_17(this);
+})
+}
+    function B_R_17(a_R_17) {
+    i_R_?.i18n.getAcceptLanguages_R_?(A_R_51(a_R_17.r,a_R_17))
+}
+    w_R_?[l_R_?].r = function (a_R_18) {
+    if (!this.f){
+              a_R_18 || a_R_18 = [];
+        this.e = a_R_18;
+        C_R_19(this);
+})
+}
+    function C_R_19(a_R_19) {
+    for(var b_R_19 = G_R_? var d_R_? = !!b_R_19.targetLang_R_?() || a_R_19.e[0] var e_R_? = a_R_19.o != 'auto' var n_R_? = H_R_?(b_R_19.targetLang() || a_R_19.e[0] || 'en') var k_R_? = H_R_?(a_R_19.o) var D_R_? = {} var o_R_? = 0;o_R_? < a_R_19.e[j_R_?];++o_R_?){
+      D_R_?[H_R_50(a_R_19.e[o_R_?])] = c_R_9
+}
+      o_R_? = f_R_?
+      if (d_R_?){
+      if (a_R_19.l == 'page_load' && b_R_19.autoTrans_R_?()){
+                  if (b_R_19.autoTransUrls_R_?().has_R_?(a_R_19.u) || e_R_? && n_R_? != k_R_? && b_R_19.autoTransLangs_R_?().has(k_R_?)){
+            o_R_? = c_R_9
+});
+} else {
+        if (a_R_19.l == 'user_click'){
+          if (e_R_? && n_R_? != k_R_?){
+            o_R_? = c_R_9
+})
+})
+})
+})
+      var E_R_19 = c_R_9 var F_R_? = I_R_54()
+      if (a_R_19.l == 'page_load' && !o_R_?){
+      if (!b_R_19.autoDisplay_R_?() || !e_R_? || !d_R_? || n_R_? == k_R_? || D_R_?[k_R_?] || b_R_19.disabledLangs_R_?().has(k_R_?) || b_R_19.disabledUrls_R_?().has(a_R_19.u) || F_R_?[0] * 1000.0 + F_R_?[1] >= 4001){
+        E_R_19 = f_R_?
+})
+})
+      E_R_19 && t_R_10(a_R_19.t,k_R_?,n_R_?,o_R_?)
+      a_R_19.n = f_R_?
+}
+    function J_R_20() {
+    this.c = {}
+}
+    J_R_?[l_R_?].h = function (a_R_21,b_R_21,d_R_21) {
+    this.c[a_R_21] || this.c[a_R_21] = (NEW w_R_? a_R_21)
+      y_R_14(this.c[a_R_21],b_R_21,d_R_21)
+      v_R_11(a_R_21)
+}
+    J_R_?[l_R_?].detach = function (a_R_22) {
+    if (this.c[a_R_22]){
+              x_R_13(this.c[a_R_22]);
+        delete this.c[a_R_22];
+})
+}
+    function K_R_23(a_R_23,b_R_23) {
+    this.d = a_R_23
+      this.p = b_R_23
+}
+    K_R_?[l_R_?].add = function (a_R_24) {
+    this.d[a_R_24] = c_R_9
+      this.p[p_R_?]()
+}
+    K_R_?[l_R_?].remove = function (a_R_25) {
+    delete this.d[a_R_25]
+      this.p[p_R_?]()
+}
+    K_R_?[l_R_?].g = function () {
+    var a_R_26 = []
+      for(var b_R_26 in this.d){
+this.d[b_R_26] && a_R_26.push_R_?(b_R_26)
+}
+      return a_R_26
+}
+    K_R_?[l_R_?].has = function (a_R_27) {
+    return !!this.d[a_R_27]
+}
+    function L_R_28(a_R_28,b_R_28) {
+    this.b = a_R_28
+      this.q = b_R_28
+}
+    L_R_?[l_R_?].add = function (a_R_29,b_R_29) {
+    this.b.push_R_?({      type_R_?:a_R_29,      pattern_R_?:b_R_29})
+      this.q[p_R_?]()
+}
+    L_R_?[l_R_?].remove = function (a_R_30) {
+    this.b.splice_R_?(a_R_30,1)
+      this.q[p_R_?]()
+}
+    L_R_?[l_R_?].i = function () {
+    for(var a_R_31 = [] var b_R_? = 0;b_R_? < this.b[j_R_?];++b_R_?){
+      a_R_31[b_R_?] = {        type_R_?:this.b[b_R_?].type,        pattern_R_?:this.b[b_R_?].pattern}
+}
+      return a_R_31
+}
+    L_R_?[l_R_?].has = function (a_R_32) {
+    for(var b_R_32 = 0;b_R_32 < this.b[j_R_?];++b_R_32){
+              var d_R_32 = this.b[b_R_32];
+        if (d_R_32.type == 're'){
+          try {
+                          if (a_R_32.match_R_?(d_R_32.pattern)){
+                return c_R_9
+});catch(e){
+;
+}
+} else {
+          if (a_R_32.indexOf_R_?(d_R_32.pattern) >= 0){
+            return c_R_9
+})
+});
+}
+      return f_R_?
+}
+    function M_R_33() {
+    this.noSave = f_R_?
+      this.a = {}
+      N_R_38(this)
+}
+    function O_R_34(a_R_34,b_R_34,d_R_34) {
+    if (d_R_34){
+              var e_R_34 = (NEW d_R_34 a_R_34.a[b_R_34],a_R_34);
+        a_R_34[b_R_34] = function () {
+          return e_R_34
+};
+} else {
+              var n_R_34 = a_R_34;
+        a_R_34[b_R_34] = function () {
+          return n_R_34.a[b_R_34]
+};
+        a_R_34['set_' + b_R_34] = function (k_R_36) {
+          n_R_34.a[b_R_34] = k_R_36
+            n_R_34[p_R_?]()
+};
+})
+}
+    function N_R_38(a_R_38) {
+    var b_R_38 = localStorage_R_?.getItem_R_?('user_options') var d_R_? = {      targetLang_R_?:'',      autoDisplay_R_?:c_R_9,      disabledLangs_R_?:{},      disabledUrls_R_?:[],      autoTrans_R_?:f_R_?,      autoTransLangs_R_?:{},      autoTransUrls_R_?:[]}
+      if (b_R_38){
+              a_R_38.a = JSON_R_?.parse_R_?(b_R_38);
+        for(var e_R_38 in d_R_?){
+e_R_38 in a_R_38.a || a_R_38.a[e_R_38] = d_R_?[e_R_38]
+};
+} else {
+      a_R_38.a = d_R_?
+})
+      a_R_38[p_R_?]()
+      O_R_34(a_R_38,'targetLang')
+      O_R_?(a_R_38,'autoDisplay')
+      O_R_?(a_R_38,'autoTrans')
+      O_R_?(a_R_38,'disabledLangs',K_R_?)
+      O_R_?(a_R_38,'disabledUrls',L_R_?)
+      O_R_?(a_R_38,'autoTransLangs',K_R_?)
+      O_R_?(a_R_38,'autoTransUrls',L_R_?)
+}
+    M_R_?[l_R_?].save = function () {
+    this.noSave || localStorage_R_?.setItem_R_?('user_options',JSON_R_?.stringify_R_?(this.a))
+      this.s && this.s_R_?()
+}
+    M_R_?[l_R_?].j = function () {
+    var a_R_40 = new M_R_?
+      a_R_40.noSave = c_R_9
+      return a_R_40
+}
+    M_R_?[l_R_?].assign = function (a_R_41) {
+    a_R_41.noSave = f_R_?
+      a_R_41[p_R_?]()
+      a_R_41.noSave = c_R_9
+      N_R_38(this)
+}
+    M_R_?[l_R_?].k = function (a_R_42) {
+    this.s = a_R_42
+}
+    var P_R_9 = new J_R_? var G_R_? = new M_R_?
+    function Q_R_43() {
+    return P_R_9
+}
+    function R_R_44() {
+    return G_R_?
+}
+    S_R_45(Q_R_?,'translate.getTranslateManager')
+    T_R_46(J_R_?,'attach',J_R_?[l_R_?].h)
+    T_R_?(J_R_?,'detach',J_R_?[l_R_?].detach)
+    S_R_?(R_R_?,'translate.getUserOptions')
+    T_R_?(M_R_?,'save',M_R_?[l_R_?][p_R_?])
+    T_R_?(M_R_?,'clone',M_R_?[l_R_?].j)
+    T_R_?(M_R_?,'assign',M_R_?[l_R_?].assign)
+    T_R_?(M_R_?,'setOnSave',M_R_?[l_R_?].k)
+    T_R_?(L_R_?,'add',L_R_?[l_R_?].add)
+    T_R_?(L_R_?,'remove',L_R_?[l_R_?].remove)
+    T_R_?(L_R_?,'list',L_R_?[l_R_?].i)
+    T_R_?(L_R_?,'has',L_R_?[l_R_?].has)
+    T_R_?(K_R_?,'add',K_R_?[l_R_?].add)
+    T_R_?(K_R_?,'remove',K_R_?[l_R_?].remove)
+    T_R_?(K_R_?,'list',K_R_?[l_R_?].g)
+    T_R_?(K_R_?,'has',K_R_?[l_R_?].has)
+    function S_R_45(a_R_45,b_R_45) {
+    b_R_45 = b_R_45.split_R_?('.')
+      for(var d_R_45 = h_R_? var e_R_? = 0;e_R_? < b_R_45[j_R_?] - 1;++e_R_?){
+      d_R_45 = d_R_45[b_R_45[e_R_?]] || d_R_45[b_R_45[e_R_?]] = {}
+}
+      d_R_45[b_R_45[b_R_45[j_R_?] - 1]] = a_R_45
+}
+    function T_R_46(a_R_46,b_R_46,d_R_46) {
+    a_R_46[l_R_?][b_R_46] = d_R_46
+}
+    function q_R_47(a_R_47,b_R_47) {
+    return a_R_47[m_R_?]((REGEXP '\\{\\{\\$.*?\\}\\}' 'g'),function (d_R_48) {
+      d_R_48 = d_R_48.substr_R_?(3,d_R_48[j_R_?] - 5)
+        return String_R_?(b_R_47[d_R_48]) || ''
+})
+}
+    function u_R_49(a_R_49) {
+    return a_R_49[m_R_?]((REGEXP '\\\\' 'g'),'\\\\')[m_R_?]((REGEXP "'" 'g'),"\\'")[m_R_?]((REGEXP '"' 'g'),'\\"')[m_R_?]((REGEXP '\\n' 'g'),'\\n')
+}
+    function H_R_50(a_R_50) {
+    a_R_50 = String_R_?(a_R_50).toLowerCase_R_?()[m_R_?]('_','-')
+      if (a_R_50 == 'zh-cn'){
+      return 'zh-CN'
+} else {
+      if (a_R_50 == 'zh-tw'){
+        return 'zh-TW'
+})
+})
+      var b_R_50 = a_R_50.indexOf_R_?('-')
+      a_R_50 = b_R_50 >= 0 ? a_R_50.substring_R_?(0,b_R_50) :a_R_50
+      if (a_R_50 == 'zh'){
+      return 'zh-CN'
+})
+      return a_R_50
+}
+    function A_R_51(a_R_51,b_R_51) {
+    b_R_51 || b_R_51 = h_R_?
+      if (arguments_R_?[j_R_?] > 2){
+              var d_R_51 = Array_R_?[l_R_?].slice.call_R_?(arguments_R_?,2);
+        return function () {
+          var e_R_53 = Array_R_?[l_R_?].slice.call_R_?(arguments_R_?)
+            Array_R_?[l_R_?].unshift.apply_R_?(e_R_53,d_R_51)
+            return a_R_51.apply(b_R_51,e_R_53)
+};
+} else {
+      return function () {
+        return a_R_51.apply_R_?(b_R_51,arguments_R_?)
+}
+})
+}
+    function I_R_54() {
+    var a_R_54 = navigator_R_?.userAgent.match_R_?((REGEXP 'Chrome\\/(\\d+)\\.(\\d+).(\\d+)?' '')) var b_R_? = [0,0,0]
+      if (a_R_54){
+              b_R_?[0] = g_R_?(a_R_54[1],10) || 0;
+        b_R_?[1] = g_R_?(a_R_54[2],10) || 0;
+        b_R_?[2] = g_R_?(a_R_54[3],10) || 0;
+})
+      return b_R_?
+}
+    (BLOCK)
+}()
+  function () {
+  var e_R_55 = document
+    function f_R_56(a_R_56,c_R_56) {
+    return a_R_56.selectedIndex = c_R_56
+}
+    function g_R_57(a_R_57,c_R_57) {
+    return a_R_57.display = c_R_57
+}
+    var h_R_55 = 'appendChild' var i_R_? = 'length' var j_R_? = 'prototype' var k_R_? = 'selectedIndex' var l_R_? = 'checked' var m_R_? = 'value' var n_R_? = 'style' var o_R_? = 'options' var p_R_? = 'createElement' var q_R_? = 'firstChild' var r_R_? = 'addEventListener'
+    function s_R_58() {
+    return 'uid_' + v_R_55 = v_R_55 + 1 || 1
+}
+    v_R_55
+    function w_R_59(a_R_59,c_R_59,b_R_59) {
+    var d_R_59 = 0
+      for(var t_R_59 in c_R_59){
+      var u_R_59 = e_R_55[p_R_?]('option');
+      u_R_59.value = t_R_59;
+      u_R_59.text = c_R_59[t_R_59];
+      u_R_59.A = d_R_59++;
+      a_R_59[h_R_55](u_R_59);
+      if (t_R_59 == b_R_59){
+        u_R_59.selected = true
+});
+}
+      if (!b_R_59){
+      f_R_56(a_R_59,b_R_59 == '' ? -1 :0)
+})
+}
+    function x_R_60(a_R_60,c_R_60,b_R_60) {
+    var d_R_60 = a_R_60[o_R_?][b_R_60]
+      a_R_60.removeChild_R_?(d_R_60)
+      f_R_56(a_R_60,a_R_60[o_R_?][b_R_60] ? b_R_60 :b_R_60 - 1)
+      a_R_60 = false
+      for(b_R_60 = 0;b_R_60 < c_R_60[o_R_?][i_R_?];++b_R_60){
+      if (d_R_60.A < c_R_60[o_R_?][b_R_60].A){
+                  c_R_60.insertBefore_R_?(d_R_60,c_R_60[o_R_?][b_R_60]);
+          f_R_?(c_R_60,b_R_60);
+          a_R_60 = true;
+          break;
+})
+}
+      if (!a_R_60){
+              c_R_60[h_R_55](d_R_60);
+        f_R_?(c_R_60,c_R_60[o_R_?][i_R_?] - 1);
+})
+}
+    function y_R_61(a_R_61,c_R_61,b_R_61,d_R_61) {
+    var t_R_61 = z_R_79('langMapTemplate')[m_R_?]
+      this.z = a_R_61
+      b_R_61.selectId = s_R_58()
+      b_R_61.listId = s_R_?()
+      b_R_61.addBtnId = s_R_?()
+      b_R_61.removeBtnId = s_R_?()
+      c_R_61.innerHTML = A_R_82(t_R_61,b_R_61)
+      this.b = z_R_?(b_R_61.selectId)
+      this.d = z_R_?(b_R_61.listId)
+      this.l = z_R_?(b_R_61.addBtnId)
+      this.m = z_R_?(b_R_61.removeBtnId)
+      w_R_59(this.b,d_R_61)
+      a_R_61 = a_R_61.list_R_?()
+      for(c_R_61 = 0;c_R_61 < a_R_61[i_R_?];++c_R_61){
+              b_R_61 = a_R_61[c_R_61];
+        for(d_R_61 = 0;d_R_61 < this.b[o_R_?][i_R_?];++d_R_61){
+          if (this.b[o_R_?][d_R_61][m_R_?] == b_R_61){
+                          x_R_60(this.b,this.d,d_R_61);
+              break;
+})
+};
+}
+      if (this.b[q_R_?]){
+      f_R_56(this.b,0)
+})
+      B_R_62(this)
+      this.l[r_R_?]('click',C_R_84(this.n,this))
+      this.m[r_R_?]('click',C_R_?(this.o,this))
+}
+    function B_R_62(a_R_62) {
+    a_R_62.l.disabled = !a_R_62.b[q_R_?] ? 'disabled' :''
+      a_R_62.m.disabled = !a_R_62.d[q_R_?] ? 'disabled' :''
+}
+    y_R_?[j_R_?].n = function () {
+    if (!this.b[k_R_?] < 0){
+              this.z.add_R_?(this.b[o_R_?][this.b[k_R_?]][m_R_?]);
+        x_R_60(this.b,this.d,this.b[k_R_?]);
+        B_R_62(this);
+})
+}
+    y_R_?[j_R_?].o = function () {
+    if (!this.d[k_R_?] < 0){
+              this.z.remove_R_?(this.d[o_R_?][this.d[k_R_?]][m_R_?]);
+        x_R_60(this.d,this.b,this.d[k_R_?]);
+        B_R_62(this);
+})
+}
+    function D_R_65(a_R_65,c_R_65,b_R_65) {
+    var d_R_65 = z_R_79('urlListTemplate')[m_R_?]
+      this.F = a_R_65
+      b_R_65.textId = s_R_58()
+      b_R_65.reChkId = s_R_?()
+      b_R_65.listId = s_R_?()
+      b_R_65.addBtnId = s_R_?()
+      b_R_65.removeBtnId = s_R_?()
+      c_R_65.innerHTML = A_R_82(d_R_65,b_R_65)
+      this.D = z_R_?(b_R_65.textId)
+      this.B = z_R_?(b_R_65.reChkId)
+      this.a = z_R_?(b_R_65.listId)
+      this.G = z_R_?(b_R_65.addBtnId)
+      this.p = z_R_?(b_R_65.removeBtnId)
+      a_R_65 = a_R_65.list_R_?()
+      for(c_R_65 = 0;c_R_65 < a_R_65[i_R_?];++c_R_65){
+              b_R_65 = a_R_65[c_R_65];
+        d_R_65 = e_R_55[p_R_?]('option');
+        d_R_65.text = b_R_65.type == 're' ? '[RE]' :'' + b_R_65.pattern;
+        this.a[h_R_55](d_R_65);
+}
+      E_R_66(this)
+      this.G[r_R_?]('click',C_R_84(this.q,this))
+      this.p[r_R_?]('click',C_R_?(this.r,this))
+}
+    function E_R_66(a_R_66) {
+    a_R_66.p.disabled = !a_R_66.a[q_R_?] ? 'disabled' :''
+}
+    D_R_?[j_R_?].q = function () {
+    this.F.add_R_?(this.B[l_R_?] ? 're' :'str',this.D[m_R_?])
+      var a_R_67 = e_R_55[p_R_?]('option')
+      a_R_67.text = this.B[l_R_?] ? '[RE]' :'' + this.D[m_R_?]
+      this.a[h_R_55](a_R_67)
+      f_R_56(this.a,this.a[o_R_?][i_R_?] - 1)
+      E_R_66(this)
+}
+    D_R_?[j_R_?].r = function () {
+    if (!this.a[k_R_?] < 0){
+              this.F.remove_R_?(this.a[k_R_?]);
+        var a_R_68 = this.a[k_R_?];
+        this.a.removeChild_R_?(this.a[o_R_?][this.a[k_R_?]]);
+        f_R_56(this.a,this.a[o_R_?][a_R_68] ? a_R_68 :a_R_68 - 1);
+        E_R_66(this);
+})
+}
+    var F_R_55 = chrome.extension.getBackgroundPage()
+    function G_R_69() {
+    this.c = F_R_55.translate.getUserOptions_R_?().clone_R_?()
+      this.k = z_R_79('targetLangSel')
+      this.e = z_R_?('autoDisplayChk')
+      this.f = z_R_?('autoTransChk')
+      this.h = z_R_?('autoDisplayMoreDiv')
+      this.i = z_R_?('autoTransDiv')
+      this.H = z_R_?('saveBtn')
+      this.C = z_R_?('saveStatus')
+}
+    G_R_?[j_R_?].g = function () {
+    window._callback_ = C_R_84(function (c_R_71) {
+      this.j = c_R_71.tl
+        H_R_72(this)
+},this)
+      var a_R_70 = e_R_55[p_R_?]('script')
+      a_R_70.charset = 'UTF-8'
+      a_R_70.src = 'http://translate.google.com/translate_a/l?client=tee&cb=_callback_'
+      e_R_55.getElementsByTagName_R_?('head')[0][h_R_55](a_R_70)
+}
+    function H_R_72(a_R_72) {
+    w_R_59(a_R_72.k,a_R_72.j,a_R_72.c.targetLang_R_?() || '')
+      a_R_72.k[r_R_?]('change',C_R_84(a_R_72.w,a_R_72))
+      a_R_72.e.checked = a_R_72.c.autoDisplay_R_?()
+      a_R_72.e[r_R_?]('change',C_R_?(a_R_72.s,a_R_72))
+      a_R_72.f.checked = a_R_72.c.autoTrans_R_?()
+      a_R_72.f[r_R_?]('change',C_R_?(a_R_72.t,a_R_72))
+      a_R_72.I = (NEW y_R_? a_R_72.c.disabledLangs_R_?(),a_R_72.h[q_R_?],{      title_R_?:'Excluded languages:'},a_R_72.j)
+      a_R_72.J = (NEW D_R_? a_R_72.c.disabledUrls_R_?(),a_R_72.h.lastChild,{      title_R_?:'Excluded URLs:'})
+      a_R_72.K = (NEW y_R_? a_R_72.c.autoTransLangs_R_?(),a_R_72.i[q_R_?],{      title_R_?:'Included languages:'},a_R_72.j)
+      a_R_72.L = (NEW D_R_? a_R_72.c.autoTransUrls_R_?(),a_R_72.i.lastChild,{      title_R_?:'Included URLs:'})
+      a_R_72.H[r_R_?]('click',C_R_?(a_R_72.v,a_R_72))
+      a_R_72.c.setOnSave_R_?(C_R_?(a_R_72.u,a_R_72))
+      I_R_78(a_R_72)
+}
+    G_R_?[j_R_?].w = function () {
+    this.c.set_targetLang_R_?(this.k[m_R_?])
+}
+    G_R_?[j_R_?].s = function () {
+    this.c.set_autoDisplay_R_?(this.e[l_R_?])
+      I_R_78(this)
+}
+    G_R_?[j_R_?].t = function () {
+    this.c.set_autoTrans_R_?(this.f[l_R_?])
+      I_R_78(this)
+}
+    G_R_?[j_R_?].v = function () {
+    F_R_55.translate.getUserOptions_R_?().assign_R_?(this.c)
+      g_R_57(this.C[n_R_?],'')
+}
+    G_R_?[j_R_?].u = function () {
+    g_R_57(this.C[n_R_?],'none')
+}
+    function I_R_78(a_R_78) {
+    if (!a_R_78.e[l_R_?]){
+      g_R_57(a_R_78.h[n_R_?],'none')
+})
+      if (!a_R_78.f[l_R_?]){
+      g_R_?(a_R_78.i[n_R_?],'none')
+})
+}
+    J_R_80(G_R_?,'OptionsControl')
+    K_R_81(G_R_?,'init',G_R_?[j_R_?].g)
+    function z_R_79(a_R_79) {
+    return e_R_55.getElementById_R_?(a_R_79)
+}
+    function J_R_80(a_R_80,c_R_80) {
+    c_R_80 = c_R_80.split_R_?('.')
+      for(var b_R_80 = window var d_R_? = 0;d_R_? < c_R_80[i_R_?] - 1;++d_R_?){
+      b_R_80 = b_R_80[c_R_80[d_R_?]] || b_R_80[c_R_80[d_R_?]] = {}
+}
+      b_R_80[c_R_80[c_R_80[i_R_?] - 1]] = a_R_80
+}
+    function K_R_81(a_R_81,c_R_81,b_R_81) {
+    a_R_81[j_R_?][c_R_81] = b_R_81
+}
+    function A_R_82(a_R_82,c_R_82) {
+    return a_R_82.replace_R_?((REGEXP '\\{\\{\\$.*?\\}\\}' 'g'),function (b_R_83) {
+      b_R_83 = b_R_83.substr_R_?(3,b_R_83[i_R_?] - 5)
+        return String_R_?(c_R_82[b_R_83]) || ''
+})
+}
+    function C_R_84(a_R_84,c_R_84) {
+    c_R_84 || c_R_84 = window
+      if (arguments_R_?[i_R_?] > 2){
+              var b_R_84 = Array_R_?[j_R_?].slice.call_R_?(arguments_R_?,2);
+        return function () {
+          var d_R_86 = Array_R_?[j_R_?].slice.call_R_?(arguments_R_?)
+            Array_R_?[j_R_?].unshift.apply_R_?(d_R_86,b_R_84)
+            return a_R_84.apply(c_R_84,d_R_86)
+};
+} else {
+      return function () {
+        return a_R_84.apply_R_?(c_R_84,arguments_R_?)
+}
+})
+}
+    (BLOCK)
+}()

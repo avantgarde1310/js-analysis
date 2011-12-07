@@ -1,0 +1,804 @@
+var _gaq_R_0 = _gaq_R_0 || []
+  _gaq_R_0.push_R_?(['_setAccount','UA-22980224-1'])
+  _gaq_R_0.push(['_trackPageview'])
+  _gaq_R_0.push(['_setSampleRate','1'])
+  function () {
+  var b_R_1 = document.createElement_R_?('script')
+    b_R_1.type = 'text/javascript'
+    b_R_1.async = true
+    b_R_1.src = 'https://ssl.google-analytics.com/ga.js'
+    var a_R_1 = document.getElementsByTagName_R_?('script')[0]
+    a_R_1.parentNode.insertBefore_R_?(b_R_1,a_R_1)
+}()
+  function toBool_R_2(a_R_2) {
+  if (false == a_R_2 || 'false' === a_R_2 || 0 == a_R_2 || '0' == a_R_2){
+          return false;
+} else {
+          return true;
+})
+}
+  var currentImageUrl_R_0 = null var openImageId_R_? = null var openImage_R_? = function (b_R_3,a_R_3) {
+  if (currentImageUrl_R_0){
+          chrome.tabs.create({        url_R_?:currentImageUrl_R_0,        selected_R_?:true,        index_R_?:a_R_3.index + 1},function () {
+
+});
+})
+} var optionsMenuId_R_? = null var openOptions_R_? = function (b_R_5,a_R_5) {
+  chrome.tabs.create({    url_R_?:chrome.extension.getURL('html/options.html') + b_R_5 ? '#' + b_R_5 :'',    selected_R_?:true,    index_R_?:a_R_5 || 9999},function () {
+
+})
+}
+  enableMenuId_R_? = null,enableMenuClick_R_? = function (b_R_7,a_R_7) {
+  RG3_R_0.storage.set_R_?('enabled',!RG3_R_0.storage.get_R_?('enabled'))
+    chrome.contextMenus.update(enableMenuId_R_?,{    checked_R_?:RG3_R_0.storage.get('enabled')})
+    updateTabs_R_11()
+}
+  Array_R_?.prototype.remove = function (c_R_8,b_R_8) {
+  var a_R_8 = this.slice_R_?(b_R_8 || c_R_8 + 1 || this.length)
+    this.length = c_R_8 < 0 ? this.length + c_R_8 :c_R_8
+    return this.push.apply_R_?(this,a_R_8)
+}
+  var tabs_R_0 = []
+  function addTab_R_9(a_R_9) {
+  if (tabs_R_0.indexOf_R_?(a_R_9.id) == -1){
+          tabs_R_0.push_R_?(a_R_9.id);
+})
+}
+  function removeTab_R_10(a_R_10) {
+  if (tabs_R_0.indexOf_R_?(a_R_10) > -1){
+          tabs_R_0.remove_R_?(a_R_10);
+})
+}
+  t_R_0
+  function updateTabs_R_11() {
+  for(var b_R_11 = 0 var a_R_? = tabs_R_0.length;b_R_11 < a_R_?;b_R_11++){
+          chrome.tabs.sendRequest(tabs_R_0[b_R_11],{        name_R_?:'updateOptions'},function (c_R_12) {
+
+});
+}
+}
+  chrome.tabs.onRemoved.addListener(function (a_R_13) {
+  removeTab_R_10(a_R_13)
+})
+  chrome.extension.onRequest.addListener(function (e_R_14,g_R_14,a_R_14) {
+  switch (e_R_14.name) {
+      case 'setEnabled': 
+      RG3.storage.set('enabled',!!e.value);
+      chrome.contextMenus.update(enableMenuId,{        checked:RG3.storage.get('enabled')});
+      a({});
+      updateTabs();
+      if (e.value){
+                  _gaq.push(['_trackEvent','Functionality','Enabled']);
+} else {
+                  _gaq.push(['_trackEvent','Functionality','Disabled']);
+});
+      break;
+      case 'get': 
+      if (req.key){
+                  a(RG3.storage.get(req.key));
+} else {
+                  if (req.keys){
+                          var f = {} var j = req.keys.split(',') h var b = j.length;
+              for(h = 0;h < b;h++){
+                                  f[j[h]] = RG3.storage.get(j[h]);
+};
+              a(f);
+});
+});
+      break;
+      case 'set': 
+      if (RG3.storage.get(req.key) !== req.value){
+                  RG3.storage.set(req.key,req.value);
+          updateIcon();
+          updateTabs();
+});
+      a({});
+      break;
+      case 'getOptions': 
+      var d = {} c;
+      for(var c in localStorage){
+        d[c] = RG3.storage.get(c);
+};
+      addTab(g.tab);
+      a({        value:d});
+      break;
+      case 'updateTabs': 
+      updateTabs();
+      a({});
+      break;
+      case 'setCurrentImage': 
+      currentImageUrl = e.value;
+      if (currentImageUrl && !openImageId){
+                  openImageId = chrome.contextMenus.create({            type:'normal',            title:'Open zoomed photo in new tab',            documentUrlPatterns:['http://*.facebook.com/*','http://facebook.com/*','https://*.facebook.com/*','https://facebook.com/*'],            contexts:['all'],            onclick:openImage},function () {
+
+});
+} else {
+                  if (!currentImageUrl && openImageId){
+                          chrome.contextMenus.remove(openImageId);
+              openImageId = null;
+});
+});
+      a({});
+      if (e.value){
+                  _gaq.push(['_trackEvent','Photos','Zoom']);
+});
+      break;
+      case 'openImage': 
+      openImage({},g.tab || {});
+      a({});
+      break;
+      case 'openOptions': 
+      openOptions();
+      a({});
+      break;}
+})
+  optionsMenuId_R_? = chrome.contextMenus.create({  type_R_?:'normal',  title_R_?:'Open Options',  contexts_R_?:['all'],  documentUrlPatterns:['http://*.facebook.com/*','http://facebook.com/*','https://*.facebook.com/*','https://facebook.com/*'],  onclick_R_?:function (b_R_15,a_R_15) {
+    openOptions_R_?(null,a_R_15.index + 1)
+}},function () {
+
+})
+  enableMenuId_R_? = chrome.contextMenus.create({  type_R_?:'checkbox',  title_R_?:'Enabled',  documentUrlPatterns:['http://*.facebook.com/*','http://facebook.com/*','https://*.facebook.com/*','https://facebook.com/*'],  checked_R_?:RG3_R_0.storage.get_R_?('enabled') == null ? true :!!RG3_R_0.storage.get('enabled'),  contexts_R_?:['all'],  onclick_R_?:function (b_R_17,a_R_17) {
+    enableMenuClick_R_?(null,a_R_17.index + 1)
+}},function () {
+
+})
+  if (!RG3_R_0.storage.get('launch_release20101207')){
+      openOptions_R_?();
+    RG3_R_0.storage.set_R_?('launch_release20101207',true);
+})
+  if (!RG3_R_0.storage.get('release20110926_1')){
+      _gaq_R_0.push(['_trackEvent','Install','1.1109.26.1']);
+    RG3_R_0.storage.set('release20110926_1',true);
+})
+  (BLOCK)
+  RG3_R_0.phototip = function (a_R_19) {
+  return this.init_R_?(a_R_19)
+}
+  RG3_R_0.phototip.prototype = {  options_R_?:{    padding_R_?:5,    offset_R_?:10,    gutter_R_?:20,    opacity_R_?:1,    delay_R_?:0,    fadeInDuration_R_?:250,    fadeOutDuration_R_?:250},  setOptions_R_?:function (a_R_20) {
+    RG3_R_0.util.setOptions_R_?(this.options,a_R_20)
+      if (this.tooltip && this.tooltip.style.opacity > 0){
+              this.setOpacity_R_?();
+})
+},  init_R_?:function (a_R_21) {
+    this.setOptions_R_?(a_R_21)
+      this.waitingRoom = document.body.appendChild_R_?(RG3_R_0.util.newElement_R_?('div',{      'class':'rg3fbpz-waitingroom',      styles_R_?:{        height_R_?:'0px',        width_R_?:'0px',        position_R_?:'absolte',        top_R_?:'-10px',        left_R_?:'-10px',        overflow_R_?:'hidden',        visibility_R_?:'hidden'}}))
+      var b_R_21 = this.options.fadeInDuration / 1000 + 's'
+      this.tooltip = document.body.appendChild(RG3_R_0.util.newElement('div',{      'class':'rg3fbpz-tooltip',      styles_R_?:{        opacity_R_?:0,        MozTransitionDuration_R_?:b_R_21,        WebkitTransitionDuration_R_?:b_R_21,        TransitionDuration_R_?:b_R_21,        padding_R_?:this.options.padding + 'px'}}))
+      this.tooltipImg
+      this.tooltipTitle = this.tooltip.appendChild(RG3_R_0.util.newElement('div',{      'class':'rg3fbpz-title'}))
+      this.currentSrc = ''
+      this.open = false
+      this.opening = false
+      this.hiding = false
+      this.coords = null
+      this.binds = {      onImgLoad_R_?:RG3_R_0.util.bind_R_?(this,this.onImgLoad),      onImgError_R_?:RG3_R_0.util.bind(this,this.onImgError),      onImgReady_R_?:RG3_R_0.util.bind(this,this.onImgReady),      setOpacity_R_?:RG3_R_0.util.bind(this,this.setOpacity),      onMouseMove_R_?:RG3_R_0.util.bind(this,this.onMouseMove),      onHidden_R_?:RG3_R_0.util.bind(this,this.onHidden)}
+      this.spacer = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw%3D%3D'
+      RG3_R_0.util.addEvent_R_?(document.body,'mousemove',this.binds.onMouseMove)
+},  newImage_R_?:function (c_R_22,b_R_22) {
+    var a_R_22 = this.waitingRoom.querySelector_R_?('img[src^="' + c_R_22 + '"]')
+      if (!a_R_22){
+              a_R_22 = RG3_R_0.util.newElement_R_?('img',{          src_R_?:c_R_22,          title_R_?:b_R_22 || null,          'class':'rg3fbpz-image',          styles_R_?:{            position_R_?:'relative',            'z-index':2}});
+        this.waitingRoom.appendChild_R_?(a_R_22);
+        RG3_R_0.util.addEvent_R_?(a_R_22,'load',this.binds.onImgLoad);
+        RG3_R_0.util.addEvent(a_R_22,'error',this.binds.onImgError);
+        a_R_22.src = c_R_22;
+})
+      return a_R_22
+},  setOpacity_R_?:function () {
+    if (this.tooltip){
+              var a_R_23 = this.options.fadeInDuration / 1000 + 's';
+        RG3_R_0.util.setStyles_R_?(this.tooltip,{          MozTransitionDuration_R_?:a_R_23,          WebkitTransitionDuration_R_?:a_R_23,          TransitionDuration_R_?:a_R_23,          opacity_R_?:this.options.opacity});
+})
+},  setPosition_R_?:function () {
+    c_R_24 var f_R_? = this.coords g_R_? var b_R_? = 'auto' var h_R_? = {      x_R_?:window.scrollX,      y_R_?:window.scrollY} var a_R_? = false i_R_? d_R_? e_R_?
+      if (this.open || this.opening && f_R_?){
+              g_R_? = f_R_?.y + h_R_?.y - this.tooltip.offsetHeight / 2;
+        b_R_? = f_R_?.x + h_R_?.x + this.options.offset;
+        if (this.tooltipImg && this.tooltipImg.getAttribute_R_?('loaded') == 'loaded'){
+                      e_R_? = {              x_R_?:document.body.clientWidth,              y_R_?:document.body.clientHeight};
+            d_R_? = {              x_R_?:this.tooltipImg.naturalWidth,              y_R_?:this.tooltipImg.naturalHeight};
+            i_R_? = f_R_?.x + this.options.offset + d_R_?.x + this.options.padding * 2 < e_R_?.x - this.options.gutter;
+            if (!i_R_?){
+                              a_R_? = f_R_?.x - this.options.offset - d_R_?.x + this.options.padding * 2 > this.options.gutter;
+});
+            if (i_R_? || a_R_?){
+                              RG3_R_0.util.setStyles_R_?(this.tooltipImg,{                  width_R_?:'auto',                  height_R_?:'auto'});
+});
+            if (!i_R_? && a_R_?){
+                              b_R_? = f_R_?.x + h_R_?.x - this.options.offset - d_R_?.x + this.options.padding * 2;
+} else {
+                              if (!i_R_? && !a_R_?){
+                                      if (f_R_?.x <= e_R_?.x / 2){
+                                              RG3_R_0.util.setStyles(this.tooltipImg,{                          width_R_?:e_R_?.x - f_R_?.x + this.options.offset + this.options.padding * 2 + this.options.gutter + 'px',                          height_R_?:'auto'});
+} else {
+                                              b_R_? = h_R_?.x + this.options.gutter;
+                        RG3_R_0.util.setStyles(this.tooltipImg,{                          width_R_?:f_R_?.x - this.options.offset - this.options.padding * 2 - this.options.gutter + 'px',                          height_R_?:'auto'});
+});
+});
+});
+            if (g_R_? > window.innerHeight + window.scrollY - this.tooltip.offsetHeight - this.options.gutter){
+                              g_R_? = window.innerHeight + window.scrollY - this.tooltip.offsetHeight - this.options.gutter;
+});
+            if (g_R_? < window.scrollY + this.options.gutter){
+                              g_R_? = window.scrollY + this.options.gutter;
+                if (this.tooltip.offsetHeight > window.innerHeight - this.options.gutter * 2){
+                                      RG3_R_0.util.setStyles(this.tooltipImg,{                      height_R_?:window.innerHeight - this.options.padding * 2 - this.options.gutter * 2 + 'px',                      width_R_?:'auto'});
+                    i_R_? = f_R_?.x + this.options.offset + this.tooltip.offsetWidth < e_R_?.x - this.options.gutter;
+                    if (i_R_?){
+                                              b_R_? = f_R_?.x + h_R_?.x + this.options.offset;
+} else {
+                                              b_R_? = f_R_?.x + h_R_?.x - this.tooltip.offsetWidth - this.options.offset;
+});
+});
+});
+});
+        RG3_R_0.util.setStyles(this.tooltip,{          top_R_?:parseInt_R_?(g_R_?) + 'px',          left_R_?:parseInt_R_?(b_R_?) + 'px'});
+})
+},  onMouseMove_R_?:function (a_R_25) {
+    this.coords = {      x_R_?:a_R_25.clientX,      y_R_?:a_R_25.clientY}
+      if (this.open || this.opening){
+              this.setPosition_R_?();
+})
+},  start_R_?:function (a_R_26) {
+    this.resetImg_R_?()
+      this.opening = true
+      this.setImg_R_?(a_R_26.src,a_R_26.title)
+      this.show_R_?()
+},  reloadTitle_R_?:function () {
+    if (this.tooltipImg && this.tooltipImg.title && this.tooltipImg.title.length > 0){
+              RG3_R_0.util.setProperty_R_?(this.tooltipTitle,'html',this.tooltipImg.title);
+})
+},  resetImg_R_?:function () {
+    if (this.tooltipImg){
+              this.waitingRoom.appendChild_R_?(this.tooltipImg);
+})
+      this.currentSrc = ''
+      this.tooltipImg = null
+      setTimeout_R_?(RG3_R_0.util.bind_R_?(this,function () {
+      this.setPosition_R_?()
+}),0)
+},  setImg_R_?:function (b_R_30,a_R_30) {
+    RG3_R_0.util.setProperty_R_?(this.tooltipTitle,'text','')
+      this.currentSrc = b_R_30
+      this.tooltipImg = this.newImage_R_?(b_R_30,a_R_30)
+      if (this.tooltipImg.getAttribute_R_?('loaded') == 'loaded'){
+              this.setTooltipImg_R_?(this.tooltipImg);
+})
+},  onImgLoad_R_?:function (a_R_31) {
+    RG3_R_0.util.getEventTarget_R_?(a_R_31).setAttribute_R_?('loaded','loaded')
+      this.setTooltipImg_R_?(RG3_R_0.util.getEventTarget(a_R_31))
+},  setTooltipImg_R_?:function (a_R_32) {
+    if (this.open || this.opening && a_R_32.src.indexOf_R_?(this.currentSrc) === 0){
+              if (!a_R_32.naturalWidth || a_R_32.naturalWidth <= 0){
+                      this.waitingRoom.removeChild_R_?(a_R_32);
+            this.tooltipImg = this.newImage_R_?(this.currentSrc + '?force=' + new Date_R_?.getTime_R_?(),this.tooltipImg.title);
+} else {
+                      if (a_R_32.getAttribute_R_?('avoid') == 'avoid' || a_R_32.naturalWidth == 1 && a_R_32.naturalHeight == 1){
+                              a_R_32.setAttribute_R_?('avoid','avoid');
+                setTimeout_R_?(RG3_R_0.util.bind(this,function () {
+                  this.hide_R_?()
+}),0);
+} else {
+                              setTimeout_R_?(RG3_R_0.util.bind_R_?(this,function () {
+                  this.tooltip.appendChild_R_?(this.tooltipImg)
+                    this.reloadTitle_R_?()
+                    this.setPosition_R_?()
+}),0);
+});
+});
+})
+},  onImgError_R_?:function () {
+    console.error_R_?('error loading image: ' + this.tooltipImg.src)
+      this.hide_R_?()
+},  show_R_?:function () {
+    if (this.showInterval){
+              clearInterval_R_?(this.showInterval);
+})
+      if (this.hideInterval){
+              clearInterval_R_?(this.hideInterval);
+})
+      this.opening = true
+      this.setPosition_R_?()
+      this.hiding = false
+      this.showInterval = setTimeout_R_?(RG3_R_0.util.bind_R_?(this,function () {
+      this.open = true
+        this.opening = false
+        this.setPosition_R_?()
+        this.binds.setOpacity_R_?()
+}),this.open ? 0 :this.options.delay)
+},  hide_R_?:function () {
+    if (this.hideInterval){
+              clearInterval_R_?(this.hideInterval);
+})
+      this.hiding = true
+      this.opening = false
+      var a_R_38 = this.options.fadeOutDuration / 1000 + 's'
+      RG3_R_0.util.setStyles_R_?(this.tooltip,{      MozTransitionDuration_R_?:a_R_38,      WebkitTransitionDuration_R_?:a_R_38,      TransitionDuration_R_?:a_R_38,      opacity_R_?:0})
+      this.hideInterval = setTimeout_R_?(this.binds.onHidden,this.options.fadeOutDuration + 100)
+      if (this.showInterval){
+              clearInterval_R_?(this.showInterval);
+})
+      RG3_R_0.util.setProperty_R_?(this.tooltipTitle,'html','')
+},  onHidden_R_?:function () {
+    this.open = false
+      this.opening = false
+      this.hiding = false
+      this.resetImg_R_?()
+      this.hidingSrc = null
+}}
+  RG3_R_0.fbPhotoZoom = function (a_R_40) {
+  return this.init_R_?(a_R_40)
+}
+  RG3_R_0.fbPhotoZoom.prototype = {  options_R_?:{    enabled_R_?:true,    showCaptions_R_?:true,    disableTheater_R_?:false,    enableShortcut_R_?:90,    openShortcut_R_?:88,    forceZoomKey_R_?:-1,    loading_R_?:RG3_R_0.util.newElement_R_?('img',{      src_R_?:'data:image/gif;base64,R0lGODlhEAALAPQAAP///6NGnfHj8O3c7Pbv9qVKn6NGnbNnrtGkzsWLweXM5K9eqb17udSp0caOw%2BfP5bBhq6RInr5%2BuvXs9PDi7/r2%2BrdusvHl8fn1%2BeTJ4ty52uvY6vjy9wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh%2BQQJCwAAACwAAAAAEAALAAAFLSAgjmRpnqSgCuLKAq5AEIM4zDVw03ve27ifDgfkEYe04kDIDC5zrtYKRa2WQgAh%2BQQJCwAAACwAAAAAEAALAAAFJGBhGAVgnqhpHIeRvsDawqns0qeN5%2By967tYLyicBYE7EYkYAgAh%2BQQJCwAAACwAAAAAEAALAAAFNiAgjothLOOIJAkiGgxjpGKiKMkbz7SN6zIawJcDwIK9W/HISxGBzdHTuBNOmcJVCyoUlk7CEAAh%2BQQJCwAAACwAAAAAEAALAAAFNSAgjqQIRRFUAo3jNGIkSdHqPI8Tz3V55zuaDacDyIQ%2BYrBH%2BhWPzJFzOQQaeavWi7oqnVIhACH5BAkLAAAALAAAAAAQAAsAAAUyICCOZGme1rJY5kRRk7hI0mJSVUXJtF3iOl7tltsBZsNfUegjAY3I5sgFY55KqdX1GgIAIfkECQsAAAAsAAAAABAACwAABTcgII5kaZ4kcV2EqLJipmnZhWGXaOOitm2aXQ4g7P2Ct2ER4AMul00kj5g0Al8tADY2y6C%2B4FIIACH5BAkLAAAALAAAAAAQAAsAAAUvICCOZGme5ERRk6iy7qpyHCVStA3gNa/7txxwlwv2isSacYUc%2Bl4tADQGQ1mvpBAAIfkECQsAAAAsAAAAABAACwAABS8gII5kaZ7kRFGTqLLuqnIcJVK0DeA1r/u3HHCXC/aKxJpxhRz6Xi0ANAZDWa%2BkEAA7AAAAAAAAAAAA'})},  init_R_?:function (a_R_41) {
+    RG3_R_0.util.setOptions_R_?(this.options,a_R_41)
+      this.injectCSS_R_?()
+      this['name'] = 'FB Photo Zoom'
+      this.tooltip = (NEW RG3_R_0.phototip a_R_41)
+      this.currentImg = null
+      this.icon = null
+      this.icons = {      on_R_?:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAXFJREFUeNpi%2FP%2F%2FPwMymDJlyv9Xr14xEAPExMQYWI6cf4ostgOkuaioiEFAQACv5g8fPjD09fUxsGCTBGnObNiE14DpDX5gmgnZdmwKmZgYGcK9dBnKU20Z%2BHjYMeUJ%2BdNAQ5LBwUyRQUFakMFcXxanATtwGcDDzQZn83Kxke6CD59%2BwNnvPn7HasAOfAZcuf2S4c%2Fff2D2hRvPMeRZbl8%2BZPT%2B%2FXusmrk52RjcbVQYWJghDg1w1mJYt%2Fsqw6cvPxEGgDRHhIcz8PDwggV6ulrANCjggly1GFhZmeGKzfVlGIx1pBh2HLqNMAAcUEDNPfOPMHBxsMITCSjqsAGQa3wc1cFq4AbAgJOFEsOpn2LgFEZ0UkYW%2BP7jN4OJbcDrbYduMZQk2jDMmTuHwczO%2FxwuA2wMpT3gBihICTAoyggCUx4Tg6q8MCHLPVDC4MuXzwwh7jpwWX8nTbAYPo1wAwQFBRlWrFyJ1RqQHC6NMAAQYADaHmfCJgAfvAAAAABJRU5ErkJggg%3D%3D',      off_R_?:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAZdJREFUeNpi%2Bf%2F%2FPwMymDJlyv9Xr14xEAPExMQYWI6cf4ostgOkuaioiEFAQACv5g8fPjD09fUxsGCTBGnObNiE14DpDX5gmgnZdmwKmZgYGcK9dBnKU20Z%2BHjYMeUJ%2BdNAQ5LBwUyRQUFakMFcXxanATtwGcDDzQZn83Kxke6CD59%2BwNnvPn7HasAOfAZcuf2S4c%2Fff2D2hRvPMeRZbl8%2BZPT%2B%2FXusmrk52RjcbVQYWJghDg1w1mJYt%2Fsqw6cvPxGKeidMffX0%2BZtXHz%2F%2FBOPa2tr%2FILBi66X%2Fv379%2BY8Mjjg5%2Fd%2FAwADHixUU%2FoPTAQ8PL0PP%2FCMMXBys8EQCijp08GbfPgZ%2FYMrdyMgIp1ESkpOFEsOpn2LgFIYNGAMxsmZwGCAr%2BP7jN4OJbcDrbYduMZQk2jDMmTuHwczO%2FxxM%2Fm1zsztOFyhICTAoyggCUx4Tg6q8MFYXsOgavQFqEmGAugQUg2ADvnz5zBDirgNX6O%2BkCRZDB38unxPFMFRQUJBhxcqVWG0EyYGAjaG0B5iBlvVBACDAAHFtphFIakqbAAAAAElFTkSuQmCC'}
+      this.override = false
+      this.ctrlDown = false
+      this.shiftDown = false
+      this.mouseDown = false
+      RG3_R_0.util.addEvent_R_?(document.body,'drag',RG3_R_0.util.bind_R_?(this,this.onMouseDrag))
+      RG3_R_0.util.addEvent(document.body,'dragstart',RG3_R_0.util.bind(this,this.onMouseDown))
+      RG3_R_0.util.addEvent(document.body,'dragend',RG3_R_0.util.bind(this,this.onMouseUp))
+      RG3_R_0.util.addEvent(document.body,'mousedown',RG3_R_0.util.bind(this,this.onMouseDown))
+      RG3_R_0.util.addEvent(document.body,'mouseup',RG3_R_0.util.bind(this,this.onMouseUp))
+      RG3_R_0.util.addEvent(document.body,'mousemove',RG3_R_0.util.bind(this,this.onMouseMove))
+      RG3_R_0.util.addEvent(document.body,'mousewheel',RG3_R_0.util.bind(this,this.onMouseMove))
+      RG3_R_0.util.addEvent(document.body,'keydown',RG3_R_0.util.bind(this,this.onKeyDown))
+      RG3_R_0.util.addEvent(document.body,'keyup',RG3_R_0.util.bind(this,this.onKeyUp))
+      RG3_R_0.util.addEvent(document.body,'click',RG3_R_0.util.bind(this,this.onBodyClick))
+      this.binds = {      createAppIcon_R_?:RG3_R_0.util.bind(this,this.createAppIcon)}
+      this.appIconAttempts = 0
+      this.binds.createAppIcon_R_?()
+},  injectCSS_R_?:function () {
+    var a_R_42 = '.rg3fbpz-tooltip {position:absolute; overflow:hidden; font-size:0; -moz-box-shadow:0px 0px 10px rgba(0,0,0,1); -webkit-box-shadow:0px 0px 10px rgba(0,0,0,1); box-shadow:0px 0px 10px rgba(0,0,0,1); min-height:50px; min-width:50px; pointer-events:none; background:#FFF url(data:image/gif;base64,R0lGODlhEAALALMMAOXp8a2503CHtOrt9L3G2+Dl7vL0+J6sy4yew1Jvp/T2+e/y9v///wAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCwAMACwAAAAAEAALAAAEK5DJSau91KxlpObepinKIi2kyaAlq7pnCq9p3NZ0aW/47H4dBjAEwhiPlAgAIfkECQsADAAsAAAAAAQACwAABA9QpCQRmhbflPnu4HdJVAQAIfkECQsADAAsAAAAABAACwAABDKQySlSEnOGc4JMCJJk0kEQxxeOpImqIsm4KQPG7VnfbEbDvcnPtpINebJNByiTVS6yCAAh+QQJCwAMACwAAAAAEAALAAAEPpDJSaVISVQWzglSgiAJUBSAdBDEEY5JMQyFyrqMSMq03b67WY2x+uVgvGERp4sJfUyYCQUFJjadj3WzuWQiACH5BAkLAAwALAAAAAAQAAsAAAQ9kMlJq73hnGDWMhJQFIB0EMSxKMoiFcNQmKjKugws0+navrEZ49S7AXfDmg+nExIPnU9oVEqmLpXMBouNAAAh+QQFCwAMACwAAAAAEAALAAAEM5DJSau91KxlpOYSUBTAoiiLZKJSMQzFmjJy+8bnXDMuvO89HIuWs8E+HQYyNAJgntBKBAAh+QQFFAAMACwMAAIABAAHAAAEDNCsJZWaFt+V+ZVUBAA7) no-repeat center center; z-index:99999;}.rg3fbpz-tooltip * {color:#333 !important; font-size:11px !important; font-family:"lucida grande",tahoma,verdana,arial,sans-serif !important;}.rg3fbpz-tooltip {-moz-transition:opacity 0s ease-in-out; -webkit-transition:opacity 0s ease-in-out; transition:opacity 0s ease-in-out;}.rg3fbpz-title:empty {bottom:-20px; height:0px; min-height:0px; -moz-transition:bottom 0s ease-in-out; -webkit-transition:bottom 0s ease-in-out; transition:bottom 0s ease-in-out;}.rg3fbpz-title {-moz-transition:bottom 0.33s ease-in-out; -webkit-transition:bottom 0.33s ease-in-out; transition:bottom 0.33s ease-in-out;}.rg3fbpz-title {position:absolute; z-index:3; min-height:20px; padding:4px 5px 5px; bottom:0px; left:0px; width:100%; background:#FFF; color:#000; font:bold 11px helvetica,arial,sans-serif; -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; overflow:hidden;}.rg3fbpz-title > .rg3fbpz-caption {border:1px solid #F00; overflow:hidden; text-overflow:ellipsis; white-space: nowrap; }.rg3fbpz-icon {cursor:pointer; color:transparent !important; text-decoration:none !important; position:absolute; left:-20px; top:0px; padding:0px; border:1px solid #999; background:-moz-linear-gradient(top, #f5f6f6, #dfdedf); background:-webkit-gradient(linear, center top, center bottom, from(#f5f6f6), to(#dfdedf));}.rg3fbpz-icon:hover {cursor:pointer; background:#FFF; text-decoration:none !important;}.rg3fbpz-icon *, .rg3fbpz-icon:hover * {text-decoration:none !important;}.rg3fbpz-icon > i {pointer-events:none; display:block; width:27px; height:23px; border-top:1px solid #FFF; background:transparent none no-repeat center center;}.rg3fbpz-icon:hover > i {border-right-color:#FFF;}.rg3fbpz-icon .rg3fbpz-titletip {display:none; position:absolute; color:#FFF !important; right:6px; bottom:27px; z-index:20; padding-bottom:4px; background:transparent url(data:image/gif;base64,R0lGODlhEwAEAIABACgoKAAAACH5BAEAAAEALAAAAAATAAQAAAINjA+pcO2x2Jsw0StnAQA7) no-repeat right bottom;}.rg3fbpz-icon .rg3fbpz-titletip strong {display:block; *margin:0; padding:3px 8px; text-align:center; white-space:nowrap; font-weight:normal; color:#fff; background:#282828;}.rg3fbpz-icon:hover .rg3fbpz-titletip {display:block !important;}'
+      document.head.appendChild_R_?(RG3_R_0.util.newElement_R_?('style',{      type_R_?:'text/css',      text_R_?:a_R_42}))
+},  setOptions_R_?:function (a_R_43) {
+    RG3_R_0.util.setOptions_R_?(this.options,a_R_43)
+      this.tooltip.setOptions(a_R_43)
+      this.updateAppIcon_R_?()
+},  toggle_R_?:function () {
+    this.options.enabled = !this.options.enabled
+      proxy_R_?.setEnabled_R_?(this.options.enabled)
+      if (!this.options.enabled){
+              this.tooltip.hide_R_?();
+})
+      this.updateAppIcon_R_?()
+},  getTitle_R_?:function (b_R_45) {
+    var c_R_45 = b_R_45._title || b_R_45.title && b_R_45.title.length > 0 ? b_R_45.title :b_R_45.alt && b_R_45.alt.length > 0 ? b_R_45.alt :''
+      if (c_R_45.length == 0){
+              var a_R_45 = b_R_45.parentNode;
+        if (a_R_45 && a_R_45.getAttribute_R_?('class') || ''.indexOf_R_?('uiTooltip') > -1){
+                      uiTT_R_? = a_R_45.querySelector_R_?('*[class*="uiTooltipWrap"]');
+            if (uiTT_R_?){
+                              uiTT_R_?.style.display = 'none';
+                uiTT_R_?.setAttribute_R_?('class','');
+                c_R_45 = uiTT_R_?.firstChild && uiTT_R_?.firstChild.innerText ? uiTT_R_?.firstChild.innerText :'';
+});
+});
+})
+      return c_R_45
+},  getNewSrc_R_?:function (a_R_46,c_R_46) {
+    b_R_46 var d_R_? = null
+      if (b_R_46 = (REGEXP '^.*?app_full_proxy\\.php\\?.*?src\\=([^\\&]+)' 'i').test(a_R_46)){
+              d_R_? = decodeURIComponent_R_?(a_R_46.replace(b_R_46,'$1'));
+} else {
+              if (b_R_46 = (REGEXP '^.*?safe_image\\.php\\?.*?url\\=([^\\&]+)' 'i').test(a_R_46)){
+                      d_R_? = decodeURIComponent_R_?(a_R_46.replace(b_R_46,'$1'));
+} else {
+                      if (b_R_46 = (NEW RegExp_R_? '_[aqst' + c_R_46 ? 'n' :'' + ']\\.(jpe?g)$','i').test(a_R_46)){
+                              d_R_? = a_R_46.replace(b_R_46,'_n.$1');
+} else {
+                              if (b_R_46 = (NEW RegExp_R_? '[aqst' + c_R_46 ? 'n' :'' + ']([\\d_]+)\\.(jpe?g)$','i').test_R_?(a_R_46)){
+                                      d_R_? = a_R_46.replace_R_?(b_R_46,'n$1.$2');
+});
+});
+});
+})
+      a_R_46 = d_R_? || a_R_46
+      if (b_R_46 = (REGEXP '\\/[a-z]\\d+x\\d+\\/' 'i').test(a_R_46)){
+              d_R_? = a_R_46.replace(b_R_46,'/');
+})
+      if (b_R_46 = (REGEXP '^(https?:\\/\\/[^\\/]*flickr.com\\/.*)_[tsm](\\.jpe?g)$' 'i').test(d_R_?)){
+              d_R_? = d_R_?.replace(b_R_46,'$1$2');
+})
+      return d_R_?
+},  onMouseMove_R_?:function (g_R_47) {
+    if (!this.mouseDown){
+              j_R_47 a_R_? b_R_? i_R_? h_R_? f_R_? c_R_?;
+        h_R_? = RG3_R_0.util.getEventTarget_R_?(RG3_R_0.util.getEvent_R_?(g_R_47));
+        f_R_? = h_R_?.localName.toLowerCase_R_?();
+        c_R_? = false;
+        if (this.options.disableTheater){
+                      var d_R_47 = f_R_? == 'a' ? h_R_? :h_R_?.parentNode && h_R_?.parentNode.localName.toLowerCase() == 'a' ? h_R_?.parentNode :null;
+            if (d_R_47 && j_R_47 = d_R_47.getAttribute_R_?('rel')){
+                              if (this.options.disableTheater && j_R_47 == 'theater'){
+                                      d_R_47.setAttribute('rel','fbpz_no_theat');
+} else {
+                                      if (!this.options.disableTheater && j_R_47 == 'fbpz_no_theat'){
+                                              d_R_47.setAttribute_R_?('rel','theater');
+});
+});
+});
+});
+        if (f_R_? == 'img' && h_R_?.src && !(REGEXP 'spotlight' 'i').test(h_R_?.className) && !(REGEXP 'fbPhotoImage' 'i').test(h_R_?.id) && !(REGEXP 'coverWrap' 'i').test(h_R_?.parentNode.className)){
+                      if (a_R_? = this.getNewSrc(h_R_?.src)){
+                              b_R_? = h_R_?.src;
+                i_R_? = this.getTitle(h_R_?);
+} else {
+                              if (h_R_?.offsetWidth < h_R_?.naturalWidth - 10 && h_R_?.offsetHeight < h_R_?.naturalHeight - 10){
+                                      b_R_? = h_R_?.src;
+                    a_R_? = b_R_?;
+                    i_R_? = this.getTitle(h_R_?);
+} else {
+                                      if ((REGEXP 'find\\s+friends' 'i').test(document.title) && f_R_? == 'img' && h_R_?.className.indexOf('friendBrowserPicture') > -1 && h_R_?.style.backgroundImage){
+                                              b_R_? = h_R_?.style.backgroundImage.replace((REGEXP '^\\s*url\\(([^\\)]+)\\).*$' 'i'),'$1');
+                        a_R_? = b_R_?;
+                        i_R_? = this.getTitle_R_?(h_R_?);
+                        c_R_? = true;
+});
+});
+});
+} else {
+                      if (f_R_? == 'i' && h_R_?.style.backgroundImage && !(REGEXP 'tickerFullPhoto' 'i').test_R_?(h_R_?.parentNode.className)){
+                              b_R_? = h_R_?.style.backgroundImage.replace((REGEXP '^\\s*url\\(([^\\)]+)\\).*$' 'i'),'$1');
+                a_R_? = this.getNewSrc_R_?(b_R_?,true);
+                i_R_? = h_R_?._title || h_R_?.parentNode && h_R_?.parentNode.title && h_R_?.parentNode.title.length > 0 ? h_R_?.parentNode.title :'' || h_R_?.parentNode && h_R_?.parentNode.parentNode && h_R_?.parentNode.parentNode.title && h_R_?.parentNode.parentNode.title.length > 0 ? h_R_?.parentNode.parentNode.title :'';
+} else {
+                              if (f_R_? == 'a' && h_R_?.className.indexOf_R_?('album_link') > -1 && h_R_?.parentNode.className.indexOf('album_thumb') > -1 && h_R_?.parentNode.style.backgroundImage){
+                                      b_R_? = h_R_?.parentNode.style.backgroundImage.replace_R_?((REGEXP '^\\s*url\\(([^\\)]+)\\).*$' 'i'),'$1');
+                    i_R_? = '';
+});
+});
+});
+        if (this.options.enabled || this.override && b_R_? && !(REGEXP '\\/vthumb' 'i').test(b_R_?) && a_R_? || a_R_? = this.getNewSrc(b_R_?)){
+                      if (!this.currentImg || this.currentImg.oSrc !== b_R_?){
+                              this.currentImg = {                  src_R_?:a_R_?,                  oSrc_R_?:b_R_?};
+                pNode_R_? = h_R_?.parentNode;
+                if (!i_R_? && pNode_R_? && pNode_R_?.getAttribute('class') || ''.indexOf('uiTooltip') > -1){
+                                      uiTT_R_? = pNode_R_?.querySelector_R_?('*[class^="uiTooltip"]');
+                    if (uiTT_R_?){
+                                              uiTT_R_?.style.display = 'none';
+                        uiTT_R_?.setAttribute('class','');
+                        i_R_? = uiTT_R_?.firstChild && uiTT_R_?.firstChild.innerText ? uiTT_R_?.firstChild.innerText :'';
+});
+});
+                h_R_?._title = i_R_?;
+                RG3_R_0.util.setProperties_R_?(h_R_?,{                  title_R_?:'',                  alt_R_?:''});
+                RG3_R_0.util.setProperties(h_R_?.parentNode,{                  title_R_?:'',                  alt_R_?:''});
+                RG3_R_0.util.setProperties(h_R_?.parentNode.parentNode,{                  title_R_?:'',                  alt_R_?:''});
+                this.tooltip.start_R_?({                  src_R_?:this.currentImg.src,                  title_R_?:this.options.showCaptions ? h_R_?._title :null});
+                proxy_R_?.setCurrentImage_R_?(this.currentImg.src);
+                if (pNode_R_? && pNode_R_?.nodeName && pNode_R_?.nodeName.toLowerCase() == 'a' && j_R_47 = pNode_R_?.getAttribute('rel')){
+                                      if (this.options.disableTheater && j_R_47 == 'theater'){
+                                              pNode_R_?.setAttribute('rel','fbpz_no_theat');
+} else {
+                                              if (!this.options.disableTheater && j_R_47 == 'fbpz_no_theat'){
+                                                      pNode_R_?.setAttribute('rel','theater');
+});
+});
+});
+});
+} else {
+                      this.hideTooltip();
+});
+} else {
+              if (Math_R_?.abs_R_?(g_R_47.x - this.mouseDownCoords.x) > 5 || Math_R_?.abs(g_R_47.y - this.mouseDownCoords.y) > 5){
+                      this.hideTooltip_R_?();
+});
+})
+},  hideTooltip_R_?:function () {
+    if (this.tooltip.open && !this.tooltip.hiding || this.currentImg !== null){
+              this.tooltip.hide_R_?();
+        this.currentImg = null;
+        proxy_R_?.setCurrentImage_R_?(null);
+})
+},  onKeyDown_R_?:function (a_R_49) {
+    if (a_R_49.keyCode == '17'){
+              this.ctrlDown = true;
+} else {
+              if (a_R_49.keyCode == '16'){
+                      this.shiftDown = true;
+});
+})
+      if (a_R_49.keyCode == this.options.enableShortcut && this.ctrlDown && this.shiftDown){
+              this.toggle_R_?();
+})
+      if (a_R_49.keyCode == this.options.openShortcut && this.ctrlDown && this.shiftDown){
+              proxy_R_?.openImage_R_?();
+})
+      if (a_R_49.keyCode == this.options.forceZoomKey){
+              this.override = true;
+})
+},  onKeyUp_R_?:function (a_R_50) {
+    if (a_R_50.keyCode == '17'){
+              this.ctrlDown = false;
+})
+      if (a_R_50.keyCode == '16'){
+              this.shiftDown = false;
+})
+      if (a_R_50.keyCode == this.options.forceZoomKey){
+              this.override = false;
+        if (!this.options.enabled){
+                      this.tooltip.hide_R_?();
+});
+})
+},  onMouseDrag_R_?:function (a_R_51) {
+    this.hideTooltip_R_?()
+},  onMouseDown_R_?:function (a_R_52) {
+    this.mouseDown = true
+      this.mouseDownCoords = {      x_R_?:a_R_52.x,      y_R_?:a_R_52.y}
+},  onMouseUp_R_?:function (a_R_53) {
+    this.mouseDown = false
+      this.mouseDownCoords = null
+},  onBodyClick_R_?:function (a_R_54) {
+    this.hideTooltip_R_?()
+},  createAppIcon_R_?:function () {
+    a_R_55 b_R_? var c_R_? = document.querySelector_R_?('.fbDockWrapper')
+      this.appIconAttempts = this.appIconAttempts + 1
+      if (!this.icon && c_R_?){
+              a_R_55 = RG3_R_0.util.newElement_R_?('a',{          'class':'rg3fbpz-icon',          href_R_?:'/?fbpz=toggle',          onclick_R_?:function (d_R_56) {
+            RG3_R_0.util.preventEventDefault_R_?(d_R_56)
+              return false
+}});
+        this.icon = {};
+        this.icon.image = RG3_R_0.util.newElement('i',{          styles_R_?:{            'background-image':'url(' + this.icons[this.options.enabled ? 'on' :'off'] + ')'}});
+        this.icon.tooltip = RG3_R_0.util.newElement('strong',{          text_R_?:this['name']});
+        b_R_? = RG3_R_0.util.newElement('div',{          'class':'rg3fbpz-titletip'});
+        b_R_?.appendChild_R_?(this.icon.tooltip);
+        a_R_55.appendChild(this.icon.image);
+        a_R_55.appendChild(b_R_?);
+        c_R_?.appendChild(a_R_55);
+        RG3_R_0.util.addEvent_R_?(a_R_55,'click',RG3_R_0.util.bind_R_?(this,function (d_R_57) {
+          RG3_R_0.util.preventEventDefault_R_?(d_R_57)
+            this.toggle_R_?()
+            return false
+}));
+        this.updateAppIcon_R_?();
+} else {
+              if (!this.icon && this.appIconAttempts < 100){
+                      setTimeout_R_?(this.binds.createAppIcon,500);
+});
+})
+},  updateAppIcon_R_?:function () {
+    if (this.icon){
+              RG3_R_0.util.setStyles_R_?(this.icon.image,{          'background-image':'url(' + this.icons[this.options.enabled ? 'on' :'off'] + ')'});
+        RG3_R_0.util.setProperty_R_?(this.icon.tooltip,'text',this['name'] + this.options.enabled ? ' (on)' :' (off)');
+})
+}}
+  photozoom_R_0 var proxy_R_? = {  update_R_?:function (a_R_59) {
+    if (!photozoom_R_0){
+              photozoom_R_0 = (NEW RG3_R_0.fbPhotoZoom a_R_59);
+} else {
+              photozoom_R_0.setOptions_R_?(a_R_59);
+})
+}}
+  chrome.extension.onRequest.addListener(function (c_R_60,b_R_60,a_R_60) {
+  switch (c_R_60.name) {
+      case 'updateOptions': 
+      proxy.getOptions();
+      a({});
+      break;}
+})
+  proxy_R_?.setEnabled = function (a_R_61) {
+  chrome.extension.sendRequest({    name_R_?:'setEnabled',    value_R_?:a_R_61})
+}
+  proxy_R_?.setCurrentImage = function (a_R_62) {
+  chrome.extension.sendRequest({    name_R_?:'setCurrentImage',    value_R_?:a_R_62})
+}
+  proxy_R_?.openImage = function () {
+  chrome.extension.sendRequest({    name_R_?:'openImage'})
+}
+  proxy_R_?.openOptions = function () {
+  chrome.extension.sendRequest({    name_R_?:'openOptions'})
+}
+  proxy_R_?.getOptions = function () {
+  chrome.extension.sendRequest({    name_R_?:'getOptions'},function (a_R_66) {
+    var b_R_66 = a_R_66.value
+      proxy_R_?.update_R_?({      enabled_R_?:b_R_66.enabled,      showCaptions_R_?:b_R_66.showCaptions,      disableTheater_R_?:b_R_66.disableTheater || false,      forceZoomKey_R_?:b_R_66.forceZoomKey || -1,      enableShortcut_R_?:b_R_66.enableShortcut || 90,      opacity_R_?:b_R_66.opacity || 100 / 100,      delay_R_?:parseInt_R_?(b_R_66.delay || 0,10),      fadeInDuration_R_?:parseInt_R_?(b_R_66.fadeInDuration != null ? b_R_66.fadeInDuration :0,10),      fadeOutDuration_R_?:parseInt_R_?(b_R_66.fadeOutDuration != null ? b_R_66.fadeOutDuration :0,10)})
+})
+}
+  proxy_R_?.getGraphInfo = function (c_R_67,a_R_67,b_R_67) {
+  chrome.extension.sendRequest({    name_R_?:'getGraphInfo',    id_R_?:c_R_67,    data_R_?:a_R_67},b_R_67)
+}
+  proxy_R_?.getOptions_R_?()
+  var RG3_R_0 = RG3_R_0 || {}
+  RG3_R_0.storage = RG3_R_0.storage || {  set_R_?:function (b_R_68,c_R_68) {
+    a_R_68
+      try {
+              RG3_R_0.storage.remove_R_?(b_R_68);
+        window.localStorage.setItem_R_?(b_R_68,JSON_R_?.stringify_R_?(c_R_68));catch(d){
+;
+}
+},  get_R_?:function (a_R_69) {
+    b_R_69
+      try {
+              return JSON_R_?.parse_R_?(window.localStorage.getItem_R_?(a_R_69));catch(c){
+;
+}
+      return null
+},  remove_R_?:function (a_R_70) {
+    return window.localStorage.removeItem_R_?(a_R_70)
+},  clear_R_?:function () {
+    window.localStorage.clear_R_?()
+}}
+  var RG3_R_0 = RG3_R_0 || {}
+  RG3_R_0.util = RG3_R_0.util || {  newElement_R_?:function (c_R_72,a_R_72,d_R_72) {
+    d_R_72 = d_R_72 || window.document
+      var b_R_72 = d_R_72.createElement_R_?(c_R_72)
+      if (a_R_72){
+              this.setProperties_R_?(b_R_72,a_R_72);
+})
+      return b_R_72
+},  setProperties_R_?:function (c_R_73,b_R_73) {
+    for(var a_R_73 in b_R_73){
+      this.setProperty_R_?(c_R_73,a_R_73,b_R_73[a_R_73]);
+}
+},  setProperty_R_?:function (b_R_74,a_R_74,c_R_74) {
+    if (a_R_74 == 'style' || a_R_74 == 'styles' && typeof c_R_74 == 'object'){
+              return RG3_R_0.util.setStyles_R_?(b_R_74,c_R_74);
+} else {
+              if (a_R_74 == 'html'){
+                      a_R_74 = 'innerHTML';
+} else {
+                      if (a_R_74 == 'text'){
+                              a_R_74 = 'textContent';
+});
+});
+})
+      return b_R_74[a_R_74 == 'class' ? 'className' :a_R_74] = c_R_74
+},  camelCase_R_?:function (a_R_75) {
+    return a_R_75.replace_R_?((REGEXP '-\\D' 'g'),function (b_R_76) {
+      return b_R_76.charAt_R_?(1).toUpperCase_R_?()
+})
+},  setStyles_R_?:function (b_R_77,c_R_77) {
+    for(var a_R_77 in c_R_77){
+      this.setStyle_R_?(b_R_77,a_R_77,c_R_77[a_R_77]);
+}
+      return b_R_77
+},  setStyle_R_?:function (a_R_78,c_R_78,b_R_78) {
+    if (c_R_78 == 'opacity'){
+              if (a_R_78.style.opacity !== undefined){
+                      a_R_78.style.opacity = b_R_78;
+} else {
+                      if (a_R_78.style.MozOpacity !== undefined){
+                              a_R_78.style.MozOpacity = b_R_78;
+} else {
+                              if (a_R_78.style.msFilter !== undefined){
+                                      a_R_78.style.msFilter = 'progid:DXImageTransform.Microsoft.Alpha(Opacity=' + b_R_78 * 100 + ')';
+} else {
+                                      if (a_R_78.style.filter !== undefined){
+                                              a_R_78.style.filter = 'alpha(opacity=' + b_R_78 * 100 + ')';
+});
+});
+});
+});
+} else {
+              if (c_R_78 == 'box-shadow'){
+                      this.setStyle_R_?(a_R_78,'-moz-box-shadow',b_R_78);
+            this.setStyle(a_R_78,'-webkit-box-shadow',b_R_78);
+            a_R_78.style[this.camelCase(c_R_78)] = b_R_78;
+            return a_R_78;
+} else {
+                      if (c_R_78 == 'float'){
+                              c_R_78 = 'cssFloat';
+});
+            a_R_78.style[this.camelCase_R_?(c_R_78)] = b_R_78;
+});
+})
+      return a_R_78
+},  getEvent_R_?:function (a_R_79) {
+    return !a_R_79 ? a_R_79 = window.event :a_R_79
+},  preventEventDefault_R_?:function (a_R_80) {
+    a_R_80 = this.getEvent_R_?(a_R_80)
+      if (a_R_80){
+              if (a_R_80.preventDefault){
+                      a_R_80.preventDefault_R_?();
+} else {
+                      a_R_80.returnValue = false;
+});
+})
+      return false
+},  getEventTarget_R_?:function (a_R_81) {
+    if (a_R_81.target){
+              targ_R_? = a_R_81.target;
+} else {
+              if (a_R_81.srcElement){
+                      targ_R_? = a_R_81.srcElement;
+});
+})
+      if (targ_R_?.nodeType == 3){
+              targ_R_? = targ_R_?.parentNode;
+})
+      return targ_R_?
+},  addEvent_R_?:function (b_R_82,c_R_82,a_R_82) {
+    if (b_R_82.addEventListener){
+              b_R_82.addEventListener_R_?(c_R_82,a_R_82,false);
+} else {
+              if (window.attachEvent){
+                      b_R_82.attachEvent_R_?('on' + c_R_82,a_R_82);
+} else {
+                      b_R_82['on' + c_R_82] = a_R_82;
+});
+})
+},  removeEvent_R_?:function (b_R_83,c_R_83,a_R_83) {
+    if (b_R_83.removeEventListener){
+              b_R_83.removeEventListener_R_?(c_R_83,a_R_83,false);
+} else {
+              if (window.detachEvent){
+                      b_R_83.detachEvent_R_?('on' + c_R_83,a_R_83);
+} else {
+                      b_R_83['on' + c_R_83] = a_R_83;
+});
+})
+},  splat_R_?:function (a_R_84) {
+    return typeof a_R_84 ? !a_R_84.push && !a_R_84.callee ? [a_R_84] :a_R_84 :[]
+},  extendArray_R_?:function (d_R_85,c_R_85) {
+    for(var b_R_85 = 0 var a_R_? = c_R_85.length;b_R_85 < a_R_?;b_R_85++){
+              d_R_85.push_R_?(c_R_85[b_R_85]);
+}
+      return d_R_85
+},  bind_R_?:function (c_R_86,b_R_86,a_R_86) {
+    return this.createFn_R_?(b_R_86,{      bind_R_?:c_R_86,      'arguments':a_R_86})
+},  createFn_R_?:function (c_R_87,b_R_87) {
+    var a_R_87 = c_R_87
+      b_R_87 = b_R_87 || {}
+      return function (e_R_88) {
+      var d_R_88 = b_R_87.arguments f_R_?
+        d_R_88 = d_R_88 != undefined ? RG3_R_0.util.splat_R_?(d_R_88) :arguments_R_?
+        if (b_R_87.event){
+                  d_R_88 = RG3_R_0.util.extendArray_R_?(d_R_88,[e_R_88 || window.event]);
+})
+        f_R_? = function () {
+        return a_R_87.apply_R_?(b_R_87.bind || null,d_R_88)
+}
+        return f_R_?()
+}
+},  setOptions_R_?:function (b_R_90,a_R_90) {
+    a_R_90 = a_R_90 || {}
+      for(var c_R_90 in b_R_90){
+      b_R_90[c_R_90] = typeof a_R_90[c_R_90] !== 'undefined' ? a_R_90[c_R_90] :b_R_90[c_R_90];
+}
+      return b_R_90
+},  toQueryString_R_?:function (b_R_91) {
+    b_R_91 = b_R_91 || {}
+      var c_R_91 = '?'
+      for(var a_R_91 in b_R_91){
+      c_R_91 = a_R_91 + '=' + b_R_91[a_R_91] + '&';
+}
+      return c_R_91.replace_R_?((REGEXP '\\&$' ''),'')
+},  merge_R_?:function (c_R_92,b_R_92) {
+    a_R_92
+      for(a_R_92 in b_R_92){
+      c_R_92[a_R_92] = b_R_92[a_R_92];
+}
+      return c_R_92
+}}
+  RG3_R_0.Request = function (a_R_93) {
+  return this.init_R_?(a_R_93)
+}
+  RG3_R_0.Request.prototype = {  options_R_?:{    method_R_?:'get',    url_R_?:null,    data_R_?:null,    onSuccess_R_?:function () {
+
+},    onError_R_?:function () {
+
+}},  init_R_?:function (a_R_96) {
+    RG3_R_0.util.setOptions_R_?(this.options,a_R_96)
+      this.binds = {      onReadyStateChange_R_?:RG3_R_0.util.bind_R_?(this,this.onReadyStateChange)}
+      this.xhr = new XMLHttpRequest_R_?
+},  onReadyStateChange_R_?:function () {
+    if (this.xhr.readyState == 4){
+              if (this.xhr.status >= 200 && this.xhr.status < 300){
+                      this.options.onSuccess_R_?(JSON_R_?.parse(this.xhr.responseText));
+} else {
+                      this.options.onError_R_?(JSON_R_?.parse_R_?(this.xhr.responseText));
+});
+})
+},  send_R_?:function () {
+    this.xhr.onreadystatechange = this.binds.onReadyStateChange
+      this.xhr.open_R_?(this.options.method.toUpperCase_R_?(),this.options.url + RG3_R_0.util.toQueryString_R_?(this.options.data),true)
+      this.xhr.send_R_?()
+}}

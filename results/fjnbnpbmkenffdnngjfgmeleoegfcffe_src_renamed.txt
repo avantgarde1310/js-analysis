@@ -1,0 +1,1095 @@
+chrome.extension.sendRequest({  name_R_?:'getStylesToApply'},function (response_R_1) {
+  response_R_1.forEach_R_?(applyStyle_R_?)
+})
+  chrome.extension.onRequest.addListener(function (request_R_2,sender_R_2,sendResponse_R_2) {
+  switch (request_R_2.name) {
+      case 'styleDeleted': 
+      removeStyle(request.id);
+      sendResponse({});
+      break;
+      case 'styleUpdated': 
+      removeStyle(request.style.id);
+      case 'styleAdded': 
+      if (request.style.enabled == 'true'){
+                  chrome.extension.sendRequest({            name:'getStyleApplies',            style:request.style,            url:location.href},function (response) {
+            if (response){
+                              applyStyle(response);
+})
+});
+});
+      sendResponse({});}
+})
+  function removeStyle_R_3(id_R_3) {
+  var e_R_3 = document.getElementById_R_?('stylish-' + id_R_3)
+    if (e_R_3){
+          e_R_3.parentNode.removeChild_R_?(e_R_3);
+})
+}
+  function applyStyle_R_4(s_R_4) {
+  var style_R_4 = document.createElement_R_?('style')
+    style_R_4.setAttribute_R_?('id','stylish-' + s_R_4.id)
+    style_R_4.setAttribute('class','stylish')
+    style_R_4.setAttribute('type','text/css')
+    style_R_4.appendChild_R_?(document.createTextNode_R_?(s_R_4.sections.filter_R_?(filterSection_R_?).map_R_?(function (section_R_5) {
+    return section_R_5.code
+}).join_R_?('\n')))
+    if (document.head){
+          document.head.appendChild(style_R_4);
+} else {
+          document.documentElement.appendChild(style_R_4);
+})
+}
+  function filterSection_R_6(section_R_6) {
+  if (!section_R_6.urls && !section_R_6.urlPrefixes && !section_R_6.domains && !section_R_6.regexps){
+          return true;
+})
+    if (section_R_6.urls){
+          var found_R_6 = false;
+      section_R_6.urls.forEach_R_?(function (url_R_7) {
+        if (url_R_7 == location_R_?.href){
+                      found_R_6 = true;
+            return;
+})
+});
+      if (found_R_6){
+                  return true;
+});
+})
+    if (section_R_6.urlPrefixes){
+          var found_R_6 = false;
+      section_R_6.urlPrefixes.forEach(function (urlPrefix_R_8) {
+        if (location_R_?.href.indexOf_R_?(urlPrefix_R_8) == 0){
+                      found_R_6 = true;
+            return;
+})
+});
+      if (found_R_6){
+                  return true;
+});
+})
+    if (section_R_6.domains){
+          var found_R_6 = false;
+      var currentDomains_R_6 = getDomains_R_11(location_R_?.href);
+      section_R_6.domains.forEach(function (domain_R_9) {
+        if (currentDomains_R_6.indexOf_R_?(domain_R_9) >= 0){
+                      found_R_6 = true;
+            return;
+})
+});
+      if (found_R_6){
+                  return true;
+});
+})
+    if (section_R_6.regexps){
+          var found_R_6 = false;
+      section_R_6.regexps.forEach(function (regexp_R_10) {
+        if ((NEW RegExp_R_? regexp_R_10).test_R_?(location_R_?.href)){
+                      found_R_6 = true;
+            return;
+})
+});
+      if (found_R_6){
+                  return true;
+});
+})
+    return false
+}
+  function getDomains_R_11(url_R_11) {
+  var d_R_11 = (REGEXP '.*?:\\/*([^\\/]+)' '').exec_R_?(url_R_11)[1]
+    var domains_R_11 = [d_R_11]
+    while(d_R_11.indexOf('.') != -1){
+            d_R_11 = d_R_11.substring_R_?(d_R_11.indexOf_R_?('.') + 1);
+      domains_R_11.push_R_?(d_R_11);}
+    return domains_R_11
+}
+  chrome.extension.onRequest.addListener(function (request_R_12,sender_R_12,sendResponse_R_12) {
+  switch (request_R_12.name) {
+      case 'getStylesToApply': 
+      getStyles({        matchUrl:sender.tab.url,        enabled:true},function (r) {
+        chrome.browserAction.setBadgeText({          text:getBadgeText(r),          tabId:sender.tab.id})
+          sendResponse(r)
+});
+      break;
+      case 'getStylesForUrl': 
+      getStyles({        url:request.url},sendResponse);
+      break;
+      case 'getStyleApplies': 
+      sendResponse(styleAppliesToUrl(request.style,request.url));
+      break;
+      case 'saveFromJSON': 
+      saveFromJSON(request.json);
+      sendResponse({});
+      break;
+      case 'styleChanged': 
+      cachedGlobalStyleIds = null;
+      cachedStyles = [];
+      sendResponse({});
+      break;
+      case 'getCachedStyles': 
+      sendResponse(cachedStyles);
+      break;
+      case 'cacheStyles': 
+      request.styles.forEach(function (style) {
+        cachedStyles[style.id] = style
+});
+      break;}
+})
+  function styleAppliesToUrl_R_13(style_R_13,url_R_13) {
+  style_R_13.sections = style_R_13.sections.filter_R_?(function (section_R_14) {
+    return sectionAppliesToUrl_R_15(section_R_14,url_R_13)
+})
+    if (style_R_13.sections.size == 0){
+          return null;
+})
+    return style_R_13
+}
+  function sectionAppliesToUrl_R_15(section_R_15,url_R_15) {
+  if (!section_R_15.urls && !section_R_15.domains && !section_R_15.urlPrefixes && !section_R_15.regexps){
+          console.log_R_?(section_R_15 + ' is global');
+      return true;
+})
+    if (section_R_15.urls && section_R_15.urls.indexOf_R_?(url_R_15) != -1){
+          console.log(section_R_15 + ' applies to ' + url_R_15 + ' due to URL rules');
+      return true;
+})
+    if (section_R_15.urlPrefixes && section_R_15.urlPrefixes.some_R_?(function (prefix_R_16) {
+    return url_R_15.indexOf_R_?(prefix_R_16) == 0
+})){
+          console.log(section_R_15 + ' applies to ' + url_R_15 + ' due to URL prefix rules');
+      return true;
+})
+    if (section_R_15.domains && getDomains_R_11(url_R_15).some(function (domain_R_17) {
+    return section_R_15.domains.indexOf_R_?(domain_R_17) != -1
+})){
+          console.log(section_R_15 + ' applies due to ' + url_R_15 + ' due to domain rules');
+      return true;
+})
+    if (section_R_15.regexps && section_R_15.regexps.some(function (regexp_R_18) {
+    return (NEW RegExp_R_? regexp_R_18).test_R_?(url_R_15)
+})){
+          console.log(section_R_15 + ' applies to ' + url_R_15 + ' due to regexp rules');
+      return true;
+})
+    console.log(section_R_15 + ' does not apply due to ' + url_R_15)
+    return false
+}
+  var cachedGlobalStyleIds_R_0 = null
+  var cachedStyles_R_0 = []
+  var background_R_0 = true
+  var styleId_R_0 = null
+  var dirty_R_0 = false
+  var appliesToTemplate_R_0 = document.createElement_R_?('li')
+  appliesToTemplate_R_0.innerHTML = '<select name="applies-type" onchange="makeDirty()"><option value="url">' + t_R_66('appliesUrlOption') + '</option><option value="url-prefix">' + t_R_?('appliesUrlPrefixOption') + '</option><option value="domain">' + t_R_?('appliesDomainOption') + '</option><option value="regexp">' + t_R_?('appliesRegexpOption') + '</option></select><input name="applies-value" onchange="makeDirty()"><button onclick="removeAppliesTo(event)" class="remove-applies-to">' + t_R_?('appliesRemove') + '</button><button class="add-applies-to" onclick="addAppliesTo(this.parentNode.parentNode)">' + t_R_?('appliesAdd') + '</button>'
+  var appliesToEverythingTemplate_R_0 = document.createElement('li')
+  appliesToEverythingTemplate_R_0.className = 'applies-to-everything'
+  appliesToEverythingTemplate_R_0.innerHTML = t_R_?('appliesToEverything') + ' <button class="add-applies-to" onclick="addAppliesTo(this.parentNode.parentNode)">' + t_R_?('appliesSpecify') + '</button>'
+  var sectionTemplate_R_0 = document.createElement('div')
+  sectionTemplate_R_0.innerHTML = '<label>' + t_R_?('sectionCode') + '</label><textarea class="code" onchange="makeDirty()"></textarea><br><div class="applies-to"><label>' + t_R_?('appliesLabel') + ' <img src="help.png" onclick="showAppliesToHelp()" alt="' + t_R_?('helpAlt') + '"></label><ul class="applies-to-list"></ul></div><button class="remove-section" onclick="removeSection(event)">' + t_R_?('sectionRemove') + '</button><button class="add-section" onclick="addSection()">' + t_R_?('sectionAdd') + '</button>'
+  function makeDirty_R_19() {
+  dirty_R_0 = true
+}
+  window.onbeforeunload = function () {
+  return dirty_R_0 ? t_R_66('styleChangesNotSaved') :null
+}
+  function addAppliesTo_R_21(list_R_21,name_R_21,value_R_21) {
+  var showingEverything_R_21 = list_R_21.querySelector_R_?('.applies-to-everything') != null
+    if (showingEverything_R_21){
+          list_R_21.removeChild_R_?(list_R_21.firstChild);
+})
+    e_R_21
+    if (name_R_21 && value_R_21){
+          e_R_21 = appliesToTemplate_R_0.cloneNode(true);
+      e_R_21.querySelector('[name=applies-type]').value = name_R_21;
+      e_R_21.querySelector('[name=applies-value]').value = value_R_21;
+} else {
+    if (showingEverything_R_21 || list_R_21.hasChildNodes()){
+              e_R_21 = appliesToTemplate_R_0.cloneNode(true);
+        if (list_R_21.hasChildNodes_R_?()){
+                      e_R_21.querySelector('[name=applies-type]').value = list_R_21.querySelector("li:last-child [name='applies-type']").value;
+});
+} else {
+              e_R_21 = appliesToEverythingTemplate_R_0.cloneNode_R_?(true);
+})
+})
+    list_R_21.appendChild_R_?(e_R_21)
+}
+  function addSection_R_22(section_R_22) {
+  var div_R_22 = sectionTemplate_R_0.cloneNode_R_?(true)
+    var appliesTo_R_22 = div_R_22.querySelector_R_?('.applies-to-list')
+    if (section_R_22){
+          div_R_22.querySelector('.code').value = section_R_22.code;
+      if (section_R_22.urls){
+                  section_R_22.urls.forEach_R_?(function (url_R_23) {
+            addAppliesTo_R_21(appliesTo_R_22,'url',url_R_23)
+});
+});
+      if (section_R_22.urlPrefixes){
+                  section_R_22.urlPrefixes.forEach(function (url_R_24) {
+            addAppliesTo_R_21(appliesTo_R_22,'url-prefix',url_R_24)
+});
+});
+      if (section_R_22.domains){
+                  section_R_22.domains.forEach(function (d_R_25) {
+            addAppliesTo_R_21(appliesTo_R_22,'domain',d_R_25)
+});
+});
+      if (section_R_22.regexps){
+                  section_R_22.regexps.forEach(function (d_R_26) {
+            addAppliesTo_R_21(appliesTo_R_22,'regexp',d_R_26)
+});
+});
+      if (!section_R_22.urls && !section_R_22.urlPrefixes && !section_R_22.domains && !section_R_22.regexps){
+                  addAppliesTo_R_?(appliesTo_R_22);
+});
+} else {
+          addAppliesTo_R_21(appliesTo_R_22);
+})
+    var sections_R_22 = document.getElementById_R_?('sections')
+    sections_R_22.appendChild_R_?(div_R_22)
+}
+  function removeAppliesTo_R_27(event_R_27) {
+  var appliesToList_R_27 = event_R_27.target.parentNode.parentNode
+    appliesToList_R_27.removeChild_R_?(event_R_27.target.parentNode)
+    if (!appliesToList_R_27.hasChildNodes_R_?()){
+          appliesToList_R_27.appendChild_R_?(appliesToEverythingTemplate_R_0);
+})
+    makeDirty_R_19()
+}
+  function removeSection_R_28(event_R_28) {
+  event_R_28.target.parentNode.parentNode.removeChild_R_?(event_R_28.target.parentNode)
+    makeDirty_R_19()
+}
+  window.addEventListener_R_?('load',init_R_?,false)
+  function init_R_29() {
+  tE_R_68('sections-help','helpAlt','alt')
+    var idMatch_R_29 = (REGEXP '[&\\?]id=([0-9]+)' '').exec_R_?(location_R_?.href)
+    if (idMatch_R_29 == null || idMatch_R_29.length != 2){
+          addSection_R_22();
+      document.title = t_R_66('addStyleTitle');
+      tE_R_?('heading','addStyleTitle');
+      return;
+})
+    var id_R_29 = idMatch_R_29[1]
+    getStyles_R_116({    id_R_29:id_R_29},function (styles_R_30) {
+    var style_R_30 = styles_R_30[0]
+      styleId_R_0 = style_R_30.id
+      initWithStyle_R_31(style_R_30)
+})
+}
+  function initWithStyle_R_31(style_R_31) {
+  document.getElementById_R_?('name').value = style_R_31.name
+    document.getElementById('enabled').checked = style_R_31.enabled == 'true'
+    document.getElementById('heading').innerHTML = t_R_66('editStyleHeading')
+    initTitle_R_33(style_R_31)
+    Array_R_?.prototype.forEach.call_R_?(document.querySelectorAll_R_?('#sections > div'),function (div_R_32) {
+    div_R_32.parentNode.removeChild_R_?(div_R_32)
+})
+    style_R_31.sections.forEach_R_?(addSection_R_?)
+}
+  function initTitle_R_33(style_R_33) {
+  document.title = t_R_66('editStyleTitle',[style_R_33.name])
+}
+  function validate_R_34() {
+  var name_R_34 = document.getElementById_R_?('name').value
+    if (name_R_34 == ''){
+          return t_R_66('styleMissingName');
+})
+    return null
+}
+  function save_R_35() {
+  var error_R_35 = validate_R_34()
+    if (error_R_35){
+          alert_R_?(error_R_35);
+      return;
+})
+    var name_R_35 = document.getElementById_R_?('name').value
+    var enabled_R_35 = document.getElementById('enabled').checked
+    getDatabase_R_106(function (db_R_36) {
+    db_R_36.transaction_R_?(function (t_R_37) {
+      var sections_R_37 = getSections_R_42()
+        if (styleId_R_0 == null){
+                  t_R_37.executeSql('INSERT INTO styles (name, enabled) VALUES (?, ?);',[name_R_35,enabled_R_35]);
+          sections_R_37.forEach(function (s_R_40) {
+            t_R_37.executeSql_R_?('INSERT INTO sections (style_id, code) SELECT id, ? FROM styles ORDER BY id DESC LIMIT 1;',[s_R_40.code])
+              s_R_40.meta.forEach_R_?(function (m_R_41) {
+              t_R_37.executeSql_R_?('INSERT INTO section_meta (section_id, name, value) SELECT id, ?, ? FROM sections ORDER BY id DESC LIMIT 1;',[m_R_41[0],m_R_41[1]])
+})
+});
+} else {
+                  t_R_37.executeSql_R_?('UPDATE styles SET name = ?, enabled = ? WHERE id = ?;',[name_R_35,enabled_R_35,styleId_R_0]);
+          t_R_37.executeSql('DELETE FROM section_meta WHERE section_id IN (SELECT id FROM sections WHERE style_id = ?);',[styleId_R_0]);
+          t_R_37.executeSql('DELETE FROM sections WHERE style_id = ?;',[styleId_R_0]);
+          sections_R_37.forEach_R_?(function (s_R_38) {
+            t_R_37.executeSql_R_?('INSERT INTO sections (style_id, code) VALUES (?, ?);',[styleId_R_0,s_R_38.code])
+              s_R_38.meta.forEach_R_?(function (m_R_39) {
+              t_R_37.executeSql_R_?('INSERT INTO section_meta (section_id, name, value) SELECT id, ?, ? FROM sections ORDER BY id DESC LIMIT 1;',[m_R_39[0],m_R_39[1]])
+})
+});
+})
+        dirty_R_0 = false
+},reportError_R_?,saveComplete_R_?)
+},reportError_R_?)
+}
+  function getSections_R_42() {
+  var sections_R_42 = []
+    Array_R_?.prototype.forEach.call_R_?(document.querySelectorAll_R_?('#sections > div'),function (div_R_43) {
+    var code_R_43 = div_R_43.querySelector_R_?('.code').value
+      if ((REGEXP '^\\s*$' '').test_R_?(code_R_43)){
+              return;
+})
+      sections_R_42.push_R_?({      code_R_43:code_R_43,      meta_R_?:getMeta_R_44(div_R_43)})
+})
+    return sections_R_42
+}
+  function getMeta_R_44(e_R_44) {
+  var meta_R_44 = []
+    Array_R_?.prototype.forEach.call_R_?(e_R_44.querySelector_R_?('.applies-to-list').childNodes,function (li_R_45) {
+    if (li_R_45.className == appliesToEverythingTemplate_R_0.className){
+              return;
+})
+      var a_R_45 = li_R_45.querySelector_R_?('[name=applies-type]').value
+      var b_R_45 = li_R_45.querySelector('[name=applies-value]').value
+      if (a_R_45 && b_R_45){
+              meta_R_44.push_R_?([a_R_45,b_R_45]);
+})
+})
+    return meta_R_44
+}
+  function saveComplete_R_46() {
+  if (styleId_R_0 == null){
+          getDatabase_R_106(function (db_R_47) {
+        db_R_47.readTransaction_R_?(function (t_R_48) {
+          t_R_48.executeSql_R_?('SELECT id FROM styles ORDER BY id DESC LIMIT 1',[],function (t_R_49,r_R_49) {
+            styleId_R_0 = r_R_49.rows.item_R_?(0).id
+              notifySave_R_50(true)
+},reportError_R_?)
+},reportError_R_?)
+});
+      return;
+})
+    notifySave_R_50(false)
+}
+  function notifySave_R_50(newStyle_R_50) {
+  chrome.extension.sendRequest({    name_R_?:'styleChanged'})
+    getStyles_R_116({    id_R_?:styleId_R_0},function (styles_R_51) {
+    if (newStyle_R_50){
+              notifyAllTabs_R_?({          name_R_?:'styleAdded',          style_R_?:styles_R_51[0]});
+        setTimeout_R_?(function () {
+          location_R_?.href = 'edit.html?id=' + styleId_R_0
+},200);
+} else {
+              initTitle_R_33(styles_R_51[0]);
+        notifyAllTabs_R_98({          name_R_?:'styleUpdated',          style_R_?:styles_R_51[0]});
+})
+})
+}
+  function showSectionHelp_R_53() {
+  showHelp_R_55(t_R_66('sectionHelp'))
+}
+  function showAppliesToHelp_R_54() {
+  showHelp_R_55(t_R_66('appliesHelp'))
+}
+  function showHelp_R_55(text_R_55) {
+  alert_R_?(text_R_55)
+}
+  chrome.extension.onRequest.addListener(function (request_R_56,sender_R_56,sendResponse_R_56) {
+  var installed_R_56 = document.getElementById_R_?('installed')
+    switch (request_R_56.name) {
+      case 'styleUpdated': 
+      initWithStyle(request.style);
+      break;
+      case 'styleDeleted': 
+      if (styleId == request.id){
+                  window.close();
+          break;
+});}
+})
+  chrome.extension.sendRequest({  name_R_?:'getStylesForUrl',  url_R_?:getMeta_R_44('stylish-id-url') || location_R_?.href},function (response_R_57) {
+  if (response_R_57.length == 0){
+          sendEvent_R_?('styleCanBeInstalledChrome');
+} else {
+          sendEvent_R_58('styleAlreadyInstalledChrome');
+})
+})
+  function sendEvent_R_58(type_R_58) {
+  var stylishEvent_R_58 = document.createEvent_R_?('Events')
+    stylishEvent_R_58.initEvent_R_?(type_R_58,false,false,document.defaultView,null)
+    document.dispatchEvent_R_?(stylishEvent_R_58)
+}
+  document.addEventListener('stylishInstallChrome',function () {
+  getResource_R_64(getMeta_R_44('stylish-description'),function (name_R_60) {
+    if (confirm_R_?(chrome.i18n.getMessage('styleInstall',[name_R_60]))){
+              getResource_R_64(getMeta_R_44('stylish-code-chrome'),function (code_R_61) {
+          var json_R_61 = JSON_R_?.parse_R_?(code_R_61)
+            chrome.extension.sendRequest({            name_R_60:'saveFromJSON',            json_R_61:json_R_61},function (response_R_62) {
+            sendEvent_R_58('styleInstalledChrome')
+})
+});
+        getResource_R_?(getMeta_R_?('stylish-install-ping-url-chrome'));
+})
+})
+},false)
+  function getMeta_R_63(name_R_63) {
+  var e_R_63 = document.querySelector_R_?("link[rel='" + name_R_63 + "']")
+    return e_R_63 ? e_R_63.getAttribute_R_?('href') :null
+}
+  function getResource_R_64(url_R_64,callback_R_64) {
+  if (url_R_64.indexOf_R_?('#') == 0){
+          if (callback_R_64){
+                  callback_R_?(document.getElementById_R_?(url_R_64.substring_R_?(1)).innerText);
+});
+      return;
+})
+    var xhr_R_64 = new XMLHttpRequest_R_?
+    xhr_R_64.open_R_?('GET',url_R_64,true)
+    xhr_R_64.onreadystatechange = function () {
+    if (xhr_R_64.readyState == 4 && callback_R_64){
+              callback_R_?(xhr_R_64.responseText);
+})
+}
+    xhr_R_64.send_R_?()
+}
+  function t_R_66(key_R_66,params_R_66) {
+  var s_R_66 = chrome.i18n.getMessage(key_R_66,params_R_66)
+    if (s_R_66 == ''){
+          (THROW "Missing string '" + key_R_66 + "'.");
+})
+    return s_R_66
+}
+  function o_R_67(key_R_67) {
+  document.write_R_?(t_R_66(key_R_67))
+}
+  function tE_R_68(id_R_68,key_R_68,attr_R_68,esc_R_68) {
+  if (attr_R_68){
+          document.getElementById(id_R_68).setAttribute_R_?(attr_R_68,t_R_?(key_R_68));
+} else {
+    if (typeof esc_R_68 == 'undefined' || esc_R_68){
+              document.getElementById(id_R_68).appendChild_R_?(document.createTextNode_R_?(t_R_?(key_R_68)));
+} else {
+              document.getElementById_R_?(id_R_68).innerHTML = t_R_66(key_R_68);
+})
+})
+}
+  var styleTemplate_R_0 = document.createElement('div')
+  styleTemplate_R_0.innerHTML = "<h2 class='style-name'></h2><p class='applies-to'></p><p class='actions'><a class='style-edit-link' href='edit.html?id='><button>" + t_R_?('editStyleLabel') + "</button></a><button class='enable' onclick='enable(event, true)'>" + t_R_?('enableStyleLabel') + "</button><button class='disable' onclick='enable(event, false)'>" + t_R_?('disableStyleLabel') + "</button><button class='delete' onclick='doDelete(event)'>" + t_R_?('deleteStyleLabel') + "</button><button class='check-update' onclick='doCheckUpdate(event)'>" + t_R_?('checkForUpdate') + "</button><button class='update' onclick='doUpdate(event)'>" + t_R_?('installUpdate') + "</button><span class='update-note'></span></p>"
+  var appliesToExtraTemplate_R_0 = document.createElement('span')
+  appliesToExtraTemplate_R_0.className = 'applies-to-extra'
+  appliesToExtraTemplate_R_0.innerHTML = t_R_?('appliesDisplayTruncatedSuffix')
+  getStyles_R_116({},showStyles_R_?)
+  function showStyles_R_69(styles_R_69) {
+  var installed_R_69 = document.getElementById_R_?('installed')
+    styles_R_69.map_R_?(createStyleElement_R_?).forEach_R_?(function (e_R_70) {
+    installed_R_69.appendChild_R_?(e_R_70)
+})
+}
+  function createStyleElement_R_71(style_R_71) {
+  var e_R_71 = styleTemplate_R_0.cloneNode_R_?(true)
+    e_R_71.setAttribute_R_?('class',style_R_71.enabled == 'true' ? 'enabled' :'disabled')
+    e_R_71.setAttribute('style-id',style_R_71.id)
+    if (style_R_71.updateUrl){
+          e_R_71.setAttribute('style-update-url',style_R_71.updateUrl);
+})
+    var styleName_R_71 = e_R_71.querySelector_R_?('.style-name')
+    styleName_R_71.appendChild_R_?(document.createTextNode_R_?(style_R_71.name))
+    if (style_R_71.url){
+          var homepage_R_71 = document.createElement_R_?('a');
+      homepage_R_71.setAttribute('href',style_R_71.url);
+      homepage_R_71.setAttribute('target','_blank');
+      var homepageImg_R_71 = document.createElement('img');
+      homepageImg_R_71.src = 'world_go.png';
+      homepageImg_R_71.alt = '*';
+      homepage_R_71.appendChild(homepageImg_R_71);
+      styleName_R_71.appendChild(document.createTextNode(' '));
+      styleName_R_71.appendChild(homepage_R_71);
+})
+    var domains_R_71 = []
+    var urls_R_71 = []
+    var urlPrefixes_R_71 = []
+    var regexps_R_71 = []
+    function add_R_72(array_R_72,property_R_72) {
+    style_R_71.sections.forEach_R_?(function (section_R_73) {
+      if (section_R_73[property_R_72]){
+                  section_R_73[property_R_72].filter_R_?(function (value_R_74) {
+            return array_R_72.indexOf_R_?(value_R_74) == -1
+}).forEach_R_?(function (value_R_75) {
+            array_R_72.push_R_?(value_R_75)
+});
+          (BLOCK);
+})
+})
+}
+    add_R_72(domains_R_71,'domains')
+    add_R_?(urls_R_71,'urls')
+    add_R_?(urlPrefixes_R_71,'urlPrefixes')
+    add_R_?(regexps_R_71,'regexps')
+    var appliesToToShow_R_71 = []
+    if (domains_R_71){
+    appliesToToShow_R_71 = appliesToToShow_R_71.concat_R_?(domains_R_71)
+})
+    if (urls_R_71){
+    appliesToToShow_R_71 = appliesToToShow_R_71.concat(urls_R_71)
+})
+    if (urlPrefixes_R_71){
+    appliesToToShow_R_71 = appliesToToShow_R_71.concat(urlPrefixes_R_71.map_R_?(function (u_R_76) {
+      return u_R_76 + '*'
+}))
+})
+    if (regexps_R_71){
+    appliesToToShow_R_71 = appliesToToShow_R_71.concat(regexps_R_71.map(function (u_R_77) {
+      return '/' + u_R_77 + '/'
+}))
+})
+    var appliesToString_R_71 = ''
+    var showAppliesToExtra_R_71 = false
+    if (appliesToToShow_R_71.length == ''){
+    appliesToString_R_71 = t_R_66('appliesToEverything')
+} else {
+    if (appliesToToShow_R_71.length <= 10){
+      appliesToString_R_71 = appliesToToShow_R_71.join(', ')
+} else {
+              appliesToString_R_71 = appliesToToShow_R_71.slice_R_?(0,10).join_R_?(', ');
+        showAppliesToExtra_R_71 = true;
+})
+})
+    e_R_71.querySelector('.applies-to').appendChild(document.createTextNode(t_R_?('appliesDisplay',[appliesToString_R_71])))
+    if (showAppliesToExtra_R_71){
+          e_R_71.querySelector('.applies-to').appendChild(appliesToExtraTemplate_R_0.cloneNode(true));
+})
+    var editLink_R_71 = e_R_71.querySelector('.style-edit-link')
+    editLink_R_71.setAttribute('href',editLink_R_71.getAttribute_R_?('href') + style_R_71.id)
+    return e_R_71
+}
+  function enable_R_78(event_R_78,enabled_R_78) {
+  var id_R_78 = getId_R_80(event_R_78)
+    enableStyle_R_156(id_R_78,enabled_R_78)
+}
+  function doDelete_R_79() {
+  if (!confirm_R_?(t_R_66('deleteStyleConfirm'))){
+          return;
+})
+    var id_R_79 = getId_R_80(event_R_?)
+    deleteStyle_R_161(id_R_79)
+}
+  function getId_R_80(event_R_80) {
+  return getStyleElement_R_81(event_R_80).getAttribute_R_?('style-id')
+}
+  function getStyleElement_R_81(event_R_81) {
+  var e_R_81 = event_R_81.target
+    while(e_R_81){
+            if (e_R_81.hasAttribute_R_?('style-id')){
+                  return e_R_81;
+});
+      e_R_81 = e_R_81.parentNode;}
+    return null
+}
+  chrome.extension.onRequest.addListener(function (request_R_82,sender_R_82,sendResponse_R_82) {
+  switch (request_R_82.name) {
+      case 'styleUpdated': 
+      handleUpdate(request.style);
+      sendResponse({});
+      break;
+      case 'styleAdded': 
+      installed.appendChild(createStyleElement(request.style));
+      sendResponse({});
+      break;
+      case 'styleDeleted': 
+      handleDelete(request.id);
+      sendResponse({});
+      break;}
+})
+  function handleUpdate_R_83(style_R_83) {
+  var installed_R_83 = document.getElementById_R_?('installed')
+    installed_R_83.replaceChild_R_?(createStyleElement_R_71(style_R_83),installed_R_83.querySelector_R_?("[style-id='" + style_R_83.id + "']"))
+}
+  function handleDelete_R_84(id_R_84) {
+  var installed_R_84 = document.getElementById_R_?('installed')
+    installed_R_84.removeChild_R_?(installed_R_84.querySelector_R_?("[style-id='" + id_R_84 + "']"))
+}
+  function doCheckUpdate_R_85(event_R_85) {
+  checkUpdate_R_87(getStyleElement_R_81(event_R_85))
+}
+  function checkUpdateAll_R_86() {
+  Array_R_?.prototype.forEach.call_R_?(document.querySelectorAll_R_?('[style-update-url]'),checkUpdate_R_?)
+}
+  function checkUpdate_R_87(element_R_87) {
+  element_R_87.querySelector_R_?('.update-note').innerHTML = t_R_66('checkingForUpdate')
+    element_R_87.className = element_R_87.className.replace('checking-update','').replace('no-update','').replace_R_?('can-update','') + ' checking-update'
+    var id_R_87 = element_R_87.getAttribute_R_?('style-id')
+    var url_R_87 = element_R_87.getAttribute('style-update-url')
+    var xhr_R_87 = new XMLHttpRequest_R_?
+    xhr_R_87.open_R_?('GET',url_R_87,true)
+    xhr_R_87.onreadystatechange = function (aEvt_R_88) {
+    if (xhr_R_87.readyState == 4){
+              if (xhr_R_87.status == 200){
+                      checkNeedsUpdate_R_89(id_R_87,JSON_R_?.parse_R_?(xhr_R_87.responseText));
+} else {
+          if (xhr_R_87.status == 0){
+                          handleNeedsUpdate_R_?(t_R_?('updateCheckFailServerUnreachable'),id_R_87,null);
+} else {
+                          handleNeedsUpdate_R_91(t_R_66('updateCheckFailBadResponseCode',[xhr_R_87.status]),id_R_87,null);
+})
+});
+})
+}
+    xhr_R_87.send_R_?(null)
+}
+  function checkNeedsUpdate_R_89(id_R_89,serverJson_R_89) {
+  getStyles_R_116({    id_R_89:id_R_89},function (styles_R_90) {
+    var style_R_90 = styles_R_90[0]
+      if (codeIsEqual_R_94(style_R_90.sections,serverJson_R_89.sections)){
+              handleNeedsUpdate_R_?('no',id_R_89,serverJson_R_89);
+} else {
+              handleNeedsUpdate_R_91('yes',id_R_89,serverJson_R_89);
+})
+})
+}
+  function handleNeedsUpdate_R_91(needsUpdate_R_91,id_R_91,serverJson_R_91) {
+  var e_R_91 = document.querySelector_R_?("[style-id='" + id_R_91 + "']")
+    e_R_91.className = e_R_91.className.replace_R_?('checking-update','')
+    switch (needsUpdate_R_91) {
+      case 'yes': 
+      e.className = ' can-update';
+      e.updatedCode = serverJson;
+      e.querySelector('.update-note').innerHTML = '';
+      break;
+      case 'no': 
+      e.className = ' no-update';
+      e.querySelector('.update-note').innerHTML = t('updateCheckSucceededNoUpdate');
+      break;
+      (DEFAULT       e.className = ' no-update';
+      e.querySelector('.update-note').innerHTML = needsUpdate;)}
+}
+  function doUpdate_R_92(event_R_92) {
+  var element_R_92 = getStyleElement_R_81(event_R_92)
+    var o_R_92 = {}
+    o_R_92.id = element_R_92.getAttribute_R_?('style-id')
+    o_R_92.sections = element_R_92.updatedCode.sections
+    saveFromJSON_R_139(o_R_92,function () {
+    element_R_92.updatedCode = ''
+      element_R_92.className = element_R_92.className.replace_R_?('can-update','update-done')
+      element_R_92.querySelector_R_?('.update-note').innerHTML = t_R_66('updateCompleted')
+})
+}
+  function codeIsEqual_R_94(a_R_94,b_R_94) {
+  if (a_R_94.length != b_R_94.length){
+          return false;
+})
+    var properties_R_94 = ['code','urlPrefixes','urls','domains','regexps']
+    for(var i_R_94 = 0;i_R_94 < a_R_94.length;i_R_94++){
+          var found_R_94 = false;
+      for(var j_R_94 = 0;j_R_94 < b_R_94.length;j_R_94++){
+                  var allEquals_R_94 = properties_R_94.every_R_?(function (property_R_95) {
+            return jsonEquals_R_96(a_R_94[i_R_94],b_R_94[j_R_94],property_R_95)
+});
+          if (allEquals_R_94){
+                          found_R_94 = true;
+              break;
+});
+};
+      if (!found_R_94){
+                  return false;
+});
+}
+    return true
+}
+  function jsonEquals_R_96(a_R_96,b_R_96,property_R_96) {
+  var type_R_96 = getType_R_97(a_R_96[property_R_96])
+    var typeB_R_96 = getType_R_?(b_R_96[property_R_96])
+    if (type_R_96 != typeB_R_96){
+          if (type_R_96 == 'undefined' || type_R_96 == 'array' && a_R_96[property_R_96].length == 0 && typeB_R_96 == 'undefined' || typeB_R_96 == 'array' && b_R_96[property_R_96].length == 0){
+                  return true;
+});
+      return false;
+})
+    if (type_R_96 == 'undefined'){
+          return true;
+})
+    if (type_R_96 == 'array'){
+          if (a_R_96[property_R_96].length != b_R_96[property_R_96].length){
+                  return false;
+});
+      for(var i_R_96 = 0;i_R_96 < a_R_96.length;i_R_96++){
+                  var found_R_96 = false;
+          for(var j_R_96 = 0;j_R_96 < b_R_96.length;j_R_96++){
+                          if (a_R_96[i_R_96] == b_R_96[j_R_96]){
+                                  found_R_96 = true;
+                  break;
+});
+};
+          if (!found_R_96){
+                          return false;
+});
+};
+      return true;
+})
+    if (type_R_96 == 'string'){
+          return a_R_96[property_R_96] == b_R_96[property_R_96];
+})
+}
+  function getType_R_97(o_R_97) {
+  if (typeof o_R_97 == 'undefined' || typeof o_R_97 == 'string'){
+          return typeof o_R_97;
+})
+    if (o_R_97 instanceof Array_R_?){
+          return 'array';
+})
+    (THROW 'Not supported - ' + o_R_97)
+}
+  document.title = t_R_?('manageTitle')
+  function notifyAllTabs_R_98(request_R_98) {
+  chrome.windows.getAll({    populate_R_?:true},function (windows_R_99) {
+    windows.forEach_R_?(function (win_R_100) {
+      win_R_100.tabs.forEach_R_?(function (tab_R_101) {
+        chrome.tabs.sendRequest(tab_R_101.id,request_R_98)
+          updateBadgeText_R_102(tab_R_101)
+})
+})
+})
+}
+  function updateBadgeText_R_102(tab_R_102) {
+  getStyles_R_116({    matchUrl_R_?:tab_R_102.url},function (styles_R_103) {
+    chrome.browserAction.setBadgeText({      text_R_?:getBadgeText_R_104(styles_R_103),      tabId_R_?:tab_R_102.id})
+})
+}
+  function getBadgeText_R_104(styles_R_104) {
+  var e_R_104 = styles_R_104.filter_R_?(function (style_R_105) {
+    return style_R_105.enabled == 'true'
+})
+    return e_R_104.length == 0 ? '' :'' + e_R_104.length
+}
+  var namespacePattern_R_0 = (REGEXP '^\\s*@namespace\\s+([a-zA-Z]+\\s+)?url\\(\\"?http:\\/\\/www.w3.org\\/1999\\/xhtml\\"?\\);?\\s*$' '')
+  var stylishDb_R_0 = null
+  function getDatabase_R_106(ready_R_106,error_R_106) {
+  if (stylishDb_R_0 != null){
+          ready_R_?(stylishDb_R_0);
+      return;
+})
+    stylishDb_R_0 = openDatabase_R_?('stylish','','Stylish Styles',5 * 1024 * 1024)
+    if (stylishDb_R_0.version == '1.0' || stylishDb_R_0.version == ''){
+          dbV11_R_107(stylishDb_R_0,error_R_106,ready_R_106);
+} else {
+    if (stylishDb_R_0.version == '1.1'){
+              dbV12_R_110(stylishDb_R_0,error_R_106,ready_R_106);
+} else {
+      if (stylishDb_R_0.version == '1.2'){
+                  dbV13_R_113(stylishDb_R_0,error_R_106,ready_R_106);
+} else {
+                  ready_R_106(stylishDb_R_0);
+})
+})
+})
+}
+  function dbV11_R_107(d_R_107,error_R_107,done_R_107) {
+  d_R_107.changeVersion_R_?(d_R_107.version,'1.1',function (t_R_108) {
+    t_R_108.executeSql_R_?('CREATE TABLE styles (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, url TEXT, updateUrl TEXT, md5Url TEXT, name TEXT NOT NULL, code TEXT NOT NULL, enabled INTEGER NOT NULL, originalCode TEXT NULL);')
+      t_R_108.executeSql('CREATE TABLE style_meta (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, style_id INTEGER NOT NULL, name TEXT NOT NULL, value TEXT NOT NULL);')
+      t_R_108.executeSql('CREATE INDEX style_meta_style_id ON style_meta (style_id);')
+},error_R_107,function () {
+    dbV12_R_110(d_R_107,error_R_107,done_R_107)
+})
+}
+  function dbV12_R_110(d_R_110,error_R_110,done_R_110) {
+  d_R_110.changeVersion_R_?(d_R_110.version,'1.2',function (t_R_111) {
+    t_R_111.executeSql_R_?('CREATE TABLE sections (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, style_id INTEGER NOT NULL, code TEXT NOT NULL);')
+      t_R_111.executeSql('INSERT INTO sections (style_id, code) SELECT id, code FROM styles;')
+      t_R_111.executeSql('DROP INDEX style_meta_style_id;')
+      t_R_111.executeSql('CREATE TABLE section_meta (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, section_id INTEGER NOT NULL, name TEXT NOT NULL, value TEXT NOT NULL);')
+      t_R_111.executeSql('INSERT INTO section_meta (section_id, name, value) SELECT s.id, sm.name, sm.value FROM sections s INNER JOIN style_meta sm ON sm.style_id = s.style_id;')
+      t_R_111.executeSql('CREATE INDEX section_meta_section_id ON section_meta (section_id);')
+      t_R_111.executeSql('DROP TABLE style_meta;')
+      t_R_111.executeSql('CREATE TABLE newstyles (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, url TEXT, updateUrl TEXT, md5Url TEXT, name TEXT NOT NULL, enabled INTEGER NOT NULL);')
+      t_R_111.executeSql('INSERT INTO newstyles (id, url, updateUrl, md5Url, name, enabled) SELECT id, url, updateUrl, md5Url, name, enabled FROM styles;')
+      t_R_111.executeSql('DROP TABLE styles;')
+      t_R_111.executeSql('ALTER TABLE newstyles RENAME TO styles;')
+},error_R_110,function () {
+    dbV13_R_113(d_R_110,error_R_110,done_R_110)
+})
+}
+  function dbV13_R_113(d_R_113,error_R_113,done_R_113) {
+  d_R_113.changeVersion_R_?(d_R_113.version,'1.3',function (t_R_114) {
+    t_R_114.executeSql_R_?('DELETE FROM section_meta WHERE section_id IN (SELECT sections.id FROM sections LEFT JOIN styles ON styles.id = sections.style_id WHERE styles.id IS NULL);')
+      t_R_114.executeSql('DELETE FROM sections WHERE id IN (SELECT sections.id FROM sections LEFT JOIN styles ON styles.id = sections.style_id WHERE styles.id IS NULL);')
+},error_R_113,function () {
+    done_R_?(d_R_113)
+})
+}
+  function getStyles_R_116(options_R_116,callback_R_116) {
+  getDatabase_R_106(function (db_R_117) {
+    db_R_117.readTransaction_R_?(function (t_R_118) {
+      if ('matchUrl' in options_R_116){
+                  var sql_R_118 = "SELECT DISTINCT s.style_id FROM sections s INNER JOIN section_meta sm ON sm.section_id = s.id WHERE (sm.name = 'url' and sm.value = ?) OR (sm.name = 'url-prefix' AND ? LIKE (sm.value || '%')) OR (sm.name = 'regexp' AND ? REGEXP sm.value)";
+          var matchParams_R_118 = [];
+          var domains_R_118 = getDomains_R_11(options_R_116.matchUrl);
+          matchParams_R_118 = matchParams_R_118.concat([options_R_116.matchUrl,options_R_116.matchUrl,options_R_116.matchUrl]).concat_R_?(domains_R_118);
+          var domainClause_R_118 = '';
+          if (domains_R_118.length == 1){
+                          sql_R_118 = " OR (sm.name = 'domain' AND sm.value = ?)";
+} else {
+            if (domains_R_118.length > 1){
+                              sql_R_118 = " OR (sm.name = 'domain' AND sm.value IN (";
+                sql_R_118 = domains_R_118.map_R_?(function (d_R_119) {
+                  return '?'
+}).join_R_?(',');
+                sql_R_118 = '))';
+})
+});
+          t_R_118.executeSql_R_?(sql_R_118,matchParams_R_118,function (t_R_120,r_R_120) {
+            var style_ids_R_120 = []
+              if (options_R_116.id){
+                              style_ids_R_120.push_R_?(options_R_116.id);
+})
+              for(var i_R_120 = 0;i_R_120 < r_R_120.rows.length;i_R_120++){
+                              var values_R_120 = r_R_120.rows.item_R_?(i_R_120);
+                style_ids_R_120.push(values_R_120.style_id);
+}
+              getGlobalStyleIds_R_135(function (ids_R_121) {
+              style_ids_R_120 = style_ids_R_120.concat_R_?(ids_R_121)
+                loadStyles_R_124(style_ids_R_120,options_R_116.enabled,options_R_116.url,callback_R_116)
+})
+});
+} else {
+                  loadStyles_R_124(options_R_116.id ? [options_R_116.id] :null,options_R_116.enabled,options_R_116.url,callback_R_116);
+})
+},reportError_R_?)
+},reportError_R_?)
+}
+  function getCache_R_122(callback_R_122) {
+  if (isBackground_R_154()){
+          callback_R_?(cachedStyles_R_0);
+      return;
+})
+    chrome.extension.sendRequest({    name_R_?:'getCachedStyles'},callback_R_122)
+}
+  function fixBoolean_R_123(b_R_123) {
+  if (typeof b_R_123 != 'undefined'){
+          return b_R_123 != 'false';
+})
+    return null
+}
+  function loadStyles_R_124(styleIds_R_124,enabled_R_124,url_R_124,callback_R_124) {
+  enabled_R_124 = fixBoolean_R_123(enabled_R_124)
+    if (typeof url_R_124 == 'undefined'){
+          url_R_124 = null;
+})
+    if (styleIds_R_124){
+          getCache_R_122(function (cache_R_125) {
+        var styles_R_125 = []
+          var styleIdsNeeded_R_125 = []
+          styleIds_R_124.forEach_R_?(function (id_R_126) {
+          if (cache_R_125[id_R_126]){
+                          if (checkStyle_R_127(cache_R_125[id_R_126],enabled_R_124,url_R_124)){
+                                  styles_R_125.push(cache_R_125[id_R_126]);
+});
+} else {
+                          styleIdsNeeded_R_125.push_R_?(id_R_126);
+})
+})
+          styleIds_R_124 = styleIdsNeeded_R_125
+          if (styleIds_R_124.length == 0){
+                      callback_R_?(styles_R_125);
+            return;
+})
+          loadStylesFromDB_R_128(styles_R_125,styleIds_R_124,enabled_R_124,url_R_124,callback_R_124)
+});
+      return;
+})
+    loadStylesFromDB_R_128([],styleIds_R_124,enabled_R_124,url_R_124,callback_R_124)
+}
+  function checkStyle_R_127(style_R_127,enabled_R_127,url_R_127) {
+  return enabled_R_127 == null || enabled_R_127 == fixBoolean_R_123(style_R_127.enabled) && url_R_127 == null || url_R_127 == style_R_127.url
+}
+  function loadStylesFromDB_R_128(styles_R_128,styleIds_R_128,enabled_R_128,url_R_128,callback_R_128) {
+  getDatabase_R_106(function (db_R_129) {
+    db_R_129.readTransaction_R_?(function (t_R_130) {
+      var where_R_130 = ''
+        var params_R_130 = []
+        if (styleIds_R_128){
+                  if (styleIds_R_128.size == 0){
+                          callback_R_?([]);
+              return;
+});
+          where_R_130 = ' AND s.id IN (';
+          var firstStyleId_R_130 = true;
+          styleIds_R_128.forEach_R_?(function (styleId_R_131) {
+            where_R_130 = firstStyleId_R_130 ? '?' :',?'
+              firstStyleId_R_130 = false
+              params_R_130.push_R_?(styleId_R_131)
+});
+          where_R_130 = ')';
+})
+        t_R_130.executeSql_R_?('SELECT DISTINCT s.*, se.id section_id, se.code, sm.name metaName, sm.value metaValue FROM styles s LEFT JOIN sections se ON se.style_id = s.id LEFT JOIN section_meta sm ON sm.section_id = se.id WHERE 1' + where_R_130 + ' ORDER BY s.id, se.id, sm.id',params_R_130,function (t_R_132,r_R_132) {
+        var currentStyle_R_132 = null
+          var currentSection_R_132 = null
+          for(var i_R_132 = 0;i_R_132 < r_R_132.rows.length;i_R_132++){
+                      var values_R_132 = r_R_132.rows.item_R_?(i_R_132);
+            var metaName_R_132 = null;
+            switch (values_R_132.metaName) {
+                case null: 
+                break;
+                case 'url': 
+                metaName = 'urls';
+                break;
+                case 'url-prefix': 
+                metaName = 'urlPrefixes';
+                break;
+                case 'domain': 
+                var metaName = 'domains';
+                break;
+                case 'regexps': 
+                var metaName = 'regexps';
+                break;
+                (DEFAULT                 var metaName = values.metaName + 's';)};
+            var metaValue_R_132 = values_R_132.metaValue;
+            if (currentStyle_R_132 == null || currentStyle_R_132.id != values_R_132.id){
+                              currentStyle_R_132 = {                  id_R_?:values_R_132.id,                  url_R_128:values_R_132.url,                  updateUrl_R_?:values_R_132.updateUrl,                  md5Url_R_?:values_R_132.md5Url,                  name_R_?:values_R_132.name,                  enabled_R_128:values_R_132.enabled,                  sections_R_?:[]};
+                styles_R_128.push_R_?(currentStyle_R_132);
+});
+            if (currentSection_R_132 == null || currentSection_R_132.id != values_R_132.section_id){
+                              currentSection_R_132 = {                  id_R_?:values_R_132.section_id,                  code_R_?:values_R_132.code};
+                currentStyle_R_132.sections.push(currentSection_R_132);
+});
+            if (metaName_R_132 && metaValue_R_132){
+                              if (currentSection_R_132[metaName_R_132]){
+                                      currentSection_R_132[metaName_R_132].push(metaValue_R_132);
+} else {
+                                      currentSection_R_132[metaName_R_132] = [metaValue_R_132];
+});
+});
+}
+          if (isBackground_R_154()){
+                      styles_R_128.forEach_R_?(function (style_R_133) {
+              cachedStyles_R_0[style_R_133.id] = style_R_133
+});
+} else {
+                      chrome.extension.sendRequest({              name_R_?:'cacheStyles',              styles_R_128:styles_R_128});
+})
+          callback_R_?(styles_R_128.filter_R_?(function (style_R_134) {
+          return checkStyle_R_127(style_R_134,enabled_R_128,url_R_128)
+}))
+},reportError_R_?)
+},reportError_R_?)
+},reportError_R_?)
+}
+  function getGlobalStyleIds_R_135(callback_R_135) {
+  if (isBackground_R_154() && cachedGlobalStyleIds_R_0 != null){
+          callback_R_?(cachedGlobalStyleIds_R_0);
+      return;
+})
+    getDatabase_R_106(function (db_R_136) {
+    db_R_136.readTransaction_R_?(function (t_R_137) {
+      t_R_137.executeSql_R_?('SELECT DISTINCT s.style_id, s.code FROM sections s LEFT JOIN section_meta sm ON sm.section_id = s.id INNER JOIN styles st ON st.id = s.style_id GROUP BY s.id HAVING COUNT(sm.id) = 0',[],function (t_R_138,r_R_138) {
+        var style_ids_R_138 = []
+          for(var i_R_138 = 0;i_R_138 < r_R_138.rows.length;i_R_138++){
+                      var values_R_138 = r_R_138.rows.item_R_?(i_R_138);
+            if (!namespacePattern_R_0.test_R_?(values_R_138.code) && style_ids_R_138.indexOf_R_?(values_R_138.style_id) == -1){
+                              style_ids_R_138.push_R_?(values_R_138.style_id);
+});
+}
+          if (isBackground_R_154()){
+                      cachedGlobalStyleIds_R_0 = style_ids_R_138;
+})
+          callback_R_?(style_ids_R_138)
+},reportError_R_?)
+},reportError_R_?)
+},reportError_R_?)
+}
+  function saveFromJSON_R_139(o_R_139,callback_R_139) {
+  getDatabase_R_106(function (db_R_140) {
+    db_R_140.transaction_R_?(function (t_R_141) {
+      if (o_R_139.id){
+                  t_R_141.executeSql('DELETE FROM section_meta WHERE section_id IN (SELECT id FROM sections WHERE style_id = ?);',[o_R_139.id]);
+          t_R_141.executeSql('DELETE FROM sections WHERE style_id = ?;',[o_R_139.id]);
+} else {
+                  t_R_141.executeSql_R_?('INSERT INTO styles (name, enabled, url, updateUrl) VALUES (?, ?, ?, ?);',[o_R_139.name,true,o_R_139.url,o_R_139.updateUrl]);
+})
+        o_R_139.sections.forEach_R_?(function (section_R_142) {
+        if (o_R_139.id){
+                      t_R_141.executeSql('INSERT INTO sections (style_id, code) VALUES (?, ?);',[o_R_139.id,section_R_142.code]);
+} else {
+                      t_R_141.executeSql_R_?('INSERT INTO sections (style_id, code) SELECT id, ? FROM styles ORDER BY id DESC LIMIT 1;',[section_R_142.code]);
+})
+          section_R_142.urls.forEach_R_?(function (u_R_143) {
+          t_R_141.executeSql_R_?("INSERT INTO section_meta (section_id, name, value) SELECT id, 'url', ? FROM sections ORDER BY id DESC LIMIT 1;",[u_R_143])
+})
+          section_R_142.urlPrefixes.forEach(function (u_R_144) {
+          t_R_141.executeSql_R_?("INSERT INTO section_meta (section_id, name, value) SELECT id, 'url-prefix', ? FROM sections ORDER BY id DESC LIMIT 1;",[u_R_144])
+})
+          section_R_142.domains.forEach(function (u_R_145) {
+          t_R_141.executeSql_R_?("INSERT INTO section_meta (section_id, name, value) SELECT id, 'domain', ? FROM sections ORDER BY id DESC LIMIT 1;",[u_R_145])
+})
+          section_R_142.regexps.forEach(function (u_R_146) {
+          t_R_141.executeSql_R_?("INSERT INTO section_meta (section_id, name, value) SELECT id, 'regexp', ? FROM sections ORDER BY id DESC LIMIT 1;",[u_R_146])
+})
+})
+},reportError_R_?,function () {
+      saveFromJSONComplete_R_148(o_R_139.id,callback_R_139)
+})
+},reportError_R_?)
+}
+  function saveFromJSONComplete_R_148(id_R_148,callback_R_148) {
+  chrome.extension.sendRequest({    name_R_?:'styleChanged'})
+    if (id_R_148){
+          notifyAllTabs_R_98({        name_R_?:'styleUpdated',        style_R_?:id_R_148});
+      if (callback_R_148){
+                  callback_R_?(id_R_148);
+});
+      return;
+})
+    getDatabase_R_106(function (db_R_149) {
+    db_R_149.readTransaction_R_?(function (t_R_150) {
+      t_R_150.executeSql_R_?('SELECT id FROM styles ORDER BY id DESC LIMIT 1',[],function (t_R_151,r_R_151) {
+        var styleId_R_151 = r_R_151.rows.item_R_?(0).id
+          getStyles_R_116({          id_R_148:styleId_R_151},function (styles_R_152) {
+          notifyAllTabs_R_98({            name_R_?:'styleAdded',            style_R_?:styles_R_152[0]})
+})
+          if (callback_R_148){
+                      callback_R_?(styleId_R_151);
+})
+},reportError_R_?)
+},reportError_R_?)
+})
+}
+  function reportError_R_153() {
+  for(i_R_? in arguments_R_?){
+    if ('message' in arguments_R_?[i_R_?]){
+              console.log_R_?(arguments_R_?[i_R_?].message);
+});
+}
+}
+  function isBackground_R_154() {
+  return typeof background_R_0 != 'undefined' && background_R_0
+}
+  function getDomains_R_155(url_R_155) {
+  var d_R_155 = (REGEXP '.*?:\\/*([^\\/]+)' '').exec_R_?(url_R_155)[1]
+    var domains_R_155 = [d_R_155]
+    while(d_R_155.indexOf('.') != -1){
+            d_R_155 = d_R_155.substring_R_?(d_R_155.indexOf_R_?('.') + 1);
+      domains_R_155.push_R_?(d_R_155);}
+    return domains_R_155
+}
+  function enableStyle_R_156(id_R_156,enabled_R_156) {
+  getDatabase_R_106(function (db_R_157) {
+    db_R_157.transaction_R_?(function (t_R_158) {
+      t_R_158.executeSql_R_?('UPDATE styles SET enabled = ? WHERE id = ?;',[enabled_R_156,id_R_156])
+},reportError_R_?,function () {
+      chrome.extension.sendRequest({        name_R_?:'styleChanged'})
+        getStyles_R_116({        id_R_156:id_R_156},function (styles_R_160) {
+        handleUpdate_R_83(styles_R_160[0])
+          notifyAllTabs_R_98({          name_R_?:'styleUpdated',          style_R_?:styles_R_160[0]})
+})
+})
+})
+}
+  function deleteStyle_R_161(id_R_161) {
+  getDatabase_R_106(function (db_R_162) {
+    db_R_162.transaction_R_?(function (t_R_163) {
+      t_R_163.executeSql_R_?('DELETE FROM section_meta WHERE section_id IN (SELECT id FROM sections WHERE style_id = ?);',[id_R_161])
+        t_R_163.executeSql('DELETE FROM sections WHERE style_id = ?;',[id_R_161])
+        t_R_163.executeSql('DELETE FROM styles WHERE id = ?;',[id_R_161])
+},reportError_R_?,function () {
+      chrome.extension.sendRequest({        name_R_?:'styleChanged'})
+        handleDelete_R_84(id_R_161)
+        notifyAllTabs_R_98({        name_R_?:'styleDeleted',        id_R_161:id_R_161})
+})
+})
+}

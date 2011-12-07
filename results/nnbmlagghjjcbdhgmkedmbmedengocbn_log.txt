@@ -1,0 +1,5 @@
+Extension nnbmlagghjjcbdhgmkedmbmedengocbn
+Number of functions: 423
+Number of anonymous functions: 383
+Number of named functions: 40
+Number of functions that reference chrome: 1

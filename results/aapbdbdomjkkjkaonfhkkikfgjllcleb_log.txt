@@ -1,0 +1,5 @@
+Extension aapbdbdomjkkjkaonfhkkikfgjllcleb
+Number of functions: 87
+Number of anonymous functions: 42
+Number of named functions: 45
+Number of functions that reference chrome: 2

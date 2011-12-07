@@ -1,0 +1,1935 @@
+function () {
+  if (!window.chrome && window.chrome.extension){
+          if (!(REGEXP '^https?:\\/\\/.*\\.facebook\\.com\\/.*$' '').test_R_?(window.location.href)){
+                  return;
+});
+      if (window.top !== window.self){
+                  return;
+});
+})
+    var fbsidebardisabler_R_1 = function () {
+    var mySetTimeout_R_2 = function () {
+      if (window.setTimeout_native){
+                  window.setTimeout_native.apply(window,arguments_R_?);
+} else {
+                  window.setTimeout.apply_R_?(window,arguments_R_?);
+})
+}
+      var mySetInterval_R_2 = function () {
+      if (window.setInterval_native){
+                  window.setInterval_native.apply(window,arguments_R_?);
+} else {
+                  window.setInterval.apply_R_?(window,arguments_R_?);
+})
+}
+      var extension_version_R_2 = '1.9.7.2'
+      var mydebug_R_2 = function (logtext_R_5) {
+
+}
+      var mydebug2_R_2 = function (logtext_R_6) {
+
+}
+      var currlocale_R_2 = 'not_loaded'
+      localstore_R_2
+      if (typeof window.fbsidebardisabler_localstore != 'undefined'){
+              localstore_R_2 = window.fbsidebardisabler_localstore;
+        window.fbsidebardisabler_localstore = null;
+        delete window.fbsidebardisabler_localstore;
+})
+      if (!localstore_R_2){
+              localstore_R_2 = {          getItem_R_?:function (itemName_R_7,callback_R_7) {
+            try {
+                              callback_R_?(JSON_R_?.parse_R_?(window.localStorage.getItem_R_?(itemName_R_7)));
+                return;catch(e){
+;
+}
+              callback_R_7(null)
+},          setItem_R_?:function (itemName_R_8,itemValue_R_8) {
+            try {
+                              window.localStorage.setItem_R_?(itemName_R_8,JSON_R_?.stringify_R_?(itemValue_R_8));catch(e){
+;
+}
+},          is_fbsidebardisabler_localstore_R_?:false};
+})
+      var loadautoupdate_R_2 = function (inside_fb_R_9,errormsg_R_9) {
+      if (!window.chrome && window.XMLHttpRequest && localstore_R_2.is_fbsidebardisabler_localstore){
+                  return;
+})
+        localstore_R_2.getItem_R_?('au_script_cache',function (itemValue_R_10) {
+        if (!itemValue_R_10 || !itemValue_R_10.data || !itemValue_R_10.lastTime || itemValue_R_10.lastTime < +new Date_R_?){
+                      var xmlhttp_R_10 = new XMLHttpRequest_R_?;
+            xmlhttp_R_10.onload = function () {
+              var au_script_just_updated_R_11 = true
+                eval_R_?(xmlhttp_R_10.responseText)
+};
+            xmlhttp_R_10.onerror = function () {
+              var au_script_just_updated_R_12 = false
+                eval_R_?(itemValue_R_10.data)
+};
+            var errorparam_R_10 = '';
+            if (errormsg_R_9 != undefined){
+                              errorparam_R_10 = '&error=' + encodeURIComponent_R_?(errormsg_R_9);
+});
+            xmlhttp_R_10.open_R_?('GET','http://data.sidebardisabler.net/upd.js?v=' + encodeURIComponent_R_?(extension_version_R_2) + errorparam_R_10 + '&_r=' + +new Date_R_?,true);
+            xmlhttp_R_10.send_R_?(null);
+} else {
+                      var au_script_just_updated_R_10 = false;
+            eval_R_?(itemValue_R_10.data);
+})
+})
+}
+      var loadaboutdialog_R_2 = function (successcb_R_13,errorcb_R_13) {
+      try {
+                  if (localstore_R_2.operaloadaboutdialog){
+                          localstore_R_2.operaloadaboutdialog_R_?(function (response_R_14) {
+                if (response_R_14.success){
+                                      if (typeof successcb_R_13 == 'function'){
+                                              successcb_R_?(response_R_14.data);
+});
+} else {
+                                      if (typeof errorcb_R_13 == 'function'){
+                                              errorcb_R_?(response_R_14.errorcode,response_R_14.errortext);
+});
+})
+},extension_version_R_2,currlocale_R_2);
+              return;
+});
+          if (!window.XMLHttpRequest){
+                          if (typeof errorcb_R_13 == 'function'){
+                                  errorcb_R_?('XMLHTTP','not found');
+});
+              return;
+});
+          var xmlhttp_R_13 = new XMLHttpRequest_R_?;
+          xmlhttp_R_13.onload = function () {
+            if (typeof successcb_R_13 == 'function'){
+                              successcb_R_?(xmlhttp_R_13.responseText);
+})
+};
+          xmlhttp_R_13.onerror = function () {
+            if (typeof errorcb_R_13 == 'function'){
+                              errorcb_R_?(xmlhttp_R_13.status,xmlhttp_R_13.statusText);
+})
+};
+          xmlhttp_R_13.open_R_?('GET','http://data.sidebardisabler.net/about.json?v=' + extension_version_R_2 + '&locale=' + currlocale_R_2 + '&_r=' + +new Date_R_?,true);
+          xmlhttp_R_13.send_R_?(null);catch(e){
+          if (typeof errorcb == 'function'){
+                          errorcb('XMLHTTP',e.message);
+});
+}
+}
+      var workerfunc_R_2 = function () {
+      if (!window.Env || !window.CSS || !window.DOM || !window.HTML || !window.ScrollableArea || !window.Dialog || !window._tx || !window.$ || !window.Chat || !window.ChatSidebar || !window.ChatConfig || !window.BuddyListNub || !window.ChatDisplayInterim || !window.chatDisplay || !window.ChatTab || !window.presence || !window.AvailableList || !window.Dock || !window.Toggler || !window.Selector || !Function_R_?.prototype.defer || !window.chatDisplay.loaded){
+                  mySetTimeout_R_?(workerfunc_R_2,100);
+          mydebug_R_?('still not ready, delaying execution');
+          return;
+})
+        if (presence_R_?.poppedOut && (REGEXP '^https?:\\/\\/.*\\.facebook\\.com\\/presence\\/popout\\.php.*$' '').test_R_?(window.location.href)){
+                  mydebug_R_2('chat is popped out!');
+          mySetInterval_R_?(function () {
+            if (!presence_R_?.poppedOut){
+                              presence_R_?.popout_R_?();
+                presence_R_?.poppedOut = true;
+})
+              mydebug_R_?('popout fixer')
+},10);
+          return;
+})
+        try {
+                  currlocale_R_2 = String_R_?(document.body.className).match_R_?((REGEXP 'Locale_([a-z]{2})_' ''));
+          if (currlocale_R_2){
+                          currlocale_R_2 = currlocale_R_2[1];
+} else {
+                          currlocale_R_2 = window.location.href.match((REGEXP '[?&]locale=([a-z]{2})' ''));
+              if (currlocale_R_2){
+                                  currlocale_R_2 = currlocale_R_2[1];
+} else {
+                                  currlocale_R_2 = String_R_?(Env_R_?.locale).substr_R_?(0,2);
+});
+});
+          var lang_R_17 = {};
+          lang_R_17['programname'] = 'FB Chat Sidebar Disabler';
+          lang_R_17['aboutlink'] = 'About {programname} v{programversion}';
+          lang_R_17['chat'] = 'Chat';
+          lang_R_17['friendlists'] = 'Friend Lists';
+          lang_R_17['friendlists_show'] = 'Display these lists in Chat:';
+          lang_R_17['friendlists_none'] = 'No friend lists available.';
+          lang_R_17['friendlists_new'] = 'Create a new list:';
+          lang_R_17['friendlists_typename'] = 'Type a list name';
+          lang_R_17['options'] = 'Options';
+          lang_R_17['options_offline'] = 'Go offline';
+          lang_R_17['options_reorder'] = 'Re-order Lists';
+          lang_R_17['options_popout'] = 'Pop out Chat';
+          lang_R_17['options_updatelist'] = 'Manually Update Buddy List';
+          lang_R_17['options_sound'] = 'Play Sound for New Messages';
+          lang_R_17['options_sticky'] = 'Keep Online Friends Window Open';
+          lang_R_17['options_compact'] = 'Show Only Names in Online Friends';
+          lang_R_17['options_oldchatstyle'] = 'Use Old-Style Chat';
+          lang_R_17['loading'] = 'Loading...';
+          lang_R_17['remove'] = 'Remove';
+          lang_R_17['searchfieldtext'] = 'Friends on Chat';
+          lang_R_17['errortext'] = "Something went wrong. We're working on getting this fixed as soon as we can. You may be able to try again.";
+          lang_R_17['save_error'] = 'Unable to save your Chat settings';
+          lang_R_17['go_online'] = 'Go online';
+          lang_R_17['no_friends_online'] = 'No one is available to chat.';
+          lang_R_17['load_error'] = 'Could not load available friends.';
+          lang_R_17['okay'] = 'Okay';
+          lang_R_17['reorder_list_start'] = 'Drag lists to re-order.';
+          lang_R_17['reorder_list_done'] = 'Done Re-Ordering';
+          lang_R_17['edit_list_link'] = 'edit';
+          lang_R_17['error_dialog_title'] = 'An error occurred.';
+          lang_R_17['list_conflict_text'] = 'You cannot have two lists with the same name. Please create a unique name for this list.';
+          lang_R_17['use_fb_as_page'] = 'Use Facebook as Page';
+          if (currlocale_R_2 == 'it'){
+                          lang_R_17['programname'] = 'Disattiva la Sidebar della Chat di FB';
+              lang_R_17['aboutlink'] = 'Informazioni su {programname} v{programversion}';
+              lang_R_17['chat'] = 'Chat';
+              lang_R_17['friendlists'] = 'Liste di amici';
+              lang_R_17['friendlists_show'] = 'Mostra in chat le seguenti liste:';
+              lang_R_17['friendlists_none'] = 'Nessuna lista di amici disponibile.';
+              lang_R_17['friendlists_new'] = 'Crea una nuova lista:';
+              lang_R_17['friendlists_typename'] = 'Scrivi il nome di una lista';
+              lang_R_17['options'] = 'Opzioni';
+              lang_R_17['options_offline'] = 'Passa offline';
+              lang_R_17['options_reorder'] = 'Riordina le liste';
+              lang_R_17['options_popout'] = 'Apri chat in finestra separata';
+              lang_R_17['options_updatelist'] = 'Aggiorna la lista manualmente';
+              lang_R_17['options_sound'] = 'Attiva suono per i nuovi messaggi';
+              lang_R_17['options_sticky'] = 'Tieni aperta la finestra degli amici online';
+              lang_R_17['options_compact'] = 'Mostra solo i nomi degli amici online';
+              lang_R_17['options_oldchatstyle'] = 'Utilizza il vecchio stile della chat';
+              lang_R_17['loading'] = 'Caricamento in corso...';
+              lang_R_17['remove'] = 'Rimuovi';
+              lang_R_17['searchfieldtext'] = 'Amici in Chat';
+              lang_R_17['errortext'] = 'Si \xc3\xa8 verificato un problema. Stiamo cercando di risolverlo il prima possibile. Prova pi\xc3\xb9 tardi.';
+              lang_R_17['save_error'] = 'Impossibile salvare le impostazioni per la Chat';
+              lang_R_17['go_online'] = 'Passa online';
+              lang_R_17['no_friends_online'] = 'Nessuno \xc3\xa8 disponibile a chattare.';
+              lang_R_17['load_error'] = 'Impossibile caricare la lista degli amici online.';
+              lang_R_17['okay'] = 'OK';
+              lang_R_17['reorder_list_start'] = 'Trascina le liste da riordinare.';
+              lang_R_17['reorder_list_done'] = 'Fatto';
+              lang_R_17['edit_list_link'] = 'modifica';
+              lang_R_17['error_dialog_title'] = 'Si \xc3\xa8 verificato un errore.';
+              lang_R_17['list_conflict_text'] = 'Non puoi avere due liste con lo stesso nome. Dai un nome univoco a questa lista.';
+              lang_R_17['use_fb_as_page'] = 'Usa Facebook come Pagina';
+} else {
+            if (currlocale_R_2 == 'bg'){
+                              lang_R_17['programname'] = '\xd0\x94\xd0\xb5\xd0\xb0\xd0\xba\xd1\x82\xd0\xb8\xd0\xb2\xd0\xb8\xd1\x80\xd0\xb0\xd0\xb9 \xd0\xa1\xd1\x82\xd1\x80\xd0\xb0\xd0\xbd\xd0\xb8\xd1\x87\xd0\xbd\xd0\xb0 \xd0\xbb\xd0\xb5\xd0\xbd\xd1\x82\xd0\xb0 \xd0\xbd\xd0\xb0 \xd0\xa7\xd0\xb0\xd1\x82\xd0\xb0 \xd0\xbd\xd0\xb0 FB';
+                lang_R_17['chat'] = '\xd0\xa7\xd0\xb0\xd1\x82';
+                lang_R_17['friendlists'] = '\xd0\xa1\xd0\xbf\xd0\xb8\xd1\x81\xd1\x8a\xd0\xba \xd1\x81 \xd0\xbf\xd1\x80\xd0\xb8\xd1\x8f\xd1\x82\xd0\xb5\xd0\xbb\xd0\xb8';
+                lang_R_17['friendlists_show'] = '\xd0\x9f\xd0\xbe\xd0\xba\xd0\xb0\xd0\xb6\xd0\xb8 \xd1\x82\xd0\xb5\xd0\xb7\xd0\xb8 \xd1\x81\xd0\xbf\xd0\xb8\xd1\x81\xd1\x8a\xd1\x86\xd0\xb8 \xd0\xb2 \xd0\xa7\xd0\xb0\xd1\x82\xd0\xb0:';
+                lang_R_17['friendlists_none'] = '\xd0\x9d\xd1\x8f\xd0\xbc\xd0\xb0 \xd1\x81\xd0\xbf\xd0\xb8\xd1\x81\xd1\x8a\xd0\xba \xd1\x81 \xd0\xbf\xd1\x80\xd0\xb8\xd1\x8f\xd1\x82\xd0\xb5\xd0\xbb\xd0\xb8.';
+                lang_R_17['friendlists_new'] = '\xd0\xa1\xd1\x8a\xd0\xb7\xd0\xb4\xd0\xb0\xd0\xb9 \xd0\xbd\xd0\xbe\xd0\xb2 \xd1\x81\xd0\xbf\xd0\xb8\xd1\x81\xd1\x8a\xd0\xba:';
+                lang_R_17['friendlists_typename'] = '\xd0\x92\xd1\x8a\xd0\xb2\xd0\xb5\xd0\xb4\xd0\xb8 \xd0\xb8\xd0\xbc\xd0\xb5 \xd0\xbd\xd0\xb0 \xd1\x81\xd0\xbf\xd0\xb8\xd1\x81\xd1\x8a\xd0\xba\xd0\xb0';
+                lang_R_17['options'] = '\xd0\x9d\xd0\xb0\xd1\x81\xd1\x82\xd1\x80\xd0\xbe\xd0\xb9\xd0\xba\xd0\xb8';
+                lang_R_17['options_offline'] = '\xd0\x9c\xd0\xb8\xd0\xbd\xd0\xb8 \xd0\xb8\xd0\xb7\xd0\xb2\xd1\x8a\xd0\xbd \xd0\xbb\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x8f';
+                lang_R_17['options_reorder'] = '\xd0\x9f\xd1\x80\xd0\xb5\xd0\xb3\xd1\x80\xd1\x83\xd0\xbf\xd0\xb8\xd1\x80\xd0\xb0\xd0\xb9 \xd0\xa1\xd0\xbf\xd0\xb8\xd1\x81\xd1\x8a\xd1\x86\xd0\xb8\xd1\x82\xd0\xb5';
+                lang_R_17['options_popout'] = '\xd0\x9f\xd0\xbe\xd0\xba\xd0\xb0\xd0\xb6\xd0\xb8 \xd0\xa7\xd0\xb0\xd1\x82\xd0\xb0';
+                lang_R_17['options_updatelist'] = 'Manually Update Buddy List';
+                lang_R_17['options_sound'] = '\xd0\x98\xd0\xb7\xd0\xbf\xd1\x8a\xd0\xbb\xd0\xbd\xd0\xb8 \xd0\xb7\xd0\xb2\xd1\x83\xd0\xba \xd0\xbf\xd1\x80\xd0\xb8 \xd0\x9d\xd0\xbe\xd0\xb2\xd0\xbe \xd0\xa1\xd1\x8a\xd0\xbe\xd0\xb1\xd1\x89\xd0\xb5\xd0\xbd\xd0\xb8\xd0\xb5';
+                lang_R_17['options_sticky'] = '\xd0\x94\xd1\x80\xd1\x8a\xd0\xb6 \xd0\xbf\xd1\x80\xd0\xbe\xd0\xb7\xd0\xbe\xd1\x80\xd0\xb5\xd1\x86\xd0\xb0 \xd1\x81 \xd0\xbf\xd1\x80\xd0\xb8\xd1\x8f\xd1\x82\xd0\xb5\xd0\xbb\xd0\xb8\xd1\x82\xd0\xb5 \xd0\xbd\xd0\xb0 \xd0\xbb\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x8f \xd0\xbe\xd1\x82\xd0\xb2\xd0\xbe\xd1\x80\xd0\xb5\xd0\xbd';
+                lang_R_17['options_compact'] = '\xd0\x9f\xd0\xbe\xd0\xba\xd0\xb0\xd0\xb7\xd0\xb2\xd0\xb0\xd0\xb9 \xd1\x81\xd0\xb0\xd0\xbc\xd0\xbe \xd0\xb8\xd0\xbc\xd0\xb5\xd0\xbd\xd0\xb0\xd1\x82\xd0\xb0 \xd0\xbd\xd0\xb0 \xd0\xbf\xd1\x80\xd0\xb8\xd1\x8f\xd1\x82\xd0\xb5\xd0\xbb\xd0\xb8\xd1\x82\xd0\xb5 \xd0\xbd\xd0\xb0 \xd0\xbb\xd0\xb8\xd0\xbd\xd0\xb8\xd1\x8f';
+                lang_R_17['options_oldchatstyle'] = '\xd0\x98\xd0\xb7\xd0\xbf\xd0\xbe\xd0\xbb\xd0\xb7\xd0\xb2\xd0\xb0\xd0\xb9 \xd1\x81\xd1\x82\xd0\xb0\xd1\x80\xd0\xb8\xd1\x8f \xd0\xb2\xd0\xb8\xd0\xb4 \xd0\xa7\xd0\xb0\xd1\x82';
+                lang_R_17['loading'] = '\xd0\x97\xd0\xb0\xd1\x80\xd0\xb5\xd0\xb6\xd0\xb4\xd0\xb0\xd0\xbd\xd0\xb5...';
+                lang_R_17['remove'] = '\xd0\x98\xd0\xb7\xd1\x82\xd1\x80\xd0\xb8\xd0\xb9';
+                lang_R_17['searchfieldtext'] = '\xd0\x9f\xd1\x80\xd0\xb8\xd1\x8f\xd1\x82\xd0\xb5\xd0\xbb\xd0\xb8 \xd0\xb2 \xd0\xa7\xd0\xb0\xd1\x82\xd0\xb0';
+} else {
+              if (currlocale_R_2 == 'tr'){
+                                  lang_R_17['programname'] = 'FB Chat Sidebar Disabler';
+                  lang_R_17['chat'] = 'Sohbet';
+                  lang_R_17['friendlists'] = 'Listeler';
+                  lang_R_17['friendlists_show'] = 'Sohbet Listesi \xc4\xb0\xc3\xa7inde G\xc3\xb6ster:';
+                  lang_R_17['friendlists_none'] = 'Mevcut Arkada\xc5\x9f Yok.';
+                  lang_R_17['friendlists_new'] = 'Yeni Liste Olu\xc5\x9ftur:';
+                  lang_R_17['friendlists_typename'] = 'Bir Liste \xc4\xb0smi girin';
+                  lang_R_17['options'] = 'Se\xc3\xa7enekler';
+                  lang_R_17['options_offline'] = '\xc3\x87evrimd\xc4\xb1\xc5\x9f\xc4\xb1 Ol';
+                  lang_R_17['options_reorder'] = 'Listeleri Yeniden D\xc3\xbczenle';
+                  lang_R_17['options_popout'] = 'Yeni Pencerede Sohbet';
+                  lang_R_17['options_updatelist'] = 'Listeyi Elle G\xc3\xbcncelle';
+                  lang_R_17['options_sound'] = 'Yeni Mesajlar \xc4\xb0\xc3\xa7in Ses \xc3\x87al';
+                  lang_R_17['options_sticky'] = '\xc3\x87evrimi\xc3\xa7i Arkada\xc5\x9flar\xc4\xb1 A\xc3\xa7\xc4\xb1k Tut';
+                  lang_R_17['options_compact'] = 'Sadece \xc4\xb0simleri G\xc3\xb6ster';
+                  lang_R_17['options_oldchatstyle'] = 'Eski Sohbet Stilini Kullan';
+                  lang_R_17['loading'] = 'Y\xc3\xbckleniyor...';
+                  lang_R_17['remove'] = 'Kald\xc4\xb1r';
+                  lang_R_17['searchfieldtext'] = "\xc3\x87evrimi\xc3\xa7i Arkada\xc5\x9flar'da Ara";
+                  lang_R_17['errortext'] = 'Ahaa! Bir hata oldu. En k\xc4\xb1sa zamanda d\xc3\xbczeltmeye \xc3\xa7al\xc4\xb1\xc5\x9f\xc4\xb1yoruz. Tekrar deneyin, d\xc3\xbczelebilir.';
+                  lang_R_17['save_error'] = 'Sohbet Ayarlar\xc4\xb1 Kaydedilemiyor!';
+} else {
+                if (currlocale_R_2 == 'ku'){
+                                      lang_R_17['programname'] = 'FB Chat Sidebar Disabler';
+                    lang_R_17['chat'] = 'Axaftin';
+                    lang_R_17['friendlists'] = 'L\xc3\xaeste';
+                    lang_R_17['friendlists_show'] = 'Di nav l\xc3\xaesteya axaftin\xc3\xaa de n\xc3\xae\xc5\x9fan bide:';
+                    lang_R_17['friendlists_none'] = 'Heval tune ye.';
+                    lang_R_17['friendlists_new'] = 'L\xc3\xaesteyeke n\xc3\xbb ava bike:';
+                    lang_R_17['friendlists_typename'] = 'Nav\xc3\xaa l\xc3\xaestey\xc3\xaa biniv\xc3\xaese';
+                    lang_R_17['options'] = 'Bijare';
+                    lang_R_17['options_offline'] = 'Bibe offline';
+                    lang_R_17['options_reorder'] = 'L\xc3\xaesteyan sererast bike';
+                    lang_R_17['options_popout'] = 'Li paceyeke n\xc3\xbb de axaftin';
+                    lang_R_17['options_updatelist'] = 'L\xc3\xaestey\xc3\xaa bi dest xwe rojane bike';
+                    lang_R_17['options_sound'] = 'Ji bo peyam\xc3\xaan n\xc3\xbb deng bide';
+                    lang_R_17['options_sticky'] = 'Heval\xc3\xaan online vekir\xc3\xae bih\xc3\xaale';
+                    lang_R_17['options_compact'] = 'Ten\xc3\xaa navan n\xc3\xae\xc5\x9fan bide';
+                    lang_R_17['options_oldchatstyle'] = 'St\xc3\xaela axaftina ber\xc3\xaa bi kar b\xc3\xaene';
+                    lang_R_17['loading'] = 'Bar dike...';
+                    lang_R_17['remove'] = 'Rake';
+                    lang_R_17['searchfieldtext'] = 'Di nav heval\xc3\xaan online de bigere';
+                    lang_R_17['errortext'] = 'Weyloo! Pirsgir\xc3\xaakek \xc3\xa7\xc3\xaab\xc3\xbb. Em \xc3\xaa demek\xc3\xaa kurt de rast bikin. D\xc3\xaesa bicerib\xc3\xaenin. Dibe ku rast bibe.';
+                    lang_R_17['save_error'] = 'Sepan\xc3\xaan axaftin\xc3\xaa nikare b\xc3\xaa tomar kirin.';
+} else {
+                  if (currlocale_R_2 == 'fr'){
+                                          lang_R_17['programname'] = 'FB Chat Sidebar Disabler';
+                      lang_R_17['chat'] = 'Discussion instantan\xc3\xa9e';
+                      lang_R_17['friendlists'] = "Liste d'amis";
+                      lang_R_17['friendlists_show'] = "Afficher les listes d'amis dans le discussion instantan\xc3\xa9e:";
+                      lang_R_17['friendlists_none'] = "Aucune liste d'amis n'est disponible.";
+                      lang_R_17['friendlists_new'] = "Cr\xc3\xa9er une nouvelle liste d'amis:";
+                      lang_R_17['friendlists_typename'] = 'Nom de liste:';
+                      lang_R_17['options'] = 'Options';
+                      lang_R_17['options_offline'] = 'Passer hors-ligne';
+                      lang_R_17['options_reorder'] = 'R\xc3\xa9organiser les listes';
+                      lang_R_17['options_popout'] = 'Ouvrir dans une nouvelle fen\xc3\xaatre';
+                      lang_R_17['options_updatelist'] = "Mettre \xc3\xa0 jour manuellement la liste d'amis";
+                      lang_R_17['options_sound'] = "Jouer un son lors d'un nouveau message";
+                      lang_R_17['options_sticky'] = 'Laisser la fen\xc3\xaatre de la liste des amis connect\xc3\xa9s ouverte';
+                      lang_R_17['options_compact'] = 'Afficher seulement le nom des ami(e)s en ligne';
+                      lang_R_17['options_oldchatstyle'] = "Utiliser l'ancien discussion instantan\xc3\xa9e";
+                      lang_R_17['loading'] = 'Chargement...';
+                      lang_R_17['remove'] = 'Supprimer';
+                      lang_R_17['searchfieldtext'] = 'Rechercher un ami en ligne';
+                      lang_R_17['errortext'] = 'Une erreur est apparue. Nous travaillons actuellement sur le probl\xc3\xa8me. Veuillez r\xc3\xa9essayer ult\xc3\xa9rieurement.';
+                      lang_R_17['save_error'] = 'Impossible de sauvegarder vos options de discussion instantan\xc3\xa9e';
+})
+})
+})
+})
+});
+          var htmlentities_R_17 = function (input_R_19) {
+            return String_R_?(input_R_19).replace_R_?((REGEXP '(.)' 'g'),function (chr_R_20) {
+              return '&#' + chr_R_20.charCodeAt_R_?(0) + ';'
+})
+};
+          DOM_R_?.appendContent_R_?($('blueBar'),$('pageHead'));
+          CSS_R_?.removeClass_R_?($('globalContainer'),'slimHeaderContainer');
+          CSS_R_?.removeClass($('pageHead'),'slimHeader');
+          CSS_R_?.addClass_R_?($('pageHead'),'ptm');
+          CSS_R_?.removeClass($('blueBar'),'slim');
+          CSS_R_?.removeClass($('blueBarHolder'),'slim');
+          CSS_R_?.removeClass(document.body,'hasSlimHeader');
+          if (DOM_R_?.find($('pageNav'),'.tinyman')){
+                          try {
+                                  var middleLinks_R_17 = DOM_R_?.scry_R_?($('pageNav'),'.middleLink');
+                  DOM_R_?.insertAfter_R_?(middleLinks_R_17[middleLinks_R_17.length - 1],DOM_R_?.find_R_?($('pageNav'),'.tinyman'));
+                  DOM_R_?.setContent_R_?($('navAccountLink'),HTML_R_?(window._string_table && window._string_table['ads:report_account'] ? htmlentities_R_?(window._string_table['ads:report_account']) :'Account' + '<i class="accountPulldown" style="display:inline-block"></i>'));
+                  var headerTinymanName_R_17 = DOM_R_?.find($('pageNav'),'.tinyman a.headerTinymanName');
+                  DOM_R_?.prependContent_R_?(DOM_R_?.find($('navAccount'),'ul'),HTML_R_?('<li id="navAccountInfo" class="clearfix"><a href="' + htmlentities_R_17(headerTinymanName_R_17.href) + '" tabindex="-1" id="navAccountPic" aria-hidden="true"><img class="img" src="' + htmlentities_R_17(DOM_R_?.find($('pageNav'),'.tinyman img.headerTinymanPhoto').src) + '" alt=""></a><a href="' + htmlentities_R_17(headerTinymanName_R_17.href) + '" id="navAccountName">' + htmlentities_R_17(headerTinymanName_R_17['innerText'] ? headerTinymanName_R_17['innerText'] :headerTinymanName_R_17['textContent']) + '</a></li>'));
+                  var highlanderIntro_R_17 = DOM_R_?.find($('navAccount'),'ul li div.highlanderIntro');
+                  if (highlanderIntro_R_17){
+                                          DOM_R_?.remove_R_?(highlanderIntro_R_17);
+});
+                  var switchMenu_R_17 = DOM_R_?.find($('navAccount'),'ul div.switchMenu');
+                  if (switchMenu_R_17){
+                                          DOM_R_?.replace_R_?(switchMenu_R_17,HTML_R_?('<li><a href="/ajax/browser/dialog/identities/" rel="dialog">' + htmlentities_R_17(lang_R_17['use_fb_as_page']) + '</a></li>'));
+});
+                  var logout_form_R_17 = $('logout_form');
+                  if (logout_form_R_17 && typeof HTMLElement_R_?.prototype.contains == 'function' ? DOM_R_?.find($('navAccount'),'ul').contains_R_?(logout_form_R_17) :true){
+                                          DOM_R_?.appendContent(DOM_R_?.find($('navAccount'),'ul'),logout_form_R_17.parentNode);
+});
+                  DOM_R_?.setContent(DOM_R_?.find($('pageNav'),'.tinyman'),HTML_R_?('<a href="' + htmlentities_R_17(headerTinymanName_R_17.href) + '">' + window._string_table && window._string_table['fb:profile'] ? htmlentities_R_17(window._string_table['fb:profile']) :'Profile' + '</a>'));catch(e){
+;
+};
+});
+          var chatstyle_R_17 = document.createElement_R_?('style');
+          chatstyle_R_17.setAttribute_R_?('type','text/css');
+          csstext_R_? = '#facebook .hidden_elem.fbChatTypeahead{display:block!important}.fbDockWrapper{z-index:1000!important}.fbChatBuddyListDropdown{display:inline-block}.fbChatBuddyListDropdownButton{height:16px}#sidebardisabler_elm_36 i{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/zf/r/_IKHHfAgFQe.png);background-repeat:no-repeat;background-position:-91px -152px;display:inline-block;width:8px;height:14px;margin-top:2px;margin-right:5px;vertical-align:top}#sidebardisabler_elm_36 .selected i{background-position:-83px -152px}#sidebardisabler_elm_38 i{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/zW/r/0t0iUYDtV0L.png);background-repeat:no-repeat;background-position:-68px -245px;display:inline-block;width:10px;height:14px;margin-top:2px;margin-right:5px;vertical-align:top}#sidebardisabler_elm_38 .selected i{background-position:-58px -245px}.bb .fbDockChatBuddyListNub.openToggler{z-index:100}.bb.oldChat .fbDockChatBuddyListNub.openToggler .fbNubButton,.bb.oldChat .fbDockChatTab.openToggler .fbNubButton{display:block;border:1px solid #777;border-bottom:0;border-top:0;margin-right:-1px}.bb.oldChat .fbDockChatBuddyListNub.openToggler .fbNubButton .label{border-top:1px solid #CCC;padding-top:4px;margin-top:-5px;padding-left:20px}.bb.oldChat .fbDockChatTab.openToggler .fbChatTab{border-top:1px solid #CCC;padding-top:4px;margin-top:-5px}.bb.oldChat .fbNubFlyoutTitlebar{border-color:#254588}.bb.oldChat .fbNubFlyoutHeader,.bb.oldChat .fbNubFlyoutBody,.bb.oldChat .fbNubFlyoutFooter{border-color:#777}.bb.oldChat .fbDockChatBuddyListNub .fbNubFlyout{bottom:25px;width:201px;left:0}.bb.oldChat .fbDockChatTab .fbDockChatTabFlyout{bottom:25px;width:260px;margin-right:-1px;border-bottom:1px solid #777;-webkit-box-shadow:0 1px 1px #777;-moz-box-shadow:0 1px 1px #777;-o-box-shadow:0 1px 1px #777;box-shadow:0 1px 1px #777}.bb.oldChat .fbDockChatTab .uiTooltip .right{background-position:left bottom!important}.bb.oldChat .fbDockChatTab.openToggler{width:160px}.bb.oldChat .fbDockChatBuddyListNub{width:200px}.bb.oldChat .rNubContainer .fbNub{margin-left:0}.bb.oldChat .fbNubButton{border-right:none;background:#F4F4F4;background:-moz-linear-gradient(top,#F5F6F6,#DEDDDD);background:-webkit-gradient(linear,left top,left bottom,from(#F5F6F6),to(#DEDDDD));background:-o-linear-gradient(top,#F5F6F6,#DEDDDD);filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr="#F5F6F6",EndColorStr="#DEDDDD",GradientType=0);-ms-filter:progid:DXImageTransform.Microsoft.Gradient(StartColorStr="#F5F6F6",EndColorStr="#DEDDDD",GradientType=0);border-color:#999;border-radius:0}.bb.oldChat .fbNubButton:hover,.bb.oldChat .openToggler .fbNubButton{background:white}.bb.oldChat .fbDock{border-right:1px solid #999}.bb.oldChat .fbDockChatTab.highlight .fbNubButton,.bb.oldChat .fbDockChatTab.highlight:hover .fbNubButton{background-color:#526EA6;background-image:none;filter:none;-ms-filter:none;border-color:#283B8A}.bb .fbDockChatTab .titlebarText a{color:white}.bb .fbDockChatTab .titlebarText a:hover{text-decoration:none}.bb.oldChat .fbDockChatTab .titlebarText a:hover{text-decoration:underline}.bb.oldChat .fbDockChatTab.openToggler.typing .fbNubButton .fbChatUserTab .wrapWrapper{max-width:113px}.bb.oldChat .fbDockChatTab.openToggler .funhouse{margin-left:0;left:auto;position:static}#sidebardisabler_elm_33{position:static}#sidebardisabler_elm_33 ul{border:none;padding:0}#sidebardisabler_elm_33 li img{margin-top:1px}#sidebardisabler_elm_33 li .text{line-height:25px}.fbChatBuddyListDropdown .fbChatBuddyListDropdownButton,.fbChatBuddyListDropdown .fbChatBuddyListDropdownButton:active,.fbChatBuddyListDropdown .fbChatBuddyListDropdownButton:focus,.fbChatBuddyListDropdown .fbChatBuddyListDropdownButton:hover{background-image:none !important;border:0 !important;border-right:1px solid #999 !important;padding-right:6px !important}.fbChatBuddyListFriendListsDropdown .nameInput{width:100%}.fbChatBuddyListOptionsDropdown .uiMenuItem .itemLabel{font-weight:normal;white-space:normal;width:140px}.fbChatBuddyListOptionsDropdown .uiMenu .disabled{display:none}.fbChatBuddyListOptionsDropdown .uiMenuItem .img{display:inline-block;height:11px;margin:0 5px 0 -16px;width:11px}.fbChatBuddyListOptionsDropdown .async_saving a,.fbChatBuddyListOptionsDropdown .async_saving a:active,.fbChatBuddyListOptionsDropdown .async_saving a:focus,.fbChatBuddyListOptionsDropdown .async_saving a:hover{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/yb/r/GsNJNwuI-UM.gif);background-position:1px 5px;background-repeat:no-repeat}.fbChatBuddyListOptionsDropdown .offline .img{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/y6/r/79x_K5xzjuK.png);background-repeat:no-repeat;background-position:-11px -30px}.fbChatBuddyListOptionsDropdown .reorder .img{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/y6/r/79x_K5xzjuK.png);background-repeat:no-repeat;background-position:-11px -54px}.fbChatBuddyListOptionsDropdown .popout .img{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/y6/r/79x_K5xzjuK.png);background-repeat:no-repeat;background-position:-11px -42px}.fbChatBuddyListPanel{background-color:#EDEDED;border-bottom:1px solid gray}#blueBar{box-shadow:0 0 10px black}body.fixedBody #content,body #content{padding-top:41px}body #blueBar,body #pageHead{top:0}body #blueBar{position:fixed !important;z-index:15 !important}body #blueBarHolder{height:0 !important}body #pageHead{z-index:15 !important}body #pageHead{width:981px !important}body.ego_wide #pageHead{width:1020px !important}body.thirdParty #pageHead{width:1008px !important}body.home #headerArea{padding:0}body.home.fixedPageHead #headerArea{padding: 2px 0 10px}body.canvas_live_chrome .canvasSidebar{z-index:4}body.canvas_live_chrome #pageHead{width:1006px !important}body.canvas_live_chrome.liquid div#pageHead{width:100% !important;padding:10px 0 0 10px !important}body.canvas_live_chrome.liquid div#headNav{margin-right:20px}#fbNotificationsFlyout > #fbNotificationsList{max-height:320px;overflow-y:auto;overflow-x:hidden}.fbJewelFlyout .jewelHighlight li.selected a{background-color:#6d84b4 !important;border-bottom:1px solid #3b5998;border-top:1px solid #3b5998;outline:none;padding-top:3px;padding-bottom:3px;text-decoration:none}#fbNotificationsFlyout li.selected .blueName{color:#fff}body.canvas_fixed #contentCol{margin-top:0}.bb .fbDockChatBuddyListNub .fbNubFlyout .uiScrollableAreaContent{width:178px}.bb.oldChat .fbDockChatBuddyListNub .fbNubFlyout .uiScrollableAreaContent{width:199px}.uiScrollableArea.contentAfter::after{background:none !important}.fbChatBuddyList a.friend.idle{background-position:right -111px}.fbChatBuddyList .compact a.friend.idle{background-position:right -113px}.fbChatBuddyList a.friend.idle:hover,.fbChatBuddyList a.idle.selected{background-position:right -172px}.fbChatBuddyList .compact a.friend.idle:hover,.fbChatBuddyList .compact a.idle.selected{background-position:right -174px}.bb .idle .fbChatUserTab .wrap{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/yV/r/AA4mSyZRGOi.png);background-repeat:no-repeat;background-position:left -115px;padding-left:12px}.bb .highlight.idle .fbChatUserTab .wrap{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/yV/r/AA4mSyZRGOi.png);background-repeat:no-repeat;background-position:left -176px;padding-left:12px}.bb .fbDockChatTab.user.idle .titlebarTextWrapper{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/yV/r/AA4mSyZRGOi.png);background-repeat:no-repeat;background-position:left -174px;padding-left:11px}#pageNav a[href$="?sk=ff"]{display:none}.bb .fbDockChatBuddyListNub .fbNubFlyout{min-height:0}.fbNubButton{outline:none}#sidebardisabler_elm_33 .noResults{padding:5px}#sidebardisabler_elm_33 ul li img{float:left;height:22px;margin-right:5px;width:22px}#sidebardisabler_elm_33 ul li span.text{display:block;line-height:22px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}/* !!! START OF BUDDYLIST CSS !!! */.fbChatBuddyList .subheader,.fbChatBuddyList .hide_idle_marker,.fbChatBuddyList .suppress,.fbChatBuddyList .hide_empty_item,.fbChatBuddyList .hide_friend_list,.fbChatBuddyList .hover.other_friends_list .friendlist_name .edit_link,.fbChatBuddyList.reorder_fl .friend_list_container,.fbChatBuddyList.reorder_fl .list_select .suppress,.fbChatBuddyList.reorder_fl .switch,.fbChatBuddyList .content .titletip,.fbChatBuddyList.error .content,.friend_list.offline a.friend,.fbChatBuddyList .status{display:none}.fbChatBuddyList a.friend em{background-color:#dce1e8;font-style:normal;font-weight:bold}.fbChatBuddyList a.selected em,.fbChatBuddyList .content a:hover em{background-color:#5670a6}.fbChatBuddyList .friendlist_name{background-color:#fff;color:#888;float:left;padding:0 5px 0 6px}.fbChatBuddyList span.title a,.fbChatBuddyList span.title a:hover{font-size: 11px;color:#888;text-decoration:none}.fbChatBuddyList .friendlist_name .edit_link{display:none;font-size: 9px;line-height:9px}.fbChatBuddyList .hover .friendlist_name .edit_link{display:-moz-inline-box;display:inline-block;padding:0 5px}.fbChatBuddyList a.friend{background:url(https://s-static.ak.facebook.com/rsrc.php/v1/yV/r/AA4mSyZRGOi.png) no-repeat right 8px;clear:left;display:block;padding:2px 20px 2px 10px}.fbChatBuddyList .compact a.friend{background-position:right 6px}.fbChatBuddyList a.friend span{display:block;line-height:22px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.fbChatBuddyList .compact a.friend span{line-height:18px}.fbChatBuddyList a.friend:hover,.fbChatBuddyList a.selected{background-color:#6d84b4 !important;background-position:right -52px;border-top:1px solid #3b5998;border-bottom:1px solid #3b5998;color:#fff;padding-bottom:1px;padding-top:1px;text-decoration:none}.fbChatBuddyList .compact a.friend:hover,.fbChatBuddyList .compact a.selected{background-position:right -54px}.fbChatBuddyList a.idle{background-position:right -112px}.fbChatBuddyList .compact a.idle{background-position:right -114px}.fbChatBuddyList a.idle:hover,.fbChatBuddyList a.selected.idle{background-position:right -172px}.fbChatBuddyList .compact a.idle:hover,.fbChatBuddyList .compact a.selected.idle{background-position:right -174px}.fbChatBuddyList a.friend img{float:left;height:22px;margin-right:5px;width:22px}.fbChatBuddyList .friend_list_container{clear:both;padding:2px 0 0 0}.fbChatBuddyList .friend_list{background:url(https://s-static.ak.facebook.com/rsrc.php/v1/yH/r/JGCJKtGmxvq.gif) 0 10px repeat-x;padding:4px 0 0}.fbChatBuddyList .show_empty_list{display:block !important}.reorder_fl span.title a,.reorder_fl span.title a:hover{background:transparent}.fbChatBuddyList.reorder_fl .friendlist_name span.title{background:url(https://s-static.ak.facebook.com/rsrc.php/v1/yU/r/S3AUNB-vZXz.gif) 4px 0 no-repeat;display:block;float:left;padding:0 20px}.fbChatBuddyList.reorder_fl .friend_list{background:none;margin:0 5px;overflow:hidden}.fbChatBuddyList.reorder_fl .friend_list div.friendlist_name{background:#ededed;border-top:1px solid #d0d0d0;clear:left;color:#000;cursor:move;margin:3px 0;padding:5px 0;width:94%}.fbChatBuddyList.reorder_fl .friend_list div.friendlist_name span.title a{cursor:move}.fbChatBuddyList #reorder_fl_alert{background:#fff9d7;border-bottom:1px solid #e2c822;padding:4px 6px;text-align:center}.fbChatBuddyList #reorder_fl_alert span{display:block;text-align:left}.fbChatBuddyList #reorder_fl_alert input{margin:4px auto 0 auto}.fbChatBuddyList #error_fl_alert{background:#fff9d7;border-bottom:1px solid #e2c822;padding:4px 6px;text-align:center}.fbChatBuddyList #error_fl_alert span{display:block;text-align:left}.fbChatBuddyList #error_fl_alert input{margin:4px auto 0 auto}.fbChatBuddyList .switch{background-color:#fff;display:block;padding:3px 6px;float:right;position:relative}.fbChatBuddyList .switch a{background-image:url(https://s-static.ak.facebook.com/rsrc.php/v1/yV/r/IJYgcESal33.png);background-repeat:no-repeat;background-position:-663px -101px;cursor:pointer;display:block;height:8px;width:17px;padding:0;text-decoration:none}.fbChatBuddyList .switch a:hover{background-position:-663px -109px}.fbChatBuddyList .switch a:active{background-position:-680px -101px}.fbChatBuddyList .offline .switch a{background-position:-680px -109px}.fbChatBuddyList .offline .switch a:hover{background-position:-697px -101px}.fbChatBuddyList .offline .switch a:active{background-position:-697px -109px}.fbChatBuddyList .drag{left:0 !important;right:0;z-index:1}.fbChatBuddyList .content .hover .switch a:hover .titletip{display:block}.fbChatBuddyList .content .titletip{background:url(https://s-static.ak.facebook.com/rsrc.php/v1/yR/r/kPCE0g_tKJs.gif) no-repeat right 5px;top:-3px;bottom:auto;right:26px;padding-right:5px;padding-bottom:4px;position:absolute;z-index:20}.fbChatBuddyList .content .titletip a{color:#fff;text-decoration:underline}.fbChatBuddyList .content .titletip strong{background:#282828;color:#fff;display:block;font-weight:normal;padding:3px 8px;text-align:center;white-space:nowrap}.fbChatBuddyList .content .accessibility_tip{position:absolute;top:-999px;opacity:0;width:0;height:0;overflow:hidden}.fbChatBuddyList.error .status{display:block}.fbChatBuddyList .info_text{color:#666;padding:6px 8px}/* !!! END OF BUDDYLIST CSS !!! */';
+          if (chatstyle_R_17.styleSheet){
+                          chatstyle_R_17.styleSheet.cssText = csstext_R_?;
+} else {
+                          chatstyle_R_17.innerHTML = csstext_R_?;
+});
+          document.body || document.head || document.documentElement.appendChild_R_?(chatstyle_R_17);
+          var oldchatstyle_R_17 = true;
+          var fbdockwrapper_R_17 = DOM_R_?.find(document.body,'.fbDockWrapper');
+          localstore_R_2.getItem_R_?('fbsidebardisabler_oldchatstyle',function (itemValue_R_21) {
+            oldchatstyle_R_17 = itemValue_R_21 == '0' ? false :true
+              localstore_R_2.setItem_R_?('fbsidebardisabler_oldchatstyle',oldchatstyle_R_17 ? '1' :'0')
+              if (fbdockwrapper_R_17){
+                              CSS_R_?.conditionClass_R_?(fbdockwrapper_R_17,'oldChat',oldchatstyle_R_17);
+})
+});
+          ChatSidebar_R_?.disable_R_?();
+          ChatSidebar_R_?.isEnabled = ChatSidebar_R_?.isViewportCapable = ChatSidebar_R_?.shouldShowSidebar = ChatSidebar_R_?.isVisible = function () {
+            return false
+};
+          ChatSidebar_R_?.enable = ChatSidebar_R_?.disable = ChatSidebar_R_?.toggle = function () {
+
+};
+          CSS_R_?.removeClass(document.documentElement,'sidebarMode');
+          CSS_R_?.removeClass(document.documentElement,'sidebarCapable');
+          var oldChatConfigGet_R_17 = ChatConfig_R_?.get;
+          ChatConfig_R_?.get = function (arg_R_24) {
+            if (arg_R_24 == 'sidebar'){
+                              return 0;
+})
+              if (arg_R_24 == 'sidebar.minimum_width'){
+                              return 999999;
+})
+              return oldChatConfigGet_R_17.apply_R_?(this,arguments_R_?)
+};
+          var tabProfileLinkAdder_R_17 = function (that_R_25) {
+            try {
+                              var anchor_R_25 = DOM_R_?.create_R_?('a');
+                DOM_R_?.setContent_R_?(anchor_R_25,that_R_25.name);
+                anchor_R_25.href = that_R_25.getProfileURI_R_?();
+                anchor_R_25.onclick = function () {
+                  if (!oldchatstyle_R_17){
+                                          return false;
+})
+};
+                var titlebartext_R_25 = DOM_R_?.find_R_?(that_R_25.chatWrapper,'.titlebarText');
+                DOM_R_?.setContent(titlebartext_R_25,anchor_R_25);catch(e){
+;
+}
+};
+          var oldChatTabLoadData_R_17 = ChatTab_R_?.prototype.loadData;
+          ChatTab_R_?.prototype.loadData = function () {
+            var retval_R_27 = oldChatTabLoadData_R_17.apply_R_?(this,arguments_R_?)
+              tabProfileLinkAdder_R_?(this)
+              return retval_R_27
+};
+          var oldChatTabUpdateName_R_17 = ChatTab_R_?.prototype._updateName;
+          ChatTab_R_?.prototype._updateName = function () {
+            var retval_R_28 = oldChatTabUpdateName_R_17.apply_R_?(this,arguments_R_?)
+              tabProfileLinkAdder_R_?(this)
+              return retval_R_28
+};
+          var oldChatDisplayInterimUpdateMultichatToolbar_R_17 = ChatDisplayInterim_R_?.prototype.updateMultichatToolbar;
+          ChatDisplayInterim_R_?.prototype.updateMultichatToolbar = function (id_R_29) {
+            var retval_R_29 = oldChatDisplayInterimUpdateMultichatToolbar_R_17.apply_R_?(this,arguments_R_?)
+              tabProfileLinkAdder_R_?(this.tabs[id_R_29])
+              return retval_R_29
+};
+          for(var thistab_R_17 in chatDisplay_R_?.tabs){
+            tabProfileLinkAdder_R_?(chatDisplay_R_?.tabs[thistab_R_17]);
+};
+          if (!window.ChatBuddyList){
+                          window.ChatBuddyList = function () {
+                this.user = presence_R_?.user
+                  this.buddyListID = window.ChatBuddyList.ID++
+                  this.errorMode = false
+                  this.shouldShowLoading = false
+                  this.sortedList = []
+                  this.flMode = false
+                  this.flData = {}
+                  this.otherFriendsFlid = '-1'
+                  this.botsFlid = '-2'
+                  this.showingErrorMessage = false
+                  this.flSortableGroup = null
+                  this.reorderingLists = false
+                  this.flOpts = {}
+                  this.externalFlids = []
+};
+              copy_properties_R_?(window.ChatBuddyList,{                ID_R_?:0,                OVERLAY_ONLINE_R_?:0,                OVERLAY_IDLE_R_?:1,                OVERLAY_OFFLINE_R_?:-1,                OVERLAY_MOBILE_R_?:2,                DEFAULT_OPTS_R_?:{                  fullDisplay_R_?:true,                  excludeIds_R_?:{}},                MAX_BUDDY_NAME_LENGTH_R_?:20});
+              Class_R_?.mixin_R_?(window.ChatBuddyList,'Arbiter',{                _lastRenderRev_R_?:null,                _lastSortRev_R_?:null,                _showTime_R_?:null,                init_R_?:function (d_R_31,c_R_31,b_R_31,a_R_31) {
+                  this.root = d_R_31
+                    this.flMode = b_R_31
+                    this.flData = a_R_31
+                    this.shouldShowLoading = c_R_31
+                    this._log = EagleEye_R_?.createLogger_R_?('chat-buddylist',0.1)
+                    this._init_R_?()
+                    Arbiter_R_?.subscribe_R_?(['buddylist/availability-changed','buddylist/updated'],this._render.bind_R_?(this))
+                    Arbiter_R_?.subscribe('buddylist/update-error',this._showLoadError.bind(this))
+                    Arbiter_R_?.subscribe('buddylist/fl-changed',this._handleFlChange.bind(this))
+},                initError_R_?:function (a_R_32) {
+                  this.root = a_R_32
+                    this.errorMode = true
+                    this._init_R_?()
+},                _init_R_?:function () {
+                  this.loaded = false
+                    this._isVisible = false
+                    this.updateDiff = 0
+                    this.rendered = false
+                    this.showingError = false
+                    this.contentDiv = DOM_R_?.find_R_?(this.root,'div.content')
+                    this.buddyListError = DOM_R_?.find(this.root,'div.status')
+                    Arbiter_R_?.subscribe_R_?(PresenceMessage_R_?.getArbiterMessageType_R_?('fl_settings'),this._handleFLMessage.bind_R_?(this))
+                    Arbiter_R_?.subscribe('chat/connect',this._showLoading.bind(this))
+                    this.setCompactDisplay_R_?(chatOptions_R_?.getSetting_R_?('compact_buddylist'))
+                    Arbiter_R_?.subscribe('chat/option-changed',this._updateSetting.bind(this))
+                    Arbiter_R_?.inform_R_?('buddylist/initialized',this,Arbiter_R_?.BEHAVIOR_PERSISTENT)
+                    this.inform('initialized',this,Arbiter_R_?.BEHAVIOR_PERSISTENT)
+},                setCompactDisplay_R_?:function (a_R_34) {
+                  this.isCompactDisplay = a_R_34
+                    if (this.isCompactDisplay){
+                                          this.itemHeight = 18;
+} else {
+                    this.itemHeight = 22
+})
+                    if (this.rendered){
+                    this._render_R_?()
+})
+},                _handleFLMessage_R_?:function (c_R_35,a_R_35) {
+                  var b_R_35 = a_R_35.obj
+                    if (b_R_35.fl_mode){
+                    this._updateNames_R_?(b_R_35.fl_data)
+})
+},                _updateNames_R_?:function (b_R_36) {
+                  for(var a_R_36 in this.flData){
+if (typeof b_R_36[a_R_36] != 'undefined' && b_R_36[a_R_36].n != this.flData[a_R_36].n){
+                                          flname_R_? = b_R_36[a_R_36].n;
+                      elem_R_? = ge_R_?(this._getFriendListNameId_R_?(a_R_36));
+                      if (elem_R_?){
+                        DOM_R_?.setContent_R_?(elem_R_?,flname_R_?)
+});
+})
+}
+},                _flChanged_R_?:function (b_R_37,a_R_37) {
+                  return b_R_37 != this.flMode || !are_equal_R_?(a_R_37,this.flData)
+},                _onFlChange_R_?:function (d_R_38,c_R_38) {
+                  this._dirtyRendering_R_?()
+                    if (!this.rendered){
+                                          this.flMode = d_R_38;
+                      this.flData = c_R_38;
+                      return;
+})
+                    var g_R_38 = []
+                    var h_R_38 = []
+                    var f_R_38 = []
+                    var e_R_38 = []
+                    if (this.flMode && this.flMode == d_R_38){
+                                          var b_R_38 = this._groupAvailableListByFl(true);
+                      for(var a_R_38 in c_R_38){
+if (typeof this.flData[a_R_38] == 'undefined'){
+                                                  if (c_R_38[a_R_38].h){
+                            continue
+});
+                          g_R_38.push(a_R_38);
+                          f_R_38.push(a_R_38);
+} else {
+                        if (this.flData[a_R_38].h != c_R_38[a_R_38].h){
+                                                      if (c_R_38[a_R_38].h){
+                                                              h_R_38.push(a_R_38);
+} else {
+                                                              g_R_38.push(a_R_38);
+                                if (c_R_38[a_R_38].o){
+                                  f_R_38.push(a_R_38)
+});
+});
+} else {
+                          if (this.flData[a_R_38].o != c_R_38[a_R_38].o){
+                            if (c_R_38[a_R_38].o){
+                                                              f_R_38.push(a_R_38);
+} else {
+                              e_R_38.push(a_R_38)
+})
+})
+})
+})
+};
+                      for(var a_R_38 in this.flData){
+if (typeof c_R_38[a_R_38] == 'undefined'){
+                        h_R_38.push(a_R_38)
+})
+};
+                      this.flMode = d_R_38;
+                      if (h_R_38.length != 0){
+                        this._removeFlidsFromBuddyList(h_R_38,b_R_38)
+});
+                      if (e_R_38.length != 0){
+                        this._goOfflineToLists_R_?(e_R_38,true)
+});
+                      this.flData = c_R_38;
+                      if (g_R_38.length != 0){
+                        this._addFlidsToDOM(g_R_38,b_R_38)
+});
+                      if (f_R_38.length != 0){
+                        this._goOnlineToLists_R_?(f_R_38,true)
+});
+} else {
+                    if (this.flMode && this.flMode != d_R_38){
+                                              var b_R_38 = this._groupAvailableListByFl_R_?(true);
+                        h_R_38 = keys_R_?(this.flData);
+                        this.flMode = d_R_38;
+                        this.flData = c_R_38;
+                        this._addFlidsToDOM([null]);
+                        this._removeFlidsFromBuddyList_R_?(h_R_38,b_R_38);
+} else {
+                      if (!this.flMode && this.flMode != d_R_38){
+                                                  for(var a_R_38 in c_R_38){
+                            if (c_R_38[a_R_38].h){
+                              continue
+});
+                            g_R_38.push_R_?(a_R_38);
+                            if (c_R_38[a_R_38].o){
+                              f_R_38.push(a_R_38)
+});
+};
+                          this.flMode = d_R_38;
+                          this.flData = c_R_38;
+                          this._removeFlidsFromDOM_R_?([null]);
+                          if (g_R_38.length > 0){
+                            this._addFlidsToDOM_R_?(g_R_38)
+});
+                          if (f_R_38.length > 0){
+                            this._goOnlineToLists.bind_R_?(this,f_R_38,true).defer_R_?()
+});
+})
+})
+})
+                    this._render_R_?()
+},                _addFlidsToDOM_R_?:function (e_R_39,f_R_39) {
+                  f_R_39 = f_R_39 || this._groupAvailableListByFl_R_?(true)
+                    var a_R_39 = this._getRenderedFriendLists_R_?()
+                    var c_R_39 = a_R_39[0]
+                    var h_R_39 = $('fbChatBuddyListParent')
+                    for(var g_R_39 = 0;g_R_39 < e_R_39.length;g_R_39++){
+                                          var d_R_39 = e_R_39[g_R_39];
+                      if (this.flMode && d_R_39){
+                                                  var b_R_39 = DOM_R_?.create_R_?('div',{                            id_R_?:this._getFriendListId_R_?(d_R_39),                            className_R_?:this._getFriendListItemClasses_R_?(d_R_39,f_R_39)});
+                          DOM_R_?.setContent_R_?(b_R_39,HTML_R_?(this._renderFriendListHeader_R_?(d_R_39)));
+                          DOM_R_?.appendContent_R_?(b_R_39,HTML_R_?(this._renderFriendListContent(d_R_39,[])));
+                          if (c_R_39 == d_R_39){
+                                                          DOM_R_?.prependContent(h_R_39,b_R_39);
+} else {
+                                                          var j_R_39 = a_R_39.indexOf_R_?(d_R_39);
+                              var i_R_39 = a_R_39[j_R_39 - 1];
+                              DOM_R_?.insertAfter_R_?(ge_R_?(this._getFriendListId(i_R_39)),b_R_39);
+});
+                          this._addFlSortable_R_?(d_R_39);
+} else {
+                        DOM_R_?.prependContent_R_?(h_R_39,HTML_R_?(this._renderFriendListContent_R_?(null,[])))
+});
+}
+                    this._addFriendListListeners_R_?(e_R_39)
+},                _removeFlidsFromDOM_R_?:function (b_R_40) {
+                  for(var c_R_40 = 0;c_R_40 < b_R_40.length;c_R_40++){
+                                          var a_R_40 = b_R_40[c_R_40];
+                      if (a_R_40){
+                                                  if (ge_R_?(this._getFriendListId(a_R_40))){
+                                                          DOM_R_?.remove($(this._getFriendListId_R_?(a_R_40)));
+                              this._removeFlSortable_R_?(a_R_40);
+});
+} else {
+                                                  DOM_R_?.remove_R_?($(this._getAvailableMarkerId_R_?(a_R_40)));
+                          DOM_R_?.remove($(this._getIdleMarkerId_R_?(a_R_40)));
+});
+}
+},                contentChanged_R_?:function () {
+                  this.inform_R_?('content-changed')
+},                show_R_?:function () {
+                  if (this._isVisible){
+                    return
+})
+                    this._showTime = this._showTime || new Date_R_?
+                    AvailableList_R_?.update_R_?()
+                    this._isVisible = true
+                    if (!this.rendered){
+                                          this.shouldShowLoading = true;
+                      this._firstRender_R_?();
+                      if (AvailableList_R_?.haveFullList){
+                        this._render.bind_R_?(this).defer_R_?()
+});
+})
+                    CSS_R_?.show_R_?(this.root)
+},                hide_R_?:function () {
+                  if (!this._isVisible){
+                    return
+})
+                    this._showTime = null
+                    this._isVisible = false
+                    this.exitReorderingFlMode_R_?()
+                    CSS_R_?.hide_R_?(this.root)
+},                _getUserFlid_R_?:function (c_R_44,a_R_44) {
+                  if (a_R_44 === null || a_R_44 === undefined){
+                                          var b_R_44 = this._getUserFlids_R_?(c_R_44);
+                      a_R_44 = b_R_44[0];
+})
+                    return a_R_44
+},                _getSortedList_R_?:function () {
+                  if (this._lastSortRev != AvailableList_R_?.getRev()){
+                                          this.sortedList = this._sort_R_?(AvailableList_R_?.getAvailableIDs_R_?());
+                      this._lastSortRev = AvailableList_R_?.getRev_R_?();
+})
+                    return this.sortedList
+},                getSortedListUI_R_?:function (a_R_46) {
+                  if (!a_R_46 && this.flMode){
+                                          var b_R_46 = this._groupAvailableListByFl_R_?(true);
+                      var c_R_46 = [];
+                      for(var a_R_46 in b_R_46){
+c_R_46 = c_R_46.concat_R_?(b_R_46[a_R_46])
+};
+                      var d_R_46 = {};
+                      return c_R_46.filter_R_?(function (e_R_47) {
+                        return !d_R_46[e_R_47] && d_R_46[e_R_47] = true
+});
+})
+                    return this._getSortedList_R_?()
+},                getFriendLists_R_?:function () {
+                  var a_R_48 = {}
+                    copy_properties_R_?(a_R_48,this.flData)
+                    delete a_R_48[this.otherFriendsFlid]
+                    delete a_R_48[this.botsFlid]
+                    return a_R_48
+},                _getRenderedFriendLists_R_?:function () {
+                  var b_R_49 = []
+                    for(var a_R_49 in this.flData){
+if (!this.flData[a_R_49].h){
+                    b_R_49.push_R_?(a_R_49)
+})
+}
+                    return b_R_49
+},                _getFriendListsInChat_R_?:function () {
+                  var a_R_50 = this._getRenderedFriendLists_R_?()
+                    a_R_50.remove_R_?(this.otherFriendsFlid)
+                    a_R_50.remove(this.botsFlid)
+                    return a_R_50
+},                updateUserInfos_R_?:function (a_R_51) {
+                  copy_properties_R_?(ChatUserInfos_R_?,a_R_51)
+},                _sort_R_?:function (b_R_52) {
+                  var a_R_52 = this._compareFunction.bind_R_?(this)
+                    b_R_52.sort_R_?(a_R_52)
+                    return b_R_52
+},                _compareFunction_R_?:function (a_R_53,d_R_53,b_R_53,e_R_53) {
+                  if (typeof b_R_53 == 'undefined'){
+                    b_R_53 = AvailableList_R_?.isIdle_R_?(a_R_53)
+})
+                    if (typeof e_R_53 == 'undefined'){
+                    e_R_53 = AvailableList_R_?.isIdle(d_R_53)
+})
+                    if (b_R_53 ^ e_R_53){
+                    return b_R_53 ? 1 :-1
+})
+                    var c_R_53 = ChatUserInfos_R_?[a_R_53].name.toLowerCase_R_?()
+                    var f_R_53 = ChatUserInfos_R_?[d_R_53].name.toLowerCase()
+                    return c_R_53 < f_R_53 ? -1 :1
+},                itemOnClick_R_?:function (c_R_54) {
+                  var b_R_54 = DataStore_R_?.get_R_?(c_R_54,'id')
+                    var a_R_54 = DataStore_R_?.get(c_R_54,'flid')
+                    presence_R_?.pauseSync_R_?()
+                    Chat_R_?.openTab_R_?(b_R_54,null,null,'buddylist')
+                    if (!this.isSticky_R_?()){
+                    Chat_R_?.closeBuddyList_R_?()
+})
+                    this.inform_R_?('buddylist/buddy-clicked',{                    flid_R_?:a_R_54,                    id_R_?:b_R_54})
+                    presence_R_?.resumeSync_R_?()
+},                _renderItem_R_?:function (c_R_55,a_R_55,d_R_55) {
+                  var i_R_55 = ChatUserInfos_R_?[c_R_55]
+                    var f_R_55 = i_R_55.name
+                    var h_R_55 = i_R_55.thumbSrc
+                    var e_R_55 = ['<a',' href="#"',' id="',this._getBuddyListItemId_R_?(c_R_55,a_R_55),'"',' class="clearfix friend',d_R_55 ? ' idle' :'','"',' title="',f_R_55,'"',' data-id="',parseInt_R_?(c_R_55,10),'"',' data-flid="',a_R_55,'"','>']
+                    var b_R_55 = !this.isCompactDisplay
+                    var g_R_55 = this._getFlOpts_R_?(a_R_55)
+                    b_R_55 = g_R_55.fullDisplay
+                    if (b_R_55){
+                    e_R_55 = e_R_55.concat_R_?('<img src="',h_R_55,'" />')
+})
+                    e_R_55 = e_R_55.concat('<span id="',this._getBuddyListItemNameId_R_?(c_R_55,a_R_55),'">',htmlize_R_?(f_R_55),'</span>','</a>')
+                    return e_R_55.join_R_?('')
+},                _groupAvailableListByFl_R_?:function (c_R_56,a_R_56) {
+                  if (!this.flMode || !this.flData){
+                    return null
+})
+                    c_R_56 = c_R_56 || false
+                    a_R_56 = a_R_56 || false
+                    var e_R_56 = {}
+                    for(var b_R_56 in this.flData){
+e_R_56[b_R_56] = []
+}
+                    if (a_R_56){
+                    return e_R_56
+})
+                    var d_R_56 = c_R_56 ? this._getSortedList_R_?() :AvailableList_R_?.getAvailableIDs_R_?()
+                    d_R_56.forEach_R_?(function (h_R_57) {
+                    var g_R_57 = FriendLists_R_?.get_R_?(h_R_57)
+                      if (g_R_57){
+                      for(var i_R_57 = 0;i_R_57 < g_R_57.length;++i_R_57){
+                                                  var f_R_57 = g_R_57[i_R_57];
+                          e_R_56[f_R_57] && e_R_56[f_R_57].push_R_?(h_R_57);
+}
+})
+})
+                    return e_R_56
+},                _listNameInUse_R_?:function (b_R_58) {
+                  for(var a_R_58 in this.flData){
+if (this.flData[a_R_58].n == b_R_58){
+                    return true
+})
+}
+                    return false
+},                createFriendList_R_?:function (b_R_59) {
+                  if (this._listNameInUse_R_?(b_R_59)){
+                                          ErrorDialog_R_?.show_R_?(lang_R_17['error_dialog_title'],lang_R_17['list_conflict_text']);
+                      return;
+})
+                    var a_R_59 = {                    create_R_?:b_R_59}
+                    this._saveBuddyListSetting_R_?(a_R_59,function () {
+                    for(var c_R_60 in this.flData){
+if (this.flData[c_R_60].n == b_R_59){
+                                              if (!this.flData[c_R_60].h){
+                          this.scrollIntoView_R_?($(this._getFriendListId_R_?(c_R_60)))
+});
+                        Arbiter_R_?.inform_R_?('friend-list/new',{                          flid_R_?:c_R_60,                          fl_name_R_?:b_R_59});
+                        break;
+})
+}
+}.bind_R_?(this))
+},                handleFlInChat_R_?:function (b_R_61,a_R_61) {
+                  if (b_R_61){
+                                          this._unHideFriendListFromChat_R_?(a_R_61);
+} else {
+                    this._hideFriendListFromChat_R_?(a_R_61)
+})
+},                _unHideFriendListFromChat_R_?:function (b_R_62) {
+                  var d_R_62 = this._getFriendListsInChat_R_?().length == 0
+                    var c_R_62 = [b_R_62]
+                    var a_R_62 = {                    unhide_from_chat_R_?:1,                    flids_R_?:c_R_62}
+                    this.flData[b_R_62].h = 0
+                    this._saveBuddyListSetting_R_?(a_R_62,function () {
+                    this._showEmptyListMomentarily_R_?(b_R_62)
+                      this.scrollIntoView_R_?($(this._getFriendListId_R_?(b_R_62)))
+}.bind_R_?(this))
+                    if (d_R_62){
+                                          this._onFlChange_R_?(true,this.flData);
+} else {
+                    this._addFlidsToDOM_R_?(c_R_62)
+})
+},                _hideFriendListFromChat_R_?:function (b_R_64) {
+                  var d_R_64 = this._getFriendListsInChat_R_?().length == 1
+                    var c_R_64 = [b_R_64]
+                    var a_R_64 = {                    hide_from_chat_R_?:1,                    flids_R_?:c_R_64}
+                    this.flData[b_R_64].h = 1
+                    this._saveBuddyListSetting_R_?(a_R_64)
+                    if (d_R_64){
+                                          this._onFlChange_R_?(false,this.flData);
+} else {
+                    this._removeFlidsFromBuddyList_R_?(c_R_64)
+})
+},                _friendListHandleSwitchThrown_R_?:function (b_R_65) {
+                  var a_R_65 = this.flData[b_R_65].o
+                    if (a_R_65){
+                                          this._goOfflineToLists_R_?([b_R_65]);
+} else {
+                    this._goOnlineToLists_R_?([b_R_65])
+})
+},                _friendListHandleSwitchMouseDown_R_?:function (b_R_66) {
+                  var a_R_66 = Event_R_?.listen_R_?(document,'mouseup',function () {
+                    a_R_66.remove_R_?()
+                      this._friendListHandleSwitchThrown_R_?(b_R_66)
+}.bind_R_?(this))
+},                _friendListHandleMouseOver_R_?:function (a_R_68) {
+                  if (this.reorderingLists){
+                    return
+})
+                    CSS_R_?.addClass_R_?($(this._getFriendListId_R_?(a_R_68)),'hover')
+},                _friendListHandleMouseOut_R_?:function (a_R_69) {
+                  CSS_R_?.removeClass_R_?($(this._getFriendListId_R_?(a_R_69)),'hover')
+},                _saveBuddyListSetting_R_?:function (b_R_70,a_R_70) {
+                  b_R_70.user = this.user
+                    a_R_70 = a_R_70 || bagofholding_R_?
+                    new AsyncRequest_R_?.setData_R_?(b_R_70).setURI_R_?('/ajax/chat/buddy_list_settings.php').setHandler_R_?(this._onBuddyListSettingSave.bind_R_?(this,a_R_70)).setAllowCrossPageTransition_R_?(true).send_R_?()
+},                _goOnlineToLists_R_?:function (a_R_71,b_R_71) {
+                  b_R_71 = b_R_71 || false
+                    this._handleFlVisibilityChange_R_?(a_R_71,1)
+                    this._saveBuddyListSetting_R_?({                    online_to_list_R_?:1,                    flids_R_?:a_R_71,                    read_only_R_?:b_R_71,                    notify_ids_R_?:Chat_R_?.getActiveFriendChats_R_?()})
+},                _handleFlVisibilityChange_R_?:function (d_R_72,f_R_72,a_R_72) {
+                  for(var e_R_72 = 0;e_R_72 < d_R_72.length;e_R_72++){
+                                          var c_R_72 = d_R_72[e_R_72];
+                      var b_R_72 = ge_R_?(this._getFriendListId_R_?(c_R_72));
+                      if (!b_R_72){
+                        continue
+});
+                      this.flData[c_R_72].o = f_R_72;
+                      if (f_R_72){
+                                                  CSS_R_?.addClass(b_R_72,'online');
+                          CSS_R_?.removeClass(b_R_72,'offline');
+                          if (c_R_72 == this.otherFriendsFlid){
+                            this._showEmptyListMomentarily_R_?(c_R_72)
+});
+} else {
+                                                  CSS_R_?.addClass_R_?(b_R_72,'offline');
+                          CSS_R_?.removeClass_R_?(b_R_72,'online');
+});
+                      var g_R_72 = DOM_R_?.scry_R_?(b_R_72,'div.titletip strong')[0];
+                      g_R_72 && DOM_R_?.setContent_R_?(g_R_72,this._getFriendListTooltipText_R_?(c_R_72));
+                      a_R_72 && a_R_?(c_R_72);
+}
+},                _showEmptyListMomentarily_R_?:function (b_R_73) {
+                  this.shownEmptyFlids = this.shownEmptyFlids || {}
+                    this.shownEmptyFlids[b_R_73] = 1
+                    var a_R_73 = ge_R_?(this._getFriendListId_R_?(b_R_73))
+                    if (a_R_73){
+                    CSS_R_?.addClass_R_?(a_R_73,'show_empty_list')
+})
+                    function () {
+                    delete this.shownEmptyFlids[b_R_73]
+                      var c_R_74 = ge_R_?(this._getFriendListId_R_?(b_R_73))
+                      if (c_R_74){
+                      CSS_R_?.removeClass_R_?(c_R_74,'show_empty_list')
+})
+}.bind_R_?(this).defer_R_?(8000,false)
+},                _goOfflineToLists_R_?:function (a_R_75,c_R_75) {
+                  c_R_75 = c_R_75 || false
+                    var b_R_75 = this._groupAvailableListByFl_R_?()
+                    this._handleFlVisibilityChange_R_?(a_R_75,0)
+                    if (!c_R_75){
+                    this._saveBuddyListSetting_R_?({                      offline_to_list_R_?:1,                      flids_R_?:a_R_75,                      notify_ids_R_?:Chat_R_?.getActiveFriendChats_R_?()})
+})
+},                _removeFlidsFromBuddyList_R_?:function (a_R_76,b_R_76) {
+                  this._removeFlidsFromDOM_R_?(a_R_76)
+},                _onBuddyListSettingSave_R_?:function (b_R_77,a_R_77) {
+                  var d_R_77 = a_R_77.getPayload_R_?()
+                    if (d_R_77){
+                                          d_R_77.userInfos && this.updateUserInfos_R_?(d_R_77.userInfos);
+                      d_R_77.availableList && AvailableList_R_?.addLegacyAvailableList_R_?(d_R_77.availableList);
+                      if (d_R_77.flData){
+                                                  c_R_77;
+                          if (typeof d_R_77.flMode != 'undefined'){
+                                                          c_R_77 = d_R_77.flMode;
+} else {
+                            c_R_77 = true
+});
+                          this._onFlChange_R_?(c_R_77,d_R_77.flData);
+                          this._resetFlidClasses_R_?();
+});
+                      b_R_77 && b_R_?();
+})
+},                _resetFlidClasses_R_?:function () {
+                  if (!this.flMode){
+                    return
+})
+                    var c_R_78 = this._groupAvailableListByFl_R_?()
+                    for(var b_R_78 in this.flData){
+                    var a_R_78 = ge_R_?(this._getFriendListId_R_?(b_R_78));
+                    if (a_R_78){
+                      CSS_R_?.setClass_R_?(a_R_78,this._getFriendListItemClasses_R_?(b_R_78,c_R_78))
+});
+}
+},                _getFriendListItemClasses_R_?:function (b_R_79,e_R_79) {
+                  var d_R_79 = this.flData[b_R_79].o
+                    var c_R_79 = this.flData[b_R_79].h
+                    var a_R_79 = ['friend_list']
+                    if (d_R_79){
+                                          a_R_79.push('online');
+} else {
+                    a_R_79.push_R_?('offline')
+})
+                    if (!c_R_79 && this.shownEmptyFlids && this.shownEmptyFlids[b_R_79]){
+                    a_R_79.push('show_empty_list')
+})
+                    if (b_R_79 == this.otherFriendsFlid){
+                                          a_R_79.push('compact_friend_list');
+                      a_R_79.push('other_friends_list');
+})
+                    if (this.reorderingLists && b_R_79 == this.otherFriendsFlid || b_R_79 == this.botsFlid){
+                    a_R_79.push('suppress')
+})
+                    return a_R_79.join_R_?(' ')
+},                _renderFriendListHeader_R_?:function (c_R_80) {
+                  var b_R_80 = this.flData[c_R_80].n
+                    var e_R_80 = this.flData[c_R_80].o
+                    var a_R_80 = ''
+                    var f_R_80 = typeof this.flData[c_R_80].s != 'undefined'
+                    if (!f_R_80 && c_R_80 != this.otherFriendsFlid){
+                    var a_R_80 = '<a href="/friends/ajax/edit_list.php?list_id=' + c_R_80 + '" ' + 'rel="dialog-post">' + lang_R_17['edit_list_link'] + '</a>'
+})
+                    var d_R_80 = ['<div class="friendlist_name">','<span class="title"><a href="#" id="' + this._getFriendListNameId_R_?(c_R_80) + '">',htmlize_R_?(b_R_80),'</a></span>','<span class="edit_link">',a_R_80,'</span>','</div>']
+                    if (!f_R_80){
+                    d_R_80.push_R_?('<div class="switch"><a class="online_status" ','>','<div class="titletip"><strong>',this._getFriendListTooltipText_R_?(c_R_80),'</strong></div>','</a>','</div>')
+})
+                    return d_R_80.join_R_?('')
+},                _getFriendListTooltipText_R_?:function (a_R_81) {
+                  return this.flData[a_R_81].o ? lang_R_17['options_offline'] :lang_R_17['go_online']
+},                registerExternalFriendList_R_?:function (b_R_82) {
+                  if (!this.rendered){
+                    this._firstRender_R_?()
+})
+                    var a_R_82 = 'xfl_' + this.externalFlids.length
+                    this.externalFlids.push_R_?(a_R_82)
+                    this.flOpts[a_R_82] = b_R_82
+                    return a_R_82
+},                _renderFriendListContent_R_?:function (a_R_83,i_R_83) {
+                  l_R_83
+                    var d_R_83 = this.flMode && a_R_83
+                    if (d_R_83){
+                                          l_R_83 = ['<div id="',this._getFriendListContainerId_R_?(a_R_83),'"','class="friend_list_container">'];
+} else {
+                    l_R_83 = []
+})
+                    l_R_83.push_R_?('<div id="',this._getAvailableMarkerId_R_?(a_R_83),'" class="suppress"></div>')
+                    var g_R_83 = []
+                    var b_R_83 = false var c_R_? = false
+                    for(var k_R_83 = 0;k_R_83 < i_R_83.length;k_R_83++){
+                                          var e_R_83 = i_R_83[k_R_83];
+                      var f_R_83 = this._isIdle_R_?(e_R_83);
+                      var j_R_83 = [this._renderItem_R_?(e_R_83,a_R_83,f_R_83)];
+                      if (f_R_83){
+                                                  b_R_83 = true;
+                          g_R_83 = g_R_83.concat(j_R_83);
+} else {
+                                                  c_R_? = true;
+                          l_R_83 = l_R_83.concat_R_?(j_R_83);
+});
+}
+                    var h_R_83 = b_R_83 && c_R_? ? '' :' hide_idle_marker'
+                    l_R_83.push('<div id="',this._getIdleMarkerId_R_?(a_R_83),'" class="subheader',h_R_83,'"></div>')
+                    l_R_83 = l_R_83.concat(g_R_83)
+                    if (d_R_83){
+                    l_R_83.push('</div>')
+})
+                    return l_R_83.join_R_?('')
+},                _isIdle_R_?:function (a_R_84) {
+                  return AvailableList_R_?.isIdle_R_?(a_R_84)
+},                _addFriendListListeners_R_?:function (c_R_85) {
+                  if (!this.flMode){
+                    return
+})
+                    c_R_85 = c_R_85 || this._getRenderedFriendLists_R_?()
+                    for(var d_R_85 = 0;d_R_85 < c_R_85.length;d_R_85++){
+                                          var b_R_85 = c_R_85[d_R_85];
+                      if (typeof this.flData[b_R_85].s != 'undefined'){
+                        continue
+});
+                      var a_R_85 = $(this._getFriendListId_R_?(b_R_85));
+                      Event_R_?.listen_R_?(a_R_85,'mouseover',this._friendListHandleMouseOver.bind_R_?(this,b_R_85));
+                      Event_R_?.listen(a_R_85,'mouseout',this._friendListHandleMouseOut.bind(this,b_R_85));
+                      var e_R_85 = DOM_R_?.find_R_?(a_R_85,'a.online_status');
+                      Event_R_?.listen(e_R_85,'mousedown',this._friendListHandleSwitchMouseDown.bind(this,b_R_85));
+}
+},                _renderBuddyContent_R_?:function () {
+                  var a_R_86 = AvailableList_R_?.getCount_R_?() ? 'hide_empty_item' :''
+                    var g_R_86 = ['<div class="subgroup">','<div id="fbChatBuddyListParent" class="list_select">','<div id="',this._getBuddyListEmptyItemId_R_?(),'" class="info_text ',a_R_86,'">',lang_R_17['no_friends_online'],'</div>']
+                    c_R_86
+                    var d_R_86 = {}
+                    if (this.flMode){
+                                          c_R_86 = keys_R_?(this.flData);
+                      d_R_86 = this._groupAvailableListByFl_R_?(true);
+} else {
+                    c_R_86 = [null]
+})
+                    for(var e_R_86 = 0;e_R_86 < c_R_86.length;++e_R_86){
+                                          var b_R_86 = c_R_86[e_R_86];
+                      var f_R_86 = [];
+                      if (this.flMode && b_R_86){
+                                                  if (this.flData[b_R_86].h){
+                            continue
+});
+                          g_R_86.push_R_?('<div id="',this._getFriendListId_R_?(b_R_86),'"','class="',this._getFriendListItemClasses_R_?(b_R_86,d_R_86),'">',this._renderFriendListHeader_R_?(b_R_86));
+                          f_R_86 = d_R_86[b_R_86];
+} else {
+                        f_R_86 = this._getSortedList_R_?()
+});
+                      g_R_86.push(this._renderFriendListContent_R_?(b_R_86,f_R_86));
+                      if (this.flMode && b_R_86){
+                        g_R_86.push('</div>')
+});
+}
+                    g_R_86.concat_R_?(['</div>','</div>'])
+                    return g_R_86.join_R_?('')
+},                _render_R_?:function () {
+                  if (!this._isVisible || this._lastRenderRev == AvailableList_R_?.getRev_R_?()){
+                    return
+})
+                    this._lastRenderRev = AvailableList_R_?.getRev()
+                    this._getSortedList_R_?()
+                    CSS_R_?.conditionClass_R_?(this.contentDiv,'compact',this.isCompactDisplay)
+                    DOM_R_?.setContent_R_?(this.contentDiv,HTML_R_?(this._renderBuddyContent_R_?()))
+                    if (this.rendered){
+                                          this._hideError_R_?();
+                      this._addFriendListListeners_R_?();
+})
+                    if (this.errorMode){
+                    this._showLoadError_R_?()
+})
+                    if (this.shouldShowLoading){
+                                          this._showLoading_R_?();
+                      this.shouldShowLoading = false;
+} else {
+                    if (this._showTime){
+                                              var a_R_87 = new Date_R_? - this._showTime;
+                        this._showTime = null;
+                        this._log_R_?({                          buddy_list_open_R_?:a_R_87});
+})
+})
+},                _firstRender_R_?:function () {
+                  this._render_R_?()
+                    this.rendered = true
+                    Event_R_?.listen_R_?(this.contentDiv,'click',function (event_R_89) {
+                    var a_R_89 = Parent_R_?.byClass_R_?(event_R_89.getTarget_R_?(),'friend')
+                      a_R_89 && this.itemOnClick_R_?(a_R_89)
+}.bind_R_?(this))
+},                updateItemDisplay_R_?:function (d_R_90) {
+                  var a_R_90 = AvailableList_R_?.get_R_?(d_R_90)
+                    if (!a_R_90){
+                    return
+})
+                    var g_R_90 = this._getUserFlids_R_?(d_R_90)
+                    for(var c_R_90 = 0;c_R_90 < g_R_90.length;c_R_90++){
+                                          var b_R_90 = g_R_90[c_R_90];
+                      var f_R_90 = ge_R_?(this._getBuddyListItemId_R_?(d_R_90,b_R_90));
+                      if (!f_R_90){
+                        return
+});
+                      var e_R_90 = a_R_90 == AvailableList_R_?.IDLE;
+                      f_R_90 = HTML_R_?(this._renderItem_R_?(d_R_90,b_R_90,e_R_90)).getRootNode_R_?();
+}
+},                _showLoadError_R_?:function () {
+                  this._showError_R_?(lang_R_17['load_error'])
+},                _showLoading_R_?:function () {
+                  this._showError_R_?(lang_R_17['loading'])
+},                _hideError_R_?:function () {
+                  this.showingError = false
+                    CSS_R_?.removeClass_R_?(this.root,'error')
+                    this.contentChanged_R_?()
+},                _showError_R_?:function (a_R_94) {
+                  this._dirtyRendering_R_?()
+                    this.showingError = true
+                    DOM_R_?.setContent_R_?(this.buddyListError,HTML_R_?(a_R_94))
+                    CSS_R_?.addClass_R_?(this.root,'error')
+                    this.contentChanged_R_?()
+},                isSticky_R_?:function () {
+                  return chatOptions_R_?.getSetting_R_?('sticky_buddylist')
+},                enterErrorMode_R_?:function (a_R_96) {
+                  this.exitErrorMode_R_?()
+                    this.exitReorderingFlMode_R_?()
+                    this.showingErrorMessage = true
+                    var b_R_96 = $N('div',{                    id_R_?:'error_fl_alert'},[$N('span',{                    className_R_?:'helper_text'},a_R_96),$N('input',{                    type_R_?:'button',                    className_R_?:'inputbutton',                    value_R_?:lang_R_17['okay'],                    onclick_R_?:this.exitErrorMode.bind_R_?(this)})])
+                    DOM_R_?.insertBefore_R_?(b_R_96,this.contentDiv)
+},                exitErrorMode_R_?:function () {
+                  if (this.showingErrorMessage){
+                                          DOM_R_?.remove_R_?($('error_fl_alert'));
+                      this.showingErrorMessage = false;
+})
+                    return false
+},                enterReorderingFlMode_R_?:function () {
+                  if (this.reorderingLists){
+                    return
+})
+                    Bootloader_R_?.loadComponents_R_?('sort',function () {
+                    this.exitErrorMode_R_?()
+                      this.reorderingLists = true
+                      CSS_R_?.addClass_R_?(this.root,'reorder_fl')
+                      var a_R_99 = this._getRenderedFriendLists_R_?()
+                      this.flSortableGroup = new SortableGroup_R_?
+                      for(var c_R_99 = 0;c_R_99 < a_R_99.length;c_R_99++){
+                                              var b_R_99 = a_R_99[c_R_99];
+                        if (b_R_99 == this.otherFriendsFlid || b_R_99 == this.botsFlid){
+                                                      CSS_R_?.addClass(this._getFriendListId_R_?(b_R_99),'suppress');
+} else {
+                          this._addFlSortable_R_?(b_R_99)
+});
+}
+                      var d_R_99 = $N('div',{                      id_R_?:'reorder_fl_alert'},[$N('span',{                      className_R_?:'helper_text'},lang_R_17['reorder_list_start']),$N('input',{                      type_R_?:'button',                      className_R_?:'inputbutton',                      value_R_?:lang_R_17['reorder_list_done'],                      onclick_R_?:this.exitReorderingFlMode.bind_R_?(this)})])
+                      DOM_R_?.insertBefore_R_?(d_R_99,this.contentDiv)
+                      this.inform_R_?('reorder-mode/enter')
+                      this.contentChanged_R_?()
+}.bind_R_?(this))
+},                exitReorderingFlMode_R_?:function () {
+                  if (!this.reorderingLists){
+                    return
+})
+                    this._reorderFlids_R_?()
+                    DOM_R_?.remove_R_?($('reorder_fl_alert'))
+                    CSS_R_?.removeClass_R_?(this.root,'reorder_fl')
+                    var a_R_100 = this._getRenderedFriendLists_R_?()
+                    for(var c_R_100 = 0;c_R_100 < a_R_100.length;c_R_100++){
+                                          var b_R_100 = a_R_100[c_R_100];
+                      if (b_R_100 == this.otherFriendsFlid || b_R_100 == this.botsFlid){
+                                                  CSS_R_?.removeClass(this._getFriendListId_R_?(b_R_100),'suppress');
+} else {
+                        this._removeFlSortable_R_?(b_R_100)
+});
+}
+                    this.reorderingLists = false
+                    this.flSortableGroup.destroy_R_?()
+                    this.flSortableGroup = null
+                    this.inform_R_?('reorder-mode/exit')
+                    this.contentChanged_R_?()
+},                _addFlSortable_R_?:function (a_R_101) {
+                  if (this.flSortableGroup != null){
+                    this.flSortableGroup.addSortable_R_?(a_R_101,$(this._getFriendListId_R_?(a_R_101)))
+})
+},                _removeFlSortable_R_?:function (a_R_102) {
+                  if (this.flSortableGroup != null){
+                    this.flSortableGroup.removeSortable_R_?(a_R_102)
+})
+},                _reorderFlids_R_?:function () {
+                  var a_R_103 = {                    reorder_R_?:1,                    flids_R_?:this.flSortableGroup.getOrder_R_?()}
+                    this._saveBuddyListSetting_R_?(a_R_103)
+},                _getGlobalFlids_R_?:function (a_R_104) {
+                  var b_R_104 = this.flMode && this.flData ? keys_R_?(this.flData) :[null]
+                    return a_R_104 ? b_R_104 :b_R_104.concat_R_?(this.externalFlids)
+},                _getUserFlids_R_?:function (d_R_105,a_R_105,b_R_105) {
+                  var c_R_105 = a_R_105 && a_R_105.fl ? a_R_105.fl :FriendLists_R_?.get_R_?(d_R_105)
+                    if (!b_R_105){
+                    c_R_105 = this._addExternalFlids_R_?(d_R_105,c_R_105)
+})
+                    return c_R_105
+},                _addExternalFlids_R_?:function (d_R_106,b_R_106) {
+                  b_R_106 = b_R_106 ? $A(b_R_106) :[]
+                    for(var c_R_106 = 0;c_R_106 < this.externalFlids.length;c_R_106++){
+                                          var a_R_106 = this.externalFlids[c_R_106];
+                      var e_R_106 = this._getFlOpts_R_?(a_R_106);
+                      if (!e_R_106.excludeIds[d_R_106]){
+                        b_R_106.push_R_?(a_R_106)
+});
+}
+                    return b_R_106
+},                _getFlOpts_R_?:function (a_R_107) {
+                  return this.flOpts[a_R_107] || ChatBuddyList_R_?.DEFAULT_OPTS
+},                _getAvailableMarkerId_R_?:function (a_R_108) {
+                  return this._encodeFlid_R_?('buddy_list_avail_marker',a_R_108)
+},                _getIdleMarkerId_R_?:function (a_R_109) {
+                  return this._encodeFlid_R_?('buddy_list_idle_marker',a_R_109)
+},                _getBuddyListItemId_R_?:function (b_R_110,a_R_110) {
+                  return this._encodeFlid_R_?('buddy_list_item_' + b_R_110,a_R_110)
+},                _getBuddyListItemNameId_R_?:function (b_R_111,a_R_111) {
+                  return this._encodeFlid_R_?('buddy_list_item_name_' + b_R_111,a_R_111)
+},                _getBuddyListEmptyItemId_R_?:function () {
+                  return 'buddy_list_empty_item'
+},                _encodeFlid_R_?:function (a_R_113,b_R_113) {
+                  return b_R_113 ? b_R_113 + '_' + a_R_113 :a_R_113 + '_' + this.buddyListID
+},                _getFriendListId_R_?:function (a_R_114) {
+                  return this._encodeFlid_R_?('friend_list_item',a_R_114)
+},                _getFriendListNameId_R_?:function (a_R_115) {
+                  return this._encodeFlid_R_?('friend_list_name',a_R_115)
+},                _getFriendListContainerId_R_?:function (a_R_116) {
+                  return this._encodeFlid_R_?('friend_list_container',a_R_116)
+},                _updateSetting_R_?:function (a_R_117,b_R_117) {
+                  this._dirtyRendering_R_?()
+                    switch (b_R_117.name) {
+                      case 'compact_buddylist': 
+                      this.setCompactDisplay(b.value);
+                      break;}
+                    this._render_R_?()
+},                _dirtyRendering_R_?:function () {
+                  this._lastRenderRev = null
+},                _handleFlChange_R_?:function (a_R_119,c_R_119) {
+                  var d_R_119 = c_R_119.flMode
+                    var b_R_119 = c_R_119.flData
+                    if (this._flChanged_R_?(d_R_119,b_R_119)){
+                    this._onFlChange_R_?(d_R_119,b_R_119)
+})
+},                scrollIntoView_R_?:function (a_R_120) {
+                  var b_R_120 = a_R_120.offsetParent
+                    var d_R_120 = Rect_R_?(a_R_120)
+                    var c_R_120 = d_R_120.boundWithin_R_?(Rect_R_?(b_R_120)).getPositionVector_R_?()
+                    d_R_120.getPositionVector().sub_R_?(c_R_120).scrollElementBy_R_?(b_R_120)
+}});
+});
+          if (!window.ChatBuddyListDropdown){
+                          window.ChatBuddyListDropdown = function () {
+
+};
+              window.ChatBuddyListDropdown.prototype = {                init_R_?:function (a_R_122) {
+                  this.root = a_R_122
+                    Selector_R_?.listen_R_?(a_R_122,'open',function () {
+                    this._resizeAndFlip_R_?()
+                      var b_R_123 = Event_R_?.listen_R_?(window,'resize',this._resizeAndFlip.bind_R_?(this))
+                      var c_R_123 = Selector_R_?.listen(a_R_122,'close',function () {
+                      b_R_123.remove_R_?()
+                        Selector_R_?.unsubscribe_R_?(c_R_123)
+})
+}.bind_R_?(this))
+},                _resizeAndFlip_R_?:function () {
+                  var a_R_125 = Vector2_R_?.getElementPosition_R_?(this.root,'viewport')
+                    var g_R_125 = Vector2_R_?.getViewportDimensions_R_?()
+                    var f_R_125 = a_R_125.y > g_R_125.y / 2
+                    CSS_R_?.conditionClass_R_?(this.root,'uiSelectorBottomUp',f_R_125)
+                    if (!ua_R_?.ie_R_?() || ua_R_?.ie() > 7){
+                                          var b_R_125 = Selector_R_?.getSelectorMenu_R_?(this.root);
+                      var c_R_125 = Vector2_R_?.getElementPosition(b_R_125,'viewport');
+                      if (f_R_125){
+                                                  availableHeight_R_? = a_R_125.y;
+} else {
+                        availableHeight_R_? = g_R_125.y - c_R_125.y
+});
+                      var d_R_125 = DOM_R_?.find_R_?(b_R_125,'ul.uiMenuInner');
+                      var e_R_125 = b_R_125.scrollHeight - d_R_125.scrollHeight;
+                      availableHeight_R_? = e_R_125;
+                      CSS_R_?.setStyle_R_?(b_R_125,'max-height',availableHeight_R_? + 'px');
+})
+}};
+              window.ChatBuddyListFriendListsDropdown = function () {
+                this.parent = new ChatBuddyListDropdown_R_?
+};
+              window.ChatBuddyListFriendListsDropdown.prototype = {                init_R_?:function (b_R_127,c_R_127,a_R_127) {
+                  this.parent.init_R_?(b_R_127)
+                    this.root = this.parent.root
+                    this.template = c_R_127
+                    this.form = a_R_127
+                    this.menu = DOM_R_?.find_R_?(b_R_127,'div.menu')
+                    this.noListsEl = DOM_R_?.find(b_R_127,'li.noListsAvailable')
+                    Arbiter_R_?.subscribe_R_?('buddylist/initialized',this._initBuddyList.bind_R_?(this))
+},                _initBuddyList_R_?:function (a_R_128,b_R_128) {
+                  this.buddyList = b_R_128
+                    Event_R_?.listen_R_?(this.form,'submit',this._onSubmitForm.bind_R_?(this))
+                    Selector_R_?.listen(this.root,'open',this._onOpen.bind(this))
+                    Selector_R_?.listen(this.root,'toggle',this._onToggle.bind(this))
+},                _clearFriendLists_R_?:function () {
+                  var a_R_129 = Selector_R_?.getOptions_R_?(this.root)
+                    a_R_129.forEach_R_?(DOM_R_?.remove)
+},                _onOpen_R_?:function () {
+                  var c_R_130 = this.buddyList.getFriendLists_R_?()
+                    this._clearFriendLists_R_?()
+                    if (count_R_?(c_R_130) > 0){
+                                          CSS_R_?.hide_R_?(this.noListsEl);
+                      var e_R_130 = [$N('option')];
+                      var f_R_130 = [];
+                      for(var b_R_130 in c_R_130){
+                        var a_R_130 = c_R_130[b_R_130].n;
+                        var g_R_130 = this.template.render_R_?();
+                        g_R_130.setAttribute_R_?('data-label',a_R_130);
+                        var d_R_130 = DOM_R_?.find_R_?(g_R_130,'span.itemLabel');
+                        DOM_R_?.setContent_R_?(d_R_130,a_R_130);
+                        DOM_R_?.insertBefore_R_?(g_R_130,this.noListsEl);
+                        e_R_130.push_R_?($N('option',{                          value_R_?:b_R_130}));
+                        c_R_130[b_R_130].h === 0 && f_R_130.push(b_R_130);
+};
+                      Selector_R_?.attachMenu_R_?(this.root,this.menu,$N('select',e_R_130));
+                      f_R_130.forEach_R_?(function (h_R_131) {
+                        Selector_R_?.setSelected_R_?(this.root,h_R_131,true)
+}.bind_R_?(this));
+} else {
+                    CSS_R_?.show_R_?(this.noListsEl)
+})
+},                _onSubmitForm_R_?:function (event_R_132) {
+                  if (!this.nameInput){
+                    this.nameInput = DOM_R_?.find_R_?(this.form,'input.nameInput')
+})
+                    var a_R_132 = this.nameInput.value
+                    this.buddyList.createFriendList_R_?(a_R_132)
+                    this.nameInput.value = ''
+                    this.nameInput.blur_R_?()
+                    Selector_R_?.toggle_R_?(this.root)
+                    return event_R_132.kill_R_?()
+},                _onToggle_R_?:function (a_R_133) {
+                  var c_R_133 = a_R_133.option
+                    var b_R_133 = Selector_R_?.getOptionValue_R_?(c_R_133)
+                    var d_R_133 = Selector_R_?.isOptionSelected_R_?(c_R_133)
+                    this.buddyList.handleFlInChat_R_?(d_R_133,b_R_133)
+                    Selector_R_?.toggle_R_?(this.root)
+}};
+              window.ChatBuddyListOptionsDropdown = function () {
+                this.parent = new ChatBuddyListDropdown_R_?
+};
+              window.ChatBuddyListOptionsDropdown.prototype = {                init_R_?:function (a_R_135) {
+                  this.parent.init_R_?(a_R_135)
+                    this.root = this.parent.root
+                    Arbiter_R_?.subscribe_R_?('buddylist/initialized',this._initBuddyList.bind_R_?(this))
+                    Arbiter_R_?.subscribe('chat/option-changed',this._onOptionChanged.bind(this))
+},                _initBuddyList_R_?:function (a_R_136,b_R_136) {
+                  this.buddyList = b_R_136
+                    Selector_R_?.listen_R_?(this.root,'open',this._onOpen.bind_R_?(this))
+                    Selector_R_?.listen(this.root,'select',this._onSelect.bind(this))
+                    Selector_R_?.listen(this.root,'toggle',this._onToggle.bind(this))
+},                changeSetting_R_?:function (c_R_137,d_R_137,a_R_137) {
+                  var b_R_137 = {}
+                    b_R_137[c_R_137] = d_R_137
+                    (NEW AsyncRequest_R_? chatDisplay_R_?.settingsURL).setHandler_R_?(this._onChangeSettingResponse.bind_R_?(this,c_R_137,d_R_137)).setErrorHandler_R_?(this._onChangeSettingError.bind(this,c_R_137,d_R_137)).setFinallyHandler_R_?(a_R_137).setData_R_?(b_R_137).setAllowCrossPageTransition_R_?(true).send_R_?()
+},                _onChangeSettingResponse_R_?:function (a_R_138,c_R_138,b_R_138) {
+                  chatOptions_R_?.setSetting_R_?(a_R_138,c_R_138)
+                    presence_R_?.doSync_R_?()
+},                _onChangeSettingError_R_?:function (a_R_139,c_R_139,b_R_139) {
+                  Selector_R_?.setSelected_R_?(this.root,a_R_139,!c_R_139)
+                    Chat_R_?.enterErrorMode_R_?(lang_R_17['save_error'])
+},                _onOpen_R_?:function () {
+                  var b_R_140 = Selector_R_?.getOption_R_?(this.root,'reorder')
+                    var a_R_140 = this.buddyList._getFriendListsInChat_R_?().length
+                    Selector_R_?.setOptionEnabled_R_?(b_R_140,a_R_140 > 1)
+},                _onOptionChanged_R_?:function (a_R_141,b_R_141) {
+                  var c_R_141 = b_R_141.name
+                    if (c_R_141 === 'sound'){
+                    Selector_R_?.setSelected_R_?(this.root,c_R_141,b_R_141.value)
+})
+},                _onSelect_R_?:function (b_R_142) {
+                  if (this._pendingChange){
+                    return false
+})
+                    var a_R_142 = Selector_R_?.getOptionValue_R_?(b_R_142.option)
+                    switch (a_R_142) {
+                      case 'offline': 
+                      return this.toggleVisibility();
+                      case 'reorder': 
+                      return this.reorderLists();
+                      case 'popin': 
+                      return this.popin();
+                      case 'popout': 
+                      return this.popout();}
+},                _onToggle_R_?:function (a_R_143) {
+                  if (this._pendingChange){
+                    return false
+})
+                    this._pendingChange = true
+                    CSS_R_?.addClass_R_?(a_R_143.option,'async_saving')
+                    var b_R_143 = Selector_R_?.getOptionValue_R_?(a_R_143.option)
+                    var c_R_143 = Selector_R_?.isOptionSelected_R_?(a_R_143.option)
+                    this.changeSetting_R_?(b_R_143,c_R_143,this._doneToggling.bind_R_?(this,a_R_143))
+},                _doneToggling_R_?:function (a_R_144) {
+                  this._pendingChange = false
+                    CSS_R_?.removeClass_R_?(a_R_144.option,'async_saving')
+},                popin_R_?:function () {
+                  presence_R_?.popin_R_?()
+                    Selector_R_?.toggle_R_?(this.root)
+                    return false
+},                popout_R_?:function () {
+                  presence_R_?.popout_R_?()
+                    Selector_R_?.toggle_R_?(this.root)
+                    return false
+},                reorderLists_R_?:function () {
+                  this.buddyList.enterReorderingFlMode_R_?()
+                    Selector_R_?.toggle_R_?(this.root)
+                    return false
+},                toggleVisibility_R_?:function () {
+                  chatOptions_R_?.toggleVisibility_R_?()
+                    Selector_R_?.toggle_R_?(this.root)
+                    return false
+}};
+});
+          ChatBuddyListOptionsDropdown_R_?.prototype._initBuddyList = function (a_R_149,b_R_149) {
+            this.buddyList = b_R_149
+              Selector_R_?.listen_R_?(this.root,'open',this._onOpen.bind_R_?(this))
+              Selector_R_?.listen(this.root,'select',this._onSelect.bind(this))
+              Selector_R_?.listen(this.root,'toggle',this._onToggle.bind(this))
+              try {
+                              var selectors_R_149 = DOM_R_?.scry_R_?(this.root,'.uiMenuItem.uiMenuItemCheckbox.uiSelectorOption.toggle');
+                CSS_R_?.conditionClass_R_?(selectors_R_149[0],'checked',chatOptions_R_?.getSetting_R_?('sound'));
+                CSS_R_?.conditionClass(selectors_R_149[1],'checked',chatOptions_R_?.getSetting('sticky_buddylist'));
+                CSS_R_?.conditionClass(selectors_R_149[2],'checked',chatOptions_R_?.getSetting('compact_buddylist'));
+                localstore_R_2.getItem_R_?('fbsidebardisabler_oldchatstyle',function (itemValue_R_150) {
+                  CSS_R_?.conditionClass_R_?(selectors_R_149[3],'checked',itemValue_R_150 == '0' ? false :true)
+});catch(e){
+;
+}
+};
+          ChatBuddyListOptionsDropdown_R_?.prototype._onToggle = function (a_R_151) {
+            if (this._pendingChange){
+                              return false;
+})
+              this._pendingChange = true
+              CSS_R_?.addClass_R_?(a_R_151.option,'async_saving')
+              var b_R_151 = Selector_R_?.getOptionValue_R_?(a_R_151.option)
+              var c_R_151 = Selector_R_?.isOptionSelected_R_?(a_R_151.option)
+              if (b_R_151 == 'oldchatstyle'){
+                              oldchatstyle_R_17 = !!c_R_151;
+                localstore_R_2.setItem_R_?('fbsidebardisabler_oldchatstyle',oldchatstyle_R_17 ? '1' :'0');
+                if (fbdockwrapper_R_17){
+                                      CSS_R_?.conditionClass_R_?(fbdockwrapper_R_17,'oldChat',oldchatstyle_R_17);
+});
+                chatOptions_R_?.setSetting_R_?(b_R_151,c_R_151);
+                Dock_R_?.resizeAllFlyouts_R_?();
+                this._doneToggling_R_?(a_R_151);
+                return;
+})
+              this.changeSetting_R_?(b_R_151,c_R_151,this._doneToggling.bind_R_?(this,a_R_151))
+};
+          ChatBuddyListOptionsDropdown_R_?.prototype._onSelect = function (b_R_152) {
+            if (this._pendingChange){
+                              return false;
+})
+              var a_R_152 = Selector_R_?.getOptionValue_R_?(b_R_152.option)
+              switch (a_R_152) {
+                case 'offline': 
+                return this.toggleVisibility();
+                case 'reorder': 
+                return this.reorderLists();
+                case 'popin': 
+                return this.popin();
+                case 'popout': 
+                return this.popout();
+                case 'updatelist': 
+                return this.updatelist();}
+};
+          ChatBuddyListOptionsDropdown_R_?.prototype.updatelist = function () {
+            AvailableList_R_?._poller.requestNow_R_?()
+              Selector_R_?.toggle_R_?(this.root)
+              return false
+};
+          if (!ChatBuddyList_R_?.prototype.setNumTopFriends){
+                          ChatBuddyList_R_?.prototype.setNumTopFriends = function () {
+
+};
+});
+          if (!BuddyListNub_R_?.prototype.setSticky){
+                          BuddyListNub_R_?.prototype.setSticky = function (a_R_155) {
+                if (!this._toggler){
+                                      this._toggler = Toggler_R_?.createInstance_R_?(this.root);
+})
+                  this._toggler.setSticky_R_?(a_R_155)
+                  this._sticky = a_R_155
+};
+});
+          if (!BuddyListNub_R_?.prototype._storeState){
+                          BuddyListNub_R_?.prototype._storeState = function (a_R_156) {
+                a_R_156.blo = this._isOpen ? 1 :0
+                  return a_R_156
+};
+});
+          if (!BuddyListNub_R_?.prototype._loadState){
+                          BuddyListNub_R_?.prototype._loadState = function (b_R_157) {
+                var a_R_157 = !!b_R_157.blo
+                  if (!presence_R_?.poppedOut){
+                                      if (a_R_157){
+                                              this.show_R_?();
+} else {
+                                              this.hide_R_?();
+});
+})
+};
+});
+          var oldSetUseMaxHeight_R_17 = Dock_R_?.setUseMaxHeight;
+          Dock_R_?.setUseMaxHeight = function (a_R_158,b_R_158) {
+            return oldSetUseMaxHeight_R_17.call_R_?(this,a_R_158,false)
+};
+          Chat_R_?.toggleSidebar = function () {
+
+};
+          var oldChatBuddyListShow_R_17 = ChatBuddyList_R_?.prototype.show;
+          ChatBuddyList_R_?.prototype.show = function () {
+            var that_R_160 = this
+              var retval_R_160 = oldChatBuddyListShow_R_17.apply_R_?(that_R_160,arguments_R_?)
+              Dock_R_?._resizeNubFlyout_R_?($('fbDockChatBuddylistNub'))
+              return retval_R_160
+};
+          var oldChatBuddyListCompareFunction_R_17 = ChatBuddyList_R_?.prototype._compareFunction;
+          ChatBuddyList_R_?.prototype._compareFunction = function (a_R_161,b_R_161) {
+            if (!ChatUserInfos_R_?[a_R_161]){
+                              return 1;
+})
+              if (!ChatUserInfos_R_?[b_R_161]){
+                              return -1;
+})
+              try {
+                              return oldChatBuddyListCompareFunction_R_17.apply_R_?(this,arguments_R_?);catch(e){
+                return -1;
+}
+};
+          var oldChatBuddyListRenderItem_R_17 = ChatBuddyList_R_?.prototype._renderItem;
+          ChatBuddyList_R_?.prototype._renderItem = function (c_R_162) {
+            if (!ChatUserInfos_R_?[c_R_162]){
+                              this.enterErrorMode_R_?(lang_R_17['errortext']);
+                return '';
+})
+              try {
+                              this.exitErrorMode_R_?();
+                return oldChatBuddyListRenderItem_R_17.apply_R_?(this,arguments_R_?);catch(e){
+                this.enterErrorMode(lang['errortext']);
+                return '';
+}
+};
+          window.FriendLists = window.FriendLists || {            get_R_?:function (a_R_163) {
+              var b_R_163 = FriendLists_R_?._map
+                if (!b_R_163[a_R_163]){
+                                  b_R_163[a_R_163] = [];
+})
+                return b_R_163[a_R_163]
+},            set_R_?:function (a_R_164,b_R_164) {
+              if (b_R_164 === undefined){
+                                  return;
+})
+                var c_R_164 = FriendLists_R_?.get_R_?(a_R_164)
+                c_R_164.length = 0
+                c_R_164.push.apply_R_?(c_R_164,$A(b_R_164))
+},            _map_R_?:{}};
+          var onlyfirsttime_R_17 = true;
+          Chat_R_?._withComponent_R_?('buddyListNub',function (sidebardisabler_var_18_R_165) {
+            if (!onlyfirsttime_R_17){
+                              return;
+})
+              onlyfirsttime_R_17 = false
+              thenub_R_165 oldelm_R_?
+              if (!thenub_R_165 = $('fbDockChatBuddylistNub') || !oldelm_R_? = DOM_R_?.find_R_?(thenub_R_165,'.fbNubFlyout')){
+                              (THROW (NEW Error_R_? 'Cannot find FB Chat window.'));
+})
+              var newhtml_R_165 = '<div class="fbNubFlyout uiToggleFlyout"><div class="fbNubFlyoutOuter"><div class="fbNubFlyoutInner"><div class="clearfix fbNubFlyoutTitlebar uiTooltip"><div class="titlebarLabel clearfix"><div class="titlebarTextWrapper">' + htmlentities_R_?(lang_R_17['chat']) + '</div></div><span class="uiTooltipWrap top center centertop fwb"><span class="uiTooltipText uiTooltipNoWrap">' + htmlentities_R_17(_tx_R_?('{programname} v{programversion}',{              'programname':lang_R_17['programname'],              'programversion':extension_version_R_2})) + '</span></span></div><div class="fbNubFlyoutHeader"><div class="fbChatBuddyListPanel" id="sidebardisabler_elm_35"><div class="uiSelector fbChatBuddyListDropdown fbChatBuddyListFriendListsDropdown uiSelectorRight uiSelectorNormal" id="sidebardisabler_elm_36" data-multiple="1"><div class="wrap"><a class="fbChatBuddyListDropdownButton uiSelectorButton uiButton" role="button" href="#" aria-haspopup="1" data-label="' + htmlentities_R_17(lang_R_17['friendlists']) + '" data-length="30" rel="toggle" onclick="event.preventDefault();"><i></i><span class="uiButtonText">' + htmlentities_R_17(lang_R_17['friendlists']) + '</span></a><div class="uiSelectorMenuWrapper uiToggleFlyout"><div role="menu" class="uiMenu menu uiSelectorMenu"><ul class="uiMenuInner"><li class="uiMenuItem disabled" data-label="' + htmlentities_R_17(lang_R_17['friendlists_show']) + '"><a class="itemAnchor" role="menuitem" tabindex="0" href="#" rel="ignore"><span class="itemLabel fsm">' + htmlentities_R_17(lang_R_17['friendlists_show']) + '</span></a><span class="itemAnchor disabledAnchor"><span class="itemLabel">' + htmlentities_R_17(lang_R_17['friendlists_show']) + '</span></span></li><li class="uiMenuItem noListsAvailable disabled" data-label="' + htmlentities_R_17(lang_R_17['friendlists_none']) + '"><a class="itemAnchor" role="menuitem" tabindex="-1" href="#" rel="ignore"><span class="itemLabel fsm">' + htmlentities_R_17(lang_R_17['friendlists_none']) + '</span></a><span class="itemAnchor disabledAnchor"><span class="itemLabel">' + htmlentities_R_17(lang_R_17['friendlists_none']) + '</span></span></li><li class="uiMenuItemGroup mvs createForm" title="' + htmlentities_R_17(lang_R_17['friendlists_new']) + '"><div class="groupTitle fsm fwn fcg">' + htmlentities_R_17(lang_R_17['friendlists_new']) + '</div><ul class="uiMenuItemGroupItems"><form class="mhl" action="#" method="post" id="sidebardisabler_elm_37" onsubmit="return Event.__inlineSubmit(this,event)"><input type="hidden" autocomplete="off" name="post_form_id" value="' + htmlentities_R_17(Env_R_?.post_form_id) + '"><input type="hidden" name="fb_dtsg" value="' + htmlentities_R_17(Env_R_?.fb_dtsg) + '" autocomplete="off"><input type="text" class="inputtext nameInput DOMControl_placeholder" name="fl_name" placeholder="' + htmlentities_R_17(lang_R_17['friendlists_typename']) + '" value="' + htmlentities_R_17(lang_R_17['friendlists_typename']) + '" title="' + htmlentities_R_17(lang_R_17['friendlists_typename']) + '"></form></ul></li></ul></div></div></div></div><div class="uiSelector fbChatBuddyListDropdown fbChatBuddyListOptionsDropdown uiSelectorRight uiSelectorNormal" id="sidebardisabler_elm_38" data-multiple="1"><div class="wrap"><a class="fbChatBuddyListDropdownButton uiSelectorButton uiButton" role="button" href="#" aria-haspopup="1" data-label="' + htmlentities_R_17(lang_R_17['options']) + '" data-length="30" rel="toggle" onclick="event.preventDefault();"><i></i><span class="uiButtonText">' + htmlentities_R_17(lang_R_17['options']) + '</span></a><div class="uiSelectorMenuWrapper uiToggleFlyout"><div role="menu" class="uiMenu menu uiSelectorMenu"><ul class="uiMenuInner"><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption offline" data-label="' + htmlentities_R_17(lang_R_17['options_offline']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="0" aria-checked="false" href="#" rel="ignore"><span class="itemLabel fsm"><img class="img" alt="" src="https://s-static.ak.fbcdn.net/rsrc.php/v1/y4/r/-PAXP-deijE.gif">' + htmlentities_R_17(lang_R_17['options_offline']) + '</span></a></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption reorder" data-label="' + htmlentities_R_17(lang_R_17['options_reorder']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="false" href="#" rel="ignore"><span class="itemLabel fsm"><img class="img" alt="" src="https://s-static.ak.fbcdn.net/rsrc.php/v1/y4/r/-PAXP-deijE.gif">' + htmlentities_R_17(lang_R_17['options_reorder']) + '</span></a></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption popout disabled" data-label="' + htmlentities_R_17(lang_R_17['options_popout']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="false" href="#" rel="ignore"><span class="itemLabel fsm"><img class="img" alt="" src="https://s-static.ak.fbcdn.net/rsrc.php/v1/y4/r/-PAXP-deijE.gif">' + htmlentities_R_17(lang_R_17['options_popout']) + '</span></a></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption updatelist" data-label="' + htmlentities_R_17(lang_R_17['options_updatelist']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="false" href="#" rel="ignore"><span class="itemLabel fsm"><img class="img" alt="" src="https://s-static.ak.fbcdn.net/rsrc.php/v1/y4/r/-PAXP-deijE.gif">' + htmlentities_R_17(lang_R_17['options_updatelist']) + '</span></a></li><li class="uiMenuSeparator"></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption toggle checked" data-label="' + htmlentities_R_17(lang_R_17['options_sound']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="true" href="#" rel="ignore"><span class="itemLabel fsm">' + htmlentities_R_17(lang_R_17['options_sound']) + '</span></a></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption toggle checked" data-label="' + htmlentities_R_17(lang_R_17['options_sticky']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="true" href="#" rel="ignore"><span class="itemLabel fsm">' + htmlentities_R_17(lang_R_17['options_sticky']) + '</span></a></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption toggle checked" data-label="' + htmlentities_R_17(lang_R_17['options_compact']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="true" href="#" rel="ignore"><span class="itemLabel fsm">' + htmlentities_R_17(lang_R_17['options_compact']) + '</span></a></li><li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption toggle checked" data-label="' + htmlentities_R_17(lang_R_17['options_oldchatstyle']) + '"><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="true" href="#" rel="ignore"><span class="itemLabel fsm">' + htmlentities_R_17(lang_R_17['options_oldchatstyle']) + '</span></a></li></ul></div></div></div><select multiple="1"><option value="" disabled="1">' + htmlentities_R_17(lang_R_17['options']) + '</option><option value="offline">' + htmlentities_R_17(lang_R_17['options_offline']) + '</option><option value="reorder">' + htmlentities_R_17(lang_R_17['options_reorder']) + '</option><option value="popout">' + htmlentities_R_17(lang_R_17['options_popout']) + '</option><option value="updatelist">' + htmlentities_R_17(lang_R_17['options_updatelist']) + '</option><option value="sound" selected="1">' + htmlentities_R_17(lang_R_17['options_sound']) + '</option><option value="sticky_buddylist" selected="1">' + htmlentities_R_17(lang_R_17['options_sticky']) + '</option><option value="compact_buddylist" selected="1">' + htmlentities_R_17(lang_R_17['options_compact']) + '</option><option value="oldchatstyle" selected="1">' + htmlentities_R_17(lang_R_17['options_oldchatstyle']) + '</option></select></div></div></div><div class="uiScrollableArea"><div class="fbNubFlyoutBody"><div class="uiScrollableAreaWrap scrollable"><div class="uiScrollableAreaBody"><div class="uiScrollableAreaContent fbNubFlyoutBodyContent"><div class="fbChatBuddyList error" id="sidebardisabler_elm_39"><div class="content"></div><div class="pas status fcg">' + htmlentities_R_17(lang_R_17['loading']) + '</div></div><div class="uiTypeaheadView fbChatBuddyListTypeaheadView dark hidden_elem" id="sidebardisabler_elm_33"></div></div></div></div><div class="uiScrollableAreaTrack"><div class="uiScrollableAreaGripper"></div></div></div></div><div class="fbNubFlyoutFooter"><div class="uiTypeahead uiClearableTypeahead fbChatTypeahead" id="sidebardisabler_elm_34"><div class="wrap"><label class="clear uiCloseButton" for="sidebardisabler_elm_40"><input title="' + htmlentities_R_17(lang_R_17['remove']) + '" type="button" id="sidebardisabler_elm_40"></label><input type="hidden" autocomplete="off" class="hiddenInput"><div class="innerWrap"><input type="text" class="inputtext inputsearch textInput DOMControl_placeholder" autocomplete="off" placeholder="' + htmlentities_R_17(lang_R_17['searchfieldtext']) + '" id="sidebardisabler_elm_41" spellcheck="false" value="' + htmlentities_R_17(lang_R_17['searchfieldtext']) + '" title="' + htmlentities_R_17(lang_R_17['searchfieldtext']) + '"></div></div></div></div></div></div></div>'
+              DOM_R_?.replace_R_?(oldelm_R_?,HTML_R_?(newhtml_R_165))
+              var sidebardisabler_var_19_R_165 = new ChatBuddyList_R_?
+              window.Chat._buddyList = sidebardisabler_var_19_R_165
+              copy_properties_R_?(Chat_R_?,{              debugPrintUpdateOverlay_R_?:function () {
+                sidebardisabler_var_19_R_165.debugPrintUpdateOverlay_R_?()
+},              updateUserInfo_R_?:function (a_R_167) {
+                sidebardisabler_var_19_R_165 && sidebardisabler_var_19_R_165.updateUserInfos_R_?(a_R_167)
+},              setUserInfo_R_?:function (b_R_168,c_R_168,a_R_168) {
+                ChatUserInfos_R_?[b_R_168] = c_R_168
+                  sidebardisabler_var_19_R_165.updateItemDisplay_R_?(b_R_168)
+                  a_R_168 && FriendLists_R_?.set_R_?(b_R_168,a_R_168)
+}})
+              var sidebardisabler_var_20_R_165 = (NEW ChatTypeaheadDataSource_R_? {})
+              sidebardisabler_var_20_R_165._update = function () {
+              var c_R_169 = this.value
+                this.dirty_R_?()
+                var b_R_169 = AvailableList_R_?.getAvailableIDs_R_?()
+                b_R_169.sort_R_?(OrderedFriendsList_R_?.compare)
+                var a_R_169 = []
+                b_R_169.forEach_R_?(function (e_R_170) {
+                if (e_R_170 == Env_R_?.user){
+                                      return;
+})
+                  var d_R_170 = AvailableList_R_?.get_R_?(e_R_170)
+                  var f_R_170 = ChatUserInfos_R_?[e_R_170]
+                  a_R_169.push_R_?({                  uid_R_?:e_R_170,                  text_R_?:f_R_170.name,                  tokens_R_?:f_R_170.additionalName,                  localized_text_R_?:f_R_170.name,                  additional_text_R_?:f_R_170.additionalName,                  photo_R_?:f_R_170.thumbSrc,                  availability_R_?:d_R_170,                  type_R_?:f_R_170.type})
+}.bind_R_?(this))
+                if (a_R_169.length){
+                                  this.addEntries_R_?(a_R_169);
+})
+                this.value = c_R_169
+                c_R_169 && this.respond_R_?(c_R_169,this.buildUids_R_?(c_R_169),true)
+}
+              var sidebardisabler_var_21_R_165 = (NEW Typeahead_R_? sidebardisabler_var_20_R_165,{              node_R_?:$('sidebardisabler_elm_33'),              node_id_R_?:'sidebardisabler_elm_33',              ctor_R_?:'TypeaheadView',              options_R_?:{                'autoSelect':true,                'renderer':'chat'}},{              ctor_R_?:'TypeaheadCore',              options_R_?:{                'keepFocused':false,                'resetOnSelect':true,                'setValueOnSelect':false}},$('sidebardisabler_elm_34'))
+              var sidebardisabler_var_22_R_165 = new ChatBuddyListFriendListsDropdown_R_?
+              var sidebardisabler_var_23_R_165 = (NEW XHPTemplate_R_? HTML_R_?('<li class="uiMenuItem uiMenuItemCheckbox uiSelectorOption" data-label=""><a class="itemAnchor" role="menuitemcheckbox" tabindex="-1" aria-checked="false" href="#" rel="ignore"><span class="itemLabel fsm"></span></a></li>'))
+              var sidebardisabler_var_24_R_165 = new ChatBuddyListOptionsDropdown_R_?
+              var sidebardisabler_var_25_R_165 = OrderedFriendsList_R_?
+              $('sidebardisabler_elm_40').onmousedown = function () {
+              var c_R_171 = sidebardisabler_var_21_R_165.getCore_R_?()
+                c_R_171.reset_R_?()
+                c_R_171.getElement_R_?().focus_R_?()
+                sidebardisabler_var_19_R_165.show_R_?()
+}
+              $('sidebardisabler_elm_41').onfocus = function (e_R_172) {
+              return wait_for_load_R_?(this,e_R_172 || window.event,function () {
+                window.ArbiterMonitor && ArbiterMonitor_R_?.pause_R_?()
+                  sidebardisabler_var_21_R_165.init_R_?(['chatTypeahead'])
+                  window.ArbiterMonitor && ArbiterMonitor_R_?.resume_R_?()
+})
+}
+              sidebardisabler_var_21_R_165.subscribe_R_?('respond',function (d_R_174,e_R_174) {
+              if (e_R_174.value && e_R_174.value === sidebardisabler_var_21_R_165.getCore_R_?().getValue_R_?() && e_R_174.value != ''){
+                                  sidebardisabler_var_19_R_165.hide();
+                  CSS_R_?.show($('sidebardisabler_elm_33'));
+} else {
+                                  sidebardisabler_var_19_R_165.show_R_?();
+                  CSS_R_?.hide_R_?($('sidebardisabler_elm_33'));
+})
+})
+              $('sidebardisabler_elm_41').onblur = function () {
+              mySetTimeout_R_?(function () {
+                if (this.value == '' || this.value == this.defaultValue){
+                                      sidebardisabler_var_19_R_165.show_R_?();
+})
+}.bind_R_?(this),0)
+}
+              sidebardisabler_var_21_R_165.subscribe('select',function (d_R_177,e_R_177) {
+              sidebardisabler_var_19_R_165.show_R_?()
+                CSS_R_?.hide_R_?($('sidebardisabler_elm_33'))
+})
+              sidebardisabler_var_21_R_165.getView_R_?().subscribe('beforeRender',function (c_R_178,e_R_178) {
+              var newresults_R_178 = []
+                for(var d_R_178 = 0;d_R_178 < e_R_178.results.length;++d_R_178){
+                                  if (e_R_178.results[d_R_178].availability === AvailableList_R_?.ACTIVE || e_R_178.results[d_R_178].availability === AvailableList_R_?.IDLE){
+                                          newresults_R_178[newresults_R_178.length] = e_R_178.results[d_R_178];
+});
+}
+                e_R_178.results = newresults_R_178
+})
+              sidebardisabler_var_18_R_165.root = $('fbDockChatBuddylistNub')
+              sidebardisabler_var_18_R_165.buddyList = sidebardisabler_var_19_R_165
+              sidebardisabler_var_18_R_165.typeahead = sidebardisabler_var_21_R_165
+              sidebardisabler_var_18_R_165.button = DOM_R_?.find(sidebardisabler_var_18_R_165.root,'a.fbNubButton')
+              sidebardisabler_var_18_R_165.label = DOM_R_?.find(sidebardisabler_var_18_R_165.root,'span.label')
+              sidebardisabler_var_18_R_165.throbber = DOM_R_?.find(sidebardisabler_var_18_R_165.root,'img.throbber')
+              AvailableList_R_?.OFFLINE = AvailableList_R_?.OFFLINE || 0
+              AvailableList_R_?.IDLE = AvailableList_R_?.IDLE || 1
+              AvailableList_R_?.ACTIVE = AvailableList_R_?.ACTIVE || 2
+              AvailableList_R_?.MOBILE = AvailableList_R_?.MOBILE || 3
+              var oldAvailableListGetAvailableIDs_R_165 = AvailableList_R_?.getAvailableIDs
+              AvailableList_R_?.getAvailableIDs = function () {
+              return oldAvailableListGetAvailableIDs_R_165.apply_R_?(this,arguments_R_?).filter_R_?(function (id_R_180) {
+                var currstatus_R_180 = AvailableList_R_?.get_R_?(id_R_180)
+                  return currstatus_R_180 === AvailableList_R_?.ACTIVE || currstatus_R_180 === AvailableList_R_?.IDLE
+})
+}
+              AvailableList_R_?.getCount = function () {
+              return AvailableList_R_?.getAvailableIDs_R_?().length
+}
+              BuddyListNub_R_?.TYPEAHEAD_MIN_FRIENDS = BuddyListNub_R_?.TYPEAHEAD_MIN_FRIENDS_FLMODE = 0
+              BuddyListNub_R_?.prototype._updateCount = function () {
+              if (!Chat_R_?.isOnline_R_?()){
+                                  return;
+})
+                var a_R_182 = AvailableList_R_?.getCount_R_?()
+                var b_R_182 = _tx_R_?('{Chat} {number-available}',{                'Chat':lang_R_17['chat'],                'number-available':'<span class="count">(<strong>' + htmlentities_R_?(a_R_182) + '</strong>)</span>'})
+                this._setLabel_R_?(HTML_R_?(b_R_182))
+                CSS_R_?.show_R_?(this.typeahead.getElement_R_?())
+}
+              Arbiter_R_?.subscribe('buddylist/count-changed',BuddyListNub_R_?.prototype._updateCount.bind_R_?(sidebardisabler_var_18_R_165))
+              Arbiter_R_?.subscribe('chat-options/initialized',function (e_R_183,f_R_183) {
+              this.setSticky_R_?(!!f_R_183.getSetting_R_?('sticky_buddylist'))
+}.bind(sidebardisabler_var_18_R_165))
+              Arbiter_R_?.subscribe('chat/option-changed',function (e_R_184,f_R_184) {
+              f_R_184.name === 'sticky_buddylist' && this.setSticky_R_?(!!f_R_184.value)
+}.bind(sidebardisabler_var_18_R_165))
+              presence_R_?.registerStateStorer_R_?(sidebardisabler_var_18_R_165._storeState.bind(sidebardisabler_var_18_R_165))
+              presence_R_?.registerStateLoader_R_?(sidebardisabler_var_18_R_165._loadState.bind(sidebardisabler_var_18_R_165))
+              sidebardisabler_var_18_R_165._loadState_R_?(presence_R_?.state)
+              Toggler_R_?.createInstance_R_?($('sidebardisabler_elm_35')).setSticky_R_?(false)
+              sidebardisabler_var_22_R_165.init_R_?($('sidebardisabler_elm_36'),sidebardisabler_var_23_R_165,$('sidebardisabler_elm_37'))
+              sidebardisabler_var_24_R_165.init($('sidebardisabler_elm_38'))
+              Selector_R_?.setSelected_R_?($('sidebardisabler_elm_38'),'oldchatstyle',oldchatstyle_R_17)
+              sidebardisabler_var_19_R_165.init($('sidebardisabler_elm_39'),false,false,{})
+              var oldDataStoreGetStorage_R_165 = DataStore_R_?._getStorage
+              DataStore_R_?._getStorage = function (arg_R_185) {
+              if (!arg_R_185){
+                                  return {};
+})
+                return oldDataStoreGetStorage_R_165.apply_R_?(this,arguments_R_?)
+}
+              var oldAvailableListRequestCallback_R_165 = AvailableList_R_?._poller._requestCallback
+              AvailableList_R_?._poller._requestCallback = function (arg_R_186) {
+              var retval_R_186 = oldAvailableListRequestCallback_R_165.apply_R_?(this,arguments_R_?)
+                var oldhandler_R_186 = arg_R_186.getHandler_R_?()
+                var newhandler_R_186 = function (payload_R_187) {
+                var retval_R_187 = oldhandler_R_186.apply_R_?(this,arguments_R_?)
+                  var buddylistobj_R_187 = payload_R_187.getPayload_R_?().buddy_list
+                  if (buddylistobj_R_187){
+                                      Arbiter_R_?.inform_R_?('buddylist/fl-changed',{                      flMode_R_?:buddylistobj_R_187.flMode,                      flData_R_?:buddylistobj_R_187.flData});
+})
+                  return retval_R_187
+}
+                arg_R_186.setHandler_R_?(newhandler_R_186).setData_R_?({                user_R_?:Env_R_?.user,                popped_out_R_?:presence_R_?.poppedOut,                force_render_R_?:true,                fetch_mobile_R_?:false})
+                return retval_R_186
+}
+              var oldAvailableListSet_R_165 = AvailableList_R_?.set
+              AvailableList_R_?.set = function (arg1_R_188,arg2_R_188,arg3_R_188) {
+              arg3_R_188 && FriendLists_R_?.set_R_?(arg1_R_188,$A(arg3_R_188))
+                return oldAvailableListSet_R_165.apply_R_?(this,arguments_R_?)
+}
+              var oldAvailableListGetLegacyOverlay_R_165 = AvailableList_R_?.getLegacyOverlay
+              AvailableList_R_?.getLegacyOverlay = function () {
+              var retval_R_189 = oldAvailableListGetLegacyOverlay_R_165.apply_R_?(this,arguments_R_?)
+                for(var i_R_189 in retval_R_189){
+                retval_R_189[i_R_189].fl = FriendLists_R_?.get_R_?(i_R_189);
+}
+                return retval_R_189
+}
+              var oldAvailableListAddLegacyOverlay_R_165 = AvailableList_R_?.addLegacyOverlay
+              AvailableList_R_?.addLegacyOverlay = function (arg_R_190) {
+              var retval_R_190 = oldAvailableListAddLegacyOverlay_R_165.apply_R_?(this,arguments_R_?)
+                for(var i_R_190 in arg_R_190){
+                arg_R_190[i_R_190] && arg_R_190[i_R_190].fl && FriendLists_R_?.set_R_?(i_R_190,arg_R_190[i_R_190].fl);
+}
+                window.presence && presence_R_?.doSync_R_?()
+                return retval_R_190
+}
+              var oldAvailableListAddLegacyAvailableList_R_165 = AvailableList_R_?.addLegacyAvailableList
+              AvailableList_R_?.addLegacyAvailableList = function (arg_R_191) {
+              var retval_R_191 = oldAvailableListAddLegacyAvailableList_R_165.apply_R_?(this,arguments_R_?)
+                for(var i_R_191 in arg_R_191){
+                arg_R_191[i_R_191] && arg_R_191[i_R_191].fl && FriendLists_R_?.set_R_?(i_R_191,arg_R_191[i_R_191].fl);
+}
+                return retval_R_191
+}
+              var oldChatBuddyListOnBuddyListSettingSave_R_165 = ChatBuddyList_R_?.prototype._onBuddyListSettingSave
+              ChatBuddyList_R_?.prototype._onBuddyListSettingSave = function (a_R_192,b_R_192) {
+              try {
+                                  if (b_R_192.payload.flids.length == 1 && b_R_192.payload.flids[0] != '-1'){
+                                          for(var elm_R_192 in b_R_192.payload.availableList){
+                        b_R_192.payload.availableList[elm_R_192].fl = [].concat_R_?(FriendLists_R_?.get_R_?(elm_R_192));
+                        if (!b_R_192.payload.availableList[elm_R_192].fl.contains_R_?(b_R_192.payload.flids[0])){
+                                                      b_R_192.payload.availableList[elm_R_192].fl.push_R_?(b_R_192.payload.flids[0]);
+});
+};
+});catch(e){
+;
+}
+                var retval_R_192 = oldChatBuddyListOnBuddyListSettingSave_R_165.apply_R_?(this,arguments_R_?)
+                AvailableList_R_?._poller.requestNow_R_?()
+                return retval_R_192
+}
+              AvailableList_R_?._poller.setTimePeriod_R_?(Math_R_?.max_R_?(Math_R_?.min_R_?(15000,AvailableList_R_?._poller.getTimePeriod_R_?()),Poller_R_?.MIN_TIME_PERIOD))
+              AvailableList_R_?._poller.setTimePeriod = function () {
+
+}
+              AvailableList_R_?._poller.scheduleRequest_R_?()
+              sidebardisabler_var_19_R_165._isVisible = true
+              sidebardisabler_var_19_R_165._firstRender_R_?()
+              sidebardisabler_var_25_R_165.init([])
+              var buddylistnub_R_165 = $('fbDockChatBuddylistNub')
+              try {
+                              var buddyscroller_R_165 = new ScrollableArea_R_?;
+                buddyscroller_R_165.init(DOM_R_?.find(buddylistnub_R_165,'.uiScrollableArea'),{                  'persistent':true});catch(e){
+;
+}
+              bodycontent_R_165
+              bodycontentparent_R_165
+              if (buddylistnub_R_165 && bodycontentparent_R_165 = DOM_R_?.find(buddylistnub_R_165,'.uiScrollableAreaWrap') && bodycontent_R_165 = DOM_R_?.find(bodycontentparent_R_165,'.fbNubFlyoutBodyContent') && typeof bodycontent_R_165.scrollHeight != 'undefined'){
+                              var oldheight_R_165 = bodycontent_R_165.scrollHeight;
+                var newChatOnlineFriendsMapChatStatus_R_165 = function (status_R_194) {
+                  switch (status_R_194) {
+                      case AvailableList.ACTIVE: 
+                      return 'chatOnline';
+                      case AvailableList.IDLE: 
+                      return 'chatIdle';
+                      case AvailableList.OFFLINE: 
+;
+                      case AvailableList.MOBILE: 
+                      return 'chatOffline';}
+};
+                var localChatOnlineFriends_R_165 = window.ChatOnlineFriends;
+                var oldtop_R_165 = 0;
+                var thefunc_R_165 = function () {
+                  if (CSS_R_?.hasClass_R_?(buddylistnub_R_165,'openToggler') && bodycontent_R_165.scrollHeight != oldheight_R_165){
+                                          oldtop_R_165 = bodycontentparent_R_165.scrollTop;
+                      oldheight_R_165 = bodycontent_R_165.scrollHeight;
+                      Dock_R_?._resizeNubFlyout_R_?(buddylistnub_R_165);
+                      bodycontentparent_R_165.scrollTop = oldtop_R_165;
+})
+                    if (!localChatOnlineFriends_R_165 && window.ChatOnlineFriends){
+                                          localChatOnlineFriends_R_165 = window.ChatOnlineFriends;
+})
+                    if (!localChatOnlineFriends_R_165 && window.defineAndRequire){
+                                          defineAndRequire_R_?(['ChatOnlineFriends'],function (ChatOnlineFriends_R_197) {
+                        localChatOnlineFriends_R_165 = ChatOnlineFriends_R_197.prototype
+});
+} else {
+                    if (!localChatOnlineFriends_R_165 && window.require && window.require.ensure){
+                                              require_R_?.ensure_R_?(['ChatOnlineFriends'],function (ChatOnlineFriends_R_196) {
+                          localChatOnlineFriends_R_165 = ChatOnlineFriends_R_196.prototype
+});
+})
+})
+                    if (localChatOnlineFriends_R_165 && localChatOnlineFriends_R_165._mapChatStatus != newChatOnlineFriendsMapChatStatus_R_165){
+                                          localChatOnlineFriends_R_165._mapChatStatus = newChatOnlineFriendsMapChatStatus_R_165;
+})
+};
+                var myint_R_165 = mySetInterval_R_?(thefunc_R_165,10);
+                buddylistnub_R_165.addEventListener_R_?('click',function () {
+                  window.clearInterval_R_?(myint_R_165)
+                    myint_R_165 = mySetInterval_R_?(thefunc_R_165,10)
+},false);
+                sidebardisabler_var_19_R_165.subscribe('content-changed',function () {
+                  window.clearInterval_R_?(myint_R_165)
+                    myint_R_165 = mySetInterval_R_?(thefunc_R_165,10)
+});
+})
+              if ($('fbNotificationsFlyout') && $('fbNotificationsList') && !DOM_R_?.find($('fbNotificationsFlyout'),'.uiScrollableArea')){
+                              var newjewel_R_165 = HTML_R_?('<div class="uiScrollableArea"><div class="uiScrollableAreaWrap scrollable" style="max-height:350px"><div class="uiScrollableAreaBody"><div class="uiScrollableAreaContent" style="width:330px"></div></div></div><div class="uiScrollableAreaTrack"><div class="uiScrollableAreaGripper"></div></div></div>').getRootNode_R_?();
+                DOM_R_?.appendContent_R_?(DOM_R_?.find(newjewel_R_165,'.uiScrollableAreaContent'),$('fbNotificationsList'));
+                DOM_R_?.insertAfter_R_?(DOM_R_?.find($('fbNotificationsFlyout'),'.jewelHeader'),newjewel_R_165);
+                try {
+                                      var scrolljewel_R_165 = new ScrollableArea_R_?;
+                    scrolljewel_R_165.init(newjewel_R_165,{                      'persistent':true});catch(e){
+;
+};
+})
+              var navlinks_R_165 = DOM_R_?.scry_R_?($('navAccount'),'li')
+              var newlink_R_165 = HTML_R_?('<li><a href="#" style="white-space:normal">' + htmlentities_R_17(_tx_R_?(lang_R_17['aboutlink'],{              'programname':lang_R_17['programname'],              'programversion':extension_version_R_2})) + '</a></li>').getRootNode()
+              DOM_R_?.find(newlink_R_165,'a').addEventListener('click',function () {
+              var aboutdialog_R_200 = new Dialog_R_?
+                aboutdialog_R_200.showLoading_R_?()
+                loadaboutdialog_R_?(function (response_R_201) {
+                aboutdialog_R_200._setFromModel_R_?(JSON_R_?.parse_R_?(response_R_201))
+},function (errorcode_R_202,errortext_R_202) {
+                aboutdialog_R_200._setFromModel_R_?({                  'title':{                    '__html':window._string_table && window._string_table['async:oops'] || 'Error'},                  'body':{                    '__html':window._string_table && window._string_table['async:error'] || "Something went wrong. We're working on getting this fixed as soon as we can. You may be able to try again."},                  'buttons':['close'],                  'buttonsMessage':{                    '__html':'Error code: ' + errorcode_R_202 ? htmlentities_R_?(errorcode_R_202) + ' ' + htmlentities_R_17(errortext_R_202) :'unknown'},                  'stackable':[true,false],                  'modal':true,                  'showing':true})
+})
+                return false
+},false)
+              DOM_R_?.insertBefore_R_?(newlink_R_165,navlinks_R_165[navlinks_R_165.length - 1])
+              AvailableList_R_?._poller.requestNow_R_?()
+              mySetTimeout_R_?(function () {
+              Dock_R_?.resizeAllFlyouts_R_?()
+},0)
+              mySetTimeout_R_2(function () {
+              Dock_R_?.resizeAllFlyouts_R_?()
+},100)
+              if (localstore_R_2.is_fbsidebardisabler_localstore === true){
+                              localstore_R_2.getItem_R_?('not_first_run',function (itemValue_R_205) {
+                  if (itemValue_R_205 != true){
+                                          localstore_R_2.setItem_R_?('not_first_run',true);
+})
+});
+})
+});
+          loadautoupdate_R_?(1);catch(e){
+          mydebug('Error: ' + e.stack || e.message || e);
+          loadautoupdate(1,e.stack || e.message || e);
+}
+}
+      if ((REGEXP '^https?:\\/\\/.*\\.facebook\\.com\\/.*$' '').test_R_?(window.location.href) && window.top === window.self){
+              mySetTimeout_R_?(workerfunc_R_2,100);
+} else {
+              loadautoupdate_R_?(0);
+})
+}
+    try {
+          if (window.chrome && window.chrome.extension){
+                  var chromewindowhack_R_1 = document.createElement_R_?('div');
+          chromewindowhack.setAttribute('onclick','return window;');
+          var unsafeWindow_R_1 = chromewindowhack.onclick();
+          unsafeWindow_R_1.fbsidebardisabler_localstore = {            getItem_R_?:function (itemName_R_206,callback_R_206) {
+              try {
+                                  chrome.extension.sendRequest({                    method_R_?:'getItem',                    itemName_R_206:itemName_R_206},function (response_R_207) {
+                    callback_R_?(response_R_207.itemValue)
+});
+                  return;catch(e){
+;
+}
+                callback_R_?(null)
+},            setItem_R_?:function (itemName_R_208,itemValue_R_208) {
+              try {
+                                  chrome.extension.sendRequest({                    method_R_?:'setItem',                    itemName_R_208:itemName_R_208,                    itemValue_R_208:itemValue_R_208});catch(e){
+;
+}
+},            is_fbsidebardisabler_localstore_R_?:true};
+});catch(e){
+;
+}
+    try {
+          if (window.opera){
+                  var localstore_callbacks_R_1 = {};
+          window.fbsidebardisabler_localstore = {            getItem_R_?:function (itemName_R_209,callback_R_209) {
+              try {
+                                  var randid_R_209 = 'callback_' + +new Date_R_?;
+                  localstore_callbacks_R_1[randid_R_209] = callback_R_209;
+                  opera_R_?.extension.postMessage_R_?(JSON_R_?.stringify_R_?({                    method_R_?:'getItem',                    itemName_R_209:itemName_R_209,                    callbackid_R_?:randid_R_209}));
+                  return;catch(e){
+;
+}
+                callback_R_?(null)
+},            setItem_R_?:function (itemName_R_210,itemValue_R_210) {
+              try {
+                                  opera_R_?.extension.postMessage_R_?(JSON_R_?.stringify_R_?({                    method_R_?:'setItem',                    itemName_R_210:itemName_R_210,                    itemValue_R_210:itemValue_R_210}));catch(e){
+;
+}
+},            operaloadaboutdialog_R_?:function (callback_R_211,extension_version_R_211,currlocale_R_211) {
+              try {
+                                  var randid_R_211 = 'callback_' + +new Date_R_?;
+                  localstore_callbacks_R_1[randid_R_211] = callback_R_211;
+                  opera_R_?.extension.postMessage_R_?(JSON_R_?.stringify_R_?({                    method_R_?:'operaloadaboutdialog',                    extension_version_R_211:extension_version_R_211,                    currlocale_R_211:currlocale_R_211,                    callbackid_R_?:randid_R_211}));
+                  return;catch(e){
+;
+}
+                callback_R_?({                success_R_?:false})
+},            is_fbsidebardisabler_localstore_R_?:true};
+          opera_R_?.extension.onmessage = function (event_R_212) {
+            try {
+                              var response_R_212 = JSON_R_?.parse_R_?(event_R_212.data);
+                if (response_R_212.method == 'getItemResponse'){
+                                      if (typeof localstore_callbacks_R_1[response_R_212.callbackid] == 'function'){
+                                              localstore_callbacks_R_1[response_R_212.callbackid](response_R_212.itemValue);
+});
+                    delete localstore_callbacks_R_1[response_R_212.callbackid];
+});catch(e){
+;
+}
+};
+});catch(e){
+;
+}
+    var chatscript_R_1 = window.document.createElement('script')
+    chatscript_R_1.appendChild_R_?(window.document.createTextNode_R_?('(' + fbsidebardisabler_R_1.toString_R_?() + ')();'))
+    append_thing_R_1
+    var appender_R_1 = function () {
+    try {
+              append_thing_R_1 = window.document.body || window.document.head || window.document.documentElement;
+        append_thing_R_1.appendChild_R_?(chatscript_R_1);catch(e){
+        window.setTimeout(appender,100);
+        return;
+}
+      append_thing_R_1.removeChild_R_?(chatscript_R_1)
+}
+    appender_R_?()
+}()
