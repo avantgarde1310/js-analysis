@@ -61,6 +61,39 @@ def count_chrome_reference(frame):
     alpharenamer.traverse_frames(frame, count_chrome_reference_helper)
     return count[0]
 
+def get_extension_name(path):
+    try:
+        print "Trying to find name in manifest.json... ",
+        for dirpath, dirnames, filenames in fileutils.get_directory_tree(path):
+            for filename in filenames:
+                if filename == "manifest.json":
+                    tempstr = open(dirpath + "\\" + filename).read()
+                    tempstr = tempstr[tempstr.index("\"name\""):]
+                    tempstr = tempstr[:tempstr.index("\n")]
+                    tempstr = tempstr[9:-2]
+                    if "__MSG" not in tempstr:
+                        print "OK"
+                        return tempstr
+                    else:
+                        print "Extension name not found in manifest.json"
+                        raise Exception(tempstr)
+    # __MSG_name__
+    except Exception, e:
+        tag = e[0][6:-2]
+        print "Trying _locales\\en folder...",
+        for dirpath, dirnames, filenames in fileutils.get_directory_tree(path):
+            if dirpath.endswith("_locales\\en"):
+                tempstr = open(dirpath + "\\messages.json").read()
+                tempstr = tempstr[tempstr.index("\"" + tag + "\": {\n      "):]
+                tempstr = tempstr[:tempstr.index("}")]
+                tempstr = tempstr[tempstr.index("\"message\""):]
+                tempstr = tempstr[:tempstr.index("\n")]
+                tempstr = tempstr[12:-1]
+                print "OK"
+                return tempstr
+        print "Name not found."
+        return None
+
 #def trace(node, level):
 #    print("# " * level + node.type + " " + getattr(node, "name", "None") + " " + str(getattr(node, "value", "None")))
 
@@ -72,9 +105,16 @@ def run(*args):
 #    ast = analyzer.create_AST(test_path + file)
     
     """ Open and Create AST from Extension """
+    ext_path = 'C:\\PythonProjects\\ExtensionAnalyzer\\Extensions\\Not Working\\'
+    ext = 'bmagokdooijbeehmkpknfglimnifench'
+    try:
+        ext_name = get_extension_name(ext_path + ext)
+        if ext_name is None:
+            raise Exception()
+    except:
+        ext_name = "Unknown"
+    print(ext_name)
     print "Combining extension .js files...",
-    ext_path = 'C:\PythonProjects\\ExtensionAnalyzer\\Extensions\\'
-    ext = 'oadboiipflhobonjjffjbfekfjcgkhco'
     file_list = fileutils.get_all_javascript_files_absolute(ext_path + ext)
     js_string = ""
     for filename in file_list:
@@ -136,7 +176,8 @@ def run(*args):
     """ Generate log file """
     print "Generating log file..."
     log_string = ""
-    log_string += "Extension " + ext + "\n"
+    log_string += "Extension Name: " + ext_name + "\n"
+    log_string += "Extension Identifier: " + ext + "\n"
     
     fn_count = fr.new_id
     lambda_count = count_lambda(fr)
