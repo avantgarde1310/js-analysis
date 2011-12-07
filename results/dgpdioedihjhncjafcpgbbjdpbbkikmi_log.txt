@@ -1,0 +1,6 @@
+Extension Name: Speed Dial
+Extension Identifier: dgpdioedihjhncjafcpgbbjdpbbkikmi
+Number of functions: 807
+Number of anonymous functions: 708
+Number of named functions: 99
+Number of functions that reference chrome: 16

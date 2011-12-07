@@ -1,0 +1,6 @@
+digraph graphname {
+global_R_0;
+lambda_R_1;
+lambda_R_3;
+lambda_R_2;
+}

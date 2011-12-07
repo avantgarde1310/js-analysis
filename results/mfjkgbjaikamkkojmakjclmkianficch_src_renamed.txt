@@ -1,0 +1,695 @@
+var useContextMenuAPI_R_0 = true
+  var enabledDownloaders_R_0 = []
+  var plugin_R_0 = document.getElementById_R_?('pluginId')
+  chrome.extension.onRequest.addListener(function (request_R_1,sender_R_1,response_R_1) {
+  switch (request_R_1.msg) {
+      case 'init_loaded': 
+      response({        'defaultDownloader':localStorage['defaultDownloader'],        'contextMenu':localStorage['contextMenu'],        'useContextMenuAPI':useContextMenuAPI,        'contextMenuList':enabledDownloaders});
+      break;
+      case 'thunder_windows': 
+;
+      case 'thunder_lite_windows': 
+;
+      case 'mini_thunder_windows': 
+;
+      case 'flashget_windows': 
+;
+      case 'mini_flashget_windows': 
+;
+      case 'qq_whirlwind_windows': 
+;
+      case 'emule_windows': 
+;
+      case 'orbit_windows': 
+;
+      case 'bitcomet_windows': 
+;
+      case 'idm_windows': 
+;
+      case 'fdm_windows': 
+;
+      case 'download_master_windows': 
+;
+      case 'getgo_windows': 
+;
+      case 'dap_windows': 
+      downloaderManager.downloader[request.msg].download(request.link);
+      break;
+      case 'copyLink': 
+      downloaderManager.copyLinkToClipboard(plugin,request.link.url);
+      break;
+      case 'contextMenu': 
+      localStorage['contextMenu'] = 'false';
+      response({        contextMenu:false});
+      break;
+      case 'downloadAll': 
+      downloaderManager.downloader[request.downloader].downloadAll(request.links,request.pageUrl);
+      break;
+      (DEFAULT       downloaderManager.downloader[request.msg].download(request.link);
+      break;)}
+})
+  chrome.tabs.onSelectionChanged.addListener(function (tabId_R_2) {
+  updateEnabledDownloaders_R_5()
+    var js_R_2 = 'chrome.tabs.executeScript(' + tabId_R_2 + ', {file: "npdownload.js"});'
+    chrome.tabs.sendRequest(tabId_R_2,{    'msg':'init_check',    'defaultDownloader':localStorage_R_?['defaultDownloader'],    'contextMenu':localStorage_R_?['contextMenu'],    'useContextMenuAPI':useContextMenuAPI_R_0,    'contextMenuList':enabledDownloaders_R_0},function (response_R_3) {
+    if (response_R_3){
+      js_R_2 = ''
+})
+})
+    setTimeout_R_?(function () {
+    eval_R_?(js_R_2)
+},500)
+})
+  function updateEnabledDownloaders_R_5() {
+  enabledDownloaders_R_0 = downloaderManager_R_0.getEnabledDownloaders_R_?(plugin_R_0)
+    var numDownloaders_R_5 = enabledDownloaders_R_0.length
+    for(var i_R_5 = 0;i_R_5 < numDownloaders_R_5;i_R_5++){
+    if (enabledDownloaders_R_0[i_R_5].name == localStorage_R_?['defaultDownloader']){
+      break
+})
+}
+    if (i_R_5 == numDownloaders_R_5){
+    localStorage_R_?['defaultDownloader'] = 'chrome_downloader'
+})
+    if (useContextMenuAPI_R_0){
+          chrome.contextMenus.removeAll();
+      createContextMenu_R_11(plugin_R_0);
+})
+}
+  function getDefaultDownloadPath_R_6() {
+  return plugin_R_0.GetDefaultDownloadPath_R_?()
+}
+  function openDownloadPath_R_7() {
+  var path_R_7 = localStorage_R_?['downloadPath']
+    plugin_R_0.OpenDownloadPath_R_?(path_R_7)
+}
+  function openDownloadFilePath_R_8(filename_R_8) {
+  plugin_R_0.OpenDownloadFilePath_R_?(filename_R_8)
+}
+  function updateDownloadPath_R_9() {
+  var path_R_9 = localStorage_R_?['downloadPath']
+    if (!path_R_9){
+    path_R_9 = getDefaultDownloadPath_R_6()
+})
+    plugin_R_0.UpdateDownloadPath_R_?(path_R_9)
+}
+  function setDownloadPath_R_10() {
+  var path_R_10 = localStorage_R_?['downloadPath']
+    var title_R_10 = chrome.i18n.getMessage('set_download_dialog_title')
+    return plugin_R_0.SetDownloadPath_R_?(title_R_10,path_R_10)
+}
+  function createContextMenu_R_11(plugin_R_11) {
+  for(var i_R_11 = 0;i_R_11 < enabledDownloaders_R_0.length;i_R_11++){
+          var downloader_R_11 = enabledDownloaders_R_0[i_R_11];
+      if (!downloader_R_11.isSystem){
+                  var name_R_11 = downloader_R_11.name;
+          var title_R_11 = chrome.i18n.getMessage(downloader_R_11.showName).replace((REGEXP '%s' 'g'),name_R_11);
+          contextMenuDownload_R_12(title_R_11,name_R_11,plugin_R_11);
+          if (downloader_R_11.supportDownloadAll){
+                          title_R_11 = chrome.i18n.getMessage(downloader_R_11.showName2);
+              contextMenuDownloadAll_R_15(title_R_11,name_R_11);
+});
+});
+}
+}
+  function contextMenuDownload_R_12(title_R_12,downloader_R_12,plugin_R_12) {
+  chrome.contextMenus.create({    title_R_12:title_R_12,    contexts_R_?:['link'],    onclick_R_?:function (info_R_13,tab_R_13) {
+      var link_R_13 = {}
+        link_R_13.url = info_R_13.linkUrl
+        link_R_13.text = info_R_13.selectionText || ' '
+        link_R_13.pageUrl = info_R_13.pageUrl
+        downloaderManager_R_0.downloader[downloader_R_12].download_R_?(link_R_13)
+}},function () {
+
+})
+}
+  function contextMenuDownloadAll_R_15(title_R_15,downloader_R_15) {
+  chrome.contextMenus.create({    title_R_15:title_R_15,    contexts_R_?:['all'],    onclick_R_?:function (info_R_16,tab_R_16) {
+      if (info_R_16.frameUrl){
+                  chrome.tabs.executeScript(null,{            code_R_?:'npDownload.checkFrameByUrlAndDown("' + info_R_16.frameUrl + '", "' + downloader_R_15 + '")',            allFrames_R_?:true});
+} else {
+                  chrome.tabs.executeScript(null,{            code_R_?:'npDownload.sendDownloadAllCommandToBg("' + downloader_R_15 + '");'});
+})
+}})
+}
+  function init_R_17() {
+  localStorage_R_?['defaultDownloader'] = localStorage_R_?['defaultDownloader'] || 'chrome_downloader'
+    localStorage_R_?['contextMenu'] = localStorage_R_?['contextMenu'] || 'true'
+    localStorage_R_?['rawCount'] = localStorage_R_?['rawCount'] || 0
+    updateDownloadPath_R_9()
+    downloaderManager_R_0.init_R_?(plugin_R_0)
+    enabledDownloaders_R_0 = downloaderManager_R_0.getEnabledDownloaders_R_?(plugin_R_0)
+    if (useContextMenuAPI_R_0){
+          createContextMenu_R_11(plugin_R_0);
+})
+}
+  downloadFileName_R_0
+  function downloadCallback_R_18(retvalue_R_18,filename_R_18) {
+  downloadFileName_R_0 = filename_R_18
+    var notification_R_18 = webkitNotifications_R_?.createHTMLNotification_R_?('notification.html')
+    notification_R_18.show_R_?()
+}
+  function getFileName_R_19() {
+  return downloadFileName_R_0
+}
+  init_R_17()
+  function extend_R_20(subClass_R_20,superClass_R_20) {
+  var F_R_20 = function () {
+
+}
+    F_R_20.prototype = superClass_R_20.prototype
+    subClass_R_20.prototype = new F_R_20
+    subClass_R_20.prototype.constructor = subClass_R_20
+    subClass_R_20.superClass = superClass_R_20.prototype
+    if (superClass_R_20.prototype.constructor == Object.prototype.constructor){
+          superClass_R_20.prototype.constructor = superClass_R_20;
+})
+}
+  function Downloader_R_22(plugin_R_22) {
+  this.plugin = plugin_R_22
+}
+  Downloader_R_?.prototype.checkDownloader = function () {
+  return this.plugin.CheckObject(this.progId)
+}
+  Downloader_R_?.prototype.updateNPObjectIfNeeded = function () {
+  if (!this.npObject){
+    this.npObject = this.plugin.CreateObject(this.progId)
+})
+}
+  Downloader_R_?.prototype.resetNPObject = function () {
+  this.npObject = null
+}
+  Downloader_R_?.prototype.download = function () {
+
+}
+  Downloader_R_?.prototype.downloadAll = function () {
+
+}
+  function Thunder_R_28(plugin_R_28) {
+  Thunder_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'ThunderAgent.Agent.1'
+}
+  extend_R_20(Thunder_R_?,Downloader_R_?)
+  Thunder_R_?.prototype.download = function (linkObj_R_29) {
+  this.npObject.AddTask5_R_?(linkObj_R_29.url,'','','','',-1,0,-1,'','','',1,'',-1)
+    this.npObject.CommitTasks2_R_?(1)
+}
+  Thunder_R_?.prototype.downloadAll = function (links_R_30) {
+  for(var i_R_30 = 0;i_R_30 < links_R_30.length;i_R_30++){
+          this.npObject.AddTask4_R_?(links_R_30[i_R_30].url,'','',links_R_30[i_R_30].text,'',-1,0,-1,'','','');
+}
+    this.npObject.CommitTasks2_R_?(1)
+}
+  function ThunderLite_R_31(plugin_R_31) {
+  ThunderLite_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'MiniThunderAgent.Agent.1'
+}
+  extend_R_?(ThunderLite_R_?,Downloader_R_?)
+  ThunderLite_R_?.prototype.download = function (linkObj_R_32) {
+  this.npObject.AddTask5_R_?(linkObj_R_32.url,'','','','',-1,0,-1,'','','',1,'',-1)
+    this.npObject.CommitTasks5_R_?(1,1)
+}
+  ThunderLite_R_?.prototype.downloadAll = function (links_R_33) {
+  for(var i_R_33 = 0;i_R_33 < links_R_33.length;i_R_33++){
+          this.npObject.AddTask5_R_?(links_R_33[i_R_33].url,'','',links_R_33[i_R_33].text,'',-1,0,-1,'','','',1);
+}
+    this.npObject.CommitTasks5_R_?(1,1)
+}
+  function MiniThunder_R_34(plugin_R_34) {
+  MiniThunder_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'ToolbarThunder.DownloadAgent.1'
+}
+  extend_R_?(MiniThunder_R_?,Downloader_R_?)
+  MiniThunder_R_?.prototype.download = function (linkObj_R_35) {
+  this.npObject.AddTask_R_?(linkObj_R_35.url,'','','','')
+}
+  function Flashget_R_36(plugin_R_36) {
+  Flashget_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'BHO.IFlashGetNetscapeEx'
+    this.version = '3.x'
+}
+  extend_R_?(Flashget_R_?,Downloader_R_?)
+  Flashget_R_?.prototype.checkDownloader = function () {
+  return this.plugin.CheckObject('BHO.IFlashGetNetscapeEx') || this.plugin.CheckObject('JetCar.Netscape')
+}
+  Flashget_R_?.prototype.updateNPObjectIfNeeded = function () {
+  if (this.version == '3.x' && !this.plugin.CheckObject(this.progId)){
+          this.progId = 'JetCar.Netscape';
+      this.version = '1.x';
+      this.npObject = null;
+} else {
+    if (this.version == '1.x' && this.plugin.CheckObject('BHO.IFlashGetNetscapeEx')){
+              this.progId = 'BHO.IFlashGetNetscapeEx';
+        this.version = '3.x';
+        this.npObject = null;
+})
+})
+    if (!this.npObject){
+    this.npObject = this.plugin.CreateObject(this.progId)
+})
+}
+  Flashget_R_?.prototype.download = function (linkObj_R_39) {
+  this.npObject.AddUrl_R_?(linkObj_R_39.url,linkObj_R_39.text,linkObj_R_39.pageUrl)
+}
+  Flashget_R_?.prototype.downloadAll = function (links_R_40,pageUrl_R_40) {
+  var newLinks_R_40 = []
+    newLinks_R_40.push_R_?(pageUrl_R_40)
+    for(var i_R_40 = 0;i_R_40 < links_R_40.length;i_R_40++){
+          var url_R_40 = links_R_40[i_R_40].url;
+      var text_R_40 = links_R_40[i_R_40].text;
+      newLinks_R_40.push(url_R_40);
+      newLinks_R_40.push(text_R_40);
+}
+    if (this.version == '3.x'){
+    this.npObject.AddAll_R_?(newLinks_R_40,'','FlashGet3',0,'')
+} else {
+    this.npObject.AddUrlList_R_?(newLinks_R_40)
+})
+}
+  function MiniFlashget_R_41(plugin_R_41) {
+  MiniFlashget_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'BHO.IFlashGetNetscape'
+}
+  extend_R_?(MiniFlashget_R_?,Downloader_R_?)
+  MiniFlashget_R_?.prototype.download = function (linkObj_R_42) {
+  this.npObject.AddUrlEx_R_?(linkObj_R_42.url,linkObj_R_42.text,'','FlashGetMini',0,'')
+}
+  MiniFlashget_R_?.prototype.downloadAll = function (links_R_43,pageUrl_R_43) {
+  var newLinks_R_43 = []
+    newLinks_R_43.push_R_?(pageUrl_R_43)
+    for(var i_R_43 = 0;i_R_43 < links_R_43.length;i_R_43++){
+          var url_R_43 = links_R_43[i_R_43].url;
+      var text_R_43 = links_R_43[i_R_43].text;
+      newLinks_R_43.push(url_R_43);
+      newLinks_R_43.push(text_R_43);
+}
+    this.npObject.AddAll_R_?(newLinks_R_43,'','FlashGetMini',0,'')
+}
+  function QQWhirlWind_R_44(plugin_R_44) {
+  QQWhirlWind_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'QQIEHelper.QQRightClick.2'
+}
+  extend_R_?(QQWhirlWind_R_?,Downloader_R_?)
+  QQWhirlWind_R_?.prototype.download = function (linkObj_R_45) {
+  this.npObject.SendUrl2_R_?(linkObj_R_45.url,linkObj_R_45.pageUrl,linkObj_R_45.text,'',0,0)
+}
+  QQWhirlWind_R_?.prototype.downloadAll = function (links_R_46,pageUrl_R_46) {
+  for(var i_R_46 = 0;i_R_46 < links_R_46.length;i_R_46++){
+          this.npObject.AddTask_R_?(links_R_46[i_R_46].url,pageUrl_R_46,links_R_46[i_R_46].text);
+}
+    this.npObject.SendMultiTask_R_?()
+}
+  function EMule_R_47(plugin_R_47) {
+  EMule_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'IE2EM.IE2EMUrlTaker'
+}
+  extend_R_?(EMule_R_?,Downloader_R_?)
+  EMule_R_?.prototype.download = function (linkObj_R_48) {
+  this.npObject.SendUrl_R_?(linkObj_R_48.url,linkObj_R_48.text,linkObj_R_48.pageUrl)
+}
+  function Orbit_R_49(plugin_R_49) {
+  Orbit_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'Orbitmxt.Orbit'
+}
+  extend_R_?(Orbit_R_?,Downloader_R_?)
+  Orbit_R_?.prototype.download = function (linkObj_R_50) {
+  this.npObject.download_R_?(linkObj_R_50.url,linkObj_R_50.text,linkObj_R_50.pageUrl,'',0)
+}
+  Orbit_R_?.prototype.downloadAll = function (links_R_51,pageUrl_R_51) {
+  var urls_R_51 = []
+    var texts_R_51 = []
+    for(var i_R_51 = 0;i_R_51 < links_R_51.length;i_R_51++){
+          urls_R_51.push_R_?(links_R_51[i_R_51].url);
+      texts_R_51.push(links_R_51[i_R_51].text);
+}
+    this.npObject.downloadList_R_?(urls_R_51,texts_R_51,pageUrl_R_51,'')
+}
+  function BitComet_R_52(plugin_R_52) {
+  BitComet_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'BitCometAgent.BcAgent.1'
+}
+  extend_R_?(BitComet_R_?,Downloader_R_?)
+  BitComet_R_?.prototype.download = function (linkObj_R_53) {
+  var urls_R_53 = []
+    urls_R_53.push_R_?(linkObj_R_53.url)
+    urls_R_53.push(linkObj_R_53.text)
+    this.npObject.Download_R_?(urls_R_53,linkObj_R_53.pageUrl,'','')
+}
+  BitComet_R_?.prototype.downloadAll = function (links_R_54,pageUrl_R_54) {
+  var urls_R_54 = []
+    for(var i_R_54 = 0;i_R_54 < links_R_54.length;i_R_54++){
+          urls_R_54.push_R_?(links_R_54[i_R_54].url);
+      urls_R_54.push(links_R_54[i_R_54].text);
+}
+    this.npObject.Download_R_?(urls_R_54,pageUrl_R_54,'','')
+}
+  function IDM_R_55(plugin_R_55) {
+  IDM_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'DownlWithIDM.LinkProcessor'
+}
+  extend_R_?(IDM_R_?,Downloader_R_?)
+  IDM_R_?.prototype.download = function (linkObj_R_56) {
+  this.npObject.Download_R_?(linkObj_R_56.url)
+}
+  IDM_R_?.prototype.downloadAll = function (links_R_57,pageUrl_R_57) {
+  var urls_R_57 = []
+    var texts_R_57 = []
+    for(var i_R_57 = 0;i_R_57 < links_R_57.length;i_R_57++){
+          urls_R_57.push_R_?(links_R_57[i_R_57].url);
+      texts_R_57.push(links_R_57[i_R_57].text);
+}
+    this.npObject.DownloadAll_R_?(urls_R_57,texts_R_57,pageUrl_R_57)
+}
+  function FDM_R_58(plugin_R_58) {
+  FDM_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'WG.WGUrlReceiver'
+    this.progId2 = 'WG.WGUrlListReceiver'
+}
+  extend_R_?(FDM_R_?,Downloader_R_?)
+  FDM_R_?.prototype.updateNPObjectIfNeeded = function () {
+
+}
+  FDM_R_?.prototype.resetNPObject = function () {
+  this.npObject = null
+    this.npObjectAll = null
+}
+  FDM_R_?.prototype.download = function (linkObj_R_61) {
+  if (!this.npObject){
+    this.npObject = this.plugin.CreateObject(this.progId)
+})
+    this.npObject.Url = linkObj_R_61.url
+    this.npObject.Comment = linkObj_R_61.text
+    this.npObject.Referer = linkObj_R_61.pageUrl
+    this.npObject.Cookies = ''
+    this.npObject.AddDownload_R_?()
+}
+  FDM_R_?.prototype.downloadAll = function (links_R_62,pageUrl_R_62) {
+  this.npObjectAll = this.plugin.CreateObject(this.progId2)
+    this.npObjectAll.Referer = pageUrl_R_62
+    this.npObjectAll.Cookies = ''
+    for(var i_R_62 = 0;i_R_62 < links_R_62.length;i_R_62++){
+          this.npObjectAll.Url = links_R_62[i_R_62].url;
+      this.npObjectAll.Comment = links_R_62[i_R_62].text;
+      this.npObjectAll.AddUrlToList_R_?();
+}
+    this.npObjectAll.ShowAddUrlListDialog_R_?()
+}
+  function DownloadMaster_R_63(plugin_R_63,progId_R_63) {
+  DownloadMaster_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'dmie.moveurl'
+}
+  extend_R_?(DownloadMaster_R_?,Downloader_R_?)
+  DownloadMaster_R_?.prototype.download = function (linkObj_R_64) {
+  this.npObject.AddURL_R_?(linkObj_R_64.url,linkObj_R_64.pageUrl)
+}
+  DownloadMaster_R_?.prototype.downloadAll = function (links_R_65,pageUrl_R_65) {
+  var urls_R_65 = []
+    for(var i_R_65 = 0;l_R_? = links_R_65.length,i_R_65 < l_R_?;i_R_65++){
+          urls_R_65.push_R_?(links_R_65[i_R_65].url);
+}
+    this.npObject.AddURLs_R_?(urls_R_65,pageUrl_R_65)
+}
+  function GetGo_R_66(plugin_R_66,progId_R_66) {
+  GetGo_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'URLCatch.IEMenu'
+}
+  extend_R_?(GetGo_R_?,Downloader_R_?)
+  GetGo_R_?.prototype.download = function (linkObj_R_67) {
+  this.npObject.AddURL_R_?(linkObj_R_67.url)
+}
+  GetGo_R_?.prototype.downloadAll = function (links_R_68,pageUrl_R_68) {
+  this.npObject.AddAllURL_R_?(pageUrl_R_68)
+}
+  function DAP_R_69(plugin_R_69,progId_R_69) {
+  DAP_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.progId = 'dapie.catcher'
+}
+  extend_R_?(DAP_R_?,Downloader_R_?)
+  DAP_R_?.prototype.download = function (linkObj_R_70) {
+  this.npObject.MenuUrl2_R_?(linkObj_R_70.url,linkObj_R_70.pageUrl,'',linkObj_R_70.text)
+}
+  function LinuxDownloader_R_71(plugin_R_71,command_R_71) {
+  LinuxDownloader_R_?.superClass.constructor.apply_R_?(this,arguments_R_?)
+    this.command = command_R_71
+    this.progId = command_R_71.split_R_?(' ')[0]
+}
+  extend_R_?(LinuxDownloader_R_?,Downloader_R_?)
+  LinuxDownloader_R_?.prototype.download = function (linkObj_R_72) {
+  this.npObject.Download_R_?(linkObj_R_72.url,linkObj_R_72.pageUrl)
+}
+  var downloaderManager_R_0 = {}
+  downloaderManager_R_0.menuItems = [{  name_R_?:'flashget_windows',  showName_R_?:'menu_flashget',  showName2_R_?:'download_all_with_flashget',  privateLink_R_?:'flashget://',  isLinux_R_?:false,  supportDownloadAll_R_?:true,  image_R_?:'images/icon_flashget.png'},{  name_R_?:'mini_flashget_windows',  showName_R_?:'menu_mini_flashget',  showName2_R_?:'download_all_with_mini_flashget',  privateLink_R_?:'flashget://',  isLinux_R_?:false,  supportDownloadAll_R_?:true,  image_R_?:'images/icon_flashget.png'},{  name_R_?:'thunder_windows',  showName_R_?:'menu_thunder',  showName2_R_?:'download_all_with_thunder',  privateLink_R_?:'thunder://',  isLinux_R_?:false,  supportDownloadAll_R_?:true,  image_R_?:'images/icon_thunder.png'},{  name_R_?:'thunder_lite_windows',  showName_R_?:'menu_thunder_lite',  showName2_R_?:'download_all_with_thunder_lite',  privateLink_R_?:'thunder://',  isLinux_R_?:false,  supportDownloadAll_R_?:true,  image_R_?:'images/icon_thunderlite.png'},{  name_R_?:'mini_thunder_windows',  showName_R_?:'menu_mini_thunder',  showName2_R_?:'download_all_with_mini_thunder',  privateLink_R_?:'thunder://',  isLinux_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_minithunder.png'},{  name_R_?:'qq_whirlwind_windows',  showName_R_?:'menu_qq_whirlwind',  showName2_R_?:'download_all_with_qq_whirlwind',  privateLink_R_?:'',  isLinux_R_?:false,  supportDownloadAll_R_?:true,  image_R_?:'images/icon_qq.png'},{  name_R_?:'emule_windows',  showName_R_?:'menu_emule',  isLinux_R_?:false,  showName2_R_?:'download_all_with_emule',  privateLink_R_?:'ed2k://',  supportDownloadAll_R_?:false,  image_R_?:'images/icon_emule.png'},{  name_R_?:'orbit_windows',  showName_R_?:'menu_orbit',  isLinux_R_?:false,  showName2_R_?:'download_all_with_orbit',  privateLink_R_?:'',  supportDownloadAll_R_?:true,  image_R_?:'images/icon_orbit.png'},{  name_R_?:'bitcomet_windows',  showName_R_?:'menu_bitcomet',  isLinux_R_?:false,  showName2_R_?:'download_all_with_bitcomet',  privateLink_R_?:'',  supportDownloadAll_R_?:true,  image_R_?:'images/icon_bitcomet.png'},{  name_R_?:'idm_windows',  showName_R_?:'menu_idm',  isLinux_R_?:false,  showName2_R_?:'download_all_with_idm',  privateLink_R_?:'',  supportDownloadAll_R_?:true,  image_R_?:'images/icon_idm.png'},{  name_R_?:'fdm_windows',  showName_R_?:'menu_fdm',  isLinux_R_?:false,  showName2_R_?:'download_all_with_fdm',  privateLink_R_?:'',  supportDownloadAll_R_?:true,  image_R_?:'images/icon_fdm.png'},{  name_R_?:'download_master_windows',  showName_R_?:'menu_download_master',  showName2_R_?:'download_all_with_download_master',  privateLink_R_?:'',  supportDownloadAll_R_?:true,  image_R_?:'images/icon_downloadmaster.png'},{  name_R_?:'getgo_windows',  showName_R_?:'menu_getgo',  showName2_R_?:'download_all_with_getgo',  privateLink_R_?:'',  supportDownloadAll_R_?:true,  image_R_?:'images/icon_getgo.png'},{  name_R_?:'dap_windows',  showName_R_?:'menu_dap',  showName2_R_?:'download_all_with_dap',  privateLink_R_?:'',  supportDownloadAll_R_?:false,  image_R_?:'images/icon_dap.png'},{  name_R_?:'flashget_linux',  showName_R_?:'menu_flashget',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'flashget $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_flashget_linux.png'},{  name_R_?:'jdownloader',  showName_R_?:'menu_jdownloader',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'jdownloader $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_jdownloader.png'},{  name_R_?:'gwget',  showName_R_?:'menu_gwget',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'gwget $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_gwget.png'},{  name_R_?:'aria2c',  showName_R_?:'menu_aria2c',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'aria2c $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_no_gui.png'},{  name_R_?:'axel',  showName_R_?:'menu_axel',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'axel $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_no_gui.png'},{  name_R_?:'curl',  showName_R_?:'menu_curl',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'curl $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_no_gui.png'},{  name_R_?:'wget',  showName_R_?:'menu_wget',  privateLink_R_?:'',  isLinux_R_?:true,  command_R_?:'wget $URL',  isUserAdded_R_?:false,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_no_gui.png'},{  name_R_?:'chrome_downloader',  showName_R_?:'menu_chrome',  isSystem_R_?:true,  supportDownloadAll_R_?:false,  image_R_?:'images/icon_chrome.png'}]
+  downloaderManager_R_0.downloader = {}
+  downloaderManager_R_0.init = function (plugin_R_73) {
+  downloaderManager_R_0.downloader['thunder_windows'] = (NEW Thunder_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['mini_thunder_windows'] = (NEW MiniThunder_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['thunder_lite_windows'] = (NEW ThunderLite_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['flashget_windows'] = (NEW Flashget_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['mini_flashget_windows'] = (NEW MiniFlashget_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['qq_whirlwind_windows'] = (NEW QQWhirlWind_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['emule_windows'] = (NEW EMule_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['orbit_windows'] = (NEW Orbit_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['bitcomet_windows'] = (NEW BitComet_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['idm_windows'] = (NEW IDM_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['fdm_windows'] = (NEW FDM_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['download_master_windows'] = (NEW DownloadMaster_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['getgo_windows'] = (NEW GetGo_R_? plugin_R_73)
+    downloaderManager_R_0.downloader['dap_windows'] = (NEW DAP_R_? plugin_R_73)
+    for(var i_R_73 = 0;i_R_73 < downloaderManager_R_0.menuItems.length;i_R_73++){
+          var item_R_73 = downloaderManager_R_0.menuItems[i_R_73];
+      if (item_R_73.isLinux){
+                  downloaderManager_R_0.downloader[item_R_73.name] = (NEW LinuxDownloader_R_? plugin_R_73,item_R_73.command);
+});
+}
+    downloaderManager_R_0.addCustomDownloaders_R_?()
+}
+  downloaderManager_R_0.addCustomDownloaders = function () {
+  for(var name_R_74 in localStorage_R_?){
+    if (name_R_74.indexOf_R_?('downloaderConfigure') == 0){
+              var customArr_R_74 = localStorage_R_?[name_R_74].split_R_?(',');
+        downloaderManager_R_0.menuItems.push_R_?({          storageName_R_?:name_R_74,          name_R_74:customArr_R_74[1],          showName_R_?:'menu_custom',          isLinux_R_?:true,          command_R_?:customArr_R_74[2],          isUserAdded_R_?:true,          supportDownloadAll_R_?:false,          image_R_?:customArr_R_74[0]});
+        downloaderManager_R_0.downloader[customArr_R_74[1]] = (NEW LinuxDownloader_R_? plugin_R_0,customArr_R_74[2]);
+});
+}
+}
+  downloaderManager_R_0.updateCustomDownloaders = function () {
+  for(var i_R_75 = downloaderManager_R_0.menuItems.length - 1;i_R_75 >= 0;i_R_75--){
+          var item_R_75 = downloaderManager_R_0.menuItems[i_R_75];
+      if (item_R_75.isUserAdded){
+        downloaderManager_R_0.menuItems.splice_R_?(i_R_75)
+});
+}
+    downloaderManager_R_0.addCustomDownloaders_R_?()
+}
+  downloaderManager_R_0.getEnabledDownloaders = function (plugin_R_76) {
+  var enableMenuItems_R_76 = []
+    var last_R_76 = 0
+    for(var i_R_76 = 0;i_R_76 < downloaderManager_R_0.menuItems.length;i_R_76++){
+          var item_R_76 = downloaderManager_R_0.menuItems[i_R_76];
+      if (item_R_76.isSystem){
+                  last_R_76 = i_R_76;
+} else {
+                  var downloader_R_76 = downloaderManager_R_0.downloader[item_R_76.name];
+          if (downloader_R_76.checkDownloader()){
+                          if (item_R_76.name == 'mini_thunder_windows'){
+                                  var thunderLite_R_76 = downloaderManager_R_0.downloader['thunder_lite_windows'];
+                  if (thunderLite_R_76.checkDownloader_R_?()){
+                    continue
+});
+});
+              downloader_R_76.updateNPObjectIfNeeded();
+              enableMenuItems_R_76.push_R_?(item_R_76);
+} else {
+                          downloader_R_76.resetNPObject();
+});
+});
+}
+    enableMenuItems_R_76.push(downloaderManager_R_0.menuItems[last_R_76])
+    return enableMenuItems_R_76
+}
+  downloaderManager_R_0.removeDownloader = function (name_R_77) {
+  downloaderManager_R_0.downloader[name_R_77].resetNPObject()
+    delete downloaderManager_R_0.downloader[name_R_77]
+}
+  downloaderManager_R_0.copyLinkToClipboard = function (plugin_R_78,url_R_78) {
+  plugin_R_78.CopyToClipboard_R_?(url_R_78)
+}
+  var npDownload_R_0 = {  defaultDownloader_R_?:'chrome_downloader',  contextMenu_R_?:true,  contextMenuList_R_?:[],  useContextMenuAPI_R_0:false,  getPageLink_R_?:function () {
+    var ret__R_79 = []
+      var link__R_79 = document.links
+      var setLinksToArray_R_79 = function (links_R_80,array_R_80) {
+      for(var i_R_80 = 0;i_R_80 < links_R_80.length;i_R_80++){
+                  var url_R_80 = links_R_80[i_R_80].src || links_R_80[i_R_80].href;
+          var text_R_80 = npDownload_R_0.trim_R_?(links_R_80[i_R_80].alt || links_R_80[i_R_80].innerText || links_R_80[i_R_80].textContent) || ' ';
+          array_R_80.push_R_?({            url_R_80:url_R_80,            text_R_80:text_R_80});
+}
+}
+      setLinksToArray_R_?(link__R_79,ret__R_79)
+      link__R_79 = document.images
+      setLinksToArray_R_79(link__R_79,ret__R_79)
+      var frames_R_79 = document.getElementsByTagName_R_?('frame')
+      if (frames_R_79.length > 0){
+              for(var i_R_79 = 0;i_R_79 < frames_R_79.length;i_R_79++){
+                      var frames_link_R_79 = frames_R_79[i_R_79].contentDocument.links;
+            var frames_img_R_79 = frames_R_79[i_R_79].contentDocument.images;
+            setLinksToArray_R_79(frames_link_R_79,ret__R_79);
+            setLinksToArray_R_79(frames_img_R_79,ret__R_79);
+};
+})
+      return ret__R_79
+},  trim_R_?:function (str_R_81) {
+    return str_R_81.replace((REGEXP '(^\\s*)|(\\s*$)' 'g'),'').replace((REGEXP '\\n' 'g'),' ').replace((REGEXP '\\r' 'g'),' ').replace_R_?((REGEXP '"' 'g'),'\\"')
+},  overwritePageLinks_R_?:function () {
+    var sufix_R_82 = (REGEXP '(\\.CRX|\\.ZIP|\\.EXE|\\.BIN|\\.GZ|\\.Z|\\.TAR|\\.ARJ|\\.LZH|\\.MP3|\\.A[0-9]?|\\.RAR|\\.R[0-9][0-9]|\\.asf|\\.avi|\\.iso|\\.mpeg|\\.mpg|\\.mpga|\\.ra|\\.rm|\\.rmvb|\\.wma|\\.wmp|\\.wmv|\\.msi)$' 'i')
+      for(var i_R_82 = 0;i_R_82 < document.links.length;i_R_82++){
+              if (document.links[i_R_82].getAttribute('thunderhref')){
+                      var thunderhref_R_82 = document.links[i_R_82].getAttribute_R_?('thunderhref');
+            document.links[i_R_82].href = thunderhref_R_82;
+});
+        if (sufix_R_82.test_R_?(document.links[i_R_82].href) || document.links[i_R_82].getAttribute('thunderhref')){
+                      if (document.links[i_R_82].onclick){
+                              document.links[i_R_82].click = document.links[i_R_82].onclick;
+                document.links[i_R_82].onclick = function () {
+                  this.click_R_?()
+                    return npDownload_R_0.download_R_?(this)
+};
+} else {
+                              document.links[i_R_82].onclick = function () {
+                  return npDownload_R_0.download_R_?(this)
+};
+});
+            if (!npDownload_R_0.useContextMenuAPI){
+                              document.links[i_R_82].oncontextmenu = function () {
+                  if (npDownload_R_0.contextMenu){
+                                          window.event.returnValue = false;
+                      var contextMenu_R_85 = npDownload_R_0.generateContextMenu_R_?(this);
+                      npDownload_R_0.showMyContextMenu_R_?(contextMenu_R_85);
+})
+};
+});
+});
+}
+},  download_R_?:function (link_R_86) {
+    if (this.defaultDownloader != 'chrome_downloader'){
+              npDownload_R_0.sendDownloadCommandToBg_R_?(link_R_86,this.defaultDownloader);
+        return false;
+} else {
+              return true;
+})
+},  sendRequest_R_?:function (message_R_87,responseCallback_R_87) {
+    chrome.extension.sendRequest(message_R_87,responseCallback_R_87)
+},  onRequest_R_?:function () {
+    chrome.extension.onRequest.addListener(function (request_R_89,sender_R_89,response_R_89) {
+      if (request_R_89.msg == 'init_check'){
+                  npDownload_R_0.contextMenu = eval_R_?(request_R_89.contextMenu);
+          npDownload_R_0.defaultDownloader = request_R_89.defaultDownloader;
+          npDownload_R_0.contextMenuList = request_R_89.contextMenuList;
+          npDownload_R_0.useContextMenuAPI = request_R_89.useContextMenuAPI;
+          response_R_?(true);
+})
+})
+},  generateContextMenu_R_?:function (link_R_90) {
+    var otherItem_R_90 = [{      name_R_?:'copyLink',      showName_R_?:'menu_copy_link'},{      name_R_?:'',      showName_R_?:''},{      name_R_?:'contextMenu',      showName_R_?:'menu_disable'}]
+      var contextMenuList_R_90 = npDownload_R_0.contextMenuList.concat_R_?(otherItem_R_90)
+      var contextMenu_R_90 = document.createElement_R_?('DIV')
+      contextMenu_R_90.id = 'dh-menu'
+      var privateLink_R_90 = ['flashget://','thunder://']
+      var isPrivateLink_R_90 = false
+      index_R_90
+      for(index_R_90 = 0;index_R_90 < privateLink_R_90.length;index_R_90++){
+              if (link_R_90.href.toLowerCase_R_?().indexOf_R_?(privateLink_R_90[index_R_90]) == 0){
+                      isPrivateLink_R_90 = true;
+            break;
+});
+}
+      for(var i_R_90 = 0;i_R_90 < contextMenuList_R_90.length;i_R_90++){
+              var item_R_90 = contextMenuList_R_90[i_R_90];
+        var menuItem_R_90 = document.createElement('DIV');
+        if (item_R_90.name){
+                      if (isPrivateLink_R_90 && item_R_90.privateLink && privateLink_R_90[index_R_90] != item_R_90.privateLink){
+                              menuItem_R_90.className = 'dh-menu-item-disable';
+} else {
+                              menuItem_R_90.className = 'dh-menu-item';
+});
+            var a_R_90 = document.createElement('A');
+            a_R_90.href = 'javascript:void(0)';
+            a_R_90.innerText = chrome.i18n.getMessage(item_R_90.showName);
+            menuItem_R_90.appendChild_R_?(a_R_90);
+            contextMenu_R_90.appendChild(menuItem_R_90);
+            if (item_R_90.name == 'chrome_downloader'){
+                              a_R_90.href = link_R_90.href;
+} else {
+                              function (message_R_91,element_R_91) {
+                  element_R_91.onclick = function () {
+                    if (message_R_91 == 'contextMenu'){
+                                              npDownload_R_0.contextMenu = false;
+})
+                      npDownload_R_0.sendDownloadCommandToBg_R_?(link_R_90,message_R_91)
+}
+}(item_R_90.name,a_R_90);
+});
+} else {
+                      menuItem_R_90.className = 'dh-menu-line';
+});
+        contextMenu_R_90.appendChild(menuItem_R_90);
+}
+      return contextMenu_R_90
+},  checkFrameByUrlAndDown_R_?:function (url_R_93,downloader_R_93) {
+    if (url_R_93 == location_R_?.href){
+              this.sendDownloadAllCommandToBg_R_?(downloader_R_93);
+})
+},  sendDownloadCommandToBg_R_?:function (link_R_94,message_R_94) {
+    var message__R_94 = {      msg_R_?:message_R_94,      link_R_94:{},      pageUrl_R_?:location_R_?.href}
+      message__R_94.link.url = link_R_94.href
+      message__R_94.link.text = this.trim_R_?(link_R_94.innerText || link_R_94.textContent) || ' '
+      message__R_94.link.pageUrl = location_R_?.href
+      this.sendRequest_R_?(message__R_94,function () {
+
+})
+},  sendDownloadAllCommandToBg_R_?:function (downloader_R_96) {
+    var links_R_96 = this.getPageLink_R_?()
+      var message__R_96 = {      msg_R_?:'downloadAll',      downloader_R_96:downloader_R_96,      links_R_96:links_R_96,      pageUrl_R_?:location_R_?.href}
+      this.sendRequest_R_?(message__R_96,function () {
+
+})
+},  showMyContextMenu_R_?:function (contextMenu_R_98) {
+    if (contextMenu_R_98.id && document.getElementById(contextMenu_R_98.id)){
+              document.getElementById_R_?(contextMenu_R_98.id).parentNode.removeChild_R_?(document.getElementById(contextMenu_R_98.id));
+})
+      var bodyStyle_R_98 = window.getComputedStyle_R_?(document.body,'style')
+      var top_R_98 = event_R_?.pageY
+      var left_R_98 = event_R_?.pageX
+      if (bodyStyle_R_98.position == 'relative'){
+              left_R_98 = parseInt_R_?(bodyStyle_R_98.marginLeft);
+        top_R_98 = parseInt_R_?(bodyStyle_R_98.marginTop);
+})
+      contextMenu_R_98.style.top = top_R_98 + 'px'
+      contextMenu_R_98.style.left = left_R_98 + 'px'
+      contextMenu_R_98.style.display = 'block'
+      document.body.appendChild_R_?(contextMenu_R_98)
+      document.onclick = function () {
+      if (document.getElementById_R_?(contextMenu_R_98.id)){
+                  contextMenu_R_98.parentNode.removeChild_R_?(contextMenu_R_98);
+})
+}
+},  loadContextMenuCss_R_?:function () {
+    var cssRef_R_100 = document.createElement_R_?('link')
+      cssRef_R_100.id = 'drag-style'
+      cssRef_R_100.rel = 'stylesheet'
+      cssRef_R_100.href = chrome.extension.getURL('style.css')
+      cssRef_R_100.type = 'text/css'
+      document.getElementsByTagName_R_?('head')[0].appendChild_R_?(cssRef_R_100)
+},  init_R_?:function () {
+    this.loadContextMenuCss_R_?()
+      this.onRequest_R_?()
+      this.sendRequest_R_?({      msg_R_?:'init_loaded'},function (response_R_102) {
+      if (response_R_102){
+                  npDownload_R_0.contextMenu = eval_R_?(response_R_102.contextMenu);
+          npDownload_R_0.defaultDownloader = response_R_102.defaultDownloader;
+          npDownload_R_0.useContextMenuAPI = eval_R_?(response_R_102.useContextMenuAPI);
+          npDownload_R_0.contextMenuList = response_R_102.contextMenuList;
+          npDownload_R_0.overwritePageLinks_R_?();
+})
+})
+}}
+  npDownload_R_0.init()

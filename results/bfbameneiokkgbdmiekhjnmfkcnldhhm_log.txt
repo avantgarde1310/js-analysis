@@ -1,0 +1,6 @@
+Extension Name: Web Developer
+Extension Identifier: bfbameneiokkgbdmiekhjnmfkcnldhhm
+Number of functions: 1648
+Number of anonymous functions: 1544
+Number of named functions: 104
+Number of functions that reference chrome: 84

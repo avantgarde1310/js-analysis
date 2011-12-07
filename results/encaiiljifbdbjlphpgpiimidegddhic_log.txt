@@ -1,0 +1,6 @@
+Extension Name: Chromed Bird
+Extension Identifier: encaiiljifbdbjlphpgpiimidegddhic
+Number of functions: 1597
+Number of anonymous functions: 1474
+Number of named functions: 123
+Number of functions that reference chrome: 38

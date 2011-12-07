@@ -1,0 +1,152 @@
+map_R_0
+  geocoder_R_0
+  directions_R_0
+  var mainHeight_R_0 = 0
+  var mapWidth_R_0 = 400
+  var mapHeight_R_0 = 335
+  var isRouteFormOpened_R_0 = false
+  var heightCounter_R_0 = 1
+  function onLoad_R_1() {
+  var interval_R_1 = setTimeout_R_?(initMap_R_?,200)
+}
+  function showRouteForm_R_2() {
+  document.getElementById_R_?('searchBox').style.display = 'none'
+    document.getElementById('routeSourceBox').style.display = 'block'
+    document.getElementById('routeDestBox').style.display = 'block'
+    document.getElementById('routeSource').focus_R_?()
+    mainHeight_R_0 = mapHeight_R_0 + 73
+    document.getElementById('main').style.height = mapHeight_R_0 + 73 + 'px'
+    isRouteFormOpened_R_0 = true
+}
+  function hideRouteForm_R_3() {
+  document.getElementById_R_?('searchBox').style.display = 'block'
+    document.getElementById('routeSourceBox').style.display = 'none'
+    document.getElementById('routeDestBox').style.display = 'none'
+    document.getElementById('addressSource').focus_R_?()
+    mainHeight_R_0 = mapHeight_R_0 + 43
+    document.getElementById('main').style.height = mapHeight_R_0 + 43 + 'px'
+    document.getElementById('routeErrorMessage').style.display = 'none'
+    isRouteFormOpened_R_0 = false
+}
+  function searchMap_R_4() {
+  var addressSource_R_4 = document.getElementById_R_?('addressSource').value
+    if (geocoder_R_0){
+          geocoder_R_0.getLatLng_R_?(addressSource_R_4,function (point_R_5) {
+        if (!point_R_5){
+          ;
+} else {
+                      map_R_0.setCenter_R_?(point_R_5,13);
+            var marker_R_5 = (NEW GMarker_R_? point_R_5);
+            map_R_0.addOverlay_R_?(marker_R_5);
+            marker_R_5.openInfoWindowHtml_R_?(addressSource_R_4);
+            document.getElementById_R_?('fotter').style.display = 'xxxxxxxxxxxxxxxx';
+})
+});
+})
+}
+  function getDirections_R_6() {
+  var source_R_6 = document.getElementById_R_?('routeSource').value
+    var destination_R_6 = document.getElementById('routeDest').value
+    directionsPanel_R_? = document.getElementById('route')
+    if (directions_R_0 != null){
+    directions_R_0.clear_R_?()
+})
+    directions_R_0 = (NEW GDirections_R_? map_R_0,directionsPanel_R_?)
+    GEvent_R_?.addListener_R_?(directions_R_0,'error',function () {
+    document.getElementById_R_?('routeErrorMessage').style.display = ''
+})
+    GEvent_R_?.addListener(directions_R_0,'load',function () {
+    document.getElementById_R_?('main').style.width = '790px'
+      document.getElementById('map_canvas').style.width = '400px'
+      document.getElementById('route').style.height = mapHeight_R_0 - 12 + 'px'
+      document.getElementById('route-container').style.height = mapHeight_R_0 + 'px'
+      document.getElementById('route-container').style.display = 'block'
+      document.getElementById('clearRouteLink').style.display = 'block'
+      document.getElementById('routeErrorMessage').style.display = 'none'
+      document.getElementById('sizeLinks').style.display = 'none'
+})
+    directions_R_0.load_R_?('from: ' + source_R_6 + ' to: ' + destination_R_6)
+}
+  function clearRoute_R_9() {
+  if (directions_R_0 != null){
+          directions_R_0.clear_R_?();
+      document.getElementById_R_?('route-container').style.display = 'none';
+      document.getElementById('map_canvas').style.width = mapWidth_R_0 + 'px';
+      document.getElementById('main').style.width = mapWidth_R_0 + 'px';
+      document.getElementById('main').style.height = mainHeight_R_0 + heightCounter_R_0 + 'px';
+      heightCounter_R_0++;
+      document.getElementById('sizeLinks').style.display = 'block';
+})
+    document.getElementById('clearRouteLink').style.display = 'none'
+    document.getElementById('routeErrorMessage').style.display = 'none'
+}
+  function initMap_R_10() {
+  if (localStorage_R_?['width'] != null && localStorage_R_?['width'] != ''){
+          document.getElementById_R_?('main').style.width = localStorage_R_?['mainWidth'] + 'px';
+      document.getElementById('main').style.height = localStorage_R_?['mainHeight'] + 'px';
+      document.getElementById('map_canvas').style.width = localStorage_R_?['width'] + 'px';
+      document.getElementById('map_canvas').style.height = localStorage_R_?['height'] + 'px';
+      mainHeight_R_0 = localStorage_R_?['mainHeight'] - 0;
+      mapWidth_R_0 = localStorage_R_?['width'] - 0;
+      mapHeight_R_0 = localStorage_R_?['height'] - 0;
+})
+    document.getElementById('addressSource').focus_R_?()
+    map_R_0 = (NEW GMap2_R_? document.getElementById('map_canvas'))
+    if (localStorage_R_?['lat'] == null || localStorage_R_?['lat'] == ''){
+          map_R_0.setCenter((NEW GLatLng_R_? 37.4419,-92.1419),2);
+} else {
+          map_R_0.setCenter_R_?((NEW GLatLng_R_? localStorage_R_?['lat'] - 0,localStorage_R_?['long'] - 0),localStorage_R_?['zoom'] - 0);
+})
+    map_R_0.setUIToDefault_R_?()
+    geocoder_R_0 = new GClientGeocoder_R_?
+    document.getElementById('addressSource').addEventListener_R_?('keyup',function (event_R_11) {
+    if (event_R_11.keyCode == 13){
+              searchMap_R_4();
+})
+},false)
+}
+  function setDefaultLocation_R_12() {
+  var point_R_12 = map_R_0.getCenter_R_?()
+    localStorage_R_?['lat'] = point_R_12.lat_R_?()
+    localStorage_R_?['long'] = point_R_12.lng_R_?()
+    localStorage_R_?['zoom'] = map_R_0.getZoom_R_?()
+}
+  function setSize_R_13(size_R_13) {
+  if (size_R_13 == 0){
+          mapWidth_R_0 = 400;
+      mapHeight_R_0 = 335;
+      if (isRouteFormOpened_R_0){
+                  mainHeight_R_0 = 516 - 110;
+} else {
+                  mainHeight_R_0 = 490 - 110;
+});
+} else {
+    if (size_R_13 == 1){
+              mapWidth_R_0 = 490;
+        mapHeight_R_0 = 445;
+        if (isRouteFormOpened_R_0){
+                      mainHeight_R_0 = 516;
+} else {
+                      mainHeight_R_0 = 490;
+});
+} else {
+      if (size_R_13 == 2){
+                  mapWidth_R_0 = 790;
+          mapHeight_R_0 = 445 + 60;
+          if (isRouteFormOpened_R_0){
+                          mainHeight_R_0 = 516 + 60;
+} else {
+                          mainHeight_R_0 = 490 + 60;
+});
+})
+})
+})
+    document.getElementById_R_?('map_canvas').style.width = mapWidth_R_0 + 'px'
+    document.getElementById('map_canvas').style.height = mapHeight_R_0 + 'px'
+    document.getElementById('main').style.width = mapWidth_R_0 + 'px'
+    document.getElementById('main').style.height = mainHeight_R_0 + 'px'
+    localStorage_R_?['width'] = mapWidth_R_0
+    localStorage_R_?['height'] = mapHeight_R_0
+    localStorage_R_?['mainWidth'] = mapWidth_R_0
+    localStorage_R_?['mainHeight'] = mainHeight_R_0
+}

@@ -1,0 +1,2312 @@
+var User_R_0 = function (user_R_1) {
+  for(var prop_R_1 in user_R_1){
+    this[prop_R_1] = user_R_1[prop_R_1];
+}
+}
+  var Account_R_0 = {  getUsers_R_?:function (siteId_R_2) {
+    var users_R_2 = localStorage_R_?.getItem_R_?(siteId_R_2 + '_userInfo')
+      if (users_R_2){
+              users_R_2 = JSON_R_?.parse_R_?(users_R_2);
+        for(var id_R_2 in users_R_2){
+          if (Account_R_0.isExpires_R_?(users_R_2[id_R_2])){
+                          delete users_R_2[id_R_2];
+});
+};
+        localStorage_R_?.setItem_R_?(siteId_R_2 + '_userInfo',JSON_R_?.stringify_R_?(users_R_2));
+        return users_R_2;
+})
+      return {}
+},  getUser_R_?:function (siteId_R_3,userId_R_3) {
+    var users_R_3 = Account_R_0.getUsers_R_?(siteId_R_3)
+      var user_R_3 = users_R_3[userId_R_3]
+      if (user_R_3 && Account_R_0.isExpires_R_?(user_R_3)){
+              Account_R_0.removeUser_R_?(siteId_R_3,userId_R_3);
+        return null;
+} else {
+              return user_R_3;
+})
+},  addUser_R_?:function (siteId_R_4,user_R_4) {
+    var users_R_4 = Account_R_0.getUsers_R_?(siteId_R_4)
+      var userId_R_4 = user_R_4.id
+      if (!users_R_4[userId_R_4]){
+              users_R_4[userId_R_4] = user_R_4;
+        users_R_4 = JSON_R_?.stringify_R_?(users_R_4);
+        localStorage_R_?.setItem_R_?(siteId_R_4 + '_userInfo',users_R_4);
+})
+},  updateUser_R_?:function (siteId_R_5,user_R_5) {
+    var users_R_5 = Account_R_0.getUsers_R_?(siteId_R_5)
+      var userId_R_5 = user_R_5.id
+      if (users_R_5 && users_R_5[userId_R_5]){
+              users_R_5[userId_R_5] = user_R_5;
+        users_R_5 = JSON_R_?.stringify_R_?(users_R_5);
+        localStorage_R_?.setItem_R_?(siteId_R_5 + '_userInfo',users_R_5);
+})
+},  removeUser_R_?:function (siteId_R_6,userId_R_6) {
+    var users_R_6 = Account_R_0.getUsers_R_?(siteId_R_6)
+      delete users_R_6[userId_R_6]
+      users_R_6 = JSON_R_?.stringify_R_?(users_R_6)
+      localStorage_R_?.setItem_R_?(siteId_R_6 + '_userInfo',users_R_6)
+},  isExpires_R_?:function (user_R_7) {
+    var expires_R_7 = user_R_7.expires
+      if (expires_R_7){
+              return new Date_R_?.getTime_R_?() >= expires_R_7;
+})
+      return false
+}}
+  function () {
+  function ajax_R_9(option_R_9) {
+    if (arguments_R_?.length < 1 || option_R_9.constructor != Object){
+      (THROW (NEW Error_R_? 'Bad parameter.'))
+})
+      var url_R_9 = option_R_9.url
+      var success_R_9 = option_R_9.success
+      var complete_R_9 = option_R_9.complete
+      if (!url_R_9 || !success_R_9 || complete_R_9){
+      (THROW (NEW Error_R_? 'Parameter url and success or complete are required.'))
+})
+      var parameters_R_9 = option_R_9.parameters || {}
+      var method_R_9 = option_R_9.method || 'GET'
+      var status_R_9 = option_R_9.status
+      var headers_R_9 = option_R_9.headers || {}
+      var data_R_9 = option_R_9.data || null
+      var multipartData_R_9 = option_R_9.multipartData
+      var queryString_R_9 = constructQueryString_R_12(parameters_R_9)
+      if (multipartData_R_9){
+              var boundary_R_9 = multipartData_R_9.boundary || 'XMLHttpRequest2';
+        method_R_9 = 'POST';
+        multipartDataString_R_9;
+        var contentType_R_9 = headers_R_9['Content-Type'] || 'multipart/form-data';
+        if (contentType_R_9.indexOf('multipart/form-data') == 0){
+                      headers_R_9['Content-Type'] = 'multipart/form-data; boundary=' + boundary_R_9;
+            multipartDataString_R_9 = constructMultipartFormData_R_16(multipartData_R_9,boundary_R_9,parameters_R_9);
+} else {
+          if (contentType_R_9.indexOf_R_?('multipart/related') == 0){
+                          headers_R_9['Content-Type'] = 'multipart/related; boundary=' + boundary_R_9;
+              multipartDataString_R_9 = constructMultipartRelatedData_R_17(boundary_R_9,multipartData_R_9.dataList);
+})
+});
+        data_R_9 = constructBlobData_R_15(multipartDataString_R_9);
+} else {
+              if (queryString_R_9){
+          url_R_9 = '?' + queryString_R_9
+});
+})
+      var xhr_R_9 = new XMLHttpRequest_R_?
+      xhr_R_9.open_R_?(method_R_9,url_R_9,true)
+      xhr_R_9.onreadystatechange = function () {
+      if (xhr_R_9.readyState == 4){
+                  var statusCode_R_10 = xhr_R_9.status;
+          var parsedResponse_R_10 = parseResponse_R_14(xhr_R_9);
+          if (complete_R_9){
+            complete_R_?(statusCode_R_10,parsedResponse_R_10)
+});
+          if (success_R_9 && statusCode_R_10 == 200 || statusCode_R_10 == 304){
+                          success_R_?(parsedResponse_R_10);
+} else {
+            if (status_R_9){
+                              if (status_R_9[statusCode_R_10]){
+                                      status_R_9[statusCode_R_10](parsedResponse_R_10);
+} else {
+                  if (status_R_9['others']){
+                                          status_R_9['others'](parsedResponse_R_10,statusCode_R_10);
+})
+});
+})
+});
+})
+}
+      var progress_R_9 = option_R_9.progress
+      if (progress_R_9){
+              xhr_R_9.upload.addEventListener_R_?('progress',function (e_R_11) {
+          if (e_R_11.lengthComputable){
+                          progress_R_?(e_R_11.loaded,e_R_11.total);
+})
+},false);
+})
+      for(var headerKey_R_9 in headers_R_9){
+      xhr_R_9.setRequestHeader_R_?(headerKey_R_9,headers_R_9[headerKey_R_9]);
+}
+      xhr_R_9.send_R_?(data_R_9)
+}
+    function constructQueryString_R_12(parameters_R_12) {
+    var tmpParameter_R_12 = []
+      for(var name_R_12 in parameters_R_12){
+      var value_R_12 = parameters_R_12[name_R_12];
+      if (value_R_12.constructor == Array_R_?){
+                  value_R_12.forEach_R_?(function (val_R_13) {
+            tmpParameter_R_12.push_R_?(name_R_12 + '=' + val_R_13)
+});
+} else {
+                  tmpParameter_R_12.push_R_?(name_R_12 + '=' + value_R_12);
+});
+}
+      return tmpParameter_R_12.join_R_?('&')
+}
+    function parseResponse_R_14(xhr_R_14) {
+    var ct_R_14 = xhr_R_14.getResponseHeader_R_?('content-type')
+      if (typeof ct_R_14 == 'string'){
+              if (ct_R_14.indexOf('xml') >= 0){
+          return xhr_R_14.responseXML
+} else {
+          if (ct_R_14.indexOf_R_?('json') >= 0){
+            return JSON_R_?.parse_R_?(xhr_R_14.responseText)
+})
+});
+})
+      return xhr_R_14.responseText
+}
+    function constructBlobData_R_15(dataString_R_15,contentType_R_15) {
+    bb_R_15
+      if (window.BlobBuilder){
+              bb_R_15 = new BlobBuilder_R_?;
+} else {
+      if (window.WebKitBlobBuilder){
+                  bb_R_15 = new WebKitBlobBuilder_R_?;
+})
+})
+      var len_R_15 = dataString_R_15.length
+      var data_R_15 = (NEW Uint8Array_R_? len_R_15)
+      for(var i_R_15 = 0;i_R_15 < len_R_15;i_R_15++){
+              data_R_15[i_R_15] = dataString_R_15.charCodeAt_R_?(i_R_15);
+}
+      bb_R_15.append_R_?(data_R_15.buffer)
+      return bb_R_15.getBlob_R_?(contentType_R_15)
+}
+    function constructMultipartFormData_R_16(binaryData_R_16,boundary_R_16,otherParameters_R_16) {
+    var commonHeader_R_16 = 'Content-Disposition: form-data; '
+      var data_R_16 = []
+      for(var key_R_16 in otherParameters_R_16){
+      data_R_16.push_R_?('--' + boundary_R_16 + '\r\n');
+      data_R_16.push(commonHeader_R_16);
+      data_R_16.push('name="' + key_R_16 + '"\r\n\r\n' + otherParameters_R_16[key_R_16] + '\r\n');
+}
+      data_R_16.push('--' + boundary_R_16 + '\r\n')
+      data_R_16.push(commonHeader_R_16)
+      data_R_16.push('name="' + binaryData_R_16.name || 'binaryfilename' + '"; ')
+      data_R_16.push('filename="' + binaryData_R_16.value + '"\r\n')
+      data_R_16.push('Content-type: ' + binaryData_R_16.type + '\r\n\r\n')
+      data_R_16.push(binaryData_R_16.data + '\r\n')
+      data_R_16.push('--' + boundary_R_16 + '--\r\n')
+      return data_R_16.join_R_?('')
+}
+    function constructMultipartRelatedData_R_17(boundary_R_17,dataList_R_17) {
+    var result_R_17 = []
+      dataList_R_17.forEach_R_?(function (data_R_18) {
+      result_R_17.push_R_?('--' + boundary_R_17 + '\r\n')
+        result_R_17.push('Content-Type: ' + data_R_18.contentType + '\r\n\r\n')
+        result_R_17.push(data_R_18.data + '\r\n')
+})
+      result_R_17.push_R_?('--' + boundary_R_17 + '--\r\n')
+      return result_R_17.join_R_?('')
+}
+    ajax_R_?.encodeForBinary = function (string_R_19) {
+    string_R_19 = encodeURI_R_?(string_R_19).replace_R_?((REGEXP '%([A-Z0-9]{2})' 'g'),'%u00$1')
+      return unescape_R_?(string_R_19)
+}
+    ajax_R_?.convertEntityString = function (string_R_20) {
+    var entitychars_R_20 = ['<','>','&','"',"'"]
+      var entities_R_20 = ['&lt;','&gt;','&amp;','&quot;','&apos;']
+      entitychars_R_20.forEach_R_?(function (character_R_21,index_R_21) {
+      string_R_20 = string_R_20.replace_R_?(character_R_21,entities_R_20[index_R_21])
+})
+      return string_R_20
+}
+    window.ajax = ajax_R_?
+}()
+  function Canvas_R_22() {
+
+}
+  Canvas_R_?.prototype.drawStrokeRect = function (ctx_R_23,color_R_23,x_R_23,y_R_23,width_R_23,height_R_23,lineWidth_R_23) {
+  ctx_R_23.strokeStyle = color_R_23
+    ctx_R_23.lineWidth = lineWidth_R_23
+    ctx_R_23.strokeRect_R_?(x_R_23,y_R_23,width_R_23,height_R_23)
+}
+  Canvas_R_?.prototype.drawFillRect = function (ctx_R_24,color_R_24,x_R_24,y_R_24,width_R_24,height_R_24) {
+  ctx_R_24.fillStyle = color_R_24
+    ctx_R_24.fillRect_R_?(x_R_24,y_R_24,width_R_24,height_R_24)
+}
+  Canvas_R_?.prototype.drawEllipse = function (ctx_R_25,color_R_25,x_R_25,y_R_25,xAxis_R_25,yAxis_R_25,lineWidth_R_25,type_R_25) {
+  var startX_R_25 = x_R_25 + xAxis_R_25
+    var startY_R_25 = y_R_25
+    ctx_R_25.beginPath_R_?()
+    ctx_R_25.lineWidth = lineWidth_R_25
+    ctx_R_25.moveTo_R_?(startX_R_25,startY_R_25)
+    for(var i_R_25 = 0;i_R_25 <= 360;i_R_25++){
+          var degree_R_25 = i_R_25 * Math_R_?.PI / 180;
+      startX_R_25 = x_R_25 + xAxis_R_25 - 2 * Math_R_?.cos_R_?(degree_R_25);
+      startY_R_25 = y_R_25 - yAxis_R_25 - 2 * Math_R_?.sin_R_?(degree_R_25);
+      ctx_R_25.lineTo_R_?(startX_R_25,startY_R_25);
+}
+    if (type_R_25 == 'rect'){
+          ctx_R_25.fillStyle = changeColorToRgba_R_33(color_R_25,0.5);
+      ctx_R_25.fill_R_?();
+} else {
+    if (type_R_25 == 'border'){
+              ctx_R_25.strokeStyle = color_R_25;
+        ctx_R_25.stroke_R_?();
+})
+})
+    ctx_R_25.closePath_R_?()
+}
+  Canvas_R_?.prototype.getLines = function (ctx_R_26,text_R_26,width_R_26,font_R_26) {
+  var words_R_26 = text_R_26.split_R_?(' ')
+    var lines_R_26 = []
+    var lastLine_R_26 = ''
+    var measure_R_26 = 0
+    ctx_R_26.font = font_R_26
+    for(var i_R_26 = 0;i_R_26 < words_R_26.length;i_R_26++){
+          var word_R_26 = words_R_26[i_R_26];
+      measure_R_26 = ctx_R_26.measureText_R_?(lastLine_R_26 + word_R_26).width;
+      if (measure_R_26 <= width_R_26 || word_R_26 == ''){
+                  lastLine_R_26 = word_R_26 + ' ';
+} else {
+                  if (lastLine_R_26 != ''){
+            lines_R_26.push_R_?(lastLine_R_26)
+});
+          measure_R_26 = ctx_R_26.measureText(word_R_26).width;
+          if (measure_R_26 <= width_R_26){
+                          lastLine_R_26 = word_R_26 + ' ';
+} else {
+                          lastLine_R_26 = word_R_26[0];
+              for(var j_R_26 = 1;j_R_26 < word_R_26.length;j_R_26++){
+                                  measure_R_26 = ctx_R_26.measureText(lastLine_R_26 + word_R_26[j_R_26]).width;
+                  if (measure_R_26 <= width_R_26){
+                                          lastLine_R_26 = word_R_26[j_R_26];
+} else {
+                                          lines_R_26.push(lastLine_R_26);
+                      lastLine_R_26 = word_R_26[j_R_26];
+});
+};
+              lastLine_R_26 = ' ';
+});
+});
+}
+    if (lastLine_R_26 != ''){
+    lines_R_26.push(lastLine_R_26)
+})
+    return lines_R_26
+}
+  Canvas_R_?.prototype.setText = function (ctx_R_27,text_R_27,color_R_27,fontSize_R_27,fontFamily_R_27,lineHeight_R_27,x_R_27,y_R_27,width_R_27) {
+  ctx_R_27.textBaseline = 'top'
+    ctx_R_27.fillStyle = color_R_27
+    ctx_R_27.font = fontSize_R_27 + ' ' + fontFamily_R_27
+    ctx_R_27.lineHeight = lineHeight_R_27
+    var lines_R_27 = Canvas_R_?.prototype.getLines_R_?(ctx_R_27,text_R_27,width_R_27 - 2,ctx_R_27.font)
+    for(var i_R_27 = 0;i_R_27 < lines_R_27.length;i_R_27++){
+    ctx_R_27.fillText_R_?(lines_R_27[i_R_27],x_R_27,y_R_27 + lineHeight_R_27 * i_R_27,width_R_27)
+}
+}
+  Canvas_R_?.prototype.drawLine = function (ctx_R_28,color_R_28,lineCap_R_28,lineWidth_R_28,startX_R_28,startY_R_28,endX_R_28,endY_R_28) {
+  ctx_R_28.beginPath_R_?()
+    ctx_R_28.moveTo_R_?(startX_R_28,startY_R_28)
+    ctx_R_28.strokeStyle = color_R_28
+    ctx_R_28.lineWidth = lineWidth_R_28
+    ctx_R_28.lineCap = lineCap_R_28
+    ctx_R_28.lineTo_R_?(endX_R_28,endY_R_28)
+    ctx_R_28.closePath_R_?()
+    ctx_R_28.stroke_R_?()
+}
+  Canvas_R_?.prototype.drawArrow = function (ctx_R_29,color_R_29,lineWidth_R_29,arrowWidth_R_29,arrowHeight_R_29,lineCap_R_29,startX_R_29,startY_R_29,endX_R_29,endY_R_29) {
+  var arrowCoordinates_R_29 = calculateArrowCoordinates_R_34(arrowWidth_R_29,arrowHeight_R_29,startX_R_29,startY_R_29,endX_R_29,endY_R_29)
+    ctx_R_29.beginPath_R_?()
+    ctx_R_29.strokeStyle = color_R_29
+    ctx_R_29.lineWidth = lineWidth_R_29
+    ctx_R_29.lineCap = lineCap_R_29
+    ctx_R_29.moveTo_R_?(startX_R_29,startY_R_29)
+    ctx_R_29.lineTo_R_?(endX_R_29,endY_R_29)
+    ctx_R_29.lineTo(arrowCoordinates_R_29.p1.x,arrowCoordinates_R_29.p1.y)
+    ctx_R_29.moveTo(endX_R_29,endY_R_29)
+    ctx_R_29.lineTo(arrowCoordinates_R_29.p2.x,arrowCoordinates_R_29.p2.y)
+    ctx_R_29.closePath_R_?()
+    ctx_R_29.stroke_R_?()
+}
+  Canvas_R_?.prototype.drawRoundedRect = function (ctx_R_30,color_R_30,x_R_30,y_R_30,width_R_30,height_R_30,radius_R_30,type_R_30) {
+  ctx_R_30.beginPath_R_?()
+    ctx_R_30.moveTo_R_?(x_R_30,y_R_30 + radius_R_30)
+    ctx_R_30.lineTo_R_?(x_R_30,y_R_30 + height_R_30 - radius_R_30)
+    ctx_R_30.quadraticCurveTo_R_?(x_R_30,y_R_30 + height_R_30,x_R_30 + radius_R_30,y_R_30 + height_R_30)
+    ctx_R_30.lineTo(x_R_30 + width_R_30 - radius_R_30,y_R_30 + height_R_30)
+    ctx_R_30.quadraticCurveTo(x_R_30 + width_R_30,y_R_30 + height_R_30,x_R_30 + width_R_30,y_R_30 + height_R_30 - radius_R_30)
+    ctx_R_30.lineTo(x_R_30 + width_R_30,y_R_30 + radius_R_30)
+    ctx_R_30.quadraticCurveTo(x_R_30 + width_R_30,y_R_30,x_R_30 + width_R_30 - radius_R_30,y_R_30)
+    ctx_R_30.lineTo(x_R_30 + radius_R_30,y_R_30)
+    ctx_R_30.quadraticCurveTo(x_R_30,y_R_30,x_R_30,y_R_30 + radius_R_30)
+    if (type_R_30 == 'rect'){
+          ctx_R_30.fillStyle = changeColorToRgba_R_33(color_R_30,0.5);
+      ctx_R_30.fill_R_?();
+} else {
+    if (type_R_30 == 'border'){
+              ctx_R_30.strokeStyle = color_R_30;
+        ctx_R_30.lineWidth = 2;
+        ctx_R_30.stroke_R_?();
+})
+})
+    ctx_R_30.closePath_R_?()
+}
+  Canvas_R_?.prototype.blurImage = function (realCanvas_R_31,simulateCanvas_R_31,layerId_R_31,startX_R_31,startY_R_31,endX_R_31,endY_R_31) {
+  var x_R_31 = startX_R_31 < endX_R_31 ? startX_R_31 :endX_R_31
+    var y_R_31 = startY_R_31 < endY_R_31 ? startY_R_31 :endY_R_31
+    var width_R_31 = Math_R_?.abs_R_?(endX_R_31 - startX_R_31 - 1)
+    var height_R_31 = Math_R_?.abs(endY_R_31 - startY_R_31 - 1)
+    simulateCanvas_R_31.width = $(layerId_R_31).clientWidth + 10
+    simulateCanvas_R_31.height = $(layerId_R_31).clientHeight + 10
+    var ctx_R_31 = simulateCanvas_R_31.getContext_R_?('2d')
+    try {
+          ctx_R_31.drawImage_R_?(realCanvas_R_31,x_R_31,y_R_31,width_R_31,height_R_31,0,0,width_R_31,height_R_31);catch(error){
+      console.log(error + ' width : height' + width + ' : ' + height);
+}
+    var imageData_R_31 = ctx_R_31.getImageData_R_?(0,0,width_R_31,height_R_31)
+    imageData_R_31 = this.boxBlur_R_?(imageData_R_31,width_R_31,height_R_31,10)
+    ctx_R_31.putImageData_R_?(imageData_R_31,0,0)
+}
+  Canvas_R_?.prototype.boxBlur = function (image_R_32,width_R_32,height_R_32,count_R_32) {
+  j_R_32
+    var pix_R_32 = image_R_32.data
+    var inner_R_32 = 0
+    var outer_R_32 = 0
+    var step_R_32 = 0
+    rowOrColumn_R_32
+    nextPosition_R_32
+    nowPosition_R_32
+    for(rowOrColumn_R_32 = 0;rowOrColumn_R_32 < 2;rowOrColumn_R_32++){
+          if (rowOrColumn_R_32){
+                  outer_R_32 = width_R_32;
+          inner_R_32 = height_R_32;
+          step_R_32 = width_R_32 * 4;
+} else {
+                  outer_R_32 = height_R_32;
+          inner_R_32 = width_R_32;
+          step_R_32 = 4;
+});
+      for(var i_R_32 = 0;i_R_32 < outer_R_32;i_R_32++){
+                  nextPosition_R_32 = rowOrColumn_R_32 == 0 ? i_R_32 * width_R_32 * 4 :4 * i_R_32;
+          for(var k_R_32 = 0;k_R_32 < 4;k_R_32++){
+                          nowPosition_R_32 = nextPosition_R_32 + k_R_32;
+              var pixSum_R_32 = 0;
+              for(var m_R_32 = 0;m_R_32 < count_R_32;m_R_32++){
+                                  pixSum_R_32 = pix_R_32[nowPosition_R_32 + step_R_32 * m_R_32];
+};
+              pix_R_32[nowPosition_R_32] = pix_R_32[nowPosition_R_32 + step_R_32] = pix_R_32[nowPosition_R_32 + step_R_32 * 2] = Math_R_?.floor_R_?(pixSum_R_32 / count_R_32);
+              for(j_R_32 = 3;j_R_32 < inner_R_32 - 2;j_R_32++){
+                                  pixSum_R_32 = Math_R_?.max_R_?(0,pixSum_R_32 - pix_R_32[nowPosition_R_32 + j_R_32 - 2 * step_R_32] + pix_R_32[nowPosition_R_32 + j_R_32 + 2 * step_R_32]);
+                  pix_R_32[nowPosition_R_32 + j_R_32 * step_R_32] = Math_R_?.floor(pixSum_R_32 / count_R_32);
+};
+              pix_R_32[nowPosition_R_32 + j_R_32 * step_R_32] = pix_R_32[nowPosition_R_32 + j_R_32 + 1 * step_R_32] = Math_R_?.floor(pixSum_R_32 / count_R_32);
+};
+};
+}
+    return image_R_32
+}
+  function changeColorToRgba_R_33(color_R_33,opacity_R_33) {
+  var sColor_R_33 = color_R_33.toLowerCase_R_?()
+    var sColorChange_R_33 = []
+    for(var i_R_33 = 1;i_R_33 < sColor_R_33.length;i_R_33 = 2){
+          sColorChange_R_33.push_R_?(parseInt_R_?('0x' + sColor_R_33.slice_R_?(i_R_33,i_R_33 + 2)));
+}
+    return 'rgba(' + sColorChange_R_33.join_R_?(',') + ',' + opacity_R_33 + ')'
+}
+  function calculateArrowCoordinates_R_34(arrowWidth_R_34,arrowHeight_R_34,startX_R_34,startY_R_34,endX_R_34,endY_R_34) {
+  var p1_R_34 = function () {
+    var x_R_35 = startX_R_34 - endX_R_34
+      var y_R_35 = startY_R_34 - endY_R_34
+      var hypotenuse_R_35 = Math_R_?.sqrt_R_?(x_R_35 * x_R_35 + y_R_35 * y_R_35)
+      hypotenuse_R_35 = hypotenuse_R_35 == 0 ? arrowHeight_R_34 :hypotenuse_R_35
+      var dx_R_35 = Math_R_?.round_R_?(x_R_35 / hypotenuse_R_35 * arrowHeight_R_34)
+      var dy_R_35 = Math_R_?.round(y_R_35 / hypotenuse_R_35 * arrowHeight_R_34)
+      return {      x_R_35:endX_R_34 + dx_R_35,      y_R_35:endY_R_34 + dy_R_35}
+}
+    var p2_R_34 = function (p1_R_36,direct_R_36) {
+    var x_R_36 = p1_R_36.x - startX_R_34
+      var y_R_36 = p1_R_36.y - startY_R_34
+      var hypotenuse_R_36 = Math_R_?.sqrt_R_?(x_R_36 * x_R_36 + y_R_36 * y_R_36)
+      hypotenuse_R_36 = hypotenuse_R_36 == 0 ? arrowHeight_R_34 :hypotenuse_R_36
+      var dx_R_36 = Math_R_?.round_R_?(y_R_36 / hypotenuse_R_36 * arrowWidth_R_34 * direct_R_36)
+      var dy_R_36 = Math_R_?.round(x_R_36 / hypotenuse_R_36 * arrowWidth_R_34 * direct_R_36)
+      return {      x_R_36:p1_R_36.x + dx_R_36,      y_R_36:p1_R_36.y - dy_R_36}
+}
+    return {    p1_R_34:p2_R_?(p1_R_?(),1),    p2_R_34:p2_R_34(p1_R_34(),-1)}
+}
+  var FB_APP_ID_R_? = CURRENT_LOCALE_R_? == 'zh_CN' ? 170328509685996 :118170701590738
+  var FB_REDIRECT_URI_R_? = 'http://www.facebook.com/connect/login_success.html'
+  var FB_PERMISSION_R_? = 'offline_access,user_photos,publish_stream'
+  var FB_ACCESS_TOKEN_URL_R_? = 'https://www.facebook.com/dialog/oauth'
+  var FB_PHOTO_UPLOAD_URL_R_? = 'https://graph.facebook.com/me/photos'
+  var FB_USER_INFO_URL_R_? = 'https://graph.facebook.com/me'
+  var FB_LOGOUT_URL_R_? = 'http://m.facebook.com/logout.php?confirm=1'
+  var Facebook_R_0 = {  siteId_R_?:'facebook',  redirectUrl_R_?:FB_REDIRECT_URI_R_?,  currentUserId_R_?:null,  accessTokenCallback_R_?:null,  isRedirectUrl_R_?:function (url_R_37) {
+    return url_R_37.indexOf_R_?(FB_REDIRECT_URI_R_?) == 0
+},  getAccessToken_R_?:function (callback_R_38) {
+    Facebook_R_0.accessTokenCallback = callback_R_38
+      var url_R_38 = FB_ACCESS_TOKEN_URL_R_? + '?client_id=' + FB_APP_ID_R_? + '&redirect_uri=' + FB_REDIRECT_URI_R_? + '&scope=' + FB_PERMISSION_R_? + '&response_type=token'
+      chrome.tabs.create({      url_R_38:url_R_38})
+},  parseAccessToken_R_?:function (url_R_39) {
+    var queryString_R_39 = url_R_39.split_R_?('#')[1] || url_R_39.split('?')[1]
+      var queries_R_39 = queryString_R_39.split('&')
+      var queryMap_R_39 = {}
+      queries_R_39.forEach_R_?(function (pair_R_40) {
+      queryMap_R_39[pair_R_40.split_R_?('=')[0]] = pair_R_40.split('=')[1]
+})
+      var accessToken_R_39 = queryMap_R_39['access_token']
+      if (accessToken_R_39){
+              var user_R_39 = (NEW User_R_0 {          accessToken_R_39:accessToken_R_39});
+        Facebook_R_0.accessTokenCallback('success',user_R_39);
+} else {
+      if (queryMap_R_39['error']){
+                  Facebook_R_0.accessTokenCallback_R_?('failure','user_denied');
+})
+})
+      Facebook_R_0.accessTokenCallback = null
+},  getUserInfo_R_?:function (user_R_41,callback_R_41) {
+    ajax_R_?({      url_R_?:FB_USER_INFO_URL_R_?,      parameters_R_?:{        'access_token':user_R_41.accessToken},      success_R_?:function (userInfo_R_42) {
+        userInfo_R_42 = JSON_R_?.parse_R_?(userInfo_R_42)
+          if (callback_R_41){
+                      user_R_41.id = userInfo_R_42.id;
+            user_R_41.name = userInfo_R_42.name;
+            callback_R_?('success',user_R_41);
+})
+},      status_R_?:{        others_R_?:function () {
+          if (callback_R_41){
+            callback_R_?('failure','failed_to_get_user_info')
+})
+}}})
+},  upload_R_?:function (user_R_44,caption_R_44,imageData_R_44,callback_R_44) {
+    caption_R_44 = ajax_R_?.encodeForBinary_R_?(caption_R_44)
+      var params_R_44 = {      'access_token':user_R_44.accessToken,      message_R_?:caption_R_44}
+      var binaryData_R_44 = {      boundary_R_?:MULTIPART_FORMDATA_BOUNDARY_R_?,      data_R_?:imageData_R_44,      value_R_?:'test.png',      type_R_?:'image/png'}
+      ajax_R_?({      url_R_?:FB_PHOTO_UPLOAD_URL_R_?,      parameters_R_?:params_R_44,      multipartData_R_?:binaryData_R_44,      success_R_?:function (data_R_45) {
+        callback_R_?('success',JSON_R_?.parse_R_?(data_R_45).id)
+},      status_R_?:{        others_R_?:function (data_R_46) {
+          message_R_46
+            if (data_R_46){
+                          data_R_46 = JSON_R_?.parse_R_?(data_R_46);
+              if (data_R_46.error.message.indexOf_R_?('access token') >= 0){
+                                  message_R_46 = 'bad_access_token';
+} else {
+                                  message_R_46 = 'unknown_error';
+});
+} else {
+                          message_R_46 = 'failed_to_connect_to_server';
+})
+            callback_R_?('failure',message_R_46)
+}}})
+},  getPhotoLink_R_?:function (user_R_47,photoId_R_47,callback_R_47) {
+    ajax_R_?({      url_R_?:'https://graph.facebook.com/' + photoId_R_47,      parameters_R_?:{        'access_token':user_R_47.accessToken},      complete_R_?:function (statusCode_R_48,data_R_48) {
+        if (statusCode_R_48 == 200){
+                      callback_R_47('success',JSON_R_?.parse_R_?(data_R_48).link);
+} else {
+                      callback_R_?('failure','failed_to_get_photo_link');
+})
+}})
+},  logout_R_?:function (callback_R_49) {
+    ajax_R_?({      url_R_?:FB_LOGOUT_URL_R_?,      success_R_?:function (data_R_50) {
+        if (callback_R_49){
+          callback_R_?(data_R_50)
+})
+}})
+}}
+  function checkScriptLoad_R_51() {
+  chrome.extension.onRequest.addListener(function (request_R_52,sender_R_52,response_R_52) {
+    if (request_R_52.msg == 'is_page_capturable'){
+              try {
+                      if (isPageCapturable_R_?()){
+                              response_R_52({                  msg_R_?:'capturable'});
+} else {
+                              response_R_?({                  msg_R_?:'uncapturable'});
+});catch(e){
+            response({              msg:'loading'});
+};
+})
+})
+}
+  checkScriptLoad_R_51()
+  OAuth_R_0
+  if (OAuth_R_0 == null){
+  OAuth_R_0 = {}
+})
+  OAuth_R_0.setProperties = function (into_R_53,from_R_53) {
+  if (into_R_53 != null && from_R_53 != null){
+          for(var key_R_53 in from_R_53){
+        into_R_53[key_R_53] = from_R_53[key_R_53];
+};
+})
+    return into_R_53
+}
+  OAuth_R_0.setProperties_R_?(OAuth_R_0,{  percentEncode_R_?:function (s_R_54) {
+    if (s_R_54 == null){
+              return '';
+})
+      if (s_R_54 instanceof Array_R_?){
+              var e_R_54 = '';
+        for(var i_R_54 = 0;i_R_54 < s_R_54.length;++s_R_54){
+                      if (e_R_54 != ''){
+              e_R_54 = '&'
+});
+            e_R_54 = OAuth_R_0.percentEncode_R_?(s_R_54[i_R_54]);
+};
+        return e_R_54;
+})
+      s_R_54 = encodeURIComponent_R_?(s_R_54)
+      s_R_54 = s_R_54.replace_R_?((REGEXP '\\!' 'g'),'%21')
+      s_R_54 = s_R_54.replace((REGEXP '\\*' 'g'),'%2A')
+      s_R_54 = s_R_54.replace((REGEXP "\\'" 'g'),'%27')
+      s_R_54 = s_R_54.replace((REGEXP '\\(' 'g'),'%28')
+      s_R_54 = s_R_54.replace((REGEXP '\\)' 'g'),'%29')
+      return s_R_54
+},  decodePercent_R_?:function (s_R_55) {
+    if (s_R_55 != null){
+              s_R_55 = s_R_55.replace_R_?((REGEXP '\\+' 'g'),' ');
+})
+      return decodeURIComponent_R_?(s_R_55)
+},  getParameterList_R_?:function (parameters_R_56) {
+    if (parameters_R_56 == null){
+              return [];
+})
+      if (typeof parameters_R_56 != 'object'){
+              return OAuth_R_0.decodeForm_R_?(parameters_R_56 + '');
+})
+      if (parameters_R_56 instanceof Array_R_?){
+              return parameters_R_56;
+})
+      var list_R_56 = []
+      for(var p_R_56 in parameters_R_56){
+      list_R_56.push_R_?([p_R_56,parameters_R_56[p_R_56]]);
+}
+      return list_R_56
+},  getParameterMap_R_?:function (parameters_R_57) {
+    if (parameters_R_57 == null){
+              return {};
+})
+      if (typeof parameters_R_57 != 'object'){
+              return OAuth_R_0.getParameterMap_R_?(OAuth_R_0.decodeForm_R_?(parameters_R_57 + ''));
+})
+      if (parameters_R_57 instanceof Array_R_?){
+              var map_R_57 = {};
+        for(var p_R_57 = 0;p_R_57 < parameters_R_57.length;++p_R_57){
+                      var key_R_57 = parameters_R_57[p_R_57][0];
+            if (map_R_57[key_R_57] === undefined){
+                              map_R_57[key_R_57] = parameters_R_57[p_R_57][1];
+});
+};
+        return map_R_57;
+})
+      return parameters_R_57
+},  getParameter_R_?:function (parameters_R_58,name_R_58) {
+    if (parameters_R_58 instanceof Array_R_?){
+              for(var p_R_58 = 0;p_R_58 < parameters_R_58.length;++p_R_58){
+                      if (parameters_R_58[p_R_58][0] == name_R_58){
+                              return parameters_R_58[p_R_58][1];
+});
+};
+} else {
+              return OAuth_R_0.getParameterMap_R_?(parameters_R_58)[name_R_58];
+})
+      return null
+},  formEncode_R_?:function (parameters_R_59) {
+    var form_R_59 = ''
+      var list_R_59 = OAuth_R_0.getParameterList_R_?(parameters_R_59)
+      for(var p_R_59 = 0;p_R_59 < list_R_59.length;++p_R_59){
+              var value_R_59 = list_R_59[p_R_59][1];
+        if (value_R_59 == null){
+          value_R_59 = ''
+});
+        if (form_R_59 != ''){
+          form_R_59 = '&'
+});
+        form_R_59 = OAuth_R_0.percentEncode_R_?(list_R_59[p_R_59][0]) + '=' + OAuth_R_0.percentEncode(value_R_59);
+}
+      return form_R_59
+},  decodeForm_R_?:function (form_R_60) {
+    var list_R_60 = []
+      var nvps_R_60 = form_R_60.split_R_?('&')
+      for(var n_R_60 = 0;n_R_60 < nvps_R_60.length;++n_R_60){
+              var nvp_R_60 = nvps_R_60[n_R_60];
+        if (nvp_R_60 == ''){
+                      continue;
+});
+        var equals_R_60 = nvp_R_60.indexOf_R_?('=');
+        name_R_60;
+        value_R_60;
+        if (equals_R_60 < 0){
+                      name_R_60 = OAuth_R_0.decodePercent(nvp_R_60);
+            value_R_60 = null;
+} else {
+                      name_R_60 = OAuth_R_0.decodePercent_R_?(nvp_R_60.substring_R_?(0,equals_R_60));
+            value_R_60 = OAuth_R_0.decodePercent(nvp_R_60.substring(equals_R_60 + 1));
+});
+        list_R_60.push_R_?([name_R_60,value_R_60]);
+}
+      return list_R_60
+},  setParameter_R_?:function (message_R_61,name_R_61,value_R_61) {
+    var parameters_R_61 = message_R_61.parameters
+      if (parameters_R_61 instanceof Array_R_?){
+              for(var p_R_61 = 0;p_R_61 < parameters_R_61.length;++p_R_61){
+                      if (parameters_R_61[p_R_61][0] == name_R_61){
+                              if (value_R_61 === undefined){
+                                      parameters_R_61.splice_R_?(p_R_61,1);
+} else {
+                                      parameters_R_61[p_R_61][1] = value_R_61;
+                    value_R_61 = undefined;
+});
+});
+};
+        if (value_R_61 !== undefined){
+                      parameters_R_61.push_R_?([name_R_61,value_R_61]);
+});
+} else {
+              parameters_R_61 = OAuth_R_0.getParameterMap_R_?(parameters_R_61);
+        parameters_R_61[name_R_61] = value_R_61;
+        message_R_61.parameters = parameters_R_61;
+})
+},  setParameters_R_?:function (message_R_62,parameters_R_62) {
+    var list_R_62 = OAuth_R_0.getParameterList_R_?(parameters_R_62)
+      for(var i_R_62 = 0;i_R_62 < list_R_62.length;++i_R_62){
+              OAuth_R_0.setParameter_R_?(message_R_62,list_R_62[i_R_62][0],list_R_62[i_R_62][1]);
+}
+},  completeRequest_R_?:function (message_R_63,accessor_R_63) {
+    if (message_R_63.method == null){
+              message_R_63.method = 'GET';
+})
+      var map_R_63 = OAuth_R_0.getParameterMap_R_?(message_R_63.parameters)
+      if (map_R_63.oauth_consumer_key == null){
+              OAuth_R_0.setParameter_R_?(message_R_63,'oauth_consumer_key',accessor_R_63.consumerKey || '');
+})
+      if (map_R_63.oauth_token == null && accessor_R_63.token != null){
+              OAuth_R_0.setParameter(message_R_63,'oauth_token',accessor_R_63.token);
+})
+      if (map_R_63.oauth_version == null){
+              OAuth_R_0.setParameter(message_R_63,'oauth_version','1.0');
+})
+      if (map_R_63.oauth_timestamp == null){
+              OAuth_R_0.setParameter(message_R_63,'oauth_timestamp',OAuth_R_0.timestamp_R_?());
+})
+      if (map_R_63.oauth_nonce == null){
+              OAuth_R_0.setParameter(message_R_63,'oauth_nonce',OAuth_R_0.nonce_R_?(6));
+})
+      OAuth_R_0.SignatureMethod.sign_R_?(message_R_63,accessor_R_63)
+},  setTimestampAndNonce_R_?:function (message_R_64) {
+    OAuth_R_0.setParameter_R_?(message_R_64,'oauth_timestamp',OAuth_R_0.timestamp_R_?())
+      OAuth_R_0.setParameter(message_R_64,'oauth_nonce',OAuth_R_0.nonce_R_?(6))
+},  addToURL_R_?:function (url_R_65,parameters_R_65) {
+    newURL_R_? = url_R_65
+      if (parameters_R_65 != null){
+              var toAdd_R_65 = OAuth_R_0.formEncode_R_?(parameters_R_65);
+        if (toAdd_R_65.length > 0){
+                      var q_R_65 = url_R_65.indexOf_R_?('?');
+            if (q_R_65 < 0){
+              newURL_R_? = '?'
+} else {
+              newURL_R_? = '&'
+});
+            newURL_R_? = toAdd_R_65;
+});
+})
+      return newURL_R_?
+},  getAuthorizationHeader_R_?:function (realm_R_66,parameters_R_66) {
+    var header_R_66 = 'OAuth realm="' + OAuth_R_0.percentEncode_R_?(realm_R_66) + '"'
+      var list_R_66 = OAuth_R_0.getParameterList_R_?(parameters_R_66)
+      for(var p_R_66 = 0;p_R_66 < list_R_66.length;++p_R_66){
+              var parameter_R_66 = list_R_66[p_R_66];
+        var name_R_66 = parameter_R_66[0];
+        if (name_R_66.indexOf_R_?('oauth_') == 0){
+                      header_R_66 = ',' + OAuth_R_0.percentEncode(name_R_66) + '="' + OAuth_R_0.percentEncode(parameter_R_66[1]) + '"';
+});
+}
+      return header_R_66
+},  correctTimestampFromSrc_R_?:function (parameterName_R_67) {
+    parameterName_R_67 = parameterName_R_67 || 'oauth_timestamp'
+      var scripts_R_67 = document.getElementsByTagName_R_?('script')
+      if (scripts_R_67 == null || !scripts_R_67.length){
+      return
+})
+      var src_R_67 = scripts_R_67[scripts_R_67.length - 1].src
+      if (!src_R_67){
+      return
+})
+      var q_R_67 = src_R_67.indexOf_R_?('?')
+      if (q_R_67 < 0){
+      return
+})
+      parameters_R_? = OAuth_R_0.getParameterMap_R_?(OAuth_R_0.decodeForm_R_?(src_R_67.substring_R_?(q_R_67 + 1)))
+      var t_R_67 = parameters_R_?[parameterName_R_67]
+      if (t_R_67 == null){
+      return
+})
+      OAuth_R_0.correctTimestamp_R_?(t_R_67)
+},  correctTimestamp_R_?:function (timestamp_R_68) {
+    OAuth_R_0.timeCorrectionMsec = timestamp_R_68 * 1000 - new Date_R_?.getTime_R_?()
+},  timeCorrectionMsec_R_?:0,  timestamp_R_?:function () {
+    var t_R_69 = new Date_R_?.getTime_R_?() + OAuth_R_0.timeCorrectionMsec
+      return Math_R_?.floor_R_?(t_R_69 / 1000)
+},  nonce_R_?:function (length_R_70) {
+    var chars_R_70 = OAuth_R_0.nonce.CHARS
+      var result_R_70 = ''
+      for(var i_R_70 = 0;i_R_70 < length_R_70;++i_R_70){
+              var rnum_R_70 = Math_R_?.floor_R_?(Math_R_?.random_R_?() * chars_R_70.length);
+        result_R_70 = chars_R_70.substring_R_?(rnum_R_70,rnum_R_70 + 1);
+}
+      return result_R_70
+}})
+  OAuth_R_0.nonce.CHARS = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz'
+  OAuth_R_0.declareClass = function (parent_R_71,name_R_71,newConstructor_R_71) {
+  var previous_R_71 = parent_R_71[name_R_71]
+    parent_R_71[name_R_71] = newConstructor_R_71
+    if (newConstructor_R_71 != null && previous_R_71 != null){
+          for(var key_R_71 in previous_R_71){
+        if (key_R_71 != 'prototype'){
+                      newConstructor_R_71[key_R_71] = previous_R_71[key_R_71];
+});
+};
+})
+    return newConstructor_R_71
+}
+  OAuth_R_0.declareClass_R_?(OAuth_R_0,'SignatureMethod',function () {
+
+})
+  OAuth_R_0.setProperties(OAuth_R_0.SignatureMethod.prototype,{  sign_R_?:function (message_R_73) {
+    var baseString_R_73 = OAuth_R_0.SignatureMethod.getBaseString_R_?(message_R_73)
+      var signature_R_73 = this.getSignature_R_?(baseString_R_73)
+      OAuth_R_0.setParameter_R_?(message_R_73,'oauth_signature',signature_R_73)
+      return signature_R_73
+},  initialize_R_?:function (name_R_74,accessor_R_74) {
+    consumerSecret_R_74
+      if (accessor_R_74.accessorSecret != null && name_R_74.length > 9 && name_R_74.substring_R_?(name_R_74.length - 9) == '-Accessor'){
+              consumerSecret_R_74 = accessor_R_74.accessorSecret;
+} else {
+              consumerSecret_R_74 = accessor_R_74.consumerSecret;
+})
+      this.key = OAuth_R_0.percentEncode_R_?(consumerSecret_R_74) + '&' + OAuth_R_0.percentEncode(accessor_R_74.tokenSecret)
+}})
+  OAuth_R_0.setProperties(OAuth_R_0.SignatureMethod,{  sign_R_?:function (message_R_75,accessor_R_75) {
+    var name_R_75 = OAuth_R_0.getParameterMap_R_?(message_R_75.parameters).oauth_signature_method
+      if (name_R_75 == null || name_R_75 == ''){
+              name_R_75 = 'HMAC-SHA1';
+        OAuth_R_0.setParameter_R_?(message_R_75,'oauth_signature_method',name_R_75);
+})
+      OAuth_R_0.SignatureMethod.newMethod_R_?(name_R_75,accessor_R_75).sign_R_?(message_R_75)
+},  newMethod_R_?:function (name_R_76,accessor_R_76) {
+    var impl_R_76 = OAuth_R_0.SignatureMethod.REGISTERED[name_R_76]
+      if (impl_R_76 != null){
+              var method_R_76 = new impl_R_76;
+        method_R_76.initialize_R_?(name_R_76,accessor_R_76);
+        return method_R_76;
+})
+      var err_R_76 = (NEW Error_R_? 'signature_method_rejected')
+      var acceptable_R_76 = ''
+      for(var r_R_76 in OAuth_R_0.SignatureMethod.REGISTERED){
+      if (acceptable_R_76 != ''){
+        acceptable_R_76 = '&'
+});
+      acceptable_R_76 = OAuth_R_0.percentEncode_R_?(r_R_76);
+}
+      err_R_76.oauth_acceptable_signature_methods = acceptable_R_76
+      (THROW err_R_76)
+},  REGISTERED_R_?:{},  registerMethodClass_R_?:function (names_R_77,classConstructor_R_77) {
+    for(var n_R_77 = 0;n_R_77 < names_R_77.length;++n_R_77){
+              OAuth_R_0.SignatureMethod.REGISTERED[names_R_77[n_R_77]] = classConstructor_R_77;
+}
+},  makeSubclass_R_?:function (getSignatureFunction_R_78) {
+    var superClass_R_78 = OAuth_R_0.SignatureMethod
+      var subClass_R_78 = function () {
+      superClass_R_78.call_R_?(this)
+}
+      subClass_R_78.prototype = new superClass_R_78
+      subClass_R_78.prototype.getSignature = getSignatureFunction_R_78
+      subClass_R_78.prototype.constructor = subClass_R_78
+      return subClass_R_78
+},  getBaseString_R_?:function (message_R_80) {
+    var URL_R_80 = message_R_80.action
+      var q_R_80 = URL_R_80.indexOf_R_?('?')
+      parameters_R_80
+      if (q_R_80 < 0){
+              parameters_R_80 = message_R_80.parameters;
+} else {
+              parameters_R_80 = OAuth_R_0.decodeForm_R_?(URL_R_80.substring_R_?(q_R_80 + 1));
+        var toAdd_R_80 = OAuth_R_0.getParameterList_R_?(message_R_80.parameters);
+        for(var a_R_80 = 0;a_R_80 < toAdd_R_80.length;++a_R_80){
+                      parameters_R_80.push_R_?(toAdd_R_80[a_R_80]);
+};
+})
+      return OAuth_R_0.percentEncode_R_?(message_R_80.method.toUpperCase_R_?()) + '&' + OAuth_R_0.percentEncode(OAuth_R_0.SignatureMethod.normalizeUrl_R_?(URL_R_80)) + '&' + OAuth_R_0.percentEncode(OAuth_R_0.SignatureMethod.normalizeParameters_R_?(parameters_R_80))
+},  normalizeUrl_R_?:function (url_R_81) {
+    var uri_R_81 = OAuth_R_0.SignatureMethod.parseUri_R_?(url_R_81)
+      var scheme_R_81 = uri_R_81.protocol.toLowerCase_R_?()
+      var authority_R_81 = uri_R_81.authority.toLowerCase()
+      var dropPort_R_81 = scheme_R_81 == 'http' && uri_R_81.port == 80 || scheme_R_81 == 'https' && uri_R_81.port == 443
+      if (dropPort_R_81){
+              var index_R_81 = authority_R_81.lastIndexOf_R_?(':');
+        if (index_R_81 >= 0){
+                      authority_R_81 = authority_R_81.substring_R_?(0,index_R_81);
+});
+})
+      var path_R_81 = uri_R_81.path
+      if (!path_R_81){
+              path_R_81 = '/';
+})
+      return scheme_R_81 + '://' + authority_R_81 + path_R_81
+},  parseUri_R_?:function (str_R_82) {
+    var o_R_82 = {      key_R_?:['source','protocol','authority','userInfo','user','password','host','port','relative','path','directory','file','query','anchor'],      parser_R_?:{        strict_R_?:(REGEXP '^(?:([^:\\/?#]+):)?(?:\\/\\/((?:(([^:@\\/]*):?([^:@\\/]*))?@)?([^:\\/?#]*)(?::(\\d*))?))?((((?:[^?#\\/]*\\/)*)([^?#]*))(?:\\?([^#]*))?(?:#(.*))?)' '')}}
+      var m_R_82 = o_R_82.parser.strict.exec_R_?(str_R_82)
+      var uri_R_82 = {}
+      var i_R_82 = 14
+      while(i_R_82--){
+        uri_R_82[o_R_82.key[i_R_82]] = m_R_82[i_R_82] || ''}
+      return uri_R_82
+},  normalizeParameters_R_?:function (parameters_R_83) {
+    if (parameters_R_83 == null){
+              return '';
+})
+      var list_R_83 = OAuth_R_0.getParameterList_R_?(parameters_R_83)
+      var sortable_R_83 = []
+      for(var p_R_83 = 0;p_R_83 < list_R_83.length;++p_R_83){
+              var nvp_R_83 = list_R_83[p_R_83];
+        if (nvp_R_83[0] != 'oauth_signature'){
+                      sortable_R_83.push_R_?([OAuth_R_0.percentEncode_R_?(nvp_R_83[0]) + ' ' + OAuth_R_0.percentEncode(nvp_R_83[1]),nvp_R_83]);
+});
+}
+      sortable_R_83.sort_R_?(function (a_R_84,b_R_84) {
+      if (a_R_84[0] < b_R_84[0]){
+        return -1
+})
+        if (a_R_84[0] > b_R_84[0]){
+        return 1
+})
+        return 0
+})
+      var sorted_R_83 = []
+      for(var s_R_83 = 0;s_R_83 < sortable_R_83.length;++s_R_83){
+              sorted_R_83.push(sortable_R_83[s_R_83][1]);
+}
+      return OAuth_R_0.formEncode_R_?(sorted_R_83)
+}})
+  OAuth_R_0.SignatureMethod.registerMethodClass_R_?(['PLAINTEXT','PLAINTEXT-Accessor'],OAuth_R_0.SignatureMethod.makeSubclass_R_?(function (baseString_R_85) {
+  return this.key
+}))
+  OAuth_R_0.SignatureMethod.registerMethodClass(['HMAC-SHA1','HMAC-SHA1-Accessor'],OAuth_R_0.SignatureMethod.makeSubclass(function (baseString_R_86) {
+  b64pad_R_0 = '='
+    var signature_R_86 = b64_hmac_sha1_R_165(this.key,baseString_R_86)
+    return signature_R_86
+}))
+  try {
+      OAuth_R_0.correctTimestampFromSrc_R_?();catch(e){
+;
+}
+  var page_R_0 = {  startX_R_?:150,  startY_R_?:150,  endX_R_?:400,  endY_R_?:300,  moveX_R_?:0,  moveY_R_?:0,  scrollbar_R_?:17,  pageWidth_R_?:0,  pageHeight_R_?:0,  visibleWidth_R_?:0,  visibleHeight_R_?:0,  dragging_R_?:false,  moving_R_?:false,  resizing_R_?:false,  isMouseDown_R_?:false,  scrollXCount_R_?:0,  scrollYCount_R_?:0,  scrollX_R_?:0,  scrollY_R_?:0,  captureHeight_R_?:0,  captureWeight_R_?:0,  winHeight_R_?:0,  winWidth_R_?:0,  isSelectionAreaTurnOn_R_?:false,  isScrollBarX_R_?:false,  isScrollBarY_R_?:false,  fixedElements__R_?:[],  marginTop_R_?:0,  marginLeft_R_?:0,  hookBodyScrollValue_R_?:function (needHook_R_87) {
+    document.documentElement.setAttribute_R_?('__screen_capture_need_hook_scroll_value__',needHook_R_87)
+      var event_R_87 = document.createEvent_R_?('Event')
+      event_R_87.initEvent_R_?('__screen_capture_check_hook_status_event__',true,true)
+      document.documentElement.dispatchEvent_R_?(event_R_87)
+},  enableFixedPosition_R_?:function (enableFlag_R_88) {
+    if (enableFlag_R_88){
+              for(var i_R_88 = 0 var l_R_? = this.fixedElements_.length;i_R_88 < l_R_?;++i_R_88){
+                      this.fixedElements_[i_R_88].style.position = 'fixed';
+};
+} else {
+              this.fixedElements_ = [];
+        var nodeIterator_R_88 = document.createNodeIterator_R_?(document.documentElement,NodeFilter_R_?.SHOW_ELEMENT,null,false);
+        currentNode_R_88;
+        while(currentNode_R_88 = nodeIterator_R_88.nextNode_R_?()){
+                        var nodeComputedStyle_R_88 = document.defaultView.getComputedStyle_R_?(currentNode_R_88,'');
+            if (!nodeComputedStyle_R_88){
+              return
+});
+            var nodePosition_R_88 = nodeComputedStyle_R_88.getPropertyValue_R_?('position');
+            if (nodePosition_R_88 == 'fixed'){
+                              this.fixedElements_.push_R_?(currentNode_R_88);
+                currentNode_R_88.style.position = 'absolute';
+});};
+})
+},  checkPageIsOnlyEmbedElement_R_?:function () {
+    var bodyNode_R_89 = document.body.children
+      var isOnlyEmbed_R_89 = false
+      for(var i_R_89 = 0;i_R_89 < bodyNode_R_89.length;i_R_89++){
+              var tagName_R_89 = bodyNode_R_89[i_R_89].tagName;
+        if (tagName_R_89 == 'OBJECT' || tagName_R_89 == 'EMBED' || tagName_R_89 == 'VIDEO' || tagName_R_89 == 'SCRIPT' || tagName_R_89 == 'LINK'){
+                      isOnlyEmbed_R_89 = true;
+} else {
+          if (bodyNode_R_89[i_R_89].style.display != 'none'){
+                          isOnlyEmbed_R_89 = false;
+              break;
+})
+});
+}
+      return isOnlyEmbed_R_89
+},  isGMailPage_R_?:function () {
+    var hostName_R_90 = window.location.hostname
+      if (hostName_R_90 == 'mail.google.com' && document.getElementById_R_?('canvas_frame')){
+              return true;
+})
+      return false
+},  addMessageListener_R_?:function () {
+    chrome.extension.onRequest.addListener(function (request_R_92,sender_R_92,response_R_92) {
+      if (page_R_0.isSelectionAreaTurnOn){
+                  page_R_0.removeSelectionArea_R_?();
+})
+        switch (request_R_92.msg) {
+          case 'capture_window': 
+          response(page.getWindowSize());
+          break;
+          case 'show_selection_area': 
+          page.showSelectionArea();
+          break;
+          case 'scroll_init': 
+          response(page.scrollInit(0,0,document.width,document.height,'captureWhole'));
+          break;
+          case 'scroll_next': 
+          page.visibleWidth = request.visibleWidth;
+          page.visibleHeight = request.visibleHeight;
+          response(page.scrollNext());
+          break;
+          case 'capture_selected': 
+          response(page.scrollInit(page.startX,page.startY,page.endX - page.startX,page.endY - page.startY,'captureSelected'));
+          break;}
+})
+},  sendMessage_R_?:function (message_R_93) {
+    chrome.extension.sendRequest(message_R_93)
+},  scrollInit_R_?:function (startX_R_94,startY_R_94,canvasWidth_R_94,canvasHeight_R_94,type_R_94) {
+    this.enableFixedPosition_R_?(false)
+      this.hookBodyScrollValue_R_?(true)
+      page_R_0.captureHeight = canvasHeight_R_94
+      page_R_0.captureWidth = canvasWidth_R_94
+      var docWidth_R_94 = document.width
+      var docHeight_R_94 = document.height
+      window.scrollTo_R_?(startX_R_94,startY_R_94)
+      var hostName_R_94 = window.location.hostname
+      if (page_R_0.isGMailPage_R_?() && type_R_94 == 'captureWhole'){
+              var frame_R_94 = document.getElementById_R_?('canvas_frame');
+        docHeight_R_94 = page_R_0.captureHeight = canvasHeight_R_94 = frame_R_94.contentDocument.height;
+        docWidth_R_94 = page_R_0.captureWidth = canvasWidth_R_94 = frame_R_94.contentDocument.width;
+        frame_R_94.contentDocument.body.scrollTop = 0;
+        frame_R_94.contentDocument.body.scrollLeft = 0;
+})
+      page_R_0.scrollXCount = 0
+      page_R_0.scrollYCount = 1
+      page_R_0.scrollX = window.scrollX
+      page_R_0.scrollY = window.scrollY
+      return {      'msg':'scroll_init_done',      'startX':startX_R_94,      'startY':startY_R_94,      'scrollX':window.scrollX,      'scrollY':window.scrollY,      'docHeight':docHeight_R_94,      'docWidth':docWidth_R_94,      'visibleWidth':document.documentElement.clientWidth,      'visibleHeight':document.documentElement.clientHeight,      'canvasWidth':canvasWidth_R_94,      'canvasHeight':canvasHeight_R_94,      'scrollXCount':0,      'scrollYCount':0}
+},  scrollNext_R_?:function () {
+    if (page_R_0.scrollYCount * page_R_0.visibleWidth >= page_R_0.captureWidth){
+              page_R_0.scrollXCount++;
+        page_R_0.scrollYCount = 0;
+})
+      if (page_R_0.scrollXCount * page_R_0.visibleHeight < page_R_0.captureHeight){
+              var doc_R_95 = document.documentElement;
+        window.scrollTo(page_R_0.scrollYCount * doc_R_95.clientWidth + page_R_0.scrollX,page_R_0.scrollXCount * doc_R_95.clientHeight + page_R_0.scrollY);
+        if (page_R_0.isGMailPage_R_?()){
+                      var frame_R_95 = document.getElementById_R_?('canvas_frame');
+            frame_R_95.contentDocument.body.scrollLeft = page_R_0.scrollYCount * doc_R_95.clientWidth;
+            frame_R_95.contentDocument.body.scrollTop = page_R_0.scrollXCount * doc_R_95.clientHeight;
+});
+        var x_R_95 = page_R_0.scrollXCount;
+        var y_R_95 = page_R_0.scrollYCount;
+        page_R_0.scrollYCount++;
+        return {          msg_R_?:'scroll_next_done',          scrollXCount_R_?:x_R_95,          scrollYCount_R_?:y_R_95};
+} else {
+              window.scrollTo_R_?(page_R_0.startX,page_R_0.startY);
+        this.enableFixedPosition_R_?(true);
+        this.hookBodyScrollValue_R_?(false);
+        return {          'msg':'scroll_finished'};
+})
+},  showSelectionArea_R_?:function () {
+    page_R_0.createFloatLayer_R_?()
+      setTimeout_R_?(page_R_0.createSelectionArea,100)
+},  getWindowSize_R_?:function () {
+    var docWidth_R_97 = document.width
+      var docHeight_R_97 = document.height
+      if (page_R_0.isGMailPage_R_?()){
+              var frame_R_97 = document.getElementById_R_?('canvas_frame');
+        docHeight_R_97 = frame_R_97.contentDocument.height;
+        docWidth_R_97 = frame_R_97.contentDocument.width;
+})
+      return {      'msg':'capture_window',      'docWidth':docWidth_R_97,      'docHeight':docHeight_R_97}
+},  getSelectionSize_R_?:function () {
+    page_R_0.removeSelectionArea_R_?()
+      setTimeout_R_?(function () {
+      page_R_0.sendMessage_R_?({        'msg':'capture_selected',        'x':page_R_0.startX,        'y':page_R_0.startY,        'width':page_R_0.endX - page_R_0.startX,        'height':page_R_0.endY - page_R_0.startY,        'visibleWidth':document.documentElement.clientWidth,        'visibleHeight':document.documentElement.clientHeight,        'docWidth':document.width,        'docHeight':document.height})
+},100)
+},  createFloatLayer_R_?:function () {
+    page_R_0.createDiv_R_?(document.body,'sc_drag_area_protector')
+},  matchMarginValue_R_?:function (str_R_101) {
+    return str_R_101.match_R_?((REGEXP '\\d+' ''))
+},  createSelectionArea_R_?:function () {
+    var areaProtector_R_102 = $('sc_drag_area_protector')
+      var body_style_R_102 = window.getComputedStyle_R_?(document.body,null)
+      if ('relative' == body_style_R_102['position']){
+              page_R_0.marginTop = page_R_0.matchMarginValue_R_?(body_style_R_102['marginTop']);
+        page_R_0.marginLeft = page_R_0.matchMarginValue(body_style_R_102['marginLeft']);
+        areaProtector_R_102.style.top = -parseInt_R_?(page_R_0.marginTop) + 'px';
+        areaProtector_R_102.style.left = -parseInt_R_?(page_R_0.marginLeft) + 'px';
+})
+      areaProtector_R_102.style.width = document.width + parseInt_R_?(page_R_0.marginLeft) + 'px'
+      areaProtector_R_102.style.height = document.height + parseInt_R_?(page_R_0.marginTop) + 'px'
+      areaProtector_R_102.onclick = function () {
+      event_R_?.stopPropagation_R_?()
+        return false
+}
+      page_R_0.createDiv_R_?(areaProtector_R_102,'sc_drag_shadow_top')
+      page_R_0.createDiv(areaProtector_R_102,'sc_drag_shadow_bottom')
+      page_R_0.createDiv(areaProtector_R_102,'sc_drag_shadow_left')
+      page_R_0.createDiv(areaProtector_R_102,'sc_drag_shadow_right')
+      var areaElement_R_102 = page_R_0.createDiv(areaProtector_R_102,'sc_drag_area')
+      page_R_0.createDiv(areaElement_R_102,'sc_drag_container')
+      page_R_0.createDiv(areaElement_R_102,'sc_drag_size')
+      var cancel_R_102 = page_R_0.createDiv(areaElement_R_102,'sc_drag_cancel')
+      cancel_R_102.addEventListener_R_?('mousedown',function () {
+      page_R_0.removeSelectionArea_R_?()
+},true)
+      cancel_R_102.innerHTML = chrome.i18n.getMessage('cancel')
+      var crop_R_102 = page_R_0.createDiv(areaElement_R_102,'sc_drag_crop')
+      crop_R_102.addEventListener('mousedown',function () {
+      page_R_0.removeSelectionArea_R_?()
+        page_R_0.sendMessage_R_?({        msg_R_?:'capture_selected'})
+},false)
+      crop_R_102.innerHTML = chrome.i18n.getMessage('ok')
+      page_R_0.createDiv(areaElement_R_102,'sc_drag_north_west')
+      page_R_0.createDiv(areaElement_R_102,'sc_drag_north_east')
+      page_R_0.createDiv(areaElement_R_102,'sc_drag_south_east')
+      page_R_0.createDiv(areaElement_R_102,'sc_drag_south_west')
+      areaProtector_R_102.addEventListener('mousedown',page_R_0.onMouseDown,false)
+      document.addEventListener('mousemove',page_R_0.onMouseMove,false)
+      document.addEventListener('mouseup',page_R_0.onMouseUp,false)
+      $('sc_drag_container').addEventListener('dblclick',function () {
+      page_R_0.removeSelectionArea_R_?()
+        page_R_0.sendMessage_R_?({        msg_R_?:'capture_selected'})
+},false)
+      page_R_0.pageHeight = $('sc_drag_area_protector').clientHeight
+      page_R_0.pageWidth = $('sc_drag_area_protector').clientWidth
+      var areaElement_R_102 = $('sc_drag_area')
+      areaElement_R_102.style.left = page_R_0.getElementLeft_R_?(areaElement_R_102) + 'px'
+      areaElement_R_102.style.top = page_R_0.getElementTop_R_?(areaElement_R_102) + 'px'
+      page_R_0.startX = page_R_0.getElementLeft(areaElement_R_102)
+      page_R_0.startY = page_R_0.getElementTop(areaElement_R_102)
+      page_R_0.endX = page_R_0.getElementLeft(areaElement_R_102) + 250
+      page_R_0.endY = page_R_0.getElementTop(areaElement_R_102) + 150
+      areaElement_R_102.style.width = '250px'
+      areaElement_R_102.style.height = '150px'
+      page_R_0.isSelectionAreaTurnOn = true
+      page_R_0.updateShadow_R_?(areaElement_R_102)
+      page_R_0.updateSize_R_?()
+},  getElementLeft_R_?:function (obj_R_107) {
+    return document.body.scrollLeft + document.documentElement.clientWidth - obj_R_107.offsetWidth / 2
+},  getElementTop_R_?:function (obj_R_108) {
+    return document.body.scrollTop + document.documentElement.clientHeight - 200 - obj_R_108.offsetHeight / 2
+},  onMouseDown_R_?:function () {
+    if (event_R_?.button != 2){
+              var element_R_109 = event_R_?.target;
+        if (element_R_109){
+                      var elementName_R_109 = element_R_109.tagName;
+            if (elementName_R_109 && document){
+                              page_R_0.isMouseDown = true;
+                var areaElement_R_109 = $('sc_drag_area');
+                var xPosition_R_109 = event_R_?.pageX;
+                var yPosition_R_109 = event_R_?.pageY;
+                if (areaElement_R_109){
+                                      if (element_R_109 == $('sc_drag_container')){
+                                              page_R_0.moving = true;
+                        page_R_0.moveX = xPosition_R_109 - areaElement_R_109.offsetLeft;
+                        page_R_0.moveY = yPosition_R_109 - areaElement_R_109.offsetTop;
+} else {
+                      if (element_R_109 == $('sc_drag_north_east')){
+                                                  page_R_0.resizing = true;
+                          page_R_0.startX = areaElement_R_109.offsetLeft;
+                          page_R_0.startY = areaElement_R_109.offsetTop + areaElement_R_109.clientHeight;
+} else {
+                        if (element_R_109 == $('sc_drag_north_west')){
+                                                      page_R_0.resizing = true;
+                            page_R_0.startX = areaElement_R_109.offsetLeft + areaElement_R_109.clientWidth;
+                            page_R_0.startY = areaElement_R_109.offsetTop + areaElement_R_109.clientHeight;
+} else {
+                          if (element_R_109 == $('sc_drag_south_east')){
+                                                          page_R_0.resizing = true;
+                              page_R_0.startX = areaElement_R_109.offsetLeft;
+                              page_R_0.startY = areaElement_R_109.offsetTop;
+} else {
+                            if (element_R_109 == $('sc_drag_south_west')){
+                                                              page_R_0.resizing = true;
+                                page_R_0.startX = areaElement_R_109.offsetLeft + areaElement_R_109.clientWidth;
+                                page_R_0.startY = areaElement_R_109.offsetTop;
+} else {
+                                                              page_R_0.dragging = true;
+                                page_R_0.endX = 0;
+                                page_R_0.endY = 0;
+                                page_R_0.endX = page_R_0.startX = xPosition_R_109;
+                                page_R_0.endY = page_R_0.startY = yPosition_R_109;
+})
+})
+})
+})
+});
+});
+                event_R_?.preventDefault_R_?();
+});
+});
+})
+},  onMouseMove_R_?:function () {
+    var element_R_110 = event_R_?.target
+      if (element_R_110 && page_R_0.isMouseDown){
+              var areaElement_R_110 = $('sc_drag_area');
+        if (areaElement_R_110){
+                      var xPosition_R_110 = event_R_?.pageX;
+            var yPosition_R_110 = event_R_?.pageY;
+            if (page_R_0.dragging || page_R_0.resizing){
+                              var width_R_110 = 0;
+                var height_R_110 = 0;
+                if (xPosition_R_110 > document.width){
+                                      xPosition_R_110 = document.width;
+});
+                if (yPosition_R_110 > document.height){
+                                      yPosition_R_110 = document.height;
+});
+                page_R_0.endX = xPosition_R_110;
+                page_R_0.endY = yPosition_R_110;
+                if (page_R_0.startX > page_R_0.endX){
+                                      width_R_110 = page_R_0.startX - page_R_0.endX;
+                    areaElement_R_110.style.left = xPosition_R_110 + 'px';
+} else {
+                                      width_R_110 = page_R_0.endX - page_R_0.startX;
+                    areaElement_R_110.style.left = page_R_0.startX + 'px';
+});
+                if (page_R_0.startY > page_R_0.endY){
+                                      height_R_110 = page_R_0.startY - page_R_0.endY;
+                    areaElement_R_110.style.top = page_R_0.endY + 'px';
+} else {
+                                      height_R_110 = page_R_0.endY - page_R_0.startY;
+                    areaElement_R_110.style.top = page_R_0.startY + 'px';
+});
+                areaElement_R_110.style.height = height_R_110 + 'px';
+                areaElement_R_110.style.width = width_R_110 + 'px';
+                if (window.innerWidth < xPosition_R_110){
+                                      document.body.scrollLeft = xPosition_R_110 - window.innerWidth;
+});
+                if (document.body.scrollTop + window.innerHeight < yPosition_R_110 + 25){
+                                      document.body.scrollTop = yPosition_R_110 - window.innerHeight + 25;
+});
+                if (yPosition_R_110 < document.body.scrollTop){
+                                      document.body.scrollTop = 25;
+});
+} else {
+              if (page_R_0.moving){
+                                  var newXPosition_R_110 = xPosition_R_110 - page_R_0.moveX;
+                  var newYPosition_R_110 = yPosition_R_110 - page_R_0.moveY;
+                  if (newXPosition_R_110 < 0){
+                                          newXPosition_R_110 = 0;
+} else {
+                    if (newXPosition_R_110 + areaElement_R_110.clientWidth > page_R_0.pageWidth){
+                                              newXPosition_R_110 = page_R_0.pageWidth - areaElement_R_110.clientWidth;
+})
+});
+                  if (newYPosition_R_110 < 0){
+                                          newYPosition_R_110 = 0;
+} else {
+                    if (newYPosition_R_110 + areaElement_R_110.clientHeight > page_R_0.pageHeight){
+                                              newYPosition_R_110 = page_R_0.pageHeight - areaElement_R_110.clientHeight;
+})
+});
+                  areaElement_R_110.style.left = newXPosition_R_110 + 'px';
+                  areaElement_R_110.style.top = newYPosition_R_110 + 'px';
+                  page_R_0.endX = newXPosition_R_110 + areaElement_R_110.clientWidth;
+                  page_R_0.startX = newXPosition_R_110;
+                  page_R_0.endY = newYPosition_R_110 + areaElement_R_110.clientHeight;
+                  page_R_0.startY = newYPosition_R_110;
+})
+});
+            var crop_R_110 = document.getElementById_R_?('sc_drag_crop');
+            var cancel_R_110 = document.getElementById('sc_drag_cancel');
+            if (event_R_?.pageY + 25 > document.height){
+                              crop_R_110.style.bottom = 0;
+                cancel_R_110.style.bottom = 0;
+} else {
+                              crop_R_110.style.bottom = '-25px';
+                cancel_R_110.style.bottom = '-25px';
+});
+            page_R_0.updateShadow_R_?(areaElement_R_110);
+            page_R_0.updateSize_R_?();
+});
+})
+},  onMouseUp_R_?:function () {
+    page_R_0.isMouseDown = false
+      if (event_R_?.button != 2){
+              page_R_0.resizing = false;
+        page_R_0.dragging = false;
+        page_R_0.moving = false;
+        page_R_0.moveX = 0;
+        page_R_0.moveY = 0;
+        temp_R_111;
+        if (page_R_0.endX < page_R_0.startX){
+                      temp_R_111 = page_R_0.endX;
+            page_R_0.endX = page_R_0.startX;
+            page_R_0.startX = temp_R_111;
+});
+        if (page_R_0.endY < page_R_0.startY){
+                      temp_R_111 = page_R_0.endY;
+            page_R_0.endY = page_R_0.startY;
+            page_R_0.startY = temp_R_111;
+});
+})
+},  updateShadow_R_?:function (areaElement_R_112) {
+    $('sc_drag_shadow_top').style.height = parseInt_R_?(areaElement_R_112.style.top) + 'px'
+      $('sc_drag_shadow_top').style.width = parseInt_R_?(areaElement_R_112.style.left) + parseInt_R_?(areaElement_R_112.style.width) + 1 + 'px'
+      $('sc_drag_shadow_left').style.height = page_R_0.pageHeight - parseInt_R_?(areaElement_R_112.style.top) + 'px'
+      $('sc_drag_shadow_left').style.width = parseInt_R_?(areaElement_R_112.style.left) + 'px'
+      var height_R_112 = parseInt_R_?(areaElement_R_112.style.top) + parseInt_R_?(areaElement_R_112.style.height) + 1
+      height_R_112 = height_R_112 < 0 ? 0 :height_R_112
+      var width_R_112 = page_R_0.pageWidth - 1 - parseInt_R_?(areaElement_R_112.style.left) + parseInt_R_?(areaElement_R_112.style.width)
+      width_R_112 = width_R_112 < 0 ? 0 :width_R_112
+      $('sc_drag_shadow_right').style.height = height_R_112 + 'px'
+      $('sc_drag_shadow_right').style.width = width_R_112 + 'px'
+      height_R_112 = page_R_0.pageHeight - 1 - parseInt_R_?(areaElement_R_112.style.top) + parseInt_R_?(areaElement_R_112.style.height)
+      height_R_112 = height_R_112 < 0 ? 0 :height_R_112
+      width_R_112 = page_R_0.pageWidth - parseInt_R_?(areaElement_R_112.style.left)
+      width_R_112 = width_R_112 < 0 ? 0 :width_R_112
+      $('sc_drag_shadow_bottom').style.height = height_R_112 + 'px'
+      $('sc_drag_shadow_bottom').style.width = width_R_112 + 'px'
+},  removeSelectionArea_R_?:function () {
+    document.removeEventListener_R_?('mousedown',page_R_0.onMouseDown,false)
+      document.removeEventListener('mousemove',page_R_0.onMouseMove,false)
+      document.removeEventListener('mouseup',page_R_0.onMouseUp,false)
+      $('sc_drag_container').removeEventListener('dblclick',function () {
+      page_R_0.removeSelectionArea_R_?()
+        page_R_0.sendMessage_R_?({        msg_R_?:'capture_selected'})
+},false)
+      page_R_0.removeElement_R_?('sc_drag_area_protector')
+      page_R_0.removeElement('sc_drag_area')
+      page_R_0.isSelectionAreaTurnOn = false
+},  updateSize_R_?:function () {
+    var width_R_115 = page_R_0.endX > page_R_0.startX ? page_R_0.endX - page_R_0.startX :page_R_0.startX - page_R_0.endX
+      var height_R_115 = page_R_0.endY > page_R_0.startY ? page_R_0.endY - page_R_0.startY :page_R_0.startY - page_R_0.endY
+      $('sc_drag_size').innerText = width_R_115 + ' x ' + height_R_115
+},  createDiv_R_?:function (parent_R_116,id_R_116) {
+    var divElement_R_116 = document.createElement_R_?('div')
+      divElement_R_116.id = id_R_116
+      parent_R_116.appendChild_R_?(divElement_R_116)
+      return divElement_R_116
+},  removeElement_R_?:function (id_R_117) {
+    if ($(id_R_117)){
+              $(id_R_117).parentNode.removeChild_R_?($(id_R_117));
+})
+},  injectCssResource_R_?:function (cssResource_R_118) {
+    var css_R_118 = document.createElement_R_?('LINK')
+      css_R_118.type = 'text/css'
+      css_R_118.rel = 'stylesheet'
+      css_R_118.href = chrome.extension.getURL(cssResource_R_118)
+      document.head || document.body || document.documentElement.appendChild_R_?(css_R_118)
+},  injectJavaScriptResource_R_?:function (scriptResource_R_119) {
+    var script_R_119 = document.createElement_R_?('script')
+      script_R_119.type = 'text/javascript'
+      script_R_119.charset = 'utf-8'
+      script_R_119.src = chrome.extension.getURL(scriptResource_R_119)
+      document.head || document.body || document.documentElement.appendChild_R_?(script_R_119)
+},  init_R_?:function () {
+    if (document.body.hasAttribute_R_?('screen_capture_injected')){
+              return;
+})
+      if (isPageCapturable_R_?()){
+              chrome.extension.sendRequest({          msg_R_?:'page_capturable'});
+} else {
+              chrome.extension.sendRequest({          msg_R_?:'page_uncapturable'});
+})
+      this.injectCssResource_R_?('style.css')
+      this.addMessageListener_R_?()
+      this.injectJavaScriptResource_R_?('page_context.js')
+}}
+  isPageCapturable_R_? = function () {
+  return !page_R_0.checkPageIsOnlyEmbedElement_R_?()
+}
+  function $_R_122(id_R_122) {
+  return document.getElementById_R_?(id_R_122)
+}
+  page_R_0.init_R_?()
+  var selfResizeEvent_R_0 = window.onresize
+  window.onresize = function () {
+  if (selfResizeEvent_R_0){
+          selfResizeEvent_R_?();
+})
+    if (page_R_0.isSelectionAreaTurnOn){
+          page_R_0.removeSelectionArea_R_?();
+      page_R_0.showSelectionArea_R_?();
+})
+}
+  page_R_0.sendMessage_R_?({  msg_R_?:'url_for_access_token',  url_R_?:window.location.href})
+  var __screenCapturePageContext___R_0 = {  clone_R_?:function (object_R_124) {
+    function StubObj_R_125() {
+
+}
+      StubObj_R_?.prototype = object_R_124
+      var newObj_R_124 = new StubObj_R_?
+      newObj_R_124.getInternalObject = function () {
+      return this.__proto__
+}
+      newObj_R_124.toString = function () {
+      try {
+                  return this.__proto__.toString_R_?();catch(e){
+          return 'object Object';
+}
+}
+      return newObj_R_124
+},  bind_R_?:function (newThis_R_128,func_R_128) {
+    var args_R_128 = []
+      for(var i_R_128 = 2;i_R_128 < arguments_R_?.length;i_R_128++){
+              args_R_128.push_R_?(arguments_R_?[i_R_128]);
+}
+      return function () {
+      return func_R_128.apply_R_?(newThis_R_128,args_R_128)
+}
+},  bodyWrapperDelegate__R_?:null,  currentHookStatus__R_?:false,  scrollValueHooker_R_?:function (oldValue_R_130,newValue_R_130,reason_R_130) {
+    return 0
+},  toggleBodyScrollValueHookStatus_R_?:function () {
+    this.currentHookStatus_ = !this.currentHookStatus_
+      if (this.currentHookStatus_){
+              var This_R_131 = this;
+        try {
+                      document.__defineGetter__('body',function () {
+              return This_R_131.bodyWrapperDelegate_.getWrapper_R_?()
+});catch(e){
+            window.console.log('error' + e);
+};
+        this.bodyWrapperDelegate_.watch_R_?('scrollLeft',this.scrollValueHooker);
+        this.bodyWrapperDelegate_.watch('scrollTop',this.scrollValueHooker);
+} else {
+              this.bodyWrapperDelegate_.unwatch_R_?('scrollLeft',this.scrollValueHooker);
+        this.bodyWrapperDelegate_.unwatch('scrollTop',this.scrollValueHooker);
+        var This_R_131 = this;
+        try {
+                      document.__defineGetter___R_?('body',function () {
+              return This_R_131.bodyWrapperDelegate_.getWrapper_R_?().getInternalObject()
+});catch(e){
+            window.console.log('error' + e);
+};
+})
+},  checkHookStatus_R_?:function () {
+    var needHookScrollValue_R_134 = document.documentElement.getAttributeNode_R_?('__screen_capture_need_hook_scroll_value__')
+      needHookScrollValue_R_134 = !!needHookScrollValue_R_134 && needHookScrollValue_R_134.nodeValue == 'true'
+      if (this.currentHookStatus_ != needHookScrollValue_R_134){
+      this.toggleBodyScrollValueHookStatus_R_?()
+})
+},  init_R_?:function () {
+    if (!this.bodyWrapperDelegate_){
+              this.bodyWrapperDelegate_ = (NEW __screenCapturePageContext___R_0.ObjectWrapDelegate document.body,'^(DOCUMENT_[A-Z_]+|[A-Z_]+_NODE)$');
+        document.documentElement.addEventListener_R_?('__screen_capture_check_hook_status_event__',__screenCapturePageContext___R_0.bind_R_?(this,this.checkHookStatus));
+})
+}}
+  __screenCapturePageContext___R_0.ObjectWrapDelegate = function (originalObject_R_136,propertyNameFilter_R_136) {
+  this.window_ = window
+    this.wrapper_ = __screenCapturePageContext___R_0.clone_R_?(originalObject)
+    this.properties_ = []
+    this.watcherTable_ = {}
+    if (typeof propertyNameFilter_R_136 == 'undefined'){
+          propertyNameFilter_R_136 = '';
+} else {
+    if (typeof propertyNameFilter_R_136 != 'string'){
+              try {
+                      propertyNameFilter_R_136 = propertyNameFilter_R_136.toString_R_?();catch(e){
+            propertyNameFilter = '';
+};
+})
+})
+    if (propertyNameFilter_R_136.length){
+          this.propertyNameFilter_ = (NEW RegExp_R_? '');
+      this.propertyNameFilter_.compile_R_?(propertyNameFilter_R_136);
+} else {
+          this.propertyNameFilter_ = null;
+})
+    var This_R_136 = this
+    function setGetterAndSetter_R_137(wrapper_R_137,propertyName_R_137) {
+    wrapper_R_137.__defineGetter___R_?(propertyName_R_137,function () {
+      var internalObj_R_138 = this.getInternalObject()
+        var originalReturnValue_R_138 = internalObj_R_138[propertyName_R_137]
+        var returnValue_R_138 = originalReturnValue_R_138
+        var watchers_R_138 = This_R_136.watcherTable_[propertyName_R_137]
+        if (watchers_R_138){
+                  var watchersCache_R_138 = watchers_R_138.concat_R_?();
+          for(var i_R_138 = 0 var l_R_? = watchersCache_R_138.length;i_R_138 < l_R_?;++i_R_138){
+                          var watcher_R_138 = watchersCache_R_138[i_R_138];
+              if (!watcher_R_138){
+                                  window.console.log_R_?("wrapper's watch for " + propertyName_R_137 + ' is unavailable!');
+                  continue;
+});
+              originalReturnValue_R_138 = returnValue_R_138;
+              try {
+                                  returnValue_R_138 = watcher_R_?(returnValue_R_138,returnValue_R_138,'get');catch(e){
+                  returnValue = originalReturnValue;
+};
+};
+})
+        return returnValue_R_138
+})
+      wrapper_R_137.__defineSetter___R_?(propertyName_R_137,function (value_R_139) {
+      var internalObj_R_139 = this.getInternalObject()
+        var originalValue_R_139 = value_R_139
+        var userValue_R_139 = originalValue_R_139
+        oldValue_R_139
+        try {
+                  oldValue_R_139 = internalObj_R_139[propertyName_R_137];catch(e){
+          oldValue = null;
+}
+        var watchers_R_139 = This_R_136.watcherTable_[propertyName_R_137]
+        if (watchers_R_139){
+                  var watchersCache_R_139 = watchers_R_139.concat_R_?();
+          for(var i_R_139 = 0 var l_R_? = watchersCache_R_139.length;i_R_139 < l_R_?;++i_R_139){
+                          var watcher_R_139 = watchersCache_R_139[i_R_139];
+              if (!watcher_R_139){
+                                  window.console.log_R_?("wrapper's watch for " + propertyName_R_137 + ' is unavailable!');
+                  continue;
+});
+              originalValue_R_139 = userValue_R_139;
+              try {
+                                  userValue_R_139 = watcher_R_?(oldValue_R_139,userValue_R_139,'set');catch(e){
+                  userValue = originalValue;
+};
+};
+})
+        internalObj_R_139[propertyName_R_137] = userValue_R_139
+})
+}
+    (BLOCK)
+    this.cleanUp_ = function () {
+    This_R_136.window_.removeEventListener_R_?('unload',This_R_136.cleanUp_,false)
+      for(var i_R_140 = 0 var l_R_? = This_R_136.properties_.length;i_R_140 < l_R_?;++i_R_140){
+              delete This_R_136.wrapper_[This_R_136.properties_[i_R_140]];
+}
+      This_R_136.window_ = null
+      This_R_136.wrapper_ = null
+      This_R_136.properties_ = null
+      This_R_136.watcherTable_ = null
+      This_R_136.propertyNameFilter_ = null
+      This_R_136 = null
+}
+    for(var prop_R_136 in originalObject){
+    if (this.propertyNameFilter_ && this.propertyNameFilter_.test(prop_R_136)){
+              this.propertyNameFilter_.test_R_?('');
+        continue;
+});
+    if (typeof originalObject[prop_R_136] != 'function'){
+              this.properties_.push_R_?(prop_R_136);
+        setGetterAndSetter_R_137(this.wrapper_,prop_R_136);
+});
+}
+    this.window_.addEventListener_R_?('unload',this.cleanUp_,false)
+}
+  __screenCapturePageContext___R_0.ObjectWrapDelegate.prototype.getWrapper = function () {
+  return this.wrapper_
+}
+  __screenCapturePageContext___R_0.ObjectWrapDelegate.prototype.hasProperty = function (propertyName_R_142) {
+  for(var i_R_142 = 0 var l_R_? = this.properties_.length;i_R_142 < l_R_?;++i_R_142){
+          if (propertyName_R_142 == this.properties_[i_R_142]){
+        return true
+});
+}
+    return false
+}
+  __screenCapturePageContext___R_0.ObjectWrapDelegate.prototype.watch = function (propertyName_R_143,watchHandler_R_143) {
+  if (!this.hasProperty_R_?(propertyName_R_143)){
+    return false
+})
+    var watchers_R_143 = this.watcherTable_[propertyName_R_143]
+    if (watchers_R_143){
+          for(var i_R_143 = 0 var l_R_? = watchers_R_143.length;i_R_143 < l_R_?;++i_R_143){
+                  if (watchHandler_R_143 == watchers_R_143[i_R_143]){
+            return true
+});
+};
+} else {
+          watchers_R_143 = new Array_R_?;
+      this.watcherTable_[propertyName_R_143] = watchers_R_143;
+})
+    watchers_R_143.push_R_?(watchHandler_R_143)
+    return true
+}
+  __screenCapturePageContext___R_0.ObjectWrapDelegate.prototype.unwatch = function (propertyName_R_144,watchHandler_R_144) {
+  if (!this.hasProperty_R_?(propertyName_R_144)){
+    return false
+})
+    var watchers_R_144 = this.watcherTable_[propertyName_R_144]
+    if (watchers_R_144){
+          for(var i_R_144 = 0 var l_R_? = watchers_R_144.length;i_R_144 < l_R_?;++i_R_144){
+                  if (watchHandler_R_144 == watchers_R_144[i_R_144]){
+                          watchers_R_144.splice_R_?(i_R_144,1);
+              return true;
+});
+};
+})
+    return false
+}
+  __screenCapturePageContext___R_0.init()
+  function () {
+  var ALBUM_NAME_R_? = 'Screen Capture'
+    var CLIENT_ID_R_? = '368358534491.apps.googleusercontent.com'
+    var AUTH_URL_R_? = 'https://accounts.google.com/o/oauth2/auth'
+    var REDIRECT_URI_R_? = 'https://picasaweb.google.com'
+    var SCOPE_R_? = 'https://picasaweb.google.com/data/'
+    var RESPONSE_TYPE_R_? = 'token'
+    var ALBUM_URL_R_? = 'https://picasaweb.google.com/data/feed/api/user/' + 'default'
+    var CREATE_ALBUM_URL_R_? = 'https://picasaweb.google.com/data/feed/api/user/' + 'default'
+    var UPLOAD_BASE_URL_R_? = 'https://picasaweb.google.com/data/feed/api/user/' + 'default/albumid/'
+    var LOGOUT_URL_R_? = 'https://picasaweb.google.com/bye?continue=' + 'https://www.google.com/accounts/Logout?continue=' + 'https://picasaweb.google.com'
+    var picasa_R_145 = window.Picasa = {    siteId_R_?:'picasa',    currentUserId_R_?:null,    redirectUrl_R_?:REDIRECT_URI_R_?,    accessTokenCallback_R_?:null,    getAccessToken_R_?:function (callback_R_146) {
+      picasa_R_145.accessTokenCallback = callback_R_146
+        var url_R_146 = AUTH_URL_R_? + '?client_id=' + CLIENT_ID_R_? + '&redirect_uri=' + REDIRECT_URI_R_? + '&scope=' + SCOPE_R_? + '&response_type=' + RESPONSE_TYPE_R_?
+        chrome.tabs.create({        url_R_146:url_R_146})
+},    parseRedirectUrl_R_?:function (url_R_147) {
+      var result_R_147 = false
+        if (url_R_147.indexOf_R_?(REDIRECT_URI_R_?) == 0){
+                  var accessTokenRegexp_R_147 = (REGEXP '^access_token=(.+)&expires_in=(\\d+)$' '');
+          var hash_R_147 = url_R_147.split_R_?('#')[1];
+          if (hash_R_147){
+                          var match_R_147 = accessTokenRegexp_R_147.exec_R_?(hash_R_147);
+              if (match_R_147){
+                                  result_R_147 = {                    accessToken_R_?:match_R_147[1],                    expires_R_?:match_R_147[2]};
+});
+} else {
+                          var search_R_147 = url_R_147.split('?')[1];
+              if (search_R_147 == 'error=access_denied'){
+                result_R_147 = 'access_denied'
+});
+});
+})
+        return result_R_147
+},    isRedirectUrl_R_?:function (url_R_148) {
+      return picasa_R_145.parseRedirectUrl_R_?(url_R_148) != false
+},    parseAccessToken_R_?:function (redirectUrl_R_149) {
+      var parsedResult_R_149 = picasa_R_145.parseRedirectUrl_R_?(redirectUrl_R_149)
+        if (parsedResult_R_149 && typeof parsedResult_R_149 == 'object'){
+                  var user_R_149 = (NEW User_R_0 {            accessToken_R_?:parsedResult_R_149.accessToken,            expires_R_?:new Date_R_?.getTime_R_?() + parsedResult_R_149.expires * 1000});
+          picasa_R_145.accessTokenCallback('success',user_R_149);
+} else {
+                  picasa_R_145.accessTokenCallback_R_?('failure','user_denied');
+})
+        picasa_R_145.accessTokenCallback = null
+},    getUserInfo_R_?:function (user_R_150,callback_R_150) {
+      ajax_R_?({        url_R_?:ALBUM_URL_R_?,        parameters_R_?:{          fields_R_?:'title,gphoto:nickname,entry/title,entry/gphoto:id',          alt_R_?:'json'},        success_R_?:function (res_R_151) {
+          var userId_R_151 = res_R_151.feed.title.$t
+            var userName_R_151 = res_R_151.feed.gphoto$nickname.$t
+            user_R_150.id = userId_R_151
+            user_R_150.name = userName_R_151
+            var albums_R_151 = res_R_151.feed.entry
+            var length_R_151 = albums_R_151.length
+            for(var i_R_151 = 0;i_R_151 < length_R_151;i_R_151++){
+                          var albumName_R_151 = albums_R_151[i_R_151].title.$t;
+              if (albumName_R_151 == ALBUM_NAME_R_?){
+                                  user_R_150.albumId = albums_R_151[i_R_151].gphoto$id.$t;
+                  break;
+});
+}
+            if (!user_R_150.albumId){
+                          picasa_R_145.createAlbum_R_?(user_R_150.accessToken,function (result_R_152,albumIdOrMessage_R_152) {
+                if (result_R_152 == 'success'){
+                                      user_R_150.albumId = albumIdOrMessage_R_152;
+                    callback_R_150('success',user_R_150);
+} else {
+                                      callback_R_?('failure',albumIdOrMessage_R_152);
+})
+});
+} else {
+                          callback_R_?('success',user_R_150);
+})
+},        status_R_?:{          404:function () {
+            callback_R_?('failure','failed_to_get_user_info')
+}}})
+},    createAlbum_R_?:function (accessToken_R_154,callback_R_154) {
+      var data_R_154 = '<entry xmlns="http://www.w3.org/2005/Atom" ' + 'xmlns:media="http://search.yahoo.com/mrss/" ' + 'xmlns:gphoto="http://schemas.google.com/photos/2007">' + '<title type="text">' + ALBUM_NAME_R_? + '</title><category scheme="http://schemas.google.com/g/2005#kind" ' + 'term="http://schemas.google.com/photos/2007#album"></category>' + '</entry>'
+        ajax_R_?({        method_R_?:'POST',        url_R_?:CREATE_ALBUM_URL_R_?,        parameters_R_?:{          alt_R_?:'json'},        data_R_154:data_R_154,        headers_R_?:{          'GData-Version':2,          'Content-Type':'application/atom+xml',          'Authorization':'OAuth ' + accessToken_R_154},        complete_R_?:function (statusCode_R_155,album_R_155) {
+          if (statusCode_R_155 == 201){
+                          var albumId_R_155 = album_R_155.entry.gphoto$id.$t;
+              callback_R_154('success',albumId_R_155);
+} else {
+                          callback_R_?('failure','failure_to_create_album');
+})
+}})
+},    upload_R_?:function (user_R_156,caption_R_156,imageData_R_156,callback_R_156) {
+      caption_R_156 = ajax_R_?.convertEntityString_R_?(caption_R_156)
+        caption_R_156 = ajax_R_?.encodeForBinary_R_?(caption_R_156)
+        var imageFile_R_156 = new Date_R_?.getTime_R_?() + '.png'
+        var headers_R_156 = {        'GData-Version':2,        'Content-Type':'multipart/related; boundary=' + MULTIPART_FORMDATA_BOUNDARY_R_?,        'Authorization':'OAuth ' + user_R_156.accessToken}
+        var captionData_R_156 = '<entry xmlns="http://www.w3.org/2005/Atom">' + '<title>' + imageFile_R_156 + '</title>' + '<summary>' + caption_R_156 + '</summary>' + '<category scheme="http://schemas.google.com/g/2005#kind" ' + 'term="http://schemas.google.com/photos/2007#photo"/></entry>'
+        var dataPart1_R_156 = {        contentType_R_?:'application/atom+xml',        data_R_?:captionData_R_156}
+        var dataPart2_R_156 = {        contentType_R_?:'image/png',        data_R_?:imageData_R_156}
+        var multipartData_R_156 = {        boundary_R_?:MULTIPART_FORMDATA_BOUNDARY_R_?,        dataList_R_?:[dataPart1_R_156,dataPart2_R_156]}
+        ajax_R_?({        url_R_?:UPLOAD_BASE_URL_R_? + user_R_156.albumId + '?alt=json',        headers_R_156:headers_R_156,        multipartData_R_156:multipartData_R_156,        complete_R_?:function (statusCode_R_157,res_R_157) {
+          if (statusCode_R_157 == 201){
+                          var link_R_157 = res_R_157.entry.link;
+              callback_R_156('success',link_R_157);
+} else {
+                          var message_R_157 = 'failed_to_upload_image';
+              if (statusCode_R_157 == 403){
+                                  message_R_157 = 'bad_access_token';
+} else {
+                if (statusCode_R_157 == 404 && res_R_157 == 'No album found.'){
+                                      message_R_157 = 'invalid_album_id';
+})
+});
+              callback_R_?('failure',message_R_157);
+})
+}})
+},    getPhotoLink_R_?:function (user_R_158,photolinks_R_158,callback_R_158) {
+      for(var i_R_158 = 0;i_R_158 < photolinks_R_158.length;i_R_158++){
+                  var link_R_158 = photolinks_R_158[i_R_158];
+          if (link_R_158.type == 'text/html' && link_R_158.rel == 'http://schemas.google.com/photos/2007#canonical'){
+                          callback_R_?('success',link_R_158.href);
+              break;
+});
+}
+},    logout_R_?:function (callback_R_159) {
+      ajax_R_?({        url_R_?:LOGOUT_URL_R_?,        success_R_?:function () {
+          callback_R_?()
+}})
+}}
+}()
+  var hexcase_R_0 = 0
+  var b64pad_R_0 = ''
+  var chrsz_R_0 = 8
+  function hex_sha1_R_161(s_R_161) {
+  return binb2hex_R_176(core_sha1_R_168(str2binb_R_174(s_R_161),s_R_161.length * chrsz_R_0))
+}
+  function b64_sha1_R_162(s_R_162) {
+  return binb2b64_R_177(core_sha1_R_168(str2binb_R_174(s_R_162),s_R_162.length * chrsz_R_0))
+}
+  function str_sha1_R_163(s_R_163) {
+  return binb2str_R_175(core_sha1_R_168(str2binb_R_174(s_R_163),s_R_163.length * chrsz_R_0))
+}
+  function hex_hmac_sha1_R_164(key_R_164,data_R_164) {
+  return binb2hex_R_176(core_hmac_sha1_R_171(key_R_164,data_R_164))
+}
+  function b64_hmac_sha1_R_165(key_R_165,data_R_165) {
+  return binb2b64_R_177(core_hmac_sha1_R_171(key_R_165,data_R_165))
+}
+  function str_hmac_sha1_R_166(key_R_166,data_R_166) {
+  return binb2str_R_175(core_hmac_sha1_R_171(key_R_166,data_R_166))
+}
+  function sha1_vm_test_R_167() {
+  return hex_sha1_R_161('abc') == 'a9993e364706816aba3e25717850c26c9cd0d89d'
+}
+  function core_sha1_R_168(x_R_168,len_R_168) {
+  x_R_168[len_R_168 >> 5] = 128 << 24 - len_R_168 % 32
+    x_R_168[len_R_168 + 64 >> 9 << 4 + 15] = len_R_168
+    var w_R_168 = Array_R_?(80)
+    var a_R_168 = 1732584193
+    var b_R_168 = -271733879
+    var c_R_168 = -1732584194
+    var d_R_168 = 271733878
+    var e_R_168 = -1009589776
+    for(var i_R_168 = 0;i_R_168 < x_R_168.length;i_R_168 = 16){
+          var olda_R_168 = a_R_168;
+      var oldb_R_168 = b_R_168;
+      var oldc_R_168 = c_R_168;
+      var oldd_R_168 = d_R_168;
+      var olde_R_168 = e_R_168;
+      for(var j_R_168 = 0;j_R_168 < 80;j_R_168++){
+                  if (j_R_168 < 16){
+            w_R_168[j_R_168] = x_R_168[i_R_168 + j_R_168]
+} else {
+            w_R_168[j_R_168] = rol_R_173(w_R_168[j_R_168 - 3] ^ w_R_168[j_R_168 - 8] ^ w_R_168[j_R_168 - 14] ^ w_R_168[j_R_168 - 16],1)
+});
+          var t_R_168 = safe_add_R_172(safe_add_R_?(rol_R_?(a_R_168,5),sha1_ft_R_169(j_R_168,b_R_168,c_R_168,d_R_168)),safe_add_R_?(safe_add_R_?(e_R_168,w_R_168[j_R_168]),sha1_kt_R_170(j_R_168)));
+          e_R_168 = d_R_168;
+          d_R_168 = c_R_168;
+          c_R_168 = rol_R_?(b_R_168,30);
+          b_R_168 = a_R_168;
+          a_R_168 = t_R_168;
+};
+      a_R_168 = safe_add_R_?(a_R_168,olda_R_168);
+      b_R_168 = safe_add_R_?(b_R_168,oldb_R_168);
+      c_R_168 = safe_add_R_?(c_R_168,oldc_R_168);
+      d_R_168 = safe_add_R_?(d_R_168,oldd_R_168);
+      e_R_168 = safe_add_R_?(e_R_168,olde_R_168);
+}
+    return Array_R_?(a_R_168,b_R_168,c_R_168,d_R_168,e_R_168)
+}
+  function sha1_ft_R_169(t_R_169,b_R_169,c_R_169,d_R_169) {
+  if (t_R_169 < 20){
+    return b_R_169 & c_R_169 | ~b_R_169 & d_R_169
+})
+    if (t_R_169 < 40){
+    return b_R_169 ^ c_R_169 ^ d_R_169
+})
+    if (t_R_169 < 60){
+    return b_R_169 & c_R_169 | b_R_169 & d_R_169 | c_R_169 & d_R_169
+})
+    return b_R_169 ^ c_R_169 ^ d_R_169
+}
+  function sha1_kt_R_170(t_R_170) {
+  return t_R_170 < 20 ? 1518500249 :t_R_170 < 40 ? 1859775393 :t_R_170 < 60 ? -1894007588 :-899497514
+}
+  function core_hmac_sha1_R_171(key_R_171,data_R_171) {
+  var bkey_R_171 = str2binb_R_174(key_R_171)
+    if (bkey_R_171.length > 16){
+    bkey_R_171 = core_sha1_R_168(bkey_R_171,key_R_171.length * chrsz_R_0)
+})
+    var ipad_R_171 = Array_R_?(16) var opad_R_? = Array_R_?(16)
+    for(var i_R_171 = 0;i_R_171 < 16;i_R_171++){
+          ipad_R_171[i_R_171] = bkey_R_171[i_R_171] ^ 909522486;
+      opad_R_?[i_R_171] = bkey_R_171[i_R_171] ^ 1549556828;
+}
+    var hash_R_171 = core_sha1_R_?(ipad_R_171.concat_R_?(str2binb_R_?(data_R_171)),512 + data_R_171.length * chrsz_R_0)
+    return core_sha1_R_?(opad_R_?.concat(hash_R_171),512 + 160)
+}
+  function safe_add_R_172(x_R_172,y_R_172) {
+  var lsw_R_172 = x_R_172 & 65535 + y_R_172 & 65535
+    var msw_R_172 = x_R_172 >> 16 + y_R_172 >> 16 + lsw_R_172 >> 16
+    return msw_R_172 << 16 | lsw_R_172 & 65535
+}
+  function rol_R_173(num_R_173,cnt_R_173) {
+  return num_R_173 << cnt_R_173 | num_R_173 >>> 32 - cnt_R_173
+}
+  function str2binb_R_174(str_R_174) {
+  var bin_R_174 = Array_R_?()
+    var mask_R_174 = 1 << chrsz_R_0 - 1
+    for(var i_R_174 = 0;i_R_174 < str_R_174.length * chrsz_R_0;i_R_174 = chrsz_R_0){
+    bin_R_174[i_R_174 >> 5] = str_R_174.charCodeAt_R_?(i_R_174 / chrsz_R_0) & mask_R_174 << 32 - chrsz_R_0 - i_R_174 % 32
+}
+    return bin_R_174
+}
+  function binb2str_R_175(bin_R_175) {
+  var str_R_175 = ''
+    var mask_R_175 = 1 << chrsz_R_0 - 1
+    for(var i_R_175 = 0;i_R_175 < bin_R_175.length * 32;i_R_175 = chrsz_R_0){
+    str_R_175 = String_R_?.fromCharCode_R_?(bin_R_175[i_R_175 >> 5] >>> 32 - chrsz_R_0 - i_R_175 % 32 & mask_R_175)
+}
+    return str_R_175
+}
+  function binb2hex_R_176(binarray_R_176) {
+  var hex_tab_R_176 = hexcase_R_0 ? '0123456789ABCDEF' :'0123456789abcdef'
+    var str_R_176 = ''
+    for(var i_R_176 = 0;i_R_176 < binarray_R_176.length * 4;i_R_176++){
+          str_R_176 = hex_tab_R_176.charAt_R_?(binarray_R_176[i_R_176 >> 2] >> 3 - i_R_176 % 4 * 8 + 4 & 15) + hex_tab_R_176.charAt(binarray_R_176[i_R_176 >> 2] >> 3 - i_R_176 % 4 * 8 & 15);
+}
+    return str_R_176
+}
+  function binb2b64_R_177(binarray_R_177) {
+  var tab_R_177 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+    var str_R_177 = ''
+    for(var i_R_177 = 0;i_R_177 < binarray_R_177.length * 4;i_R_177 = 3){
+          var triplet_R_177 = binarray_R_177[i_R_177 >> 2] >> 8 * 3 - i_R_177 % 4 & 255 << 16 | binarray_R_177[i_R_177 + 1 >> 2] >> 8 * 3 - i_R_177 + 1 % 4 & 255 << 8 | binarray_R_177[i_R_177 + 2 >> 2] >> 8 * 3 - i_R_177 + 2 % 4 & 255;
+      for(var j_R_177 = 0;j_R_177 < 4;j_R_177++){
+                  if (i_R_177 * 8 + j_R_177 * 6 > binarray_R_177.length * 32){
+            str_R_177 = b64pad_R_0
+} else {
+            str_R_177 = tab_R_177.charAt_R_?(triplet_R_177 >> 6 * 3 - j_R_177 & 63)
+});
+};
+}
+    return str_R_177
+}
+  var toshortcut_R_0 = {  init_R_?:function () {
+    if (document.body.hasAttribute_R_?('screen_capture_injected')){
+              return;
+})
+      document.body.setAttribute_R_?('screen_capture_injected',true)
+      document.body.addEventListener_R_?('keydown',toshortcut_R_0.doshortcut,false)
+},  isThisPlatform_R_?:function (operationSystem_R_179) {
+    return navigator_R_?.userAgent.toLowerCase_R_?().indexOf_R_?(operationSystem_R_179) > -1
+},  doshortcut_R_?:function (event_R_180) {
+    var isMac_R_180 = toshortcut_R_0.isThisPlatform_R_?('mac')
+      if (event_R_180.ctrlKey && event_R_180.altKey && !isMac_R_180 || event_R_180.metaKey && event_R_180.altKey && isMac_R_180){
+              if (window.event.keyCode == 82){
+                      toshortcut_R_0.sendMessage({              msg_R_?:'capture_area'});
+} else {
+          if (window.event.keyCode == 86){
+                          toshortcut_R_0.sendMessage({                msg_R_?:'capture_window'});
+} else {
+            if (window.event.keyCode == 72){
+                              toshortcut_R_0.sendMessage_R_?({                  msg_R_?:'capture_webpage'});
+})
+})
+});
+})
+},  sendMessage_R_?:function (message_R_181) {
+    chrome.extension.sendRequest(message_R_181)
+}}
+  toshortcut_R_0.init()
+  var SINA_APP_KEY_R_? = '1350884563'
+  var SINA_APP_SECRET_R_? = 'dd130d4873f31445a51cbb176f9630fe'
+  var SINA_REQUEST_TOKEN_URL_R_? = 'http://api.t.sina.com.cn/oauth/request_token'
+  var SINA_USER_AUTHENTICATION_URL_R_? = 'http://api.t.sina.com.cn/oauth/authorize'
+  var SINA_ACCESS_TOKEN_URL_R_? = 'http://api.t.sina.com.cn/oauth/access_token'
+  var SINA_USER_INFO_URL_R_? = 'http://api.t.sina.com.cn/users/show.json'
+  var SINA_PHOTO_UPLOAD_URL_R_? = 'http://api.t.sina.com.cn/statuses/upload.json'
+  var SINA_LOGOUT_URL_R_? = 'http://api.t.sina.com.cn/account/end_session.json'
+  var OAUTH_SIGNATURE_METHOD_R_? = 'HMAC-SHA1'
+  var OAUTH_VERSION_R_? = '1.0'
+  var SinaMicroblog_R_0 = {  siteId_R_?:'sina',  currentUserId_R_?:null,  currentUserOauthToken_R_?:'',  currentUserOauthTokenSecret_R_?:'',  accessTokenCallback_R_?:null,  isRedirectUrl_R_?:function () {
+
+},  getAuthorizationHeader_R_?:function (message_R_183,accessor_R_183) {
+    OAuth_R_0.setTimestampAndNonce_R_?(message_R_183)
+      OAuth_R_0.SignatureMethod.sign_R_?(message_R_183,accessor_R_183)
+      return OAuth_R_0.getAuthorizationHeader_R_?('',message_R_183.parameters)
+},  getRequestToken_R_?:function (callback_R_184) {
+    SinaMicroblog_R_0.accessTokenCallback = callback_R_184
+      var message_R_184 = {      action_R_?:SINA_REQUEST_TOKEN_URL_R_?,      method_R_?:'POST',      parameters_R_?:{        'oauth_consumer_key':SINA_APP_KEY_R_?,        'oauth_signature_method':OAUTH_SIGNATURE_METHOD_R_?,        'oauth_version':OAUTH_VERSION_R_?}}
+      var accessor_R_184 = {      consumerKey_R_?:SINA_APP_KEY_R_?,      consumerSecret_R_?:SINA_APP_SECRET_R_?}
+      var header_R_184 = SinaMicroblog_R_0.getAuthorizationHeader_R_?(message_R_184,accessor_R_184)
+      ajax_R_?({      url_R_?:SINA_REQUEST_TOKEN_URL_R_?,      method_R_?:'POST',      headers_R_?:{        'Authorization':header_R_184},      success_R_?:function (response_R_185) {
+        response_R_185 = response_R_185.split_R_?('&')
+          var oauth_token_R_185 = response_R_185[0].split('=')[1]
+          var oauth_token_secret_R_185 = response_R_185[1].split('=')[1]
+          SinaMicroblog_R_0.currentUserOauthToken = oauth_token_R_185
+          SinaMicroblog_R_0.currentUserOauthTokenSecret = oauth_token_secret_R_185
+          SinaMicroblog_R_0.getUserAuthentication_R_?(oauth_token_R_185)
+},      status_R_?:{        others_R_?:function () {
+          callback_R_?('failure','sina_failed_to_get_request_token')
+}}})
+},  getUserAuthentication_R_?:function (oauth_token_R_187) {
+    var url_R_187 = SINA_USER_AUTHENTICATION_URL_R_?
+      var hubUrl_R_187 = chrome.extension.getURL('hub.html')
+      url_R_187 = '?oauth_token=' + oauth_token_R_187 + '&oauth_callback=' + hubUrl_R_187
+      chrome.tabs.create({      url_R_187:url_R_187})
+},  parseAccessToken_R_?:function (url_R_188) {
+    var queryString_R_188 = url_R_188.split_R_?('?')[1]
+      var oauthVerifier_R_188 = queryString_R_188.split('&')[1].split('=')[1]
+      SinaMicroblog_R_0.getAccessToken_R_?(SinaMicroblog_R_0.accessTokenCallback,oauthVerifier_R_188)
+      SinaMicroblog_R_0.accessTokenCallback = null
+},  getAccessToken_R_?:function (callback_R_189,oauth_verifier_R_189) {
+    if (!oauth_verifier_R_189){
+              SinaMicroblog_R_0.getRequestToken_R_?(callback_R_189);
+        return;
+})
+      var message_R_189 = {      action_R_?:SINA_ACCESS_TOKEN_URL_R_?,      method_R_?:'POST',      parameters_R_?:{        'oauth_consumer_key':SINA_APP_KEY_R_?,        'oauth_token':SinaMicroblog_R_0.currentUserOauthToken,        'oauth_token_secret':SinaMicroblog_R_0.currentUserOauthTokenSecret,        'oauth_signature_method':OAUTH_SIGNATURE_METHOD_R_?,        'oauth_verifier':oauth_verifier_R_189,        'oauth_version':OAUTH_VERSION_R_?}}
+      var accessor_R_189 = {      consumerKey_R_?:SINA_APP_KEY_R_?,      consumerSecret_R_?:SINA_APP_SECRET_R_?,      tokenSecret_R_?:SinaMicroblog_R_0.currentUserOauthTokenSecret}
+      var header_R_189 = SinaMicroblog_R_0.getAuthorizationHeader_R_?(message_R_189,accessor_R_189)
+      ajax_R_?({      url_R_?:SINA_ACCESS_TOKEN_URL_R_?,      method_R_?:'POST',      headers_R_?:{        'Authorization':header_R_189},      success_R_?:function (response_R_190) {
+        var responseMap_R_190 = {}
+          response_R_190.split_R_?('&').forEach_R_?(function (parameter_R_191) {
+          responseMap_R_190[parameter_R_191.split_R_?('=')[0]] = parameter_R_191.split('=')[1]
+})
+          var userId_R_190 = responseMap_R_190.user_id
+          var accessToken_R_190 = responseMap_R_190.oauth_token
+          var accessTokenSecret_R_190 = responseMap_R_190.oauth_token_secret
+          var user_R_190 = (NEW User_R_0 {          id_R_?:userId_R_190,          accessToken_R_190:accessToken_R_190,          accessTokenSecret_R_190:accessTokenSecret_R_190})
+          callback_R_?('success',user_R_190)
+},      status_R_?:{        others_R_?:function (data_R_192) {
+          callback_R_?('failure','sina_failed_to_get_access_token')
+}}})
+},  getUserInfo_R_?:function (user_R_193,callback_R_193) {
+    var url_R_193 = SINA_USER_INFO_URL_R_? + '?user_id=' + user_R_193.id
+      var message_R_193 = {      action_R_?:url_R_193,      method_R_?:'POST',      parameters_R_?:{        'oauth_consumer_key':SINA_APP_KEY_R_?,        'oauth_token':user_R_193.accessToken,        'oauth_signature_method':OAUTH_SIGNATURE_METHOD_R_?,        'oauth_version':OAUTH_VERSION_R_?}}
+      var accessor_R_193 = {      consumerSecret_R_?:SINA_APP_SECRET_R_?,      tokenSecret_R_?:user_R_193.accessTokenSecret}
+      var header_R_193 = SinaMicroblog_R_0.getAuthorizationHeader_R_?(message_R_193,accessor_R_193)
+      ajax_R_?({      url_R_193:url_R_193,      method_R_?:'POST',      headers_R_?:{        'Authorization':header_R_193},      success_R_?:function (data_R_194) {
+        if (callback_R_193){
+                      user_R_193.name = data_R_194.name;
+            callback_R_?('success',user_R_193);
+})
+},      status_R_?:{        others_R_?:function (data_R_195) {
+          callback_R_?('failure','failed_to_get_user_info')
+}}})
+},  upload_R_?:function (user_R_196,caption_R_196,imageData_R_196,callback_R_196) {
+    caption_R_196 = encodeURIComponent_R_?(caption_R_196)
+      var message_R_196 = {      action_R_?:SINA_PHOTO_UPLOAD_URL_R_?,      method_R_?:'POST',      parameters_R_?:{        'oauth_consumer_key':SINA_APP_KEY_R_?,        'oauth_token':user_R_196.accessToken,        'oauth_signature_method':OAUTH_SIGNATURE_METHOD_R_?,        'status':caption_R_196,        'oauth_version':OAUTH_VERSION_R_?}}
+      var accessor_R_196 = {      consumerSecret_R_?:SINA_APP_SECRET_R_?,      tokenSecret_R_?:user_R_196.accessTokenSecret}
+      var header_R_196 = SinaMicroblog_R_0.getAuthorizationHeader_R_?(message_R_196,accessor_R_196)
+      var params_R_196 = {      status_R_?:caption_R_196}
+      var binaryData_R_196 = {      boundary_R_?:MULTIPART_FORMDATA_BOUNDARY_R_?,      name_R_?:'pic',      value_R_?:'test.png',      data_R_?:imageData_R_196,      type_R_?:'image/png'}
+      ajax_R_?({      url_R_?:SINA_PHOTO_UPLOAD_URL_R_?,      parameters_R_?:params_R_196,      multipartData_R_?:binaryData_R_196,      headers_R_?:{        'Authorization':header_R_196},      success_R_?:function (microblog_R_197) {
+        callback_R_?('success',microblog_R_197.id)
+},      status_R_?:{        others_R_?:function (err_R_198,statusCode_R_198) {
+          var message_R_198 = 'failed_to_upload_image'
+            if (statusCode_R_198 == 400 && message_R_198 == '40072:Error: accessor was revoked!'){
+                          message_R_198 = 'bad_access_token';
+})
+            callback_R_?('failure',message_R_198)
+}}})
+},  getPhotoLink_R_?:function (user_R_199,microblogId_R_199,callback_R_199) {
+    var photoLink_R_199 = 'http://api.t.sina.com.cn/' + user_R_199.id + '/statuses/' + microblogId_R_199
+      callback_R_?('success',photoLink_R_199)
+},  logout_R_?:function (callback_R_200) {
+    var params_R_200 = {      source_R_?:SINA_APP_KEY_R_?}
+      ajax_R_?({      url_R_?:SINA_LOGOUT_URL_R_?,      parameters_R_?:params_R_200,      complete_R_?:function (statusCode_R_201,data_R_201) {
+        if (statusCode_R_201 == 200 || statusCode_R_201 == 403 && callback_R_200){
+          callback_R_?(data_R_201)
+})
+}})
+}}
+  var Site_R_0 = function (id_R_202) {
+  this.siteId = id_R_202
+}
+  Site_R_0.prototype = {  getAccessToken_R_?:function (callback_R_203) {
+
+},  isRedirectUrl_R_?:function (url_R_204) {
+
+},  parseAccessToken_R_?:function (url_R_205) {
+
+},  getUserInfo_R_?:function (user_R_206,callback_R_206) {
+
+},  upload_R_?:function (user_R_207,caption_R_207,imageData_R_207,callback_R_207) {
+
+},  getPhotoLink_R_?:function (user_R_208,photoId_R_208,callback_R_208) {
+
+},  logout_R_?:function (callback_R_209) {
+
+}}
+  var UI_R_0 = {  show_R_?:function (element_R_210) {
+    if (UI_R_0.getStyle(element_R_210,'display') == 'none'){
+              var cssRules_R_210 = window.getMatchedCSSRules_R_?(element_R_210,'',true);
+        var ruleLength_R_210 = cssRules_R_210.length;
+        display_R_210;
+        for(var i_R_210 = ruleLength_R_210 - 1;i_R_210 >= 0;--i_R_210){
+                      display_R_210 = cssRules_R_210[i_R_210].style.display;
+            if (display_R_210 && display_R_210 != 'none'){
+                              element_R_210.style.display = display_R_210;
+                return;
+});
+};
+        var tmpElement_R_210 = document.createElement_R_?(element_R_210.nodeName);
+        document.body.appendChild_R_?(tmpElement_R_210);
+        display_R_210 = UI_R_0.getStyle_R_?(tmpElement_R_210,'display');
+        document.body.removeChild_R_?(tmpElement_R_210);
+        element_R_210.style.display = display_R_210;
+})
+},  hide_R_?:function (element_R_211) {
+    element_R_211.style.display = 'none'
+},  setStyle_R_?:function (element_R_212) {
+    var argLength_R_212 = arguments_R_?.length
+      var arg1_R_212 = arguments_R_?[1]
+      if (argLength_R_212 == 2 && arg1_R_212.constructor == Object){
+              for(var prop_R_212 in arg1_R_212){
+          var camelCasedProp_R_212 = prop_R_212.replace_R_?((REGEXP '-([a-z])' 'gi'),function (n_R_213,letter_R_213) {
+            return letter_R_213.toUpperCase_R_?()
+});
+          element_R_212.style[camelCasedProp_R_212] = arg1_R_212[prop_R_212];
+};
+} else {
+      if (argLength_R_212 == 3){
+        element_R_212.style[arg1_R_212] = arguments_R_?[2]
+})
+})
+},  getStyle_R_?:function (element_R_214,property_R_214) {
+    return window.getComputedStyle_R_?(element_R_214)[property_R_214]
+},  addClass_R_?:function (element_R_215,className_R_215) {
+    var classes_R_215 = element_R_215.className.split_R_?(' ')
+      classes_R_215.push_R_?(className_R_215)
+      element_R_215.className = classes_R_215.join_R_?(' ')
+},  removeClass_R_?:function (element_R_216,className_R_216) {
+    var classes_R_216 = element_R_216.className.split_R_?(' ')
+      var index_R_216 = classes_R_216.indexOf_R_?(className_R_216)
+      if (index_R_216 >= 0){
+              classes_R_216.splice_R_?(index_R_216,1);
+        element_R_216.className = classes_R_216.join_R_?(' ');
+})
+},  addStyleSheet_R_?:function (path_R_217) {
+    var link_R_217 = document.createElement_R_?('link')
+      link_R_217.setAttribute_R_?('type','text/css')
+      link_R_217.setAttribute('rel','stylesheet')
+      link_R_217.setAttribute('href',path_R_217)
+      document.head.appendChild_R_?(link_R_217)
+}}
+  var CURRENT_LOCALE_R_? = chrome.i18n.getMessage('@@ui_locale')
+  var MULTIPART_FORMDATA_BOUNDARY_R_? = 'Google_Chrome_Screen_Capture'
+  var HIDE_ERROR_INFO_DELAY_TIME_R_? = 5000
+  var UploadUI_R_0 = {  currentSite_R_?:'',  uploading_R_?:false,  sites_R_?:{},  registerSite_R_?:function (id_R_218,siteObject_R_218) {
+    this.sites[id_R_218] = siteObject
+},  getSiteObject:function (id_R_219) {
+    return this.sites[id_R_219]
+},  setUploading_R_?:function (state_R_220) {
+    UploadUI_R_0.uploading = state_R_220
+},  init_R_?:function () {
+    UploadUI_R_0.registerSite_R_?(SinaMicroblog_R_0.siteId,SinaMicroblog_R_0)
+      UploadUI_R_0.registerSite(Facebook_R_0.siteId,Facebook_R_0)
+      UploadUI_R_0.registerSite(Picasa_R_?.siteId,Picasa_R_?)
+      UI_R_0.addStyleSheet_R_?('./i18n_styles/' + CURRENT_LOCALE_R_? + '_upload_image.css')
+      i18nReplace_R_?('shareToSinaMicroblogText',SinaMicroblog_R_0.siteId + '_upload_header')
+      i18nReplace_R_?('shareToFacebookText',Facebook_R_0.siteId + '_upload_header')
+      i18nReplace_R_?('shareToPicasaText',Picasa_R_?.siteId + '_upload_header')
+      i18nReplace_R_?('lastStep','return_to_site_selection')
+      i18nReplace_R_?('closeUploadWrapper','close_upload_wrapper')
+      i18nReplace_R_?('imageCaptionText','image_caption')
+      i18nReplace_R_?('photoSizeTip','photo_size_tip')
+      $('requiredFlag').setAttribute_R_?('title',chrome.i18n.getMessage('invalid_caption'))
+      $('btnUpload').addEventListener_R_?('click',UploadUI_R_0.showUploadWrapper,false)
+      $('closeUploadWrapper').addEventListener('click',UploadUI_R_0.hideUploadWrapper,false)
+      $('picasaBtn').addEventListener('click',function () {
+      UploadUI_R_0.showUploadContentWrapper_R_?(Picasa_R_?.siteId)
+})
+      $('facebookBtn').addEventListener('click',function () {
+      UploadUI_R_0.showUploadContentWrapper_R_?(Facebook_R_0.siteId)
+},false)
+      $('sinaMicroblogBtn').addEventListener('click',function () {
+      UploadUI_R_0.showUploadContentWrapper_R_?(SinaMicroblog_R_0.siteId)
+},false)
+      $('shareToOtherAccount').addEventListener('click',function () {
+      var currentSite_R_225 = UploadUI_R_0.currentSite
+        if (UploadUI_R_0.validatePhotoDescription_R_?(currentSite_R_225)){
+                  var callback_R_225 = function () {
+            var authenticationTip_R_226 = chrome.i18n.getMessage('user_authentication_tip')
+              UploadUI_R_0.showAuthenticationProgress_R_?(authenticationTip_R_226)
+              UploadUI_R_0.getAccessToken_R_?(currentSite_R_225)
+};
+          var users_R_225 = Account_R_0.getUsers_R_?(currentSite_R_225);
+          var numberOfUsers_R_225 = Object.keys_R_?(users_R_225).length;
+          if (numberOfUsers_R_225){
+                          var logoutTip_R_225 = chrome.i18n.getMessage('user_logout_tip');
+              UploadUI_R_0.showAuthenticationProgress_R_?(logoutTip_R_225);
+              var site_R_225 = UploadUI_R_0.getSiteObject(currentSite_R_225);
+              site_R_225.logout_R_?(callback_R_225);
+} else {
+                          callback_R_?();
+});
+})
+},false)
+      $('lastStep').addEventListener('click',UploadUI_R_0.showUploadSitesWrapper,false)
+},  showUploadWrapper_R_?:function () {
+    var uploadWrapper_R_227 = $('uploadWrapper')
+      UI_R_0.show_R_?(uploadWrapper_R_227)
+      var viewportWidth_R_227 = window.innerWidth
+      var viewportHeight_R_227 = window.innerHeight
+      var wrapperWidth_R_227 = uploadWrapper_R_227.offsetWidth
+      var wrapperHeight_R_227 = uploadWrapper_R_227.offsetHeight
+      var left_R_227 = viewportWidth_R_227 - wrapperWidth_R_227 / 2
+      var top_R_227 = viewportHeight_R_227 - wrapperHeight_R_227 / 3
+      left_R_227 = left_R_227 < 0 ? 0 :left_R_227
+      top_R_227 = top_R_227 < 0 ? 0 :top_R_227
+      var scrollTop_R_227 = document.body.scrollTop
+      var scrollLeft_R_227 = document.body.scrollLeft
+      UI_R_0.setStyle_R_?(uploadWrapper_R_227,{      top_R_227:top_R_227 + scrollTop_R_227 + 'px',      left_R_227:left_R_227 + scrollLeft_R_227 + 'px'})
+      UploadUI_R_0.showUploadSitesWrapper_R_?()
+      UploadUI_R_0.showOverlay_R_?()
+},  hideUploadWrapper_R_?:function () {
+    UI_R_0.hide_R_?($('uploadWrapper'))
+      UploadUI_R_0.hideOverlay_R_?()
+},  showOverlay_R_?:function () {
+    var overlay_R_229 = $('overlay')
+      UI_R_0.setStyle_R_?(overlay_R_229,{      width_R_?:document.body.scrollWidth + 'px',      height_R_?:document.body.scrollHeight + 'px'})
+      UI_R_0.show_R_?($('overlay'))
+},  hideOverlay_R_?:function () {
+    UI_R_0.hide_R_?($('overlay'))
+},  updateUploadHeader_R_?:function (title_R_231) {
+    $('uploadHeader').firstElementChild.firstElementChild.innerText = title_R_231
+},  showUploadSitesWrapper_R_?:function () {
+    var uploadHeader_R_232 = chrome.i18n.getMessage('upload_sites_header')
+      UploadUI_R_0.updateUploadHeader_R_?(uploadHeader_R_232)
+      UI_R_0.show_R_?($('uploadSitesWrapper'))
+      UploadUI_R_0.hideUploadContentWrapper_R_?()
+      UI_R_0.hide_R_?($('lastStep'))
+},  hideUploadSitesWrapper_R_?:function () {
+    UI_R_0.hide_R_?($('uploadSitesWrapper'))
+},  showUploadContentWrapper_R_?:function (site_R_234) {
+    UploadUI_R_0.currentSite = site_R_234
+      var uploadHeader_R_234 = chrome.i18n.getMessage(site_R_234 + '_upload_header')
+      UploadUI_R_0.updateUploadHeader_R_?(uploadHeader_R_234)
+      UploadUI_R_0.hideUploadSitesWrapper_R_?()
+      UploadUI_R_0.hideErrorInfo_R_?()
+      UploadUI_R_0.hideAuthenticationProgress_R_?()
+      UploadUI_R_0.clearPhotoDescription_R_?()
+      UI_R_0.show_R_?($('uploadContentWrapper'))
+      UI_R_0.show($('lastStep'))
+      UploadUI_R_0.updateShareToOtherAccountText_R_?(site_R_234)
+      UploadUI_R_0.togglePhotoDescriptionRequiredFlag_R_?(site_R_234)
+      UploadUI_R_0.clearAccounts_R_?()
+      var users_R_234 = Account_R_0.getUsers_R_?(site_R_234)
+      for(var userId_R_234 in users_R_234){
+      UploadUI_R_0.addAuthenticatedAccount_R_?(site_R_234,userId_R_234);
+}
+},  hideUploadContentWrapper_R_?:function () {
+    UI_R_0.hide_R_?($('uploadContentWrapper'))
+},  clearPhotoDescription_R_?:function () {
+    $('imageCaption').value = ''
+},  validatePhotoDescription_R_?:function (site_R_237) {
+    var caption_R_237 = $('imageCaption')
+      var invalidCaptionMsg_R_237 = chrome.i18n.getMessage('invalid_caption')
+      if (site_R_237 == SinaMicroblog_R_0.siteId && caption_R_237.value == ''){
+              UploadUI_R_0.showErrorInfo_R_?(invalidCaptionMsg_R_237);
+        caption_R_237.focus_R_?();
+        return false;
+})
+      return true
+},  togglePhotoDescriptionRequiredFlag_R_?:function (siteId_R_238) {
+    if (siteId_R_238 == SinaMicroblog_R_0.siteId){
+      UI_R_0.show_R_?($('requiredFlag'))
+} else {
+      UI_R_0.hide_R_?($('requiredFlag'))
+})
+},  updateShareToOtherAccountText_R_?:function (siteId_R_239) {
+    var users_R_239 = Account_R_0.getUsers_R_?(siteId_R_239)
+      var userLength_R_239 = Object.keys_R_?(users_R_239).length
+      if (userLength_R_239){
+      i18nReplace_R_?('shareToOtherAccount','share_to_other_account')
+} else {
+      i18nReplace_R_?('shareToOtherAccount','share_to_' + siteId_R_239 + '_account')
+})
+},  showErrorInfo_R_?:function (text_R_240) {
+    UI_R_0.show_R_?($('errorWrapper'))
+      $('errorInfo').innerHTML = text_R_240
+      setTimeout_R_?(function () {
+      UploadUI_R_0.hideErrorInfo_R_?()
+},HIDE_ERROR_INFO_DELAY_TIME_R_?)
+},  hideErrorInfo_R_?:function () {
+    UI_R_0.hide_R_?($('errorWrapper'))
+},  showProgressBar_R_?:function (accountId_R_243) {
+    var progress_R_243 = document.querySelector_R_?('#' + accountId_R_243 + ' .progressBar')
+      UI_R_0.show_R_?(progress_R_243)
+},  hideProgressBar_R_?:function (accountId_R_244) {
+    var progress_R_244 = document.querySelector_R_?('#' + accountId_R_244 + ' .progressBar')
+      UI_R_0.hide_R_?(progress_R_244)
+},  showAuthenticationProgress_R_?:function (title_R_245) {
+    var progress_R_245 = $('authenticationProgress')
+      progress_R_245.setAttribute_R_?('title',title_R_245)
+      UI_R_0.show_R_?(progress_R_245)
+},  hideAuthenticationProgress_R_?:function () {
+    UI_R_0.hide_R_?($('authenticationProgress'))
+},  setProgress_R_?:function (accountId_R_247,loaded_R_247,total_R_247) {
+    console.log_R_?('In setProgress, loaded: ' + loaded_R_247 + ', total: ' + total_R_247)
+      var progress_R_247 = document.querySelector_R_?('#' + accountId_R_247 + ' .progressBar')
+      var level_R_247 = parseInt_R_?(loaded_R_247 / total_R_247 / 0.25)
+      UI_R_0.setStyle_R_?(progress_R_247,'background-position-y','-' + 12 * level_R_247 + 'px')
+},  showPhotoLink_R_?:function (accountId_R_248,link_R_248) {
+    var photoLink_R_248 = document.querySelector_R_?('#' + accountId_R_248 + ' .photoLink')
+      photoLink_R_248.setAttribute_R_?('href',link_R_248)
+      UI_R_0.setStyle_R_?(photoLink_R_248,'display','inline')
+},  hidePhotoLink_R_?:function (accountId_R_249) {
+    var photoLink_R_249 = document.querySelector_R_?('#' + accountId_R_249 + ' .photoLink')
+      UI_R_0.hide_R_?(photoLink_R_249)
+},  showUploadInfo_R_?:function (accountId_R_250,text_R_250) {
+    var uploadInfo_R_250 = document.querySelector_R_?('#' + accountId_R_250 + ' .uploadInfo')
+      uploadInfo_R_250.innerHTML = text_R_250
+      UI_R_0.show_R_?(uploadInfo_R_250)
+},  hideUploadInfo_R_?:function (accountId_R_251) {
+    var uploadInfo_R_251 = document.querySelector_R_?('#' + accountId_R_251 + ' .uploadInfo')
+      UI_R_0.hide_R_?(uploadInfo_R_251)
+},  clearAccounts_R_?:function () {
+    $('uploadAccountList').innerHTML = ''
+},  addAuthenticatedAccount_R_?:function (site_R_253,userId_R_253) {
+    var template_R_253 = $('accountItemTemplate').innerHTML
+      template_R_253 = template_R_253.replace_R_?((REGEXP '\\$\\{accountId\\}' 'gi'),site_R_253 + '_' + userId_R_253)
+      var shareToText_R_253 = chrome.i18n.getMessage('share_to')
+      template_R_253 = template_R_253.replace((REGEXP '\\$\\{accountName\\}' 'gi'),shareToText_R_253 + ' ' + Account_R_0.getUser_R_?(site_R_253,userId_R_253)['name'])
+      template_R_253 = template_R_253.replace('${site}',site_R_253)
+      template_R_253 = template_R_253.replace('${userId}',userId_R_253)
+      template_R_253 = template_R_253.replace((REGEXP '\\$\\{deletionTitle\\}' 'gi'),chrome.i18n.getMessage('deletion_title'))
+      template_R_253 = template_R_253.replace((REGEXP '\\$\\{photoLinkText\\}' 'gi'),chrome.i18n.getMessage('photo_link_text'))
+      template_R_253 = template_R_253.replace((REGEXP '\\$\\{progressInfo\\}' 'gi'),chrome.i18n.getMessage('progress_info'))
+      var uploadAccountList_R_253 = $('uploadAccountList')
+      var accountsNumber_R_253 = uploadAccountList_R_253.childElementCount
+      if (accountsNumber_R_253 == 2){
+              uploadAccountList_R_253.removeChild_R_?(uploadAccountList_R_253.lastElementChild);
+})
+      uploadAccountList_R_253.innerHTML = template_R_253 + uploadAccountList_R_253.innerHTML
+      UploadUI_R_0.updateShareToOtherAccountText_R_?(site_R_253)
+},  deleteAccountItem_R_?:function (accountId_R_254,noConfirm_R_254) {
+    if (UploadUI_R_0.uploading && !noConfirm_R_254){
+      return
+})
+      var confirmText_R_254 = chrome.i18n.getMessage('account_deletion_confirm')
+      if (noConfirm_R_254 || confirm_R_?(confirmText_R_254)){
+              $('uploadAccountList').removeChild_R_?($(accountId_R_254));
+        var site_R_254 = accountId_R_254.split_R_?('_')[0];
+        var userId_R_254 = accountId_R_254.split('_')[1];
+        Account_R_0.removeUser_R_?(site_R_254,userId_R_254);
+        UploadUI_R_0.updateShareToOtherAccountText_R_?(site_R_254);
+})
+},  upload_R_?:function (siteId_R_255,userId_R_255) {
+    if (UploadUI_R_0.uploading){
+      return
+})
+      var accountId_R_255 = siteId_R_255 + '_' + userId_R_255
+      UploadUI_R_0.hideErrorInfo_R_?()
+      UploadUI_R_0.hideUploadInfo_R_?(accountId_R_255)
+      UploadUI_R_0.hidePhotoLink_R_?(accountId_R_255)
+      if (!UploadUI_R_0.validatePhotoDescription_R_?(siteId_R_255)){
+      return
+})
+      var caption_R_255 = $('imageCaption').value
+      photoshop_R_?.draw_R_?()
+      UploadUI_R_0.setUploading_R_?(true)
+      UploadUI_R_0.showProgressBar_R_?(accountId_R_255)
+      var site_R_255 = UploadUI_R_0.getSiteObject(siteId_R_255)
+      var user_R_255 = Account_R_0.getUser_R_?(siteId_R_255,userId_R_255)
+      var imageData_R_255 = UploadUI_R_0.getImageData_R_?()
+      infoText_R_255
+      var callback_R_255 = function (result_R_256,photoIdOrMessage_R_256) {
+      if (result_R_256 == 'success'){
+                  infoText_R_255 = chrome.i18n.getMessage('get_photo_link');
+          UploadUI_R_0.showUploadInfo_R_?(accountId_R_255,infoText_R_255);
+          site_R_255.getPhotoLink_R_?(user_R_255,photoIdOrMessage_R_256,function (photoLinkResult_R_257,photoLinkOrMessage_R_257) {
+            if (photoLinkResult_R_257 == 'success'){
+                              UploadUI_R_0.setUploading_R_?(false);
+                UploadUI_R_0.hideUploadInfo_R_?(accountId_R_255);
+                UploadUI_R_0.showPhotoLink_R_?(accountId_R_255,photoLinkOrMessage_R_257);
+} else {
+                              UploadUI_R_0.showErrorInfo_R_?(photoLinkOrMessage_R_257);
+})
+});
+} else {
+                  if (photoIdOrMessage_R_256 == 'bad_access_token' || photoIdOrMessage_R_256 == 'invalid_album_id'){
+                          Account_R_0.removeUser_R_?(site_R_255.siteId,site_R_255.currentUserId);
+              UploadUI_R_0.deleteAccountItem_R_?(accountId_R_255,true);
+              UploadUI_R_0.getAccessToken_R_?(siteId_R_255);
+});
+          UploadUI_R_0.setUploading_R_?(false);
+          UploadUI_R_0.hideProgressBar_R_?(accountId_R_255);
+          UploadUI_R_0.showErrorInfo_R_?(chrome.i18n.getMessage(photoIdOrMessage_R_256));
+})
+        UploadUI_R_0.hideProgressBar(accountId_R_255)
+}
+      if (user_R_255){
+              site_R_255.currentUserId = user_R_255.id;
+        site_R_255.upload_R_?(user_R_255,caption_R_255,imageData_R_255,callback_R_255);
+} else {
+              UploadUI_R_0.getAccessToken_R_?(siteId_R_255);
+})
+},  getAccessToken_R_?:function (siteId_R_258) {
+    var site_R_258 = UploadUI_R_0.getSiteObject(siteId_R_258)
+      var accessTokenCallback_R_258 = function (result_R_259,userOrMessage_R_259) {
+      if (result_R_259 == 'success'){
+                  UploadUI_R_0.getUserInfo_R_?(siteId_R_258,userOrMessage_R_259);
+} else {
+                  UploadUI_R_0.showErrorInfo_R_?(chrome.i18n.getMessage(userOrMessage_R_259));
+          UploadUI_R_0.hideAuthenticationProgress_R_?();
+})
+}
+      site_R_258.getAccessToken_R_?(accessTokenCallback_R_258)
+},  getUserInfo_R_?:function (siteId_R_260,user_R_260) {
+    var site_R_260 = UploadUI_R_0.getSiteObject(siteId_R_260)
+      site_R_260.getUserInfo_R_?(user_R_260,function (result_R_261,userOrMessage_R_261) {
+      if (result_R_261 == 'success'){
+                  var userId_R_261 = user_R_260.id;
+          if (!Account_R_0.getUser_R_?(siteId_R_260,userId_R_261)){
+                          site_R_260.currentUserId = userId_R_261;
+              Account_R_0.addUser_R_?(siteId_R_260,user_R_260);
+              UploadUI_R_0.addAuthenticatedAccount_R_?(siteId_R_260,userId_R_261);
+});
+          UploadUI_R_0.hideAuthenticationProgress_R_?();
+          UploadUI_R_0.upload_R_?(siteId_R_260,userId_R_261);
+} else {
+                  var msg_R_261 = chrome.i18n.getMessage(userOrMessage_R_261);
+          UploadUI_R_0.showErrorInfo_R_?(msg_R_261);
+})
+})
+},  getImageData_R_?:function () {
+    var dataUrl_R_262 = $('canvas').toDataURL_R_?('image/png')
+      var imageDataIndex_R_262 = dataUrl_R_262.indexOf_R_?('data:image/png;base64,')
+      if (imageDataIndex_R_262 != 0){
+              return;
+})
+      return atob_R_?(dataUrl_R_262.substr_R_?(imageDataIndex_R_262 + 22))
+}}
+  function () {
+  tabIdOfEditPage_R_263
+    chrome.tabs.getSelected(null,function (tab_R_264) {
+    tabIdOfEditPage_R_263 = tab_R_264.id
+})
+    function selectTab_R_265(tabId_R_265) {
+    chrome.tabs.update(tabId_R_265,{      selected_R_?:true})
+}
+    function closeTab_R_266(tabId_R_266) {
+    chrome.tabs.remove(tabId_R_266)
+}
+    function parseAccessToken_R_267(senderId_R_267,url_R_267,siteId_R_267) {
+    var sites_R_267 = UploadUI_R_0.sites
+      for(var id_R_267 in sites_R_267){
+      var site_R_267 = sites_R_267[id_R_267];
+      if (siteId_R_267 && id_R_267 == siteId_R_267 || site_R_267.isRedirectUrl_R_?(url_R_267)){
+                  selectTab_R_265(tabIdOfEditPage_R_263);
+          closeTab_R_266(senderId_R_267);
+          site_R_267.parseAccessToken_R_?(url_R_267);
+          return true;
+});
+}
+      return false
+}
+    chrome.extension.onRequest.addListener(function (request_R_268,sender_R_268) {
+    switch (request_R_268.msg) {
+        case 'url_for_access_token': 
+        parseAccessToken(sender.tab.id,request.url,request.siteId);
+        break;}
+})
+}()

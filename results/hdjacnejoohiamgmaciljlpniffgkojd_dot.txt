@@ -1,0 +1,24 @@
+digraph graphname {
+lambda_R_5;
+lambda_R_4;
+lambda_R_7;
+"chrome.contextMenus.create";
+lambda_R_3;
+ignoreLink_R_1;
+global_R_0;
+lambda_R_9;
+lambda_R_8;
+addPage_R_6;
+"chrome.tabs.sendRequest";
+"chrome.i18n.getMessage";
+addLink_R_2;
+"chrome.extension.onRequest.addListener";
+"chrome.cookies.getAll";
+lambda_R_4 -> "chrome.cookies.getAll";
+lambda_R_3 -> "chrome.cookies.getAll";
+global_R_0 -> "chrome.contextMenus.create";
+global_R_0 -> "chrome.i18n.getMessage";
+global_R_0 -> "chrome.extension.onRequest.addListener";
+addPage_R_6 -> "chrome.tabs.sendRequest";
+addLink_R_2 -> "chrome.tabs.sendRequest";
+}

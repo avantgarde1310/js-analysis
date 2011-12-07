@@ -1,0 +1,67 @@
+var feed_types_R_0 = {  'application/rss+xml':true,  'application/atom+xml':true,  'text/xml':true,  'application/x-cooliris-quick':true}
+  function hasFeed_R_1() {
+  var links_R_1 = document.getElementsByTagName_R_?('link')
+    for(var i_R_1 = 0;i_R_1 < links_R_1.length;i_R_1++){
+          if (typeof links_R_1[i_R_1].type == 'string' && feed_types_R_0[links_R_1[i_R_1].type.toLowerCase_R_?()]){
+                  return true;
+});
+}
+    return false
+}
+  if (hasFeed_R_1()){
+      initCooliris_R_4();
+} else {
+      var port_R_0 = chrome.extension.connect({      name_R_?:'HasJsPageHandler'});
+    port_R_0.onMessage.addListener_R_?(initCooliris_R_?);
+    port_R_0.postMessage_R_?();
+})
+  if (window.name.match((REGEXP '__cooliris_background_(\\d+)' ''))){
+      initCooliris_R_?({      type_R_?:'application/x-cooliris-background-page',      handle_R_?:RegExp_R_?.$1});
+} else {
+  if (location_R_?.host.match_R_?((REGEXP '.cooliris.com$' ''))){
+          initCooliris_R_?({        type_R_?:'application/x-cooliris-page',        hidden_R_?:'true'});
+})
+})
+  function setPicLensContext_R_2() {
+  window.PicLensContext = function () {
+    return initCooliris_R_4()
+}
+    document.documentElement.removeChild_R_?(document.getElementById_R_?('coolirisScript'))
+}
+  var script_text_R_0 = '(' + setPicLensContext_R_? + ')();'
+  script_text_R_0 = script_text_R_0.replace_R_?('initCooliris','(' + initCooliris_R_? + ')')
+  var script_tag_R_0 = document.createElement_R_?('script')
+  script_tag_R_0.id = 'coolirisScript'
+  script_tag_R_0.appendChild_R_?(document.createTextNode_R_?(script_text_R_0))
+  document.documentElement.appendChild(script_tag_R_0)
+  function initCooliris_R_4(custom_attributes_R_4) {
+  var cooliris_R_4 = document.getElementById_R_?('coolirisBridge')
+    if (!cooliris_R_4){
+          var default_attributes_R_4 = {        type_R_?:'application/x-cooliris-page',        hidden_R_?:'true'};
+      if (navigator_R_?.platform.indexOf_R_?('Linux') != -1){
+                  default_attributes_R_4.style = 'width: 1px; height: 1px; position:absolute; left: -10000px';
+          default_attributes_R_4.hidden = 'false';
+});
+      var plugin_attributes_R_4 = custom_attributes_R_4 || default_attributes_R_4;
+      plugin_attributes_R_4.id = 'coolirisBridge';
+      cooliris_R_4 = document.createElement_R_?('embed');
+      for(var attr_name_R_4 in plugin_attributes_R_4){
+        cooliris_R_4.setAttribute_R_?(attr_name_R_4,plugin_attributes_R_4[attr_name_R_4]);
+};
+      document.documentElement.appendChild_R_?(cooliris_R_4);
+      if (top_R_? == self_R_?){
+                  document.addEventListener_R_?('mouseover',function (e_R_5) {
+            cooliris_R_4.onMouseOver_R_?(e_R_5)
+},true);
+          document.addEventListener('mouseout',function (e_R_6) {
+            cooliris_R_4.onMouseOut_R_?(e_R_6)
+},true);
+          if (chrome.extension){
+                          window.addEventListener('LaunchableChanged',function () {
+                chrome.extension.connect({                  name_R_?:'LaunchableChanged'}).postMessage({                  launchable_R_?:cooliris_R_4.launchable})
+},false);
+});
+});
+})
+    return cooliris_R_4
+}

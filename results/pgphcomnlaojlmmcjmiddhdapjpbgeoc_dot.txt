@@ -1,0 +1,15 @@
+digraph graphname {
+lambda_R_4;
+"chrome.extension.sendRequest";
+global_R_0;
+rewriteMailtosOnPage_R_3;
+"chrome.extension.connect";
+summaryText_R_1;
+rewriteMailtoToGMailUrl_R_2;
+lambda_R_4 -> rewriteMailtosOnPage_R_3;
+global_R_0 -> summaryText_R_1;
+global_R_0 -> rewriteMailtosOnPage_R_3;
+global_R_0 -> "chrome.extension.connect";
+rewriteMailtosOnPage_R_3 -> rewriteMailtoToGMailUrl_R_2;
+summaryText_R_1 -> "chrome.extension.sendRequest";
+}

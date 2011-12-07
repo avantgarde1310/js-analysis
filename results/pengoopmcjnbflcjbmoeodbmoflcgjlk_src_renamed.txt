@@ -1,0 +1,26 @@
+var doc_R_0 = document
+  var loc_R_0 = location_R_?
+  var wnd_R_0 = window
+  var BLOG_THIS_URL_R_0 = 'http://www.blogger.com/blog-this.g'
+  var SOURCE_TYPE_R_0 = 'chrome'
+  function getSelectedText_R_1() {
+  if (doc_R_0.selection){
+          return doc_R_0.selection.createRange_R_?().text;
+} else {
+    if (wnd_R_0.getSelection){
+              return query_R_? = wnd_R_0.getSelection();
+} else {
+      if (doc_R_0.getSelection){
+                  return query_R_? = doc_R_0.getSelection_R_?();
+} else {
+                  return '';
+})
+})
+})
+}
+  function build_url_R_2(text_R_2) {
+  return BLOG_THIS_URL_R_0 + '?t=' + encodeURIComponent_R_?(text_R_2) + '&u=' + encodeURIComponent_R_?(loc_R_0.href) + '&n=' + encodeURIComponent_R_?(doc_R_0.title) + '&source=' + SOURCE_TYPE_R_0
+}
+  var selected_text_R_0 = getSelectedText_R_1()
+  var request_url_R_0 = build_url_R_2(selected_text_R_0)
+  chrome.extension.sendRequest({  message_R_?:'openBloggerWindow',  url_R_?:request_url_R_0})

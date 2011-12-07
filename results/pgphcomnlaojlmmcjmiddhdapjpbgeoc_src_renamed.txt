@@ -1,0 +1,45 @@
+summaryText_R_1()
+  function summaryText_R_1() {
+  console.log_R_?('Being Called')
+    chrome.extension.sendRequest(window.getSelection_R_?().toString_R_?())
+}
+  var toField_R_0 = '&to='
+  var cachedGmailUrl_R_0 = ''
+  function rewriteMailtoToGMailUrl_R_2(inUrl_R_2) {
+  var retUrl_R_2 = inUrl_R_2
+    retUrl_R_2 = retUrl_R_2.replace_R_?('?','&')
+    retUrl_R_2 = retUrl_R_2.replace((REGEXP 'subject=' 'i'),'su=')
+    retUrl_R_2 = retUrl_R_2.replace((REGEXP 'CC=' 'i'),'cc=')
+    retUrl_R_2 = retUrl_R_2.replace((REGEXP 'BCC=' 'i'),'bcc=')
+    retUrl_R_2 = retUrl_R_2.replace((REGEXP 'Body=' 'i'),'body=')
+    var gmailUrl_R_2 = cachedGmailUrl_R_0 + toField_R_0
+    retUrl_R_2 = retUrl_R_2.replace('mailto:',gmailUrl_R_2)
+    return retUrl_R_2
+}
+  function rewriteMailtosOnPage_R_3() {
+  console.log_R_?('Starting to rewrite mailtos')
+    var result_R_3 = document.evaluate_R_?('//a[contains(@href, "mailto:")]',document,null,XPathResult_R_?.UNORDERED_NODE_ITERATOR_TYPE,null)
+    item_R_3
+    var nodes_R_3 = []
+    while(item_R_3 = result_R_3.iterateNext_R_?()){
+            nodes_R_3.push_R_?(item_R_3);}
+    for(var i_R_3 = 0;i_R_3 < nodes_R_3.length;i_R_3++){
+          var mailtoStr_R_3 = nodes_R_3[i_R_3].getAttribute_R_?('href');
+      mailtoStr_R_3 = rewriteMailtoToGMailUrl_R_2(mailtoStr_R_3);
+      nodes_R_3[i_R_3].setAttribute_R_?('href',mailtoStr_R_3);
+      nodes_R_3[i_R_3].setAttribute('target','_blank');
+}
+}
+  if (window == top_R_?){
+      if (cachedGmailUrl_R_0 != ''){
+              rewriteMailtosOnPage_R_3();
+        window.addEventListener_R_?('focus',rewriteMailtosOnPage_R_?);
+});
+    var bgPort_R_0 = chrome.extension.connect({      name_R_?:'GmailUrlConn'});
+    bgPort_R_0.postMessage_R_?({      req_R_?:'GmailUrlPlease'});
+    bgPort_R_0.onMessage.addListener_R_?(function (msg_R_4) {
+      console.log_R_?('Got message from bg page - ' + msg_R_4.gmailDomainUrl)
+        cachedGmailUrl_R_0 = msg_R_4.gmailDomainUrl
+        rewriteMailtosOnPage_R_3()
+});
+})

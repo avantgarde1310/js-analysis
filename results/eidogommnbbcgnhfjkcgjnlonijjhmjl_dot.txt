@@ -1,0 +1,20 @@
+digraph graphname {
+lambda_R_5;
+lambda_R_4;
+lambda_R_7;
+"chrome.extension.sendRequest";
+lambda_R_3;
+lambda_R_2;
+global_R_0;
+lambda_R_9;
+lambda_R_10;
+start_R_1;
+getakey_R_6;
+ajaxeur_R_8;
+lambda_R_4 -> "chrome.extension.sendRequest";
+lambda_R_3 -> start_R_1;
+lambda_R_2 -> start_R_1;
+global_R_0 -> start_R_1;
+start_R_1 -> getakey_R_6;
+getakey_R_6 -> ajaxeur_R_8;
+}

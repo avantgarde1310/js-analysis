@@ -1,0 +1,6 @@
+Extension Name: Adblock Plus for Google Chrome\u2122 (Beta)
+Extension Identifier: cfhdojbkjhnklbpkdaibdccddilifddb
+Number of functions: 713
+Number of anonymous functions: 631
+Number of named functions: 82
+Number of functions that reference chrome: 10

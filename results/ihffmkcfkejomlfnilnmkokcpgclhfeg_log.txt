@@ -1,0 +1,6 @@
+Extension Name: Forecastfox
+Extension Identifier: ihffmkcfkejomlfnilnmkokcpgclhfeg
+Number of functions: 1035
+Number of anonymous functions: 795
+Number of named functions: 240
+Number of functions that reference chrome: 9

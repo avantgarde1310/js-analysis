@@ -1,0 +1,25 @@
+digraph graphname {
+"chrome.tabs.create";
+lambda_R_7;
+lambda_R_6;
+"$";
+global_R_0;
+"$_R_4";
+lambda_R_9;
+_search_R_3;
+lambda_R_8;
+lambda_R_11;
+lambda_R_10;
+lambda_R_13;
+lambda_R_12;
+lambda_R_15;
+_keyUp_R_2;
+O_R_5;
+init_R_1;
+lambda_R_14;
+_search_R_3 -> "$";
+_search_R_3 -> "chrome.tabs.create";
+lambda_R_15 -> _search_R_3;
+_keyUp_R_2 -> _search_R_3;
+init_R_1 -> "$";
+}
