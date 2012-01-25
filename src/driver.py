@@ -3,6 +3,7 @@ import analyzer
 import alpharenamer
 import pynarcissus.jsparser
 import pynarcissus.sexp
+
 from ucb import main
 
 from pygraph.classes.digraph import digraph
@@ -94,30 +95,35 @@ def get_extension_name(path):
         print "Name not found."
         return None
 
-#def trace(node, level):
-#    print("# " * level + node.type + " " + getattr(node, "name", "None") + " " + str(getattr(node, "value", "None")))
-
 @main
 def run(*args):
-#    """ Open and Create AST """
-#    test_path = 'C:\\PythonProjects\\ExtensionAnalyzer\\src\\tests\\'
-#    file = 'adblock.js'
-#    ast = analyzer.create_AST(test_path + file)
+    print "\n-----------------JavaScript Static Analyzer 1.0-----------------"
+    
+    """ A Simple OptParser For This Program """
+    ext_path = args[0]
+    ext = args[1]
+    out_path = args[2]
+    import os
+    print "Ext Path: ", ext_path, " Exists:", os.path.exists(ext_path)
+    print "Ext: ", ext, " Exists:", os.path.exists(ext_path + "\\" + ext)
+    print "Out Path: ", out_path, " Exists:", os.path.exists(out_path)
     
     """ Open and Create AST from Extension """
-    ext_path = 'C:\\PythonProjects\\ExtensionAnalyzer\\Extensions\\Not Working\\'
-    ext = 'bmagokdooijbeehmkpknfglimnifench'
+#    ext_path = 'C:\\PythonProjects\\ExtensionAnalyzer\\Extensions\\CSPfied'
+#    ext = 'aapbdbdomjkkjkaonfhkkikfgjllcleb'
+    
     try:
-        ext_name = get_extension_name(ext_path + ext)
+        ext_name = get_extension_name(ext_path + "\\" + ext)
         if ext_name is None:
             raise Exception()
     except:
         ext_name = "Unknown"
     print(ext_name)
     print "Combining extension .js files...",
-    file_list = fileutils.get_all_javascript_files_absolute(ext_path + ext)
+    file_list = fileutils.get_all_javascript_files_absolute(ext_path + "\\" + ext)
     js_string = ""
     for filename in file_list:
+        js_string += "//" + filename + "\n\n"
         js_string += open(filename).read() + "\n\n\n"
     print "OK"
     
@@ -125,48 +131,51 @@ def run(*args):
     ast = analyzer.create_AST_from_string(js_string)
     print "OK"
     
-    """ For AST debugging """
-#    alpharenamer.traverse_AST_level(ast, trace, None)
-
     """ Create Frame object and execute alpha-rename """
     print "Creating frames...",
     fr = alpharenamer.create_frames(ast)
-#    print("----BEFORE RENAME----")
-#    print(fr)
     print "OK"
     print "Alpha-renaming...",
     fr = alpharenamer.alpha_rename(fr, ast)
-#    print("----AFTER RENAME----")
-#    print(fr)
     print "OK"
 
     """ Clean Call List """
-##    print("----AFTER CLEANING----")
     print "Cleaning call list of frames...",
     alpharenamer.traverse_frames(fr, clean_call_list)
-##    print(fr)
     print "OK"
 
     """ ------------------- OUTPUT PHASE ------------------- """
-    
-    out_path = "C:\\PythonProjects\\ExtensionAnalyzer\\results\\"
+#    out_path = "C:\\PythonProjects\\ExtensionAnalyzer\\newresults"
     
     """ Create Call Graph and DOT Format """
     print "Writing DOT file... ",
-    call_gr = create_call_graph(*generate_nodes_edges(fr))
-    dot_file = open(out_path + ext + "_dot.txt", "w")
+    # node_list : list of all the function calls in the source
+    # edge_list : list of tuples denoting edges between calls
+    node_list, edge_list = generate_nodes_edges(fr)
+    call_gr = create_call_graph(node_list, edge_list)
+    dot_file = open(out_path + "\\" + ext + "_dot.txt", "w")
     dot = write(call_gr)
     dot_file.write(dot)
+    print "OK"
+    
+    """ Create Separate Chrome API Calls """
+    print "Writing Unique Chrome API Calls...",
+    chromecalls_file = dot_file = open(out_path + "\\" + ext + "_chromecalls.txt", "w")
+    chrome_call_str = ""
+    for chromecall in node_list:
+        if "chrome" in chromecall and chromecall not in chrome_call_str:
+            chrome_call_str += chromecall + "\n"
+    chromecalls_file.write(chrome_call_str)
     print "OK"
     
 #    """ Write AST representation to file """
 #    ast_out = open("ast_out_newTest2.txt", "w")
 #    ast_out.write(str(ast))
     
-    """ Print source code """
+    """ Print Source Code """
     print "Writing source code... ",
     try:
-        source_out = open(out_path + ext + "_src_renamed.txt", "w")
+        source_out = open(out_path + "\\" + ext + "_src_renamed.txt", "w")
         source = pynarcissus.sexp.convert(ast)
         source_out.write(source)
         print "OK"
@@ -188,7 +197,7 @@ def run(*args):
     log_string += "Number of functions that reference chrome: " + str(chrome_count) + "\n"
     
     print(log_string)
-    log_file = open(out_path + ext + "_log.txt", "w")
+    log_file = open(out_path + "\\" + ext + "_log.txt", "w")
     log_file.write(log_string)
     print "Generation of log file OK"
     print "Program successfully completed"
