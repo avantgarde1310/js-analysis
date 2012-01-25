@@ -1,0 +1,13 @@
+chrome.extension.onRequest.addListener
+chrome.tabs.onSelectionChanged.addListener
+chrome.extension.getBackgroundPage
+chrome.tabs.sendRequest
+chrome.contextMenus.removeAll
+chrome.i18n.getMessage
+chrome.i18n.getMessage.downloader.showName.replace
+chrome.contextMenus.create
+chrome.tabs.executeScript
+chrome.extension.sendRequest
+chrome.extension.getURL
+chrome.tabs.getSelected
+chrome.tabs.remove

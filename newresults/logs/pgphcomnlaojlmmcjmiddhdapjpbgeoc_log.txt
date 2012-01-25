@@ -1,0 +1,6 @@
+Extension Name: Send from Gmail (by Google)
+Extension Identifier: pgphcomnlaojlmmcjmiddhdapjpbgeoc
+Number of functions: 17
+Number of anonymous functions: 7
+Number of named functions: 10
+Number of functions that reference chrome: 4

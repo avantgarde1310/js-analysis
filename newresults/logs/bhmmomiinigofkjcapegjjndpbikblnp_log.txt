@@ -1,0 +1,6 @@
+Extension Name: WOT
+Extension Identifier: bhmmomiinigofkjcapegjjndpbikblnp
+Number of functions: 755
+Number of anonymous functions: 733
+Number of named functions: 22
+Number of functions that reference chrome: 21

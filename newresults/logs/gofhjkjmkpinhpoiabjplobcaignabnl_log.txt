@@ -1,0 +1,6 @@
+Extension Name: FlashBlock
+Extension Identifier: gofhjkjmkpinhpoiabjplobcaignabnl
+Number of functions: 589
+Number of anonymous functions: 506
+Number of named functions: 83
+Number of functions that reference chrome: 17

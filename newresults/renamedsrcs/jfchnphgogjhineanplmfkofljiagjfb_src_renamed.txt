@@ -1,0 +1,13 @@
+chrome.browserAction.onClicked.addListener(function (tab_R_1) {
+  var alreadyOpened_R_1 = null
+    var chromeExtURL_R_1 = 'chrome://downloads/'
+    chrome.tabs.getAllInWindow(null,function (tabs_R_2) {
+    for(var i_R_2 = 0;i_R_2 < tabs_R_2.length;i_R_2++){
+              if (tabs_R_2[i_R_2].url == chromeExtURL){
+                      chrome.tabs.update(tabs_R_2[i_R_2].id,{              selected_R_?:true});
+            return;
+});
+}
+      chrome.tabs.create({      url_R_?:chromeExtURL,      selected_R_?:true})
+})
+})

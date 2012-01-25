@@ -1,0 +1,6 @@
+chrome.extension.sendRequest
+chrome.extension.onRequest.addListener
+chrome.contextMenus.create
+chrome.i18n.getMessage
+chrome.tabs.create
+chrome.windows.create

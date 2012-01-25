@@ -1,0 +1,14 @@
+chrome.extension.connect.postMessage
+chrome.contextMenus.create
+chrome.i18n.getMessage
+chrome.extension.onConnect.addListener
+chrome.extension.getURL
+chrome.tabs.onUpdated.addListener
+chrome.tabs.create
+chrome.tabs.remove
+chrome.extension.getBackgroundPage
+chromeExOAuthOnAuthorize
+chrome.tabs.getSelected
+chrome.extension.getBackgroundPage.initializeBrowserChannel
+chrome.tabs.executeScript
+chrome.extension.getBackgroundPage.closeBrowserChannel

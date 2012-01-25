@@ -1,0 +1,23 @@
+digraph graphname {
+lambda_R_6;
+"chrome.contextMenus.create";
+global_R_0;
+lambda_R_9;
+lambda_R_8;
+sortOrder_R_1;
+lambda_R_11;
+lambda_R_10;
+restore_options_R_7;
+imageSearch_R_3;
+open_url_R_2;
+save_options_R_5;
+pageSearch_R_4;
+global_R_0 -> "chrome.contextMenus.create";
+global_R_0 -> lambda_R_8;
+lambda_R_9 -> restore_options_R_7;
+lambda_R_11 -> save_options_R_5;
+imageSearch_R_3 -> sortOrder_R_1;
+imageSearch_R_3 -> open_url_R_2;
+pageSearch_R_4 -> sortOrder_R_1;
+pageSearch_R_4 -> open_url_R_2;
+}

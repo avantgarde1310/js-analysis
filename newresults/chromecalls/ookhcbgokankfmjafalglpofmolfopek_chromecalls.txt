@@ -1,0 +1,13 @@
+chrome.i18n.getMessage
+chrome.extension.onRequest.addListener
+chrome.browserAction.setBadgeText
+chrome.browserAction.setIcon
+chrome.browserAction.setBadgeBackgroundColor
+chrome.browserAction.setTitle
+chrome.extension.sendRequest
+chrome.tabs.getAllInWindow
+chrome.tabs.update
+chrome.tabs.create
+chrome.tabs.onUpdated.addListener
+chrome.browserAction.onClicked.addListener
+chrome.extension.getBackgroundPage.onSettingsChange

@@ -1,0 +1,6 @@
+Extension Name: AddThis - Share & Bookmark (new)
+Extension Identifier: cgbogdmdefihhljhfeiklfiedefalcde
+Number of functions: 477
+Number of anonymous functions: 416
+Number of named functions: 61
+Number of functions that reference chrome: 14

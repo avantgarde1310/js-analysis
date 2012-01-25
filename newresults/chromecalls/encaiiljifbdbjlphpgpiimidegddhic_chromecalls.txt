@@ -1,0 +1,14 @@
+chrome.extension.getBackgroundPage
+chrome.i18n.getMessage
+chrome.extension.sendRequest
+chrome.extension.onRequest.addListener
+chrome.browserAction.setTitle
+chrome.browserAction.setIcon
+chrome.browserAction.setBadgeBackgroundColor
+chrome.browserAction.setBadgeText
+chrome.extension.getURL
+chrome.tabs.getSelected
+chrome.i18n.originalGetMessage
+chrome.tabs.create
+chrome.tabs.remove
+chrome.extension.getBackgroundPage.TweetManager.instance.restart

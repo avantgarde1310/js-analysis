@@ -1,0 +1,6 @@
+chrome.tabs.onUpdated.addListener
+chrome.tabs.onRemoved.addListener
+chrome.browserAction.onClicked.addListener
+chrome.extension.onRequest.addListener
+chrome.extension.sendRequest
+chrome.extension.getBackgroundPage

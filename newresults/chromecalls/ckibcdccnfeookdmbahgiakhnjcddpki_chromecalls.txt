@@ -1,0 +1,16 @@
+chrome.tabs.create
+chrome.extension.getBackgroundPage
+chrome.extension.onRequest.removeListener
+chrome.extension.onRequest.addListener
+chrome.extension.getViews
+chrome.tabs.sendRequest.apply
+chrome.tabs.update
+chrome.tabs.getSelected
+chrome.windows.getCurrent
+chrome.tabs.executeScript
+chrome.extension.sendRequest
+chrome.extension.getURL
+chrome.tabs.captureVisibleTab
+chrome.i18n.getMessage
+chrome.i18n.getAcceptLanguages
+chrome.windows.update

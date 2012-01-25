@@ -1,0 +1,142 @@
+var feed_types_R_0 = {  'application/rss+xml':true,  'application/atom+xml':true,  'text/xml':true,  'application/x-cooliris-quick':true}
+  function hasFeed_R_1() {
+  var links_R_1 = document.getElementsByTagName_R_?('link')
+    for(var i_R_1 = 0;i_R_1 < links_R_1.length;i_R_1++){
+          if (typeof links_R_1[i_R_1].type == 'string' && feed_types_R_0[links_R_1[i_R_1].type.toLowerCase_R_?()]){
+                  return true;
+});
+}
+    return false
+}
+  if (hasFeed_R_1()){
+      initCooliris_R_4();
+} else {
+      var port_R_0 = chrome.extension.connect({      name_R_?:'HasJsPageHandler'});
+    port_R_0.onMessage.addListener_R_?(initCooliris_R_?);
+    port_R_0.postMessage_R_?();
+})
+  if (window.name.match((REGEXP '__cooliris_background_(\\d+)' ''))){
+      initCooliris_R_?({      type_R_?:'application/x-cooliris-background-page',      handle_R_?:RegExp_R_?.$1});
+} else {
+  if (location_R_?.host.match_R_?((REGEXP '.cooliris.com$' ''))){
+          initCooliris_R_?({        type_R_?:'application/x-cooliris-page',        hidden_R_?:'true'});
+})
+})
+  function setPicLensContext_R_2() {
+  window.PicLensContext = function () {
+    return initCooliris_R_4()
+}
+    document.documentElement.removeChild_R_?(document.getElementById_R_?('coolirisScript'))
+}
+  var script_text_R_0 = '(' + setPicLensContext_R_? + ')();'
+  script_text_R_0 = script_text_R_0.replace_R_?('initCooliris','(' + initCooliris_R_? + ')')
+  var script_tag_R_0 = document.createElement_R_?('script')
+  script_tag_R_0.id = 'coolirisScript'
+  script_tag_R_0.appendChild_R_?(document.createTextNode_R_?(script_text_R_0))
+  document.documentElement.appendChild(script_tag_R_0)
+  function initCooliris_R_4(custom_attributes_R_4) {
+  var cooliris_R_4 = document.getElementById_R_?('coolirisBridge')
+    if (!cooliris_R_4){
+          var default_attributes_R_4 = {        type_R_?:'application/x-cooliris-page',        hidden_R_?:'true'};
+      if (navigator_R_?.platform.indexOf_R_?('Linux') != -1){
+                  default_attributes_R_4.style = 'width: 1px; height: 1px; position:absolute; left: -10000px';
+          default_attributes_R_4.hidden = 'false';
+});
+      var plugin_attributes_R_4 = custom_attributes_R_4 || default_attributes_R_4;
+      plugin_attributes_R_4.id = 'coolirisBridge';
+      cooliris_R_4 = document.createElement_R_?('embed');
+      for(var attr_name_R_4 in plugin_attributes_R_4){
+        cooliris_R_4.setAttribute_R_?(attr_name_R_4,plugin_attributes_R_4[attr_name_R_4]);
+};
+      document.documentElement.appendChild_R_?(cooliris_R_4);
+      if (top_R_? == self_R_?){
+                  document.addEventListener_R_?('mouseover',function (e_R_5) {
+            cooliris_R_4.onMouseOver_R_?(e_R_5)
+},true);
+          document.addEventListener('mouseout',function (e_R_6) {
+            cooliris_R_4.onMouseOut_R_?(e_R_6)
+},true);
+          if (chrome.extension){
+                          window.addEventListener('LaunchableChanged',function () {
+                chrome.extension.connect({                  name_R_?:'LaunchableChanged'}).postMessage({                  launchable_R_?:cooliris_R_4.launchable})
+},false);
+});
+});
+})
+    return cooliris_R_4
+}
+  var cooliris_R_0 = null
+  setTimeout_R_?(function () {
+  cooliris_R_0 = document.createElement_R_?('object')
+    cooliris_R_0.setAttribute_R_?('id','coolirisBridge')
+    cooliris_R_0.setAttribute('type','application/x-cooliris-background')
+    document.documentElement.appendChild_R_?(cooliris_R_0)
+},0)
+  chrome.extension.onConnect.addListener(function (port_R_9) {
+  if (port_R_9.name == 'HasJsPageHandler'){
+          port_R_9.onMessage.addListener(function () {
+        if (cooliris_R_0.hasJsPageHandler_R_?(port_R_9.tab.url)){
+                      port_R_9.postMessage_R_?();
+})
+});
+} else {
+    if (port_R_9.name == 'LaunchableChanged'){
+              port_R_9.onMessage.addListener_R_?(function (params_R_10) {
+          var path_R_10 = params_R_10.launchable ? 'resources/launch.active.png' :'resources/launch.normal.png'
+            chrome.browserAction.setIcon({            tabId_R_?:port_R_9.tab.id,            path_R_10:path_R_10})
+});
+})
+})
+})
+  function launchInTab_R_12(tabId_R_12) {
+  var xhr_R_12 = new XMLHttpRequest_R_?
+    xhr_R_12.onload = function () {
+    var code_R_13 = xhr_R_12.responseText + 'initCooliris().launchFromToolbar()'
+      chrome.tabs.executeScript(tabId_R_12,{      code_R_13:code_R_13})
+}
+    xhr_R_12.open_R_?('GET',chrome.extension.getURL('init.js'),true)
+    xhr_R_12.send_R_?()
+}
+  chrome.browserAction.onClicked.addListener(function (tab_R_14) {
+  if (!cooliris_R_0.launchFromToolbar){
+          chrome.tabs.update(tab_R_14.id,{        url_R_?:chrome.extension.getURL('unsupported.html'),        selected_R_?:true});
+} else {
+    if (tab_R_14.url.match_R_?((REGEXP '^https?:' '')) && !tab_R_14.url.match((REGEXP '^https?:\\/\\/chrome.google.com\\/' ''))){
+              launchInTab_R_12(tab_R_14.id);
+} else {
+              cooliris_R_0.launchFromToolbar_R_?();
+})
+})
+})
+  function openUrl_R_15(url_R_15,newTab_R_15,selectTab_R_15) {
+  chrome.windows.getLastFocused(function (win_R_16) {
+    if (newTab_R_15){
+              chrome.tabs.create({          windowId:win_R_16.id,          url_R_15:url_R_15,          selected_R_?:selectTab_R_15});
+} else {
+              chrome.tabs.getSelected(win_R_16.id,function (tab_R_17) {
+          chrome.tabs.update(tab_R_17.id,{            url_R_15:url_R_15,            selected_R_?:selectTab_R_15})
+});
+})
+})
+}
+  function stringForKey_R_18(key_R_18) {
+  return localStorage_R_?[key_R_18]
+}
+  function setStringForKey_R_19(key_R_19,value_R_19) {
+  localStorage_R_?[key_R_19] = value_R_19
+}
+  location_R_?.href = 'http://my.cooliris.com/preferences.php'
+  document.write_R_?(navigator_R_?.platform)
+  if (navigator_R_?.platform.match((REGEXP 'Win' ''))){
+      document.getElementById('error').style.display = '';
+} else {
+  if (navigator_R_?.platform.match((REGEXP 'Mac' ''))){
+          document.getElementById('unsupported_mac').style.display = '';
+} else {
+    if (navigator_R_?.platform.match((REGEXP 'Linux' ''))){
+              document.getElementById('unsupported_linux').style.display = '';
+} else {
+              document.getElementById_R_?('unsupported_os').style.display = '';
+})
+})
+})

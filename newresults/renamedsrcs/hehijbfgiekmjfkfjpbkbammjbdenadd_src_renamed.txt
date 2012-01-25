@@ -1,0 +1,732 @@
+var ieObject_R_0 = null
+  function getLocalStorage_R_1(key_R_1,fnResponse_R_1) {
+  var request_R_1 = {    type_R_?:'GETLS',    key_R_1:key_R_1}
+    chrome.extension.sendRequest(request_R_1,fnResponse_R_1)
+}
+  function setLocalStorage_R_2(key_R_2,value_R_2,fnResponse_R_2) {
+  var request_R_2 = {    type_R_?:'SETLS',    key_R_2:key_R_2,    value_R_2:value_R_2}
+    if (typeof fnResponse_R_2 != 'undefined'){
+    chrome.extension.sendRequest(request_R_2,fnResponse_R_2)
+} else {
+    chrome.extension.sendRequest(request_R_2)
+})
+}
+  function onAddressKey_R_3(event_R_3) {
+  characterCode_R_3
+    if (event_R_3 && event_R_3.which){
+    characterCode_R_3 = event_R_3.which
+} else {
+    characterCode_R_3 = event_R_3.keyCode
+})
+    if (characterCode_R_3 == 13){
+          onAdd_R_7();
+      return false;
+})
+}
+  function setDirty_R_4(isDirty_R_4) {
+  if (isDirty_R_4){
+    window.onbeforeunload = onBeforeUnload_R_?
+} else {
+    window.onbeforeunload = null
+})
+}
+  function initializeAddressList_R_5() {
+  getLocalStorage_R_1('filterUrls',function (filterUrls_R_6) {
+    if (!filterUrls_R_6){
+      return
+})
+      var addressList_R_6 = document.getElementById_R_?('addressList')
+      for(var i_R_6 = 0;i_R_6 < filterUrls_R_6.length;i_R_6++){
+              addressList_R_6.add_R_?((NEW Option_R_? filterUrls_R_6[i_R_6],filterUrls_R_6[i_R_6]),null);
+}
+})
+}
+  function onAdd_R_7() {
+  var addressText_R_7 = document.getElementById_R_?('addressText')
+    var str_R_7 = addressText_R_7.value
+    if (str_R_7){
+          addressList_R_?.add_R_?((NEW Option_R_? str_R_7,str_R_7),null);
+      addressText_R_7.value = '';
+})
+    updateUrlStore_R_9()
+}
+  function onRemove_R_8() {
+  var addressList_R_8 = document.getElementById_R_?('addressList')
+    for(var i_R_8 = addressList_R_8.options.length - 1;i_R_8 >= 0;i_R_8--){
+          if (addressList_R_8.options[i_R_8].selected){
+                  addressList_R_8.removeChild_R_?(addressList_R_8.options[i_R_8]);
+});
+}
+    updateUrlStore_R_9()
+}
+  function updateUrlStore_R_9() {
+  var arrSelected_R_9 = []
+    var addressList_R_9 = document.getElementById_R_?('addressList')
+    for(var i_R_9 = 0;i_R_9 < addressList_R_9.options.length;i_R_9++){
+          arrSelected_R_9.push_R_?(addressList_R_9.options[i_R_9].value);
+}
+    setLocalStorage_R_2('filterUrls',arrSelected_R_9)
+}
+  function updateChromePopupsEnabled_R_10() {
+  var checkbox_R_10 = document.getElementById_R_?('enableChromePopups')
+    if (checkbox_R_10.checked){
+    setLocalStorage_R_?('enableChromePopups',true)
+} else {
+    setLocalStorage_R_2('enableChromePopups',false)
+})
+}
+  function updateHideSearchBox_R_11() {
+  var checkbox_R_11 = document.getElementById_R_?('hideSearchBox')
+    if (checkbox_R_11.checked){
+    setLocalStorage_R_?('hideSearchBox',true)
+} else {
+    setLocalStorage_R_2('hideSearchBox',false)
+})
+}
+  function updateDisableAutoSearch_R_12() {
+  var checkbox_R_12 = document.getElementById_R_?('disableAutoSearch')
+    if (checkbox_R_12.checked){
+    setLocalStorage_R_?('disableAutoSearch',true)
+} else {
+    setLocalStorage_R_2('disableAutoSearch',false)
+})
+}
+  function updateAutoUrlsEnabled_R_13() {
+  var checkbox_R_13 = document.getElementById_R_?('enableAutoUrls')
+    if (checkbox_R_13.checked){
+    setLocalStorage_R_?('enableAutoUrls',true)
+} else {
+    setLocalStorage_R_2('enableAutoUrls',false)
+})
+}
+  function initializeAutoUrlsEnabled_R_14() {
+  var el_R_14 = document.getElementById_R_?('enableAutoUrls')
+    getLocalStorage_R_1('enableAutoUrls',function (value_R_15) {
+    el_R_14.checked = value_R_15
+})
+    el_R_14.addEventListener_R_?('click',updateAutoUrlsEnabled_R_?,false)
+}
+  function initializeChromePopupsEnabled_R_16() {
+  var el_R_16 = document.getElementById_R_?('enableChromePopups')
+    getLocalStorage_R_1('enableChromePopups',function (value_R_17) {
+    el_R_16.checked = value_R_17
+})
+    el_R_16.addEventListener_R_?('click',updateChromePopupsEnabled_R_?,false)
+}
+  function initializeHideSearchBox_R_18() {
+  var el_R_18 = document.getElementById_R_?('hideSearchBox')
+    getLocalStorage_R_1('hideSearchBox',function (value_R_19) {
+    el_R_18.checked = value_R_19
+})
+    el_R_18.addEventListener_R_?('click',updateHideSearchBox_R_?,false)
+}
+  function initializeAutoSearch_R_20() {
+  var el_R_20 = document.getElementById_R_?('disableAutoSearch')
+    getLocalStorage_R_1('disableAutoSearch',function (value_R_21) {
+    el_R_20.checked = value_R_21
+})
+    el_R_20.addEventListener_R_?('click',updateDisableAutoSearch_R_?,false)
+}
+  function initializeUrlBox_R_22() {
+  var myUrl_R_22 = document.location.href
+    var regex_R_22 = (REGEXP '[?&]initial=([^&].*)' '')
+    var match_R_22 = myUrl_R_22.match_R_22(regex_R_22)
+    var el_R_22 = document.getElementById_R_?('addressText')
+    if (match_R_22){
+    el_R_22.value = decodeURIComponent_R_?(match_R_22[1])
+})
+    el_R_22.addEventListener_R_?('keypress',function (event_R_23) {
+    onAddressKey_R_3(event_R_23)
+},false)
+}
+  var modes_R_0 = ['IE7S','IE8S','IE8F','IE9S','IE9F']
+  function modeClicked_R_24() {
+  var newMode_R_24 = 'IE7S'
+    for(var i_R_24 = 0;i_R_24 < modes_R_0.length;i_R_24++){
+          var el_R_24 = document.getElementById_R_?('mode' + modes_R_0[i_R_24]);
+      if (el_R_24.checked){
+                  newMode_R_24 = modes_R_0[i_R_24];
+          break;
+});
+}
+    var request_R_24 = {    type_R_?:'SETCOMPATMODE',    mode_R_?:newMode_R_24}
+    chrome.extension.sendRequest(request_R_24)
+    alert_R_?('Note: Chrome must be re-started for this change to take effect!')
+}
+  function initializeCompatMode_R_25() {
+  var request_R_25 = {    type_R_?:'GETCOMPATMODE'}
+    chrome.extension.sendRequest(request_R_25,function (result_R_26) {
+    if (!result_R_26){
+      result_R_26 = 'IE7S'
+})
+      for(var i_R_26 = 0;i_R_26 < modes_R_0.length;i_R_26++){
+              var el_R_26 = document.getElementById_R_?('mode' + modes_R_0[i_R_26]);
+        if (modes_R_0[i_R_26] == result_R_26){
+                      el_R_26.checked = true;
+} else {
+                      el_R_26.checked = false;
+});
+        el_R_26.addEventListener_R_?('click',modeClicked_R_?,false);
+}
+})
+}
+  function onOptions_R_27() {
+  var request_R_27 = {    type_R_?:'SHOWOPTIONS'}
+    chrome.extension.sendRequest(request_R_27)
+}
+  function init_R_28() {
+  initializeAddressList_R_5()
+    initializeAutoUrlsEnabled_R_14()
+    initializeChromePopupsEnabled_R_16()
+    initializeHideSearchBox_R_18()
+    initializeAutoSearch_R_20()
+    initializeUrlBox_R_22()
+    initializeCompatMode_R_25()
+    document.getElementById_R_?('addressText').focus_R_?()
+    document.getElementById('addButton').addEventListener_R_?('click',onAdd_R_?,false)
+    document.getElementById('removeButton').addEventListener('click',onRemove_R_?,false)
+    document.getElementById('showIEOptions').addEventListener('click',onOptions_R_?,false)
+}
+  window.onload = init_R_?
+  var ieObject_R_0 = null
+  function getLocalStorage_R_29(key_R_29) {
+  var value_R_29 = localStorage_R_?[key_R_29]
+    if (typeof value_R_29 == 'undefined'){
+    return false
+})
+    return JSON_R_?.parse_R_?(value_R_29)
+}
+  function setLocalStorage_R_30(key_R_30,value_R_30) {
+  localStorage_R_?[key_R_30] = JSON_R_?.stringify_R_?(value_R_30)
+}
+  if (localStorage_R_?['enableAutoUrls']){
+  setLocalStorage_R_2('enableAutoUrls',true)
+})
+  if (localStorage_R_?['hasRun']){
+  setLocalStorage_R_?('hasRun',true)
+})
+  if (localStorage_R_?['regInitialized']){
+  setLocalStorage_R_?('regInitialized',true)
+})
+  var cachedManifest_R_0 = null
+  function getManifest_R_31(callback_R_31) {
+  if (!cachedManifest_R_0){
+          var xhr_R_31 = new XMLHttpRequest_R_?;
+      xhr_R_31.open_R_?('GET',chrome.extension.getURL('manifest.json'),false);
+      xhr_R_31.onreadystatechange = function () {
+        if (this.readyState == 4){
+                      cachedManifest_R_0 = JSON_R_?.parse_R_?(this.responseText);
+            if (callback_R_31){
+              callback_R_?(cachedManifest_R_0)
+});
+})
+};
+      xhr_R_31.send_R_?();
+} else {
+          callback_R_?(cachedManifest_R_0);
+})
+}
+  chrome.browserAction.onClicked.addListener(function (tab_R_33) {
+  var targetUrl_R_33 = tab_R_33.url
+    if (targetUrl_R_33.match_R_?((REGEXP '^chrome' ''))){
+          targetUrl_R_33 = 'http://www.ietab.net/ie-tab-documentation?from=chromeurl';
+})
+    var containerUrl_R_33 = chrome.extension.getURL('iecontainer.html') + '#url='
+    containerUrl_R_33 = encodeURIComponent_R_?(targetUrl_R_33)
+    chrome.tabs.update(tab_R_33.id,{    url_R_0:containerUrl_R_33})
+})
+  chrome.tabs.onUpdated.addListener(function (tabId_R_34,changeInfo_R_34,tab_R_34) {
+  if (changeInfo_R_34.status == 'loading' && getLocalStorage_R_?('enableAutoUrls')){
+          var url_R_34 = tab_R_34.url.toString_R_?();
+      if (url_R_34.match_R_34((REGEXP 'chrome[^\\:]*\\:' 'i'))){
+        return
+});
+      var filterUrls_R_34 = getLocalStorage_R_1('filterUrls');
+      if (filterUrls_R_34){
+                  for(var i_R_34 = 0;i_R_34 < filterUrls_R_34.length;i_R_34++){
+                          var regex_R_34 = null;
+              var filter_R_34 = filterUrls_R_34[i_R_34];
+              if (filter_R_34.indexOf_R_?('r/') == 0){
+                                  filter_R_34 = filter_R_34.slice_R_?(2);
+} else {
+                                  filter_R_34 = filter_R_34.replace((REGEXP '\\/' 'g'),'\\/').replace((REGEXP '\\.' 'g'),'\\.').replace_R_?((REGEXP '\\*' 'g'),'.*');
+});
+              var regex_R_34 = null;
+              try {
+                                  regex_R_34 = (NEW RegExp_R_? filter_R_34);catch(ex){
+;
+};
+              if (regex_R_34){
+                                  var match_R_34 = url_R_34.match(regex_R_34);
+                  if (match_R_34 && match_R_34[0] == url_R_34){
+                                          var containerUrl_R_34 = chrome.extension.getURL('iecontainer.html') + '#url=';
+                      containerUrl_R_34 = encodeURIComponent_R_?(url_R_34);
+                      window.setTimeout_R_?(function () {
+                        chrome.tabs.update(tabId_R_34,{                          url_R_34:containerUrl_R_34})
+},100);
+});
+});
+};
+});
+})
+})
+  function onFirstRun_R_36() {
+  setLocalStorage_R_2('enableAutoUrls',true)
+    targetUrl_R_? = 'http://www.ietab.net/thanks-installing-ie-tab'
+    chrome.tabs.create({    url_R_0:targetUrl_R_?})
+}
+  function onUpgrade_R_37() {
+  setLocalStorage_R_2('enableAutoUrls',true)
+    targetUrl_R_? = 'http://www.ietab.net/ie-tab-updated'
+    chrome.tabs.create({    url_R_0:targetUrl_R_?})
+}
+  var callbacks_R_0 = {  ontitlechange_R_?:function (newTitle_R_38) {
+
+},  onnavigatecomplete2_R_?:function (url_R_39) {
+
+},  onnewwindow:function (url_R_40) {
+
+}}
+  function getIEObject_R_41() {
+  var ieObject_R_41 = document.createElement_R_?('object')
+    ieObject.setAttribute_R_?('type','application/blackfish-ietab-plugin')
+    document.body.appendChild_R_?(ieObject)
+    ieObject.setNotifications_R_?(callbacks_R_0)
+    ieObject.navigate_R_?('about:blank')
+    return ieObject
+}
+  function removeIEObject_R_42(ieObject_R_42) {
+  document.body.removeChild_R_?(ieObject)
+}
+  function executeIEObjectFunction_R_43(fnCallback_R_43) {
+  var ieObject_R_43 = getIEObject()
+    window.setTimeout_R_?(function (ie_R_44) {
+    fnCallback_R_?(ieObject)
+      removeIEObject(ieObject)
+},0)
+}
+  function onShowOptions_R_45() {
+  executeIEObjectFunction(function (ieObject_R_46) {
+    ieObject.showOptions_R_?()
+})
+}
+  var modes_R_0 = ['IE7S','IE8S','IE8F','IE9S','IE9F']
+  function onSetCompatMode_R_47(mode_R_47) {
+  var nMode_R_47 = 7000
+    switch (mode_R_47) {
+      case 'IE7S': 
+      nMode = 7000;
+      break;
+      case 'IE8S': 
+      nMode = 8000;
+      break;
+      case 'IE8F': 
+      nMode = 8888;
+      break;
+      case 'IE9S': 
+      nMode = 9000;
+      break;
+      case 'IE9F': 
+      nMode = 9999;
+      break;}
+    setLocalStorage_R_2('compatMode',mode_R_47)
+    executeIEObjectFunction(function (ieObject_R_48) {
+    ieObject.setCompatMode_R_?(nMode_R_47)
+})
+}
+  function ping_R_49(eventName_R_49) {
+  var xhr_R_49 = new XMLHttpRequest_R_?
+    xhr_R_49.open_R_?('GET','http://www.xadnet.com/ping?name=' + encodeURIComponent_R_?(eventName_R_49),true)
+    xhr_R_49.send_R_?()
+}
+  function onRequest_R_50(request_R_50,sender_R_50,fnResponse_R_50) {
+  switch (request_R_50.type) {
+      case 'GETLS': 
+      fnResponse(getLocalStorage(request.key));
+      break;
+      case 'SETLS': 
+      setLocalStorage(request.key,request.value);
+      break;
+      case 'SHOWOPTIONS': 
+      onShowOptions();
+      break;
+      case 'GETCOMPATMODE': 
+      fnResponse(getLocalStorage('compatMode'));
+      break;
+      case 'SETCOMPATMODE': 
+      onSetCompatMode(request.mode);
+      break;}
+}
+  function initialize_R_51() {
+  if (typeof localStorage_R_?['enableChromePopups'] == 'undefined'){
+    setLocalStorage_R_2('enableChromePopups',true)
+})
+    var previousVersion_R_51 = getLocalStorage_R_1('version')
+    var firstRun_R_51 = !previousVersion_R_51
+    if (firstRun_R_51){
+          onFirstRun_R_36();
+})
+    getManifest_R_31(function (manifest_R_52) {
+    newVersion_R_? = manifest_R_52.version
+      if (previousVersion_R_51 != newVersion_R_?){
+              setLocalStorage_R_2('version',newVersion_R_?);
+        if (!firstRun_R_51){
+                      if (previousVersion_R_51.indexOf_R_?('2.5.23') != 0){
+              onUpgrade_R_37()
+});
+});
+})
+})
+    chrome.extension.onRequest.addListener(function (request_R_53,sender_R_53,fnResponse_R_53) {
+    onRequest_R_50(request_R_53,sender_R_53,fnResponse_R_53)
+})
+}
+  initialize_R_51()
+  var g_backgroundPage_R_0 = null
+  var g_currentUrl_R_0 = 'about:blank'
+  var g_topUrl_R_0 = ''
+  var g_callbacks_R_0 = {}
+  function trim_R_54(str_R_54) {
+  return str_R_54.replace_R_?((REGEXP '^\\s+|\\s+$' 'g'),'')
+}
+  function navigate_R_55(url_R_55,onComplete_R_55) {
+  chrome.tabs.getSelected(null,function (tab_R_56) {
+    chrome.tabs.update(tab_R_56.id,{      url_R_55:url_R_55})
+      if (onComplete_R_55){
+      onComplete_R_?()
+})
+})
+}
+  function updateSearchUrl_R_57(childUrl_R_57) {
+  var isSearchUrl_R_57 = false
+    var disableAutoSearch_R_57 = false
+    if (g_backgroundPage_R_0){
+    disableAutoSearch_R_57 = !!g_backgroundPage_R_0.getLocalStorage_R_?('disableAutoSearch')
+})
+    if (disableAutoSearch_R_57){
+    return childUrl_R_57
+})
+    childUrl_R_57 = trim_R_54(childUrl_R_57)
+    if (childUrl_R_57.indexOf('s ') == 0){
+          isSearchUrl_R_57 = true;
+      childUrl_R_57 = childUrl_R_57.substr_R_?(2);
+} else {
+    if (childUrl_R_57.indexOf_R_?(':') == -1 && childUrl_R_57.indexOf('\\') == -1 && childUrl_R_57.indexOf('/') == -1 && childUrl_R_57.indexOf(' ') != -1){
+              isSearchUrl_R_57 = true;
+})
+})
+    if (isSearchUrl_R_57){
+          ping_R_49('search_ab');
+      return 'http://search.yahoo.com/search?fr=freecause&ei=utf-8&type=63897&p=' + encodeURIComponent_R_?(childUrl_R_57);
+})
+    return childUrl_R_57
+}
+  function buildContainerUrl_R_58(childUrl_R_58) {
+  childUrl_R_58 = updateSearchUrl_R_57(childUrl_R_58)
+    var containerUrl_R_58 = chrome.extension.getURL('iecontainer.html') + '#url='
+    containerUrl_R_58 = encodeURIComponent_R_?(childUrl_R_58)
+    return containerUrl_R_58
+}
+  function navigateContainer_R_59(url_R_59) {
+  window.top.location = buildContainerUrl_R_58(url_R_59)
+}
+  function onReturnToChrome_R_60() {
+  navigate_R_55(g_currentUrl_R_0)
+}
+  function onOptions_R_61() {
+  document.getElementById_R_?('ieObject').showOptions_R_?()
+}
+  function onBookmark_R_62() {
+  var doAdd_R_62 = function (id_R_63) {
+    chrome.bookmarks.create({      parentId_R_?:id_R_63,      title_R_?:document.title,      url_R_0:buildContainerUrl_R_58(window.g_currentUrl)})
+}
+    chrome.bookmarks.getChildren('1',function (result_R_64) {
+    var idIETab_R_64 = null
+      for(var i_R_64 = 0;i_R_64 < result_R_64.length;i_R_64++){
+              if (result_R_64[i_R_64].title == 'IE Tab'){
+                      idIETab_R_64 = result_R_64[i_R_64].id;
+            break;
+});
+}
+      if (idIETab_R_64){
+              doAdd_R_?(idIETab_R_64);
+} else {
+              chrome.bookmarks.create({          parentId_R_?:'1',          title_R_?:'IE Tab'},function (node_R_65) {
+          if (node_R_65){
+                          doAdd_R_?(node_R_65.id);
+})
+});
+})
+})
+}
+  function handleResize_R_66() {
+  var theDiv_R_66 = document.getElementById_R_?('theDiv')
+    var bodyHeight_R_66 = window.innerHeight
+    theDiv_R_66.style.height = bodyHeight_R_66 - theDiv_R_66.offsetTop + 'px'
+}
+  (BLOCK)
+  function postMessageToChild_R_67(msg_R_67) {
+  var data_R_67 = escape_R_?(JSON_R_?.stringify_R_?(msg_R_67))
+    document.getElementById_R_?('uiFrame').contentWindow.postMessage_R_?(data_R_67,'*')
+}
+  function moveFocusToIE_R_68() {
+  window.setTimeout_R_?(function () {
+    document.getElementById_R_?('ieObject').focus_R_?()
+},500)
+}
+  function ping_R_70(eventName_R_70) {
+  if (g_backgroundPage_R_0){
+          g_backgroundPage_R_0.ping_R_?(eventName_R_70);
+})
+}
+  function onNewMessage_R_71(event_R_71) {
+  if (!event_R_71.origin.match_R_?(this.validUiHosts)){
+    return
+})
+    var msg_R_71 = JSON_R_?.parse_R_?(unescape_R_?(event_R_71.data))
+    switch (msg_R_71.cmd) {
+      case 'ONUIINIT': 
+      onUiInit();
+      break;
+      case 'NAVIGATECONTAINER': 
+      navigateContainer(msg.url);
+      break;
+      case 'RETURNTOCHROME': 
+      onReturnToChrome();
+      break;
+      case 'SHOWIEOPTIONS': 
+      onOptions();
+      break;
+      case 'BOOKMARK': 
+      onBookmark();
+      break;
+      case 'SHOWFILTERS': 
+      onFilters();
+      break;
+      case 'PING': 
+      ping(msg.eventName);
+      break;}
+}
+  function onUiInit_R_72() {
+  postMessageToChild_R_67({    cmd_R_?:'ONPARENTINIT',    startUrl_R_?:g_currentUrl_R_0})
+}
+  function updateCurrentUrl_R_73() {
+  var regex_R_73 = (REGEXP '#url=([^&].*)' '')
+    var url_R_73 = document.location.href.toString_R_?()
+    var match_R_73 = url_R_73.match_R_73(regex_R_73)
+    if (match_R_73){
+    newUrl_R_? = decodeURIComponent_R_?(match_R_73[1])
+} else {
+    newUrl_R_? = 'about:blank'
+})
+    if (newUrl_R_? == g_currentUrl_R_0){
+    return
+})
+    g_currentUrl_R_0 = newUrl_R_?
+    var ieObj_R_73 = document.getElementById_R_?('ieObject')
+    ieObj_R_73.setNotifications_R_?(g_callbacks_R_0)
+    ieObj_R_73.navigate_R_?(g_currentUrl_R_0)
+    document.title = 'IE: ' + g_currentUrl_R_0
+    var uiFrame_R_73 = document.getElementById('uiFrame')
+    document.getElementById('uiFrame').src = g_topUrl_R_0
+}
+  function init_R_74() {
+  var validUiHosts_R_74 = (REGEXP '(^chrome-extension:)' 'i')
+    if (!chrome.extension){
+          window.location.reload_R_?();
+      return;
+})
+    g_backgroundPage_R_0 = chrome.extension.getBackgroundPage()
+    var getLocalStorage_R_74 = g_backgroundPage_R_0.getLocalStorage
+    var setLocalStorage_R_74 = g_backgroundPage_R_0.setLocalStorage
+    g_topUrl_R_0 = chrome.extension.getURL('topui.html')
+    var hideSearchBox_R_74 = getLocalStorage_R_1('hideSearchBox') ? 1 :0
+    g_topUrl_R_0 = '?hidesearchbox=' + hideSearchBox_R_74
+    if (!getLocalStorage_R_74('regInitialized')){
+          setLocalStorage_R_2('regInitialized',true);
+      document.getElementById_R_?('ieObject').initRegistry_R_?();
+})
+    g_callbacks_R_0 = {    ontitlechange_R_?:function (newTitle_R_75) {
+      document.title = 'IE: ' + newTitle_R_75
+},    onnavigatecomplete2_R_?:function (url_R_76) {
+      if (g_currentUrl_R_0 != url_R_76){
+                  g_currentUrl_R_0 = url_R_76;
+          postMessageToChild_R_67({            cmd_R_?:'NAVIGATECOMPLETE2',            url_R_76:url_R_76});
+          navigateContainer_R_59(url_R_76);
+})
+},    onnewwindow:function (url_R_77) {
+      var enableChromePopups_R_77 = getLocalStorage_R_1('enableChromePopups')
+        if (enableChromePopups_R_77){
+                  chrome.windows.create({            url_R_77:buildContainerUrl_R_58(url_R_77)});
+          return false;
+} else {
+                  return true;
+})
+}}
+    window.onresize = handleResize_R_?
+    window.addEventListener_R_?('message',function (event_R_78) {
+    onNewMessage_R_71(event_R_78)
+},false)
+    window.onhashchange = function () {
+    updateCurrentUrl_R_73()
+}
+    updateCurrentUrl_R_73()
+    handleResize_R_66()
+    moveFocusToIE_R_68()
+}
+  window.onload = function () {
+  init_R_28()
+}
+  function getInitUrl_R_81() {
+  var myUrl_R_81 = document.location.href
+    var regex_R_81 = (REGEXP '[?&]initial=([^&].*)' '')
+    var match_R_81 = myUrl_R_81.match_R_81(regex_R_81)
+    if (match_R_81){
+    return match_R_81[1]
+} else {
+    return ''
+})
+}
+  var url_R_0 = 'http://www.ietab.net/ie-tab-options-3'
+  var initUrl_R_0 = getInitUrl_R_81()
+  if (initUrl_R_0){
+  url_R_0 = '?initial=' + initUrl_R_0
+})
+  window.top.location = url_R_0
+  function () {
+  var temp_R_82 = document.getElementById_R_?('addressBox')
+    temp_R_82.addEventListener_R_?('focus',function (event_R_83) {
+    onAddressFocus_R_100()
+})
+    temp_R_82.addEventListener('keypress',function (event_R_84) {
+    onAddressKey_R_3(event_R_84)
+})
+}()
+  function () {
+  var temp_R_85 = document.getElementById_R_?('_added_by_transform_0')
+    temp_R_85.addEventListener_R_?('click',function (event_R_86) {
+    onAddressEnter_R_105()
+})
+}()
+  function () {
+  var temp_R_87 = document.getElementById_R_?('_added_by_transform_1')
+    temp_R_87.addEventListener_R_?('click',function (event_R_88) {
+    onBookmark_R_62()
+})
+}()
+  function () {
+  var temp_R_89 = document.getElementById_R_?('searchBox')
+    temp_R_89.addEventListener_R_?('focus',function (event_R_90) {
+    onSearchFocus_R_102()
+})
+    temp_R_89.addEventListener('keypress',function (event_R_91) {
+    onSearchKey_R_97(event_R_91)
+})
+}()
+  function () {
+  var temp_R_92 = document.getElementById_R_?('_added_by_transform_2')
+    temp_R_92.addEventListener_R_?('click',function (event_R_93) {
+    onSearchEnter_R_104()
+})
+}()
+  function () {
+  var temp_R_94 = document.getElementById_R_?('_added_by_transform_3')
+    temp_R_94.addEventListener_R_?('click',function (event_R_95) {
+    onReturnToChrome_R_60()
+})
+}()
+  function onAddressKey_R_96(event_R_96) {
+  characterCode_R_96
+    if (event_R_96 && event_R_96.which){
+          characterCode_R_96 = event_R_96.which;
+} else {
+          characterCode_R_96 = event_R_96.keyCode;
+})
+    if (characterCode_R_96 == 13){
+          onAddressEnter_R_105();
+      return false;
+})
+}
+  function onSearchKey_R_97(event_R_97) {
+  characterCode_R_97
+    if (event_R_97 && event_R_97.which){
+          characterCode_R_97 = event_R_97.which;
+} else {
+          characterCode_R_97 = event_R_97.keyCode;
+})
+    if (characterCode_R_97 == 13){
+          onSearchEnter_R_104();
+      return false;
+})
+}
+  function sendParentMessage_R_98(msg_R_98) {
+  var data_R_98 = escape_R_?(JSON_R_?.stringify_R_?(msg_R_98))
+    window.parent.postMessage_R_?(data_R_98,'*')
+}
+  function navigate_R_99(url_R_99,onComplete_R_99) {
+  sendParentMessage_R_98({    cmd_R_?:'NAVIGATECONTAINER',    url_R_99:url_R_99})
+}
+  function onAddressFocus_R_100() {
+  window.setTimeout_R_?(function () {
+    document.getElementById_R_?('addressBox').select_R_?()
+},100)
+}
+  function onSearchFocus_R_102() {
+  window.setTimeout_R_?(function () {
+    document.getElementById_R_?('searchBox').select_R_?()
+},100)
+}
+  function onSearchEnter_R_104() {
+  var text_R_104 = document.getElementById_R_?('searchBox').value
+    var url_R_104 = 'http://search.yahoo.com/search?fr=freecause&ei=utf-8&type=63907&p=' + encodeURIComponent_R_?(text_R_104)
+    sendParentMessage_R_98({    cmd_R_?:'PING',    eventName_R_?:'search_sb'})
+    sendParentMessage_R_?({    cmd_R_?:'NAVIGATECONTAINER',    url_R_104:url_R_104,    nosearch_R_?:true})
+}
+  function onAddressEnter_R_105() {
+  var url_R_105 = document.getElementById_R_?('addressBox').value
+    sendParentMessage_R_98({    cmd_R_?:'NAVIGATECONTAINER',    url_R_105:url_R_105})
+}
+  function onReturnToChrome_R_106() {
+  sendParentMessage_R_98({    cmd_R_?:'RETURNTOCHROME'})
+}
+  function onOptions_R_107() {
+  sendParentMessage_R_98({    cmd_R_?:'SHOWIEOPTIONS'})
+}
+  function onBookmark_R_108() {
+  sendParentMessage_R_98({    cmd_R_?:'BOOKMARK'})
+}
+  function onParentMessage_R_109() {
+  var msg_R_109 = JSON_R_?.parse_R_?(unescape_R_?(event_R_?.data))
+    switch (msg_R_109.cmd) {
+      case 'ONTITLECHANGE': 
+      onTitleChange(msg.newTitle);
+      break;
+      case 'NAVIGATECOMPLETE2': 
+      onNavigateComplete2(msg.url);
+      break;
+      case 'ONPARENTINIT': 
+      g_currentUrl = msg.startUrl;
+      document.getElementById('addressBox').value = g_currentUrl;
+      var el = document.getElementById('settings');
+      el.href = 'http://www.ietab.net/ie-tab-options-3?initial=' + encodeURIComponent(g_currentUrl);
+      break;}
+}
+  function onTitleChange_R_110(newTitle_R_110) {
+  document.title = 'IE: ' + newTitle_R_110
+}
+  function onNavigateComplete2_R_111(url_R_111) {
+  g_currentUrl_R_0 = url_R_111
+    document.getElementById_R_?('addressBox').value = url_R_111
+}
+  function init_R_112() {
+  window.addEventListener_R_?('message',function (event_R_113) {
+    onParentMessage_R_109(event_R_113)
+},false)
+    sendParentMessage_R_98({    cmd_R_?:'ONUIINIT'})
+    if (document.location.href.indexOf_R_?('hidesearchbox=1') != -1){
+          document.getElementById_R_?('searchColumn').style.display = 'none';
+})
+}
+  var g_currentUrl_R_0 = 'about:blank'
+  var g_urlOptions_R_0 = ''
+  init_R_28()

@@ -1,0 +1,6 @@
+Extension Name: IE Tab
+Extension Identifier: hehijbfgiekmjfkfjpbkbammjbdenadd
+Number of functions: 114
+Number of anonymous functions: 47
+Number of named functions: 67
+Number of functions that reference chrome: 21

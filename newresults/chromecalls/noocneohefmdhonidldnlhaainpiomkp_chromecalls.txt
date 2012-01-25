@@ -1,0 +1,11 @@
+chrome.extension.connect
+chrome.extension.onConnect.addListener
+chrome.browserAction.onClicked.addListener
+chrome.extension.connect.name.postMessage
+chrome.browserAction.setIcon
+chrome.extension.getURL
+chrome.tabs.executeScript
+chrome.tabs.update
+chrome.windows.getLastFocused
+chrome.tabs.getSelected
+chrome.tabs.create

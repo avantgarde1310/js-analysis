@@ -1,0 +1,6 @@
+Extension Name: Blog This! (by Google)
+Extension Identifier: pengoopmcjnbflcjbmoeodbmoflcgjlk
+Number of functions: 5
+Number of anonymous functions: 2
+Number of named functions: 3
+Number of functions that reference chrome: 2

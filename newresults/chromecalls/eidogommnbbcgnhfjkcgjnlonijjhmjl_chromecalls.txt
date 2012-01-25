@@ -1,0 +1,3 @@
+chrome.extension.onRequest.addListener
+chrome.extension.sendRequest
+chrome.i18n.getAcceptLanguages

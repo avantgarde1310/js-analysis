@@ -1,0 +1,6 @@
+Extension Name: SocialPlus!
+Extension Identifier: eidogommnbbcgnhfjkcgjnlonijjhmjl
+Number of functions: 25
+Number of anonymous functions: 15
+Number of named functions: 10
+Number of functions that reference chrome: 3

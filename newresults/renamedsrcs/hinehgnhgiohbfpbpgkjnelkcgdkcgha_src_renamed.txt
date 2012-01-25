@@ -1,0 +1,105 @@
+interval_R_0
+  var globalEvent_R_0 = null
+  mouseUpInterval_R_0
+  menuDiv_R_0
+  function hideDirectionsButton_R_1() {
+  window.clearInterval_R_?(interval_R_0)
+    menuDiv_R_0.style.display = 'none'
+}
+  function executeIfAddress_R_2(text_R_2,callback_R_2) {
+  chrome.extension.sendRequest({    greeting_R_?:'' + text_R_2},function (response_R_3) {
+    if (response_R_3 != ''){
+              callback_R_?(response_R_3);
+})
+})
+}
+  function getMenuItemHtml_R_4(icon_R_4,text_R_4,link_R_4) {
+  console.log_R_?(icon_R_4 + ' ' + text_R_4 + ' ' + link_R_4)
+    return '<a href="' + link_R_4 + '" target="_blank">' + '<img src="' + chrome.extension.getURL(icon_R_4) + '" align="absmiddle" height="25" width="25" border="0"></a>&nbsp;' + '<a class="select_get_a" href="' + link_R_4 + '" target="_blank">' + text_R_4 + '</a>&nbsp;'
+}
+  function isPotentialAddress_R_5(text_R_5) {
+  text_R_5 = text_R_5.replace_R_?(',','')
+    text_R_5 = text_R_5.replace((REGEXP '[ ]+' ''),' ')
+    if (!text_R_5.match_R_?((REGEXP '[0-9]+' ''))){
+          return false;
+})
+    if (!text_R_5.match((REGEXP '[a-zA-Z]+' ''))){
+          return false;
+})
+    var wordCount_R_5 = text_R_5.split_R_?(' ').length
+    if (wordCount_R_5 < 3 || wordCount_R_5 > 15){
+          return false;
+})
+    return true
+}
+  function maybeDisplayDirections_R_6(x_R_6,y_R_6,text_R_6) {
+  window.clearInterval_R_?(interval_R_0)
+    if (!isPotentialAddress_R_5(text_R_6)){
+          return;
+})
+    executeIfAddress_R_2(text_R_6,function (addr_R_7) {
+    menuDiv_R_0.style.left = x_R_6 + 'px'
+      menuDiv_R_0.style.top = y_R_6 + 'px'
+      menuDiv_R_0.innerHTML = getMenuItemHtml_R_4('marker.png','Show on map','http://maps.google.com/maps?q=' + addr_R_7 + '&z=14') + '<hr size="1">' + getMenuItemHtml_R_?('maps_up25x25.png','Get directions to here','http://maps.google.com/maps?f=d&daddr=' + addr_R_7 + '&q=' + addr_R_7 + '&z=14')
+      menuDiv_R_0.style.display = 'block'
+      interval_R_0 = window.setInterval_R_?(hideDirectionsButton_R_?,3000)
+})
+}
+  function maybeReactToMouseUpEvent_R_8() {
+  window.clearInterval_R_?(mouseUpInterval_R_0)
+    if (globalEvent_R_0 == null){
+          return;
+})
+    var selection_R_8 = window.getSelection_R_?()
+    if (selection_R_8.toString() != ''){
+          maybeDisplayDirections_R_6(globalEvent_R_0.pageX,globalEvent_R_0.pageY,selection_R_8.toString_R_?());
+} else {
+          hideDirectionsButton_R_1();
+})
+    globalEvent_R_0 = null
+}
+  function attachSelectListener_R_9(body_R_9) {
+  body_R_9.addEventListener_R_?('mouseup',function (event_R_10) {
+    globalEvent_R_0 = event_R_10
+      mouseUpInterval_R_0 = window.setInterval_R_?(maybeReactToMouseUpEvent_R_?,200)
+})
+}
+  function main_R_11() {
+  menuDiv_R_0 = document.createElement_R_?('div')
+    menuDiv_R_0.setAttribute_R_?('id','directions_extension')
+    menuDiv_R_0.style.position = 'absolute !important'
+    menuDiv_R_0.style.background = '#EEEEFF !important'
+    menuDiv_R_0.style.border = '1px solid #AAAAFF !important'
+    menuDiv_R_0.style.padding = '3px !important'
+    menuDiv_R_0.style.display = 'none'
+    menuDiv_R_0.style['-webkit-border-radius'] = '5px !important'
+    document.body.appendChild_R_?(menuDiv_R_0)
+    attachSelectListener_R_9(document.body)
+}
+  main_R_11()
+  geocoder_R_0
+  function initialize_R_12() {
+  geocoder_R_0 = new google_R_?.maps.Geocoder
+}
+  function codeAddress_R_13(address_R_13,callback_R_13) {
+  if (geocoder_R_0){
+          geocoder_R_0.geocode_R_?({        'address':address_R_13},function (results_R_14,status_R_14) {
+        text_R_? = ''
+          if (status_R_14 == google_R_?.maps.GeocoderStatus.OK){
+                      text_R_? = results_R_14[0].formatted_address;
+})
+          callback_R_?(text_R_?)
+});
+})
+}
+  chrome.extension.onRequest.addListener(function (request_R_15,sender_R_15,sendResponse_R_15) {
+  codeAddress_R_13(request_R_15.greeting,function (resp_R_16) {
+    sendResponse_R_?(resp_R_16)
+})
+})
+  function () {
+  var temp_R_17 = document.getElementById_R_?('_added_by_transform_0')
+    temp_R_17.addEventListener_R_?('load',function (event_R_18) {
+    initialize_R_12()
+})
+}()

@@ -1,0 +1,637 @@
+function get_manifest_R_1(callback_R_1) {
+  var xhr_R_1 = new XMLHttpRequest_R_?
+    xhr_R_1.onload = function () {
+    callback_R_?(JSON_R_?.parse_R_?(xhr_R_1.responseText))
+}
+    xhr_R_1.open_R_?('GET','../manifest.json',true)
+    xhr_R_1.send_R_?(null)
+}
+  get_manifest_R_1(function (manifest_R_3) {
+  version_R_? = manifest_R_3.version
+    init_R_5()
+})
+  function setDefault_R_4(key_R_4,value_R_4) {
+  if (localStorage_R_?[key_R_4] == null){
+          localStorage_R_?[key_R_4] = value_R_4;
+})
+}
+  function init_R_5() {
+  setDefault_R_4('version',version_R_?)
+    setDefault_R_?('framerate',150)
+    setDefault_R_?('animtime',400)
+    setDefault_R_?('scrollsz',120)
+    setDefault_R_?('middlemouse',true)
+    setDefault_R_?('accelMax',1)
+    setDefault_R_?('accelDelta',20)
+    setDefault_R_?('pulseAlgorithm',true)
+    setDefault_R_?('pulseScale',8)
+    setDefault_R_?('pulseNormalize',1)
+    setDefault_R_?('keyboardsupport',true)
+    setDefault_R_?('arrscroll',50)
+    setDefault_R_?('fixedback',true)
+    setDefault_R_?('exclude','example.com, another.example.com')
+    var store_R_5 = localStorage_R_?
+    if (!store_R_5.version){
+    ;
+})
+    if (store_R_5.version != version_R_?){
+          store_R_5.version = version_R_?;
+      if (store_R_5.framerate == '50'){
+                  store_R_5.framerate = 150;
+});
+      store_R_5.exclude = store_R_5.exclude.replace_R_?((REGEXP ' ' 'g'),'');
+      var list_R_5 = [];
+      var domains_R_5 = store_R_5.exclude.split_R_?((REGEXP '[,\\n] ?' ''));
+      for(var i_R_5 = 0;i_R_5 < domains_R_5.length;i_R_5++){
+                  if (domains_R_5[i_R_5] === 'twitter.com'){
+            store_R_5.fixedback = false
+} else {
+            if (domains_R_5[i_R_5] && domains_R_5[i_R_5] !== 'mail.google.com'){
+              list_R_5.push_R_?(domains_R_5[i_R_5])
+})
+});
+};
+      store_R_5.exclude = list_R_5.join_R_?(', ');
+})
+}
+  chrome.extension.onConnect.addListener(function (port_R_6) {
+  if (port_R_6.name == 'smoothscroll'){
+          port_R_6.postMessage_R_?(localStorage_R_?);
+})
+})
+  function (window_R_7,undefined_R_7) {
+  var options_R_7 = ['animtime','scrollsz','arrscroll','middlemouse','accelMax','accelDelta','pulseAlgorithm','pulseScale','keyboardsupport','exclude','fixedback']
+    function byId_R_8(id_R_8) {
+    return document.getElementById_R_?(id_R_8)
+}
+    function byClass_R_9(cname_R_9) {
+    return document.getElementsByClassName_R_?(cname_R_9)
+}
+    function byTag_R_10(tag_R_10,base_R_10) {
+    return base_R_10 || document.getElementsByTagName_R_?(tag_R_10 || '*')
+}
+    function isNodeName_R_11(el_R_11,tag_R_11) {
+    return el_R_11.nodeName.toLowerCase_R_?() === tag_R_11.toLowerCase()
+}
+    function show_R_12(elem_R_12,newop_R_12) {
+    elem_R_12.style.display = 'block'
+      elem_R_12.style.webkitTransition = 'opacity 0.2s ease-in-out'
+      setTimeout_R_?(function () {
+      elem_R_12.style.opacity = newop_R_12 || 1
+},0)
+}
+    function hide_R_14(elem_R_14,newop_R_14) {
+    elem_R_14.style.webkitTransition = 'opacity 1s ease-in-out'
+      elem_R_14.style.opacity = newop_R_14 || 0
+      setTimeout_R_?(function () {
+      elem_R_14.style.display = 'none'
+},1000)
+}
+    function init_R_16() {
+    if (localStorage_R_?.saved == 'true'){
+              var dialog_R_16 = byClass_R_9('dialog')[0];
+        show_R_12(dialog_R_16,0.9);
+        setTimeout_R_?(function () {
+          hide_R_14(dialog_R_16)
+},3000);
+})
+      localStorage_R_?.saved = 'false'
+      options_R_7.forEach_R_?(function (key_R_18,i_R_18) {
+      if ((REGEXP 'keyboardsupport|middlemouse|pulseAlgorithm|fixedback' '').test_R_?(key_R_18)){
+                  byId_R_?(key_R_18).checked = localStorage_R_?[key_R_18] == 'true';
+} else {
+        if (localStorage_R_?[key_R_18]){
+                      byId_R_8(key_R_18).value = localStorage_R_?[key_R_18];
+})
+})
+})
+}
+    function save_R_19() {
+    i_R_19 key_R_0 opt_R_? elem_R_? error_R_?
+      options_R_7.forEach_R_?(function (key_R_20,i_R_20) {
+      if (!(REGEXP 'keyboardsupport|middlemouse|pulseAlgorithm|fixedback' '').test_R_?(key_R_20)){
+                  elem_R_? = byId_R_?(key_R_20);
+          opt_R_? = elem_R_?.value;
+          if (isNodeName_R_11(elem_R_?,'input')){
+                          opt_R_? = parseFloat_R_?(opt_R_?,10);
+              if (isNaN_R_?(opt_R_?)){
+                                  error_R_? = 'Numeric Values Only!';
+                  return;
+});
+});
+          localStorage_R_?[key_R_20] = opt_R_?;
+} else {
+                  localStorage_R_?[key_R_20] = byId_R_8(key_R_20).checked;
+})
+})
+      if (!error_R_?){
+              localStorage_R_?.saved = 'true';
+        reload_R_24();
+} else {
+              alert_R_?(error_R_?);
+})
+}
+    function get_manifest_R_21(callback_R_21) {
+    var xhr_R_21 = new XMLHttpRequest_R_?
+      xhr_R_21.onload = function () {
+      callback_R_?(JSON_R_?.parse_R_?(xhr_R_21.responseText))
+}
+      xhr_R_21.open_R_?('GET','../manifest.json',true)
+      xhr_R_21.send_R_?(null)
+}
+    get_manifest_R_21(function (manifest_R_23) {
+    version_R_? = manifest_R_23.version
+      byId_R_8('version').innerHTML = version_R_?
+})
+    function reload_R_24() {
+    window.location.reload_R_?()
+}
+    var profiles_R_7 = {    '_custom':{      'animtime':160,      'scrollsz':120,      'pulseAlgorithm':'true',      'pulseScale':4},    '_default':{      'animtime':400,      'scrollsz':120,      'pulseAlgorithm':'true',      'pulseScale':8},    '_iphone':{      'animtime':400,      'scrollsz':120,      'pulseAlgorithm':'true',      'pulseScale':4},    '_opera':{      'animtime':120,      'scrollsz':120,      'pulseAlgorithm':'false'},    '_ie9':{      'animtime':60,      'scrollsz':120,      'pulseAlgorithm':'false'}}
+    function set_profile_R_25(profile_R_25) {
+    if ('custom' == profile_R_25){
+              init_R_16();
+        return;
+})
+      profile_R_25 = profiles_R_7['_' + profile_R_25]
+      for(var key_R_25 in profile_R_25){
+      if ((REGEXP 'keyboardsupport|middlemouse|pulseAlgorithm|fixedback' '').test_R_?(key_R_25)){
+                  byId_R_?(key_R_25).checked = profile_R_25[key_R_25] == 'true';
+} else {
+        if (localStorage_R_?[key_R_25]){
+                      byId_R_8(key_R_25).value = profile_R_25[key_R_25];
+})
+});
+}
+      (BLOCK)
+}
+    function generate_test_R_26() {
+    var test_R_26 = byId_R_8('test')
+      var el_R_26 = byTag_R_10('div',test_R_26)[0]
+      for(var i_R_26 = 5;i_R_26--;(BLOCK)){
+              test_R_26.appendChild_R_?(el_R_26.cloneNode_R_?(true));
+}
+}
+    window.addEventListener_R_?('DOMContentLoaded',init_R_?,false)
+    window.addEventListener('DOMContentLoaded',generate_test_R_?,false)
+    window.reload = reload_R_?
+    window.save = save_R_?
+    window.set_profile = set_profile_R_?
+}(window)
+  function () {
+  var temp_R_27 = document.getElementById_R_?('_added_by_transform_0')
+    temp_R_27.addEventListener_R_?('click',function (event_R_28) {
+    set_profile_R_?('custom')
+})
+}()
+  function () {
+  var temp_R_29 = document.getElementById_R_?('_added_by_transform_1')
+    temp_R_29.addEventListener_R_?('click',function (event_R_30) {
+    set_profile_R_?('default')
+})
+}()
+  function () {
+  var temp_R_31 = document.getElementById_R_?('_added_by_transform_2')
+    temp_R_31.addEventListener_R_?('click',function (event_R_32) {
+    set_profile_R_?('iphone')
+})
+}()
+  function () {
+  var temp_R_33 = document.getElementById_R_?('_added_by_transform_3')
+    temp_R_33.addEventListener_R_?('click',function (event_R_34) {
+    set_profile_R_?('opera')
+})
+}()
+  function () {
+  var temp_R_35 = document.getElementById_R_?('_added_by_transform_4')
+    temp_R_35.addEventListener_R_?('click',function (event_R_36) {
+    set_profile_R_?('ie9')
+})
+}()
+  function () {
+  var temp_R_37 = document.getElementById_R_?('save')
+    temp_R_37.addEventListener_R_?('click',function (event_R_38) {
+    save_R_?()
+})
+}()
+  function (window_R_39) {
+  var img_R_39 = document.createElement_R_?('div')
+    var scrolling_R_39 = false
+    var enabled_R_39 = false
+    var framerate_R_39 = 200
+    var isLinux_R_39 = navigator_R_?.platform.indexOf_R_?('Linux') != -1
+    chrome.extension.connect({    name_R_?:'smoothscroll'}).onMessage.addListener(function (settings_R_40) {
+    enabled_R_39 = settings_R_40.middlemouse == 'true' && !disabled_R_0
+      framerate_R_39 = +settings_R_40.framerate + 50
+})
+    function init_R_41() {
+    var url_R_41 = chrome.extension.getURL('../img/cursor.png')
+      var style_R_41 = img_R_39.style
+      style_R_41.background = 'url(' + url_R_41 + ') no-repeat'
+      style_R_41.position = 'fixed'
+      style_R_41.zIndex = '1000'
+      style_R_41.width = '20px'
+      style_R_41.height = '20px'
+      new Image_R_?.src = url_R_41
+}
+    function mousedown_R_42(e_R_42) {
+    var isLink_R_42 = false
+      var elem_R_42 = e_R_42.target
+      var linux_R_42 = isLinux_R_39 && (REGEXP 'input|textarea' 'i').test_R_?(elem_R_42.nodeName)
+      (DO-WHILE elem_R_42 = elem_R_42.parentNode       isLink_R_42 = isNodeName_R_63(elem_R_42,'a');
+      if (isLink_R_42){
+        break
+});)
+      var elem_R_42 = overflowingAncestor_R_60(e_R_42.target)
+      if (!elem_R_42 || !enabled_R_39 || e_R_42.button !== 1 || isLink_R_42 || linux_R_42){
+              return true;
+})
+      e_R_42.preventDefault_R_?()
+      if (scrolling_R_39){
+              return false;
+})
+      scrolling_R_39 = true
+      img_R_39.style.left = e_R_42.clientX - 10 + 'px'
+      img_R_39.style.top = e_R_42.clientY - 10 + 'px'
+      document.body.appendChild_R_?(img_R_39)
+      var refereceX_R_42 = e_R_42.clientX
+      var refereceY_R_42 = e_R_42.clientY
+      var speedX_R_42 = 0
+      var speedY_R_42 = 0
+      var last_R_42 = +new Date_R_?
+      var delay_R_42 = 1000 / framerate_R_39
+      var finished_R_42 = false
+      requestFrame_R_?(function () {
+      var now_R_43 = +new Date_R_?
+        var elapsed_R_43 = now_R_43 - last_R_42
+        elem_R_42.scrollLeft = speedX_R_42 * elapsed_R_43 >> 0
+        elem_R_42.scrollTop = speedY_R_42 * elapsed_R_43 >> 0
+        last_R_42 = now_R_43
+        if (!finished_R_42){
+                  requestFrame_R_?(step_R_?,elem_R_42,delay_R_42);
+})
+},elem_R_42,delay_R_42)
+      var first_R_42 = true
+      function mousemove_R_44(e_R_44) {
+      if (first_R_42){
+                  addEvent_R_61('mouseup',remove_R_?);
+          first_R_42 = false;
+})
+        speedX_R_42 = e_R_44.clientX - refereceX_R_42 * 10 / 1000
+        speedY_R_42 = e_R_44.clientY - refereceY_R_42 * 10 / 1000
+}
+      function remove_R_45(e_R_45) {
+      removeEvent_R_62('mousemove',mousemove_R_?)
+        removeEvent_R_?('mousedown',remove_R_?)
+        removeEvent_R_?('mouseup',remove_R_?)
+        removeEvent_R_?('keydown',remove_R_?)
+        document.body.removeChild_R_?(img_R_39)
+        scrolling_R_39 = false
+        finished_R_42 = true
+}
+      addEvent_R_61('mousemove',mousemove_R_?)
+      addEvent_R_?('mousedown',remove_R_?)
+      addEvent_R_?('keydown',remove_R_?)
+}
+    addEvent_R_61('mousedown',mousedown_R_?)
+    addEvent_R_?('DOMContentLoaded',init_R_?)
+}(window)
+  var framerate_R_0 = 150
+  var animtime_R_0 = 400
+  var stepsize_R_0 = 120
+  var pulseAlgorithm_R_0 = true
+  var pulseScale_R_0 = 8
+  var pulseNormalize_R_0 = 1
+  var acceleration_R_0 = true
+  var accelDelta_R_0 = 20
+  var accelMax_R_0 = 1
+  var keyboardsupport_R_0 = true
+  var disableKeyboard_R_0 = false
+  var arrowscroll_R_0 = 50
+  var exclude_R_0 = ''
+  var disabled_R_0 = false
+  var frame_R_0 = false
+  var direction_R_0 = {  x_R_?:0,  y_R_?:0}
+  var initdone_R_0 = false
+  var fixedback_R_0 = true
+  var root_R_0 = document.documentElement
+  activeElement_R_0
+  var key_R_0 = {  left_R_?:37,  up_R_?:38,  right_R_?:39,  down_R_?:40,  spacebar_R_?:32,  pageup_R_?:33,  pagedown_R_?:34,  end_R_?:35,  home_R_?:36}
+  chrome.extension.connect({  name_R_?:'smoothscroll'}).onMessage.addListener(function (settings_R_46) {
+  framerate_R_0 = +settings_R_46.framerate
+    animtime_R_0 = +settings_R_46.animtime
+    stepsize_R_0 = +settings_R_46.scrollsz
+    accelMax_R_0 = +settings_R_46.accelMax
+    accelDelta_R_0 = +settings_R_46.accelDelta
+    exclude_R_0 = settings_R_46.exclude
+    pulseAlgorithm_R_0 = settings_R_46.pulseAlgorithm == 'true'
+    pulseScale_R_0 = +settings_R_46.pulseScale
+    keyboardsupport_R_0 = settings_R_46.keyboardsupport == 'true'
+    arrowscroll_R_0 = +settings_R_46.arrscroll
+    fixedback_R_0 = settings_R_46.fixedback == 'true'
+    initTest_R_47()
+    if (keyboardsupport_R_0 && !disableKeyboard_R_0){
+          addEvent_R_61('keydown',keydown_R_?);
+})
+    if (!framerate_R_0){
+          alert_R_?('SmoothScroll: Please restart Chrome');
+})
+})
+  function initTest_R_47() {
+  if (document.URL.indexOf_R_?('google.com/reader/view') > -1){
+          disableKeyboard_R_0 = true;
+})
+    if (exclude_R_0){
+          var domains_R_47 = exclude_R_0.split_R_?((REGEXP '[,\\n] ?' ''));
+      for(var i_R_47 = domains_R_47.length;i_R_47--;(BLOCK)){
+                  if (document.URL.indexOf(domains_R_47[i_R_47]) > -1){
+                          removeEvent_R_62('mousewheel',wheel_R_?);
+              disableKeyboard_R_0 = true;
+              disabled_R_0 = true;
+              break;
+});
+};
+})
+    if (disableKeyboard_R_0){
+          removeEvent_R_?('keydown',keydown_R_?);
+})
+}
+  function init_R_48() {
+  if (!document.body){
+    return
+})
+    var body_R_48 = document.body
+    var html_R_48 = document.documentElement
+    var windowHeight_R_48 = window.innerHeight
+    var scrollHeight_R_48 = body_R_48.scrollHeight
+    root_R_0 = document.compatMode.indexOf_R_?('CSS') >= 0 ? html_R_48 :body_R_48
+    activeElement_R_0 = body_R_48
+    initTest_R_47()
+    initdone_R_0 = true
+    if (top_R_? != self_R_?){
+          frame_R_0 = true;
+} else {
+    if (scrollHeight_R_48 > windowHeight && body_R_48.offsetHeight <= windowHeight || html_R_48.offsetHeight <= windowHeight){
+              var pending_R_48 = false;
+        var refresh_R_48 = function () {
+          if (!pending_R_48 && html_R_48.scrollHeight != document.height){
+                          pending_R_48 = true;
+              setTimeout_R_?(function () {
+                html_R_48.style.height = document.height + 'px'
+                  pending_R_48 = false
+},500);
+})
+};
+        html_R_48.style.height = 'auto';
+        setTimeout_R_?(refresh_R_48,10);
+        addEvent_R_61('DOMNodeInserted',refresh_R_48);
+        addEvent_R_?('DOMNodeRemoved',refresh_R_48);
+        if (root_R_0.offsetHeight <= windowHeight){
+                      var underlay_R_48 = document.createElement_R_?('div');
+            underlay_R_48.style.clear = 'both';
+            body_R_48.appendChild_R_?(underlay_R_48);
+});
+})
+})
+    if (document.URL.indexOf('mail.google.com') > -1){
+          var s_R_48 = document.createElement('style');
+      s_R_48.innerHTML = '.iu { visibility: hidden }';
+      document.getElementsByTagName_R_?('head')[0] || html_R_48.appendChild(s_R_48);
+})
+    if (!fixedback_R_0 && !disabled_R_0){
+          body_R_48.style.backgroundAttachment = 'scroll';
+      html_R_48.style.backgroundAttachment = 'scroll';
+})
+}
+  var que_R_0 = []
+  var pending_R_0 = false
+  var lastScroll_R_0 = +new Date_R_?
+  function scrollArray_R_51(elem_R_51,left_R_51,top_R_51,delay_R_51) {
+  delay_R_51 || delay_R_51 = 1000
+    directionCheck_R_64(left_R_51,top_R_51)
+    if (acceleration_R_0){
+          var now_R_51 = +new Date_R_?;
+      var elapsed_R_51 = now_R_51 - lastScroll_R_0;
+      if (elapsed_R_51 < accelDelta_R_0){
+                  var factor_R_51 = 1 + 30 / elapsed_R_51 / 2;
+          if (factor_R_51 > 1){
+                          factor_R_51 = Math_R_?.min_R_?(factor_R_51,accelMax_R_0);
+              left_R_51 = factor_R_51;
+              top_R_51 = factor_R_51;
+});
+});
+      lastScroll_R_0 = +new Date_R_?;
+})
+    que_R_0.push_R_?({    x_R_?:left_R_51,    y_R_?:top_R_51,    lastX_R_?:left_R_51 < 0 ? 0.99 :-0.99,    lastY_R_?:top_R_51 < 0 ? 0.99 :-0.99,    start_R_?:+new Date_R_?})
+    if (pending_R_0){
+          return;
+})
+    var scrollWindow_R_51 = elem_R_51 === document.body
+    var step_R_51 = function () {
+    var now_R_52 = +new Date_R_?
+      var scrollX_R_52 = 0
+      var scrollY_R_52 = 0
+      for(var i_R_52 = 0;i_R_52 < que_R_0.length;i_R_52++){
+              var item_R_52 = que_R_0[i_R_52];
+        var elapsed_R_52 = now_R_52 - item_R_52.start;
+        var finished_R_52 = elapsed_R_52 >= animtime_R_0;
+        var position_R_52 = finished_R_52 ? 1 :elapsed_R_52 / animtime_R_0;
+        if (pulseAlgorithm_R_0){
+                      position_R_52 = pulse_R_68(position_R_52);
+});
+        var x_R_52 = item_R_52.x * position_R_52 - item_R_52.lastX >> 0;
+        var y_R_52 = item_R_52.y * position_R_52 - item_R_52.lastY >> 0;
+        scrollX_R_52 = x_R_52;
+        scrollY_R_52 = y_R_52;
+        item_R_52.lastX = x_R_52;
+        item_R_52.lastY = y_R_52;
+        if (finished_R_52){
+                      que_R_0.splice_R_?(i_R_52,1);
+            i_R_52--;
+});
+}
+      if (scrollWindow_R_51){
+              window.scrollBy_R_?(scrollX_R_52,scrollY_R_52);
+} else {
+              if (scrollX_R_52){
+          elem_R_51.scrollLeft = scrollX_R_52
+});
+        if (scrollY_R_52){
+          elem_R_51.scrollTop = scrollY_R_52
+});
+})
+      if (!left_R_51 && !top_R_51){
+              que_R_0 = [];
+})
+      if (que_R_0.length){
+              requestFrame_R_?(step_R_51,elem_R_51,delay_R_51 / framerate_R_0 + 1);
+} else {
+              pending_R_0 = false;
+})
+}
+    requestFrame_R_?(step_R_51,elem_R_51,0)
+    pending_R_0 = true
+}
+  function wheel_R_53(event_R_53) {
+  if (!initdone_R_0){
+          init_R_5();
+})
+    var target_R_53 = event_R_53.target
+    var overflowing_R_53 = overflowingAncestor_R_60(target_R_53)
+    if (!overflowing_R_53 || event_R_53.defaultPrevented || isNodeName_R_63(activeElement_R_0,'embed') || isNodeName_R_?(target_R_53,'embed') && (REGEXP '\\.pdf' 'i').test_R_?(target_R_53.src)){
+          return true;
+})
+    var deltaX_R_53 = event_R_53.wheelDeltaX || 0
+    var deltaY_R_53 = event_R_53.wheelDeltaY || 0
+    if (!deltaX_R_53 && !deltaY_R_53){
+          deltaY_R_53 = event_R_53.wheelDelta || 0;
+})
+    if (Math_R_?.abs_R_?(deltaX_R_53) > 1.2){
+          deltaX_R_53 = stepsize_R_0 / 120;
+})
+    if (Math_R_?.abs(deltaY_R_53) > 1.2){
+          deltaY_R_53 = stepsize_R_0 / 120;
+})
+    scrollArray_R_51(overflowing_R_53,-deltaX_R_53,-deltaY_R_53)
+    event_R_53.preventDefault_R_?()
+}
+  function keydown_R_54(event_R_54) {
+  var target_R_54 = event_R_54.target
+    var modifier_R_54 = event_R_54.ctrlKey || event_R_54.altKey || event_R_54.metaKey || event_R_54.shiftKey && event_R_54.keyCode !== key_R_0.spacebar
+    if ((REGEXP 'input|textarea|select|embed' 'i').test_R_?(target_R_54.nodeName) || target_R_54.isContentEditable || event_R_54.defaultPrevented || modifier_R_54){
+          return true;
+})
+    if (isNodeName_R_63(target_R_54,'button') && event_R_54.keyCode === key_R_0.spacebar){
+          return true;
+})
+    shift_R_54 var x_R_? = 0 var y_R_? = 0
+    var elem_R_54 = overflowingAncestor_R_60(activeElement_R_0)
+    var clientHeight_R_54 = elem_R_54.clientHeight
+    if (elem_R_54 == document.body){
+          clientHeight_R_54 = window.innerHeight;
+})
+    switch (event_R_54.keyCode) {
+      case key.up: 
+      y = -arrowscroll;
+      break;
+      case key.down: 
+      y = arrowscroll;
+      break;
+      case key.spacebar: 
+      shift = event.shiftKey ? 1 :-1;
+      y = -shift * clientHeight * 0.9;
+      break;
+      case key.pageup: 
+      y = -clientHeight * 0.9;
+      break;
+      case key.pagedown: 
+      y = clientHeight * 0.9;
+      break;
+      case key.home: 
+      y = -elem.scrollTop;
+      break;
+      case key.end: 
+      var damt = elem.scrollHeight - elem.scrollTop - clientHeight;
+      y = damt > 0 ? damt + 10 :0;
+      break;
+      case key.left: 
+      x = -arrowscroll;
+      break;
+      case key.right: 
+      x = arrowscroll;
+      break;
+      (DEFAULT       return true;)}
+    scrollArray_R_51(elem_R_54,x_R_?,y_R_?)
+    event_R_54.preventDefault_R_?()
+}
+  function mousedown_R_55(event_R_55) {
+  activeElement_R_0 = event_R_55.target
+}
+  var cache_R_0 = {}
+  setInterval_R_?(function () {
+  cache_R_0 = {}
+},10 * 1000)
+  var uniqueID_R_0 = function () {
+  var i_R_57 = 0
+    return function (el_R_58) {
+    return el_R_58.uniqueID || el_R_58.uniqueID = i_R_57++
+}
+}()
+  function setCache_R_59(elems_R_59,overflowing_R_59) {
+  for(var i_R_59 = elems_R_59.length;i_R_59--;(BLOCK)){
+    cache_R_0[uniqueID_R_?(elems_R_59[i_R_59])] = overflowing_R_59
+}
+    return overflowing_R_59
+}
+  function overflowingAncestor_R_60(el_R_60) {
+  var elems_R_60 = []
+    var rootScrollHeight_R_60 = root_R_0.scrollHeight
+    (DO-WHILE el_R_60 = el_R_60.parentNode     var cached_R_60 = cache_R_0[uniqueID_R_?(el_R_60)];
+    if (cached_R_60){
+              return setCache_R_59(elems_R_60,cached_R_60);
+});
+    elems_R_60.push_R_?(el_R_60);
+    if (rootScrollHeight_R_60 === el_R_60.scrollHeight){
+              if (!frame_R_0 || root_R_0.clientHeight + 10 < rootScrollHeight_R_60){
+                      return setCache_R_?(elems_R_60,document.body);
+});
+} else {
+      if (el_R_60.clientHeight + 10 < el_R_60.scrollHeight){
+                  overflow_R_? = getComputedStyle_R_?(el_R_60,'').getPropertyValue_R_?('overflow-y');
+          if (overflow_R_? === 'scroll' || overflow_R_? === 'auto'){
+                          return setCache_R_?(elems_R_60,el_R_60);
+});
+})
+});)
+}
+  function addEvent_R_61(type_R_61,fn_R_61,bubble_R_61) {
+  window.addEventListener_R_?(type_R_61,fn_R_61,bubble_R_61 || false)
+}
+  function removeEvent_R_62(type_R_62,fn_R_62,bubble_R_62) {
+  window.removeEventListener_R_?(type_R_62,fn_R_62,bubble_R_62 || false)
+}
+  function isNodeName_R_63(el_R_63,tag_R_63) {
+  return el_R_63.nodeName || ''.toLowerCase_R_?() === tag_R_63.toLowerCase()
+}
+  function directionCheck_R_64(x_R_64,y_R_64) {
+  x_R_64 = x_R_64 > 0 ? 1 :-1
+    y_R_64 = y_R_64 > 0 ? 1 :-1
+    if (direction_R_0.x !== x_R_64 || direction_R_0.y !== y_R_64){
+          direction_R_0.x = x_R_64;
+      direction_R_0.y = y_R_64;
+      que_R_0 = [];
+      lastScroll_R_0 = 0;
+})
+}
+  var requestFrame_R_0 = function () {
+  return window.requestAnimationFrame || window.webkitRequestAnimationFrame || function (callback_R_66,element_R_66,delay_R_66) {
+    window.setTimeout_R_?(callback_R_66,delay_R_66 || 1000 / 60)
+}
+}()
+  function pulse__R_67(x_R_67) {
+  val_R_67 start_R_? expx_R_?
+    x_R_67 = x_R_67 * pulseScale_R_0
+    if (x_R_67 < 1){
+          val_R_67 = x_R_67 - 1 - Math_R_?.exp(-x_R_67);
+} else {
+          start_R_? = Math_R_?.exp_R_?(-1);
+      x_R_67 = 1;
+      expx_R_? = 1 - Math_R_?.exp(-x_R_67);
+      val_R_67 = start_R_? + expx_R_? * 1 - start_R_?;
+})
+    return val_R_67 * pulseNormalize_R_0
+}
+  function pulse_R_68(x_R_68) {
+  if (x_R_68 >= 1){
+    return 1
+})
+    if (x_R_68 <= 0){
+    return 0
+})
+    if (pulseNormalize_R_0 == 1){
+          pulseNormalize_R_0 = pulse__R_67(1);
+})
+    return pulse__R_?(x_R_68)
+}
+  addEvent_R_61('mousedown',mousedown_R_?)
+  addEvent_R_?('mousewheel',wheel_R_?)
+  addEvent_R_?('load',init_R_?)

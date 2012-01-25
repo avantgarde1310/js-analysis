@@ -1,0 +1,540 @@
+var MSG_NO_TITLE_R_0 = chrome.i18n.getMessage('noTitle')
+  var POLL_INTERVAL_R_0 = 20 * 1000
+  var DRAW_INTERVAL_R_0 = 20 * 1000
+  var lastPollTime__R_0 = 0
+  badgeAnimation__R_0
+  canvasAnimation__R_0
+  var nextEvent__R_0 = null
+  var eventList_R_0 = []
+  var nextEvents_R_0 = []
+  var calendars_R_0 = []
+  var pollUnderProgress_R_0 = false
+  var defaultAuthor_R_0 = ''
+  var isMultiCalendar_R_0 = false
+  var SINGLE_CALENDAR_SUPPORT_URL_R_0 = 'https://www.google.com/calendar/feeds' + '/default/private/embed?toolbar=true&max-results=10'
+  var MULTIPLE_CALENDAR_SUPPORT_URL_R_0 = 'https://www.google.com/calendar/feeds' + '/default/allcalendars/full'
+  var GOOGLE_CALENDAR_URL_R_0 = 'http://www.google.com/calendar/render'
+  var DECLINED_URL_R_0 = 'http://schemas.google.com/g/2005#event.declined'
+  var pendingLoadId__R_0 = null
+  function BadgeAnimation_R_1() {
+  this.timerId_ = 0
+    this.maxCount_ = 8
+    this.current_ = 0
+    this.maxDot_ = 4
+}
+  (BLOCK)
+  BadgeAnimation_R_?.prototype.paintFrame = function () {
+  var text_R_2 = ''
+    for(var i_R_2 = 0;i_R_2 < this.maxDot_;i_R_2++){
+          text_R_2 = i_R_2 == this.current_ ? '.' :' ';
+}
+    chrome.browserAction.setBadgeText({    text_R_2:text_R_2})
+    this.current_++
+    if (this.current_ == this.maxCount_){
+          this.current_ = 0;
+})
+}
+  BadgeAnimation_R_?.prototype.start = function () {
+  if (this.timerId_){
+          return;
+})
+    var self_R_3 = this
+    this.timerId_ = window.setInterval_R_?(function () {
+    self_R_3.paintFrame_R_?()
+},100)
+}
+  BadgeAnimation_R_?.prototype.stop = function () {
+  if (!this.timerId_){
+          return;
+})
+    window.clearInterval_R_?(this.timerId_)
+    this.timerId_ = 0
+}
+  function CanvasAnimation_R_6() {
+  this.animationFrames_ = 36
+    this.animationSpeed_ = 10
+    this.canvas_ = $('canvas')
+    this.canvasContext_ = this.canvas_.getContext_R_?('2d')
+    this.loggedInImage_ = $('logged_in')
+    this.rotation_ = 0
+    this.w = this.canvas_.width
+    this.h = this.canvas_.height
+    this.RED = [208,0,24,255]
+    this.BLUE = [0,24,208,255]
+    this.currentBadge_ = null
+}
+  (BLOCK)
+  CanvasAnimation_R_?.prototype.animate = function () {
+  this.rotation_ = 1 / this.animationFrames_
+    this.drawIconAtRotation_R_?()
+    var self_R_7 = this
+    if (this.rotation_ <= 1){
+          setTimeout_R_?(function () {
+        self_R_7.animate_R_?()
+},self_R_7.animationSpeed_);
+} else {
+          this.drawFinal_R_?();
+})
+}
+  CanvasAnimation_R_?.prototype.drawIconAtRotation = function () {
+  this.canvasContext_.save_R_?()
+    this.canvasContext_.clearRect_R_?(0,0,this.w,this.h)
+    this.canvasContext_.translate_R_?(Math_R_?.ceil_R_?(this.w / 2),Math_R_?.ceil(this.h / 2))
+    this.canvasContext_.rotate_R_?(2 * Math_R_?.PI * this.getSector_R_?(this.rotation_))
+    this.canvasContext_.drawImage_R_?(this.loggedInImage_,-Math_R_?.ceil(this.w / 2),-Math_R_?.ceil(this.h / 2))
+    this.canvasContext_.restore_R_?()
+    chrome.browserAction.setIcon({    imageData_R_?:this.canvasContext_.getImageData_R_?(0,0,this.w,this.h)})
+}
+  CanvasAnimation_R_?.prototype.getSector = function (sector_R_10) {
+  return 1 - Math_R_?.sin_R_?(Math_R_?.PI / 2 + sector_R_10 * Math_R_?.PI) / 2
+}
+  CanvasAnimation_R_?.prototype.drawFinal = function () {
+  badgeAnimation__R_0.stop_R_?()
+    if (!nextEvent__R_0){
+          this.showLoggedOut_R_?();
+} else {
+          this.drawIconAtRotation_R_?();
+      this.rotation_ = 0;
+      var ms_R_11 = nextEvent__R_0.startTime.getTime_R_?() - getCurrentTime_R_30();
+      var nextEventMin_R_11 = ms_R_11 / 1000 * 60;
+      var bgColor_R_11 = nextEventMin_R_11 < 60 ? this.RED :this.BLUE;
+      chrome.browserAction.setBadgeBackgroundColor({        color_R_?:bgColor_R_11});
+      currentBadge__R_? = this.getBadgeText_R_?(nextEvent__R_0);
+      chrome.browserAction.setBadgeText({        text_R_11:currentBadge__R_?});
+      if (nextEvents_R_0.length > 0){
+                  var text_R_11 = '';
+          for(var i_R_11 = 0 event_R_?;event_R_? = nextEvents_R_0[i_R_11];i_R_11++){
+                          text_R_11 = event_R_?.title;
+              if (event_R_?.author || event_R_?.location){
+                                  text_R_11 = '\n';
+});
+              if (event_R_?.location){
+                                  text_R_11 = event_R_?.location + ' ';
+});
+              if (event_R_?.author){
+                                  text_R_11 = event_R_?.author;
+});
+              if (i_R_11 < nextEvents_R_0.length - 1){
+                                  text_R_11 = '\n----------\n';
+});
+};
+          text_R_11 = filterSpecialChar_R_31(text_R_11);
+          chrome.browserAction.setTitle({            'title':text_R_11});
+});
+})
+    pollUnderProgress_R_0 = false
+    chrome.extension.sendRequest({    message_R_?:'enableSave'},function () {
+
+})
+    return
+}
+  CanvasAnimation_R_?.prototype.showLoggedOut = function () {
+  currentBadge__R_? = '?'
+    chrome.browserAction.setIcon({    path_R_?:'../images/icon-16_bw.gif'})
+    chrome.browserAction.setBadgeBackgroundColor({    color_R_?:[190,190,190,230]})
+    chrome.browserAction.setBadgeText({    text_R_?:'?'})
+    chrome.browserAction.setTitle({    'title':''})
+}
+  CanvasAnimation_R_?.prototype.getBadgeText = function (nextEvent__R_14) {
+  if (!nextEvent__R_14){
+          return '';
+})
+    var ms_R_14 = nextEvent__R_14.startTime.getTime_R_?() - getCurrentTime_R_30()
+    var nextEventMin_R_14 = Math_R_?.ceil_R_?(ms_R_14 / 1000 * 60)
+    var text_R_14 = ''
+    if (nextEventMin_R_14 < 60){
+          text_R_14 = chrome.i18n.getMessage('minutes',nextEventMin_R_14.toString());
+} else {
+    if (nextEventMin_R_14 < 1440){
+              text_R_14 = chrome.i18n.getMessage('hours',Math_R_?.round(nextEventMin_R_14 / 60).toString());
+} else {
+      if (nextEventMin_R_14 < 1440 * 10){
+                  text_R_14 = chrome.i18n.getMessage('days',Math_R_?.round_R_?(nextEventMin_R_14 / 60 / 24).toString_R_?());
+})
+})
+})
+    return text_R_14
+}
+  CalendarManager_R_? = {}
+  CalendarManager_R_?.extractEvent = function (elem_R_15) {
+  var out_R_15 = {}
+    for(var node_R_15 = elem_R_15.firstChild;node_R_15 != null;node_R_15 = node_R_15.nextSibling){
+          if (node_R_15.nodeName == 'title'){
+                  out_R_15.title = node_R_15.firstChild ? node_R_15.firstChild.nodeValue :MSG_NO_TITLE_R_0;
+} else {
+        if (node_R_15.nodeName == 'link' && node_R_15.getAttribute('rel') == 'alternate'){
+                      out_R_15.url = node_R_15.getAttribute('href');
+} else {
+          if (node_R_15.nodeName == 'gd:where'){
+                          out_R_15.location = node_R_15.getAttribute('valueString');
+} else {
+            if (node_R_15.nodeName == 'gd:who'){
+                              if (node_R_15.firstChild){
+                                      out_R_15.attendeeStatus = node_R_15.firstChild.getAttribute('value');
+});
+} else {
+              if (node_R_15.nodeName == 'gd:eventStatus'){
+                                  out_R_15.status = node_R_15.getAttribute('value');
+} else {
+                if (node_R_15.nodeName == 'gd:when'){
+                                      var startTimeStr_R_15 = node_R_15.getAttribute_R_?('startTime');
+                    var endTimeStr_R_15 = node_R_15.getAttribute('endTime');
+                    startTime_R_? = rfc3339StringToDate_R_26(startTimeStr_R_15);
+                    endTime_R_? = rfc3339StringToDate_R_?(endTimeStr_R_15);
+                    if (startTime_R_? == null || endTime_R_? == null){
+                                              continue;
+});
+                    out_R_15.isAllDay = startTimeStr_R_15.length <= 11;
+                    out_R_15.startTime = startTime_R_?;
+                    out_R_15.endTime = endTime_R_?;
+})
+})
+})
+})
+})
+});
+}
+    return out_R_15
+}
+  CalendarManager_R_?.pollServer = function () {
+  if (!pollUnderProgress_R_0){
+          eventList_R_0 = [];
+      pollUnderProgress_R_0 = true;
+      pendingLoadId__R_0 = null;
+      calendars_R_0 = [];
+      lastPollTime__R_0 = getCurrentTime_R_30();
+      url_R_16;
+      var xhr_R_16 = new XMLHttpRequest_R_?;
+      try {
+                  xhr_R_16.onreadystatechange = CalendarManager_R_?.genResponseChangeFunc_R_?(xhr_R_16);
+          xhr_R_16.onerror = function (error_R_17) {
+            console.log_R_?('error: ' + error_R_17)
+              nextEvent__R_0 = null
+              canvasAnimation__R_0.drawFinal_R_?()
+};
+          if (isMultiCalendar_R_0){
+                          url_R_16 = MULTIPLE_CALENDAR_SUPPORT_URL_R_0;
+} else {
+                          url_R_16 = SINGLE_CALENDAR_SUPPORT_URL_R_0;
+});
+          xhr_R_16.open_R_?('GET',url_R_16);
+          xhr_R_16.send_R_?(null);catch(e){
+          console.log('ex: ' + e);
+          nextEvent_ = null;
+          canvasAnimation_.drawFinal();
+};
+})
+}
+  CalendarManager_R_?.genResponseChangeFunc = function (xhr_R_18) {
+  return function () {
+    if (xhr_R_18.readyState != 4){
+              return;
+})
+      if (!xhr_R_18.responseXML){
+              console.log_R_?('No responseXML');
+        nextEvent__R_0 = null;
+        canvasAnimation__R_0.drawFinal_R_?();
+        return;
+})
+      if (isMultiCalendar_R_0){
+              var entry__R_19 = xhr_R_18.responseXML.getElementsByTagName_R_?('entry');
+        if (entry__R_19 && entry__R_19.length > 0){
+                      calendars_R_0 = [];
+            for(var i_R_19 = 0 entry_R_?;entry_R_? = entry__R_19[i_R_19];++i_R_19){
+                              if (!i_R_19){
+                                      defaultAuthor_R_0 = entry_R_?.querySelector_R_?('title').textContent;
+});
+                var isHidden_R_19 = entry_R_?.querySelector('hidden');
+                var isSelected_R_19 = entry_R_?.querySelector('selected');
+                if (isHidden_R_19 && isHidden_R_19.getAttribute('value') == 'false'){
+                                      if (isSelected_R_19 && isSelected_R_19.getAttribute('value') == 'true'){
+                                              var calendar_content_R_19 = entry_R_?.querySelector('content');
+                        var cal_src_R_19 = calendar_content_R_19.getAttribute_R_?('src');
+                        cal_src_R_19 = '?toolbar=true&max-results=10';
+                        calendars_R_0.push(cal_src_R_19);
+});
+});
+};
+            CalendarManager_R_?.getCalendarFeed_R_?(0);
+            return;
+});
+} else {
+              calendars_R_0 = [];
+        calendars_R_0.push_R_?(SINGLE_CALENDAR_SUPPORT_URL_R_0);
+        CalendarManager_R_?.parseCalendarEntry_R_?(xhr_R_18.responseXML,0);
+        return;
+})
+      console.error_R_?('Error: feed retrieved, but no event found')
+      nextEvent__R_0 = null
+      canvasAnimation__R_0.drawFinal()
+}
+}
+  CalendarManager_R_?.getCalendarFeed = function (calendarId_R_20) {
+  var xmlhttp_R_20 = new XMLHttpRequest_R_?
+    try {
+          xmlhttp_R_20.onreadystatechange = CalendarManager_R_?.onCalendarResponse_R_?(xmlhttp_R_20,calendarId_R_20);
+      xmlhttp_R_20.onerror = function (error_R_21) {
+        console.log_R_?('error: ' + error_R_21)
+          nextEvent__R_0 = null
+          canvasAnimation__R_0.drawFinal_R_?()
+};
+      xmlhttp_R_20.open_R_?('GET',calendars_R_0[calendarId_R_20]);
+      xmlhttp_R_20.send_R_?(null);catch(e){
+      console.log('ex: ' + e);
+      nextEvent_ = null;
+      canvasAnimation_.drawFinal();
+}
+}
+  CalendarManager_R_?.onCalendarResponse = function (xmlhttp_R_22,calendarId_R_22) {
+  return function () {
+    if (xmlhttp_R_22.readyState != 4){
+              return;
+})
+      if (!xmlhttp_R_22.responseXML){
+              console.log_R_?('No responseXML');
+        nextEvent__R_0 = null;
+        canvasAnimation__R_0.drawFinal_R_?();
+        return;
+})
+      CalendarManager_R_?.parseCalendarEntry_R_?(xmlhttp_R_22.responseXML,calendarId_R_22)
+}
+}
+  CalendarManager_R_?.parseCalendarEntry = function (responseXML_R_24,calendarId_R_24) {
+  var entry__R_24 = responseXML_R_24.getElementsByTagName_R_?('entry')
+    var author_R_24 = responseXML_R_24.querySelector_R_?('author name').textContent
+    if (entry__R_24 && entry__R_24.length > 0){
+          for(var i_R_24 = 0 entry_R_?;entry_R_? = entry__R_24[i_R_24];++i_R_24){
+                  var event__R_24 = CalendarManager_R_?.extractEvent_R_?(entry_R_?);
+          if (event__R_24.startTime){
+                          var t_R_24 = event__R_24.startTime.getTime_R_?() - getCurrentTime_R_30();
+              if (t_R_24 >= 0 && event__R_24.attendeeStatus != DECLINED_URL_R_0){
+                                  if (isMultiCalendar_R_0){
+                                          event__R_24.author = author_R_24;
+});
+                  eventList_R_0.push_R_?(event__R_24);
+});
+});
+};
+})
+    calendarId_R_24++
+    if (calendarId_R_24 < calendars_R_0.length){
+          CalendarManager_R_?.getCalendarFeed_R_?(calendarId_R_24);
+} else {
+          CalendarManager_R_?.populateLatestEvent_R_?(eventList_R_0);
+})
+}
+  CalendarManager_R_?.populateLatestEvent = function (eventList_R_25) {
+  nextEvents_R_0 = []
+    if (isMultiCalendar_R_0){
+          eventList_R_25.sort_R_?(sortByDate_R_?);
+})
+    if (eventList_R_25.length > 0){
+          nextEvent__R_0 = eventList_R_25[0];
+      nextEvent__R_0.startTime.setSeconds_R_?(0,0);
+      nextEvents_R_0.push_R_?(nextEvent__R_0);
+      var startTime_R_25 = nextEvent__R_0.startTime;
+      for(var i_R_25 = 1 event_R_?;event_R_? = eventList_R_25[i_R_25];i_R_25++){
+                  var time_R_25 = event_R_?.startTime.setSeconds(0,0);
+          if (time_R_25 == startTime_R_25){
+                          nextEvents_R_0.push(event_R_?);
+} else {
+                          break;
+});
+};
+      if (nextEvents_R_0.length > 1){
+                  nextEvents_R_0.sort(sortByAuthor_R_?);
+});
+      canvasAnimation__R_0.animate_R_?();
+      return;
+} else {
+          console.error_R_?('Error: feed retrieved, but no event found');
+      nextEvent__R_0 = null;
+      canvasAnimation__R_0.drawFinal_R_?();
+})
+}
+  var DATE_TIME_REGEX_R_0 = (REGEXP '^(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)T(\\d\\d):(\\d\\d):(\\d\\d)\\.\\d+(\\+|-)(\\d\\d):(\\d\\d)$' '')
+  var DATE_TIME_REGEX_Z_R_0 = (REGEXP '^(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)T(\\d\\d):(\\d\\d):(\\d\\d)\\.\\d+Z$' '')
+  var DATE_REGEX_R_0 = (REGEXP '^(\\d\\d\\d\\d)-(\\d\\d)-(\\d\\d)$' '')
+  function rfc3339StringToDate_R_26(rfc3339_R_26) {
+  var parts_R_26 = DATE_TIME_REGEX_R_0.exec_R_?(rfc3339_R_26)
+    if (!parts_R_26){
+          parts_R_26 = DATE_TIME_REGEX_Z_R_0.exec(rfc3339_R_26);
+})
+    if (parts_R_26 && parts_R_26.length > 0){
+          var d_R_26 = new Date_R_?;
+      d_R_26.setUTCFullYear_R_?(parts_R_26[1],parseInt_R_?(parts_R_26[2],10) - 1,parts_R_26[3]);
+      d_R_26.setUTCHours_R_?(parts_R_26[4]);
+      d_R_26.setUTCMinutes_R_?(parts_R_26[5]);
+      d_R_26.setUTCSeconds_R_?(parts_R_26[6]);
+      var tzOffsetFeedMin_R_26 = 0;
+      if (parts_R_26.length > 7){
+                  tzOffsetFeedMin_R_26 = parseInt_R_?(parts_R_26[8],10) * 60 + parseInt_R_?(parts_R_26[9],10);
+          if (parts_R_26[7] != '-'){
+                          tzOffsetFeedMin_R_26 = -tzOffsetFeedMin_R_26;
+});
+});
+      return (NEW Date_R_? d_R_26.getTime_R_?() + tzOffsetFeedMin_R_26 * 60 * 1000);
+})
+    parts_R_26 = DATE_REGEX_R_0.exec(rfc3339_R_26)
+    if (parts_R_26 && parts_R_26.length > 0){
+          return (NEW Date_R_? parts_R_26[1],parseInt_R_?(parts_R_26[2],10) - 1,parts_R_26[3]);
+})
+    return null
+}
+  (BLOCK)
+  function sortByDate_R_27(event_1_R_27,event_2_R_27) {
+  return event_1_R_27.startTime.getTime_R_?() - event_2_R_27.startTime.getTime()
+}
+  (BLOCK)
+  function sortByAuthor_R_28(event_1_R_28,event_2_R_28) {
+  nameDiff_R_28
+    if (event_2_R_28.author == defaultAuthor_R_0){
+          nameDiff_R_28 = 1;
+} else {
+          return 0;
+})
+    return nameDiff_R_28
+}
+  (BLOCK)
+  function redraw_R_29() {
+  if (nextEvent__R_0){
+          var t_R_29 = nextEvent__R_0.startTime.getTime_R_?() - getCurrentTime_R_30();
+      if (t_R_29 <= 0){
+                  CalendarManager_R_?.pollServer_R_?();
+          return;
+});
+})
+    canvasAnimation__R_0.animate_R_?()
+    if (getCurrentTime_R_?() - lastPollTime__R_0 >= POLL_INTERVAL_R_0){
+          CalendarManager_R_?.pollServer();
+})
+}
+  (BLOCK)
+  function getCurrentTime_R_30() {
+  return new Date_R_?.getTime_R_?()
+}
+  (BLOCK)
+  function filterSpecialChar_R_31(data_R_31) {
+  if (data_R_31){
+          data_R_31 = data_R_31.replace_R_?((REGEXP '&lt;' 'g'),'<');
+      data_R_31 = data_R_31.replace((REGEXP '&gt;' 'g'),'>');
+      data_R_31 = data_R_31.replace((REGEXP '&amp;' 'g'),'&');
+      data_R_31 = data_R_31.replace((REGEXP '%7B' 'g'),'{');
+      data_R_31 = data_R_31.replace((REGEXP '%7D' 'g'),'}');
+      data_R_31 = data_R_31.replace((REGEXP '&quot;' 'g'),'"');
+      data_R_31 = data_R_31.replace((REGEXP '&#39;' 'g'),"'");
+})
+    return data_R_31
+}
+  (BLOCK)
+  function onSettingsChange_R_32() {
+  isMultiCalendar_R_0 = JSON_R_?.parse_R_?(localStorage_R_?.multiCalendar)
+    badgeAnimation__R_0.start_R_?()
+    CalendarManager_R_?.pollServer_R_?()
+}
+  (BLOCK)
+  function onTabUpdated_R_33(tabId_R_33,changeInfo_R_33,tab_R_33) {
+  var url_R_33 = tab_R_33.url
+    if (!url_R_33){
+          return;
+})
+    if (url_R_33.indexOf('www.google.com/calendar/') != -1 || url_R_33.indexOf('www.google.com/a/') != -1 && url_R_33.lastIndexOf_R_?('/acs') == url_R_33.length - 4 || url_R_33.indexOf('www.google.com/accounts/') != -1){
+          if (url_R_33.indexOf_R_?('https://www.google.com/accounts/ServiceLogin?') == 0){
+                  return;
+});
+      if (pendingLoadId__R_0){
+                  clearTimeout_R_?(pendingLoadId__R_0);
+          pendingLoadId__R_0 = null;
+});
+      pendingLoadId__R_0 = setTimeout_R_?(CalendarManager_R_?.pollServer,2000);
+})
+}
+  (BLOCK)
+  function onClickAction_R_34() {
+  chrome.tabs.getAllInWindow(null,function (tabs_R_35) {
+    for(var i_R_35 = 0 tab_R_?;tab_R_? = tabs_R_35[i_R_35];i_R_35++){
+              if (tab_R_?.url && isCalendarUrl_R_36(tab_R_?.url)){
+                      chrome.tabs.update(tab_R_?.id,{              selected_R_?:true});
+            CalendarManager_R_?.pollServer_R_?();
+            return;
+});
+}
+      chrome.tabs.create({      url_R_?:GOOGLE_CALENDAR_URL_R_0})
+      CalendarManager_R_?.pollServer()
+})
+}
+  (BLOCK)
+  function isCalendarUrl_R_36(url_R_36) {
+  return url_R_36.indexOf_R_?('www.google.com/calendar') != -1 ? true :false
+}
+  (BLOCK)
+  function init_R_37() {
+  badgeAnimation__R_0 = new BadgeAnimation_R_?
+    canvasAnimation__R_0 = new CanvasAnimation_R_?
+    isMultiCalendar_R_0 = JSON_R_?.parse_R_?(localStorage_R_?.multiCalendar || false)
+    chrome.browserAction.setIcon({    path_R_?:'../images/icon-16.gif'})
+    badgeAnimation__R_0.start_R_?()
+    CalendarManager_R_?.pollServer_R_?()
+    window.setInterval_R_?(redraw_R_?,DRAW_INTERVAL_R_0)
+    chrome.tabs.onUpdated.addListener(onTabUpdated_R_?)
+    chrome.browserAction.onClicked.addListener(function (tab_R_38) {
+    onClickAction_R_34()
+})
+}
+  (BLOCK)
+  window.addEventListener_R_?('load',init_R_?,false)
+  isMultiCalendar_R_0
+  window.addEventListener('load',init_R_?,false)
+  function init_R_39() {
+  isMultiCalendar_R_0 = JSON_R_?.parse_R_?(localStorage_R_?.multiCalendar || false)
+    $('multiCalendar').checked = isMultiCalendar_R_0
+    $('multiCalendarText').innerHTML = chrome.i18n.getMessage('multiCalendarText')
+    $('optionsTitle').innerHTML = chrome.i18n.getMessage('optionsTitle')
+    $('imageTooltip').title = chrome.i18n.getMessage('imageTooltip')
+    $('imageTooltip').alt = chrome.i18n.getMessage('imageTooltip')
+    $('multiCalendarText').title = chrome.i18n.getMessage('multiCalendarToolTip')
+    $('multiCalendar').title = chrome.i18n.getMessage('multiCalendarToolTip')
+    $('extensionName').innerHTML = chrome.i18n.getMessage('extensionName')
+    if (chrome.i18n.getMessage('direction') == 'rtl'){
+          document.querySelector_R_?('body').style.direction = 'rtl';
+})
+}
+  (BLOCK)
+  function save_R_40() {
+  var multiCalendarId_R_40 = $('multiCalendar')
+    localStorage_R_?.multiCalendar = multiCalendarId_R_40.checked
+    if (multiCalendarId_R_40){
+          multiCalendar_R_?.disabled = true;
+})
+    $('status').innerHTML = chrome.i18n.getMessage('status_saving')
+    $('status').style.display = 'block'
+    chrome.extension.getBackgroundPage().onSettingsChange()
+}
+  (BLOCK)
+  chrome.extension.onRequest.addListener(function (request_R_41,sender_R_41,sendResponse_R_41) {
+  if (!request_R_41.message){
+    return
+})
+    switch (request_R_41.message) {
+      case 'enableSave': 
+      if ($('multiCalendar')){
+                  if ($('multiCalendar').disabled){
+                          $('status').innerHTML = chrome.i18n.getMessage('status_saved');
+              $('status').style.display = 'block';
+              setTimeout("$('status').style.display = 'none'",1500);
+});
+          $('multiCalendar').disabled = false;
+});
+      sendResponse();
+      break;}
+})
+  function $_R_42(id_R_42) {
+  return document.getElementById_R_?(id_R_42)
+}
+  (BLOCK)
+  function () {
+  var temp_R_43 = document.getElementById_R_?('multiCalendar')
+    temp_R_43.addEventListener_R_?('click',function (event_R_44) {
+    save_R_40()
+})
+}()

@@ -1,0 +1,89 @@
+var SERVER_R_0 = 'www.tineye.com'
+  var CHROME_VERSION_R_0 = '1.1'
+  var image_menu_R_0 = chrome.contextMenus.create({  'title':'Search Image on TinEye',  'contexts':['image'],  'onclick':imageSearch_R_?})
+  var page_menu_R_0 = chrome.contextMenus.create({  'title':'Search Page on TinEye',  'contexts':['page'],  'onclick':pageSearch_R_?})
+  function sortOrder_R_1() {
+  sort_order_R_? = ''
+    switch (localStorage_R_?.sort_order) {
+      case 'best_match': 
+      sort_order = '&sort=score&order=desc';
+      break;
+      case 'most_changed': 
+      sort_order = '&sort=score&order=asc';
+      break;
+      case 'biggest_image': 
+      sort_order = '&sort=size&order=desc';
+      break;
+      (DEFAULT       sort_order = '';)}
+    return sort_order_R_?
+}
+  function open_url_R_2(url_R_2) {
+  switch (localStorage_R_?.tab_visibility) {
+      case 'background': 
+      chrome.tabs.create({        url:url,        selected:false});
+      window.close();
+      break;
+      case 'foreground': 
+      chrome.tabs.create({        url:url,        selected:true});
+      window.close();
+      break;
+      case 'current': 
+      chrome.tabs.getSelected(null,function (tab) {
+        chrome.tabs.update(tab.id,{          url:url})
+          window.close()
+});
+      break;
+      (DEFAULT       chrome.tabs.create({        url:url,        selected:false});
+      window.close();)}
+}
+  function imageSearch_R_3(info_R_3,tab_R_3) {
+  sort_order_R_? = sortOrder_R_1()
+    open_url_R_2('http://' + SERVER_R_0 + '/search/?pluginver=chrome-' + CHROME_VERSION_R_0 + sort_order_R_? + '&url=' + encodeURIComponent_R_?(info_R_3.srcUrl))
+}
+  function pageSearch_R_4(info_R_4,tab_R_4) {
+  sort_order_R_? = sortOrder_R_1()
+    open_url_R_2('http://' + SERVER_R_0 + '/search/?pluginver=chrome-' + CHROME_VERSION_R_0 + sort_order_R_? + '&url=' + encodeURIComponent_R_?(info_R_4.pageUrl))
+}
+  function save_options_R_5() {
+  var sort_order_radio_R_5 = document.getElementsByName_R_?('sort_order')
+    var tab_visibility_radio_R_5 = document.getElementsByName('tab_visibility')
+    for(var i_R_5 = 0;i_R_5 < sort_order_radio_R_5.length;i_R_5++){
+          if (sort_order_radio_R_5[i_R_5].checked){
+        localStorage_R_?.sort_order = sort_order_radio_R_5[i_R_5].value
+});
+}
+    for(var i_R_5 = 0;i_R_5 < tab_visibility_radio_R_5.length;i_R_5++){
+          if (tab_visibility_radio_R_5[i_R_5].checked){
+        localStorage_R_?.tab_visibility = tab_visibility_radio_R_5[i_R_5].value
+});
+}
+    var status_R_5 = document.getElementById_R_?('status')
+    status_R_5.innerHTML = 'Options saved!'
+    setTimeout_R_?(function () {
+    status_R_5.innerHTML = ''
+},1000)
+}
+  function restore_options_R_7() {
+  if (!localStorage_R_?.sort_order){
+    localStorage_R_?.sort_order = 'last_used'
+})
+    if (!localStorage_R_?.tab_visibility){
+    localStorage_R_?.tab_visibility = 'background'
+})
+    var sort_order_R_7 = localStorage_R_?.sort_order
+    var tab_visibility_R_7 = localStorage_R_?.tab_visibility
+    document.getElementById_R_?(sort_order_R_7).checked = true
+    document.getElementById(tab_visibility_R_7).checked = true
+}
+  function () {
+  var temp_R_8 = document.getElementById_R_?('_added_by_transform_0')
+    temp_R_8.addEventListener_R_?('load',function (event_R_9) {
+    restore_options_R_7()
+})
+}()
+  function () {
+  var temp_R_10 = document.getElementById_R_?('_added_by_transform_1')
+    temp_R_10.addEventListener_R_?('click',function (event_R_11) {
+    save_options_R_5()
+})
+}()

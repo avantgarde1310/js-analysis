@@ -1,0 +1,6 @@
+Extension Name: Google Translate
+Extension Identifier: aapbdbdomjkkjkaonfhkkikfgjllcleb
+Number of functions: 96
+Number of anonymous functions: 50
+Number of named functions: 46
+Number of functions that reference chrome: 3

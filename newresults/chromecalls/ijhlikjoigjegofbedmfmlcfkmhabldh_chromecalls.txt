@@ -1,0 +1,7 @@
+chrome.extension.getBackgroundPage.getMatch
+chrome.browserAction.setIcon
+chrome.browserAction.setTitle
+chrome.browserAction.setBadgeBackgroundColor
+chrome.browserAction.setBadgeText
+chrome.tabs.create
+chrome.extension.getBackgroundPage.launchLink

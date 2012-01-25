@@ -1,0 +1,6 @@
+Extension Name: Google Chrome to Phone Extension
+Extension Identifier: oadboiipflhobonjjffjbfekfjcgkhco
+Number of functions: 391
+Number of anonymous functions: 361
+Number of named functions: 30
+Number of functions that reference chrome: 23

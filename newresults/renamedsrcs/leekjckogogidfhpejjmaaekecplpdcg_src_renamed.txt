@@ -1,0 +1,65 @@
+var mgDownloadHelper_R_0 = {}
+  mgDownloadHelper_R_0.getFileName = function (doc_R_1) {
+  try {
+          var downloadlink_R_1 = doc_R_1.getElementById_R_?('downloadlink');
+      var href_R_1 = downloadlink_R_1.firstChild.href;
+      var p_R_1 = href_R_1.lastIndexOf_R_?('/');
+      if (p_R_1 != -1){
+                  var fileName_R_1 = href_R_1.substring_R_?(p_R_1 + 1);
+          fileName_R_1 = fileName_R_1.replace_R_?('%20',' ');
+          return fileName_R_1;
+} else {
+                  return '';
+});catch(ex){
+      return '';
+}
+}
+  mgDownloadHelper_R_0.onLoad = function () {
+  var doc_R_2 = document
+    var downloadcounter_R_2 = doc_R_2.getElementById_R_?('downloadcounter')
+    if (downloadcounter_R_2){
+          downloadcounter_R_2.style.display = 'none';
+      var downloadlink_R_2 = doc_R_2.getElementById('downloadlink');
+      if (downloadlink_R_2){
+                  downloadlink_R_2.hidden = true;
+          if (downloadlink_R_2.firstChild){
+            downloadlink_R_2.firstChild.style.display = 'none'
+});
+});
+      var folderPath_R_2 = '';
+      doc_R_2.destFile = null;
+      var div_R_2 = doc_R_2.createElement_R_?('div');
+      div_R_2.style.width = '290';
+      div_R_2.style.marginLeft = '18px';
+      div_R_2.style.marginTop = '20px';
+      var confirmText_R_2 = doc_R_2.createElement('div');
+      confirmText_R_2.innerHTML = '';
+      confirmText_R_2.style.color = '#576a45';
+      confirmText_R_2.style.backgroundColor = '#c4ff8f';
+      confirmText_R_2.style.WebkitBorderRadius = '5px';
+      confirmText_R_2.style.padding = '5px';
+      confirmText_R_2.style.paddingTop = '2px';
+      div_R_2.appendChild_R_?(confirmText_R_2);
+      downloadcounter_R_2.parentNode.appendChild(div_R_2);
+      var ina_R_2 = setInterval_R_?(function () {
+        var countdown_R_3 = doc_R_2.getElementById_R_?('countdown')
+          confirmText_R_2.innerHTML = 'Now you can <b>continue browsing</b>, the file will be downloaded automatically!<br>Your automatic download will start in ' + countdown_R_3.innerHTML + ' seconds.'
+          if (countdown_R_3.innerHTML == '1'){
+                      var inaa_R_3 = setTimeout_R_?(function () {
+              var downloadlink_R_4 = doc_R_2.getElementById_R_?('downloadlink')
+                document.location = downloadlink_R_4.firstChild.href
+},1500);
+            clearInterval_R_?(ina_R_2);
+})
+},1000);
+})
+}
+  mgDownloadHelper_R_0.onLoad_R_?()
+  if (localStorage_R_?['init'] != 'false' && localStorage_R_?['init'] != false){
+      localStorage_R_?['exver'] = '1.2';
+    localStorage_R_?['init'] = false;
+} else {
+      if (localStorage_R_?['exver'] != '1.2'){
+              localStorage_R_?['exver'] = '1.2';
+});
+})
