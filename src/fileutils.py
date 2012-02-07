@@ -36,6 +36,25 @@ def print_directory_tree(dir_tree):
     # NOT IMPLEMENTED YET
     return None
 
+def get_all_files_in_directory(directory):
+    """
+    Return the list of absolute paths to all files in the directory.
+    
+    dir - directory to find files in
+    """
+    
+    dir_tree = get_directory_tree(directory)
+    dirpath, filenames = None, None
+    
+    # get the first tuple of the elements in dir_tree, whose first 
+    # element will be referring to the current directory
+    for _dirpath, _dirnames, _filenames in dir_tree:
+        dirpath = _dirpath
+        filenames = _filenames
+        break
+    
+    return [dirpath+ "\\" + filename for filename in filenames]
+    
 def is_file_type(filename, extension):
     """
     Checks whether a file is of a certain file type (by checking its
@@ -116,3 +135,19 @@ def get_all_javascript_files_absolute(dir):
                 js_list.append(str(os.path.join(dirpath, file)))
     
     return js_list
+
+def combine_js_files(path):
+    """
+    Given a path, combines all the JavaScript files found in that path into
+    one huge string.
+    
+    path     - a directory where the JavaScript files are contained
+    """
+    file_list = get_all_javascript_files_absolute(path)
+    js_string = ""
+    
+    for filename in file_list:
+        js_string += "//" + filename + "\n\n"
+        js_string += open(filename).read() + "\n\n\n"
+    
+    return js_string
