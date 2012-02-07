@@ -1,0 +1,6 @@
+Var Assignment List Containing Chrome
+>   var storage = chrome.extension.getBackgroundPage().WebDeveloper.Storage
+>   var storage = chrome.extension.getBackgroundPage().WebDeveloper.Storage
+
+Assignment List Containing Chrome
+-----EMPTY-----

@@ -1,0 +1,5 @@
+Var Assignment List Containing Chrome
+>   var chromeExtURL = chrome://downloads/
+
+Assignment List Containing Chrome
+-----EMPTY-----

@@ -1,0 +1,7 @@
+Var Assignment List Containing Chrome
+-----CALLS TO CHROME API ASSIGNED TO LOCAL VARIABLES-----
+-----BUT NO CHROME API INSTANCE IS ASSIGNED TO A VAR-----
+
+Assignment List Containing Chrome
+-----   CALLS TO CHROME API ASSIGNED TO VARIABLES   -----
+-----BUT NO CHROME API INSTANCE IS ASSIGNED TO A VAR-----
