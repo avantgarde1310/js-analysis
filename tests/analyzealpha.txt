@@ -1,0 +1,52 @@
+('SCRIPT', 0, None, None)
+('VAR', 1, None, 'var') <----- currLvl 1
+('IDENTIFIER', 2, 'a', 'a')
+('NUMBER', 3, None, 5)
+('FUNCTION', 1, 'localVars', 'function') <----- currLvl 1 (+ 2)
+('SCRIPT', 2, None, '{')
+('VAR', 3, None, 'var') <----- currLvl 3
+('IDENTIFIER', 4, 'a', 'a')
+('NUMBER', 5, None, 6)
+('FUNCTION', 3, 'innerVars', 'function') <-----  currLvl 3 (+ 2)
+('SCRIPT', 4, None, '{')
+('VAR', 5, None, 'var') <-----  currLvl 5
+('IDENTIFIER', 6, 'a', 'a')
+('NUMBER', 7, None, 10)
+('VAR', 3, None, 'var') <-----  currLvl 5 -> 3 (need to go to parentFrame 1 time)
+('IDENTIFIER', 4, 'b', 'b')
+('NUMBER', 5, None, 7)
+('FUNCTION', 3, 'innerVars2', 'function') <----- 
+('SCRIPT', 4, None, '{')
+('VAR', 5, None, 'var') <-----
+('IDENTIFIER', 6, 'c', 'c')
+('NUMBER', 7, None, 11)
+('VAR', 1, None, 'var') <-----
+('IDENTIFIER', 2, 'z', 'z')
+('NUMBER', 3, None, 5)
+('FUNCTION', 1, 'secondFunc', 'function') <-----
+('SCRIPT', 2, None, '{')
+('VAR', 3, None, 'var') <-----
+('IDENTIFIER', 4, 'inSec', 'inSec')
+('NUMBER', 5, None, 60)
+('VAR', 3, None, 'var') <-----
+('IDENTIFIER', 4, 'a', 'a')
+('IDENTIFIER', 5, None, 'inSec')
+('VAR', 3, None, 'var') <-----
+('IDENTIFIER', 4, 'b', 'b')
+('IDENTIFIER', 5, None, 'a')
+('VAR', 3, None, 'var') <-----
+('IDENTIFIER', 4, 'c', 'c')
+('IDENTIFIER', 5, None, 'b')
+
+
+<<global, None, {'a': 5, 'z': 5}, 
+    [
+     <<localVars, global, {'a': 6, 'b': 7}, 
+        [
+         <<innerVars, localVars, {'a': 10}, []>>, 
+         <<innerVars2, localVars, {'c': 11}, []>>, 
+        ]
+     >>, 
+     <<secondFunc, global, {'a': 'inSec', 'c': 'b', 'b': 'a', 'inSec': 60}, []>>, 
+    ]
+>>

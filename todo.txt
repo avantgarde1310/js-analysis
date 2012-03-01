@@ -1,0 +1,30 @@
+
+1 Rename functions
+2 Replace call, other references
+
+For each extension:
+    1. # of functions, including nested ones
+    2. Call graph (in DOT format)
+    
+------
+
+1.  Check all assignments on the AST that contain the chrome keyword on the right hand side, 
+    and print it out
+
+2.  Alpha-renamed AST -> 3A Analysis -> List of statements.
+
+	Three-address code. Take a pyNarcissus, and generate a list of statements in three-address form.
+	At most three operands, the first operand is an =. 
+	Take all the integer operations, 
+	+, -, *, / -> intOp
+	>, <, >=, -> relOp
+	&, |,     -> bitwiseOp
+	.         -> dotOp
+	call      -> callOp
+	Throw away:
+		- Control structures.
+	
+	<empty> = <empty> return <val>
+	t       = <empty> new <val>
+	foo     = <empty> function 
+	v1 [STORE]
