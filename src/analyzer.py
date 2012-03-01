@@ -1,10 +1,20 @@
-# Written in Python 2
-# Ivan Gozali
+'''
+Last updated on December 6, 2011
+
+@author: Ivan Gozali
+
+analyzer.py
+
+An obsolete Google Chrome Extension analyzer which takes in an extension 
+folder and looks for occurrences of the "chrome" keyword. Has been replaced
+with driver.py for a more sound analysis. 
+'''
+
 
 import pynarcissus.jsparser
 from ucb import main
 from fileutils import *
-
+import astutils
 DEBUGGING = True
 
 # -------------- Other Utility Functions -----------------------
@@ -45,7 +55,7 @@ class FunctionContainer(object):
             if is_call_node(node):
                 call_list.append(node)
                 
-        traverse_AST(node, append_call_node)
+        astutils.traverse_AST(node, append_call_node)
         return call_list
 
     def get_chrome_call_list(self):
@@ -90,7 +100,7 @@ class GlobalContainer(object):
             if is_call_node(node):
                 call_list.append(node)
                 
-        traverse_AST(node, append_call_node)
+        astutils.traverse_AST(node, append_call_node)
         return call_list
     
     def get_call_list(self):
@@ -131,68 +141,11 @@ def get_all_functions_in_global(ast):
         functions.append(FunctionContainer(function.name, function))
     return functions
 
-def create_AST(js_path):
-    """
-    Returns the AST corresponding to the JavaScript file specified as js_path.
-    js_path can be relative or absolute.
-    """
-    
-    if os.path.exists(js_path):
-        js_file = convert_abs_to_rel(js_path)
-    else:
-        return "File does not exist."
-    
-    if is_javascript_file(js_file):
-        return pynarcissus.jsparser.parse(open(js_path, "r").read(), js_file)
-
-def create_AST_from_string(str):
-    """
-    Returns the AST corresponding to the JavaScript file specified as js_path.
-    js_path can be relative or absolute.
-    """
-    return pynarcissus.jsparser.parse(str, "fromString.js")
-
-# traverse_AST done. Need to check for missed nodes, though.
-def traverse_AST(node, fn):
-    """
-    Traverses the whole AST passed in as node, and applies the function fn
-    to each node.
-    
-    This function WILL NOT TRAVERSE THE varDecls attribute of the AST, because
-    the varDecls attribute is of type list, and as such does not get included.
-    
-    If we call count_nodes on the AST, the result will be the number of nodes 
-    in the AST minus the number of nodes in the AST's varDecl.
-    
-    node - The head node of the AST
-    fn   - A function that will be applied to every node in the AST.
-    """
-    fn(node)
-    
-    # If the current node has a list, then the elements of the list
-    # will be of type jsparser.Node. Traverse all of them.
-    if len(node) != 0:
-        for elem in node:
-            traverse_AST(elem, fn)
-    
-    # Regardless of whether it has a list, it might contain a 
-    # body or expression attribute. Try to look for them also.
-    for key in node.__dict__.keys():
-        attr = getattr(node, str(key))
-
-        # Special handling for looping statements, otherwise it 
-        # will recurse infinitely (especially the CONTINUE statement)
-        if key == "target":
-            continue
-        
-        if type(attr) == pynarcissus.jsparser.Node:
-            traverse_AST(attr, fn)
-
 def get_node_count(ast):
     count = {'val':0}
     def count_nodes(node):
         count['val'] += 1
-    traverse_AST(ast, count_nodes)
+    astutils.traverse_AST(ast, count_nodes)
     return count['val']
 
 def analyze_single(filename):
@@ -200,7 +153,7 @@ def analyze_single(filename):
     
     # ast is the whole JavaScript file.
     try:
-        ast = create_AST(filename)
+        ast = astutils.create_AST(filename)
     except Exception, e:
         result += "Error occurred while parsing file \"" + filename + "\"\n\n"
         return result, 0
@@ -252,7 +205,7 @@ def analyze_statistics(filename):
         return False
     
     try:
-        ast = create_AST(filename)
+        ast = astutils.create_AST(filename)
     except Exception, e:
         raise e
     contains_chrome_calls = 0

@@ -29,7 +29,7 @@ def extract_data_from_text(text):
     chrome_refs = get_text_after_colon(data[5]).strip()
     percentage_refs = float(chrome_refs) / float(total_functions) * 100
     
-    # return a string of the format "Google Translate & 87 & 2 & 2.3 \\ \hline"
+    # return a string of the format "Clip to Evernote & 4241 & 170 & 4.0 \\ \hline"
     return ext_name + " & " + total_functions + " & " + chrome_refs + " & " + \
         "{:.1f}".format(percentage_refs) + " \\\\ \\hline"
         
@@ -43,7 +43,7 @@ def extract_data(filelist):
 
 @_main
 def main(*args):
-    parser = argparse.ArgumentParser(description="Module to convert log files into Excel readable format.")
+    parser = argparse.ArgumentParser(description="Module to convert log files into table format.")
     
     parser.add_argument("path", action="store", help="a file to be read in current directory or a directory containing files to be read")
     parser.add_argument("-o", action="store", dest="outputfile", default="outputfile.txt", help="specifies output file name (default: outputfile.txt)")

@@ -1,8 +1,10 @@
 import fileutils
-import analyzer
 import alpharenamer
+import astutils
 import pynarcissus.jsparser
 import pynarcissus.sexp
+
+import argparse
 
 from ucb import main
 
@@ -94,7 +96,7 @@ def get_extension_name(path):
                 return tempstr
         print "Name not found."
         return None
-
+    
 @main
 def run(*args):
     print "\n-----------------JavaScript Static Analyzer 1.0-----------------"
@@ -119,22 +121,20 @@ def run(*args):
     except:
         ext_name = "Unknown"
     print(ext_name)
+    
     print "Combining extension .js files...",
-    file_list = fileutils.get_all_javascript_files_absolute(ext_path + "\\" + ext)
-    js_string = ""
-    for filename in file_list:
-        js_string += "//" + filename + "\n\n"
-        js_string += open(filename).read() + "\n\n\n"
+    js_string = fileutils.combine_js_files(ext_path + "\\" + ext)
     print "OK"
     
     print "Creating AST...",
-    ast = analyzer.create_AST_from_string(js_string)
+    ast = astutils.create_AST_from_string(js_string)
     print "OK"
     
     """ Create Frame object and execute alpha-rename """
     print "Creating frames...",
     fr = alpharenamer.create_frames(ast)
     print "OK"
+    
     print "Alpha-renaming...",
     fr = alpharenamer.alpha_rename(fr, ast)
     print "OK"

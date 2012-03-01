@@ -291,7 +291,9 @@ class Call(object):
         self.name = node[0].value
         self.node = node
         
-        # Special handling for chrome calls.
+        # Special handling for chrome calls. These few lines of code
+        # traverse down the identifier node, looking for parts of the
+        # dot call, and joins them into one.
         complete_name = []
         def append_name(node, level):
             if node.type == "IDENTIFIER":
