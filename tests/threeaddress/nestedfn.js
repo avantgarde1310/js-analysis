@@ -30,7 +30,7 @@ Should output:
 
 function a(){
     function b(){
-        return 7;
+        return;
     }
     function c(){
         return 8;

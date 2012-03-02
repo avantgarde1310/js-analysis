@@ -23,4 +23,6 @@ function executeWithFive(fn){
     return fn(a, 5);
 }
 
-var z = executeWithFive(function adder(x, y) {return x + y;});
+executeWithFive(function adder(x, y) {return x + y;}, function differencer(x, y) {return x + y});
+
+operate(function subtract(x, y){var c = x - y;return c;}).filter(function isEven(n){return 0;}).hash();

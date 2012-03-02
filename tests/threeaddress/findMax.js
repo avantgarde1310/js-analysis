@@ -16,9 +16,12 @@ function findMax(arr){
         return arr[0];
     var max = arr[0];
     var i = 1;
-    for (i = 1; i < arr.length; i = i + 1){
+    for (i = 1; i < arr.length; i++){
         if (arr[i] > max)
             max = arr[i];
     }
+    do {
+        i++;
+    } while (i < 1000);
     return max;
 }

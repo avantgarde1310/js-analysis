@@ -18,6 +18,8 @@ Should output:
 
 var a = 5;
 var b = 6;
-var c = a + 5 * b;
-var d = 3 * a + 5 * b / c;
+var c;
+var d;
+var e = a + 5 * b;
+var f = 3 * a + 5 * b / c;
 
