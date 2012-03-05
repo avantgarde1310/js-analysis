@@ -1,4 +1,6 @@
 /*
+Test for calls with functions as arguments for threeaddress.py.
+
 Should output:
     Function(name:__global__, parent:None)
     executeWithFive := function(['fn']){...}
