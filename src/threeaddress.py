@@ -169,14 +169,15 @@ class Function(object):
         
         def add_operand(node):
             #DEBUGGING Pre---
-            print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+#            print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
             
             if len(ns.in_block) > 0:
                 return 
             
             if astutils.is_node_type(node, "FUNCTION"):
                 #DEBUGGING in_func---
-                print "in function" + node.name
+#                print "in function" + node.name
+                
                 ns.in_block.append("IN_FUNCTION_" + node.name)            
 
             if astutils.is_node_type(node, "OBJECT_INIT"):
@@ -199,6 +200,7 @@ class Function(object):
                 
                 #DEBUGGING in_obj_init---
 #                print "in object init"
+
                 ns.in_block.append("IN_OBJECT_INIT")
             
             if astutils.is_node_type(node, ["THIS", "IDENTIFIER", "NUMBER", "STRING", "TRUE", "FALSE", "REGEXP"]):    
@@ -213,7 +215,7 @@ class Function(object):
 #            print operands_stack
             
             #DEBUGGING Post---
-            print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+#            print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
             if len(ns.in_block) > 0:
                 if astutils.is_node_type(node, "FUNCTION"):
                     # Every function will have a name, even anonymous functions
@@ -225,7 +227,7 @@ class Function(object):
                         operands_stack.append(lhs)
                     
                         #DEBUGGING out_func---
-                        print "out of function " + node.name
+#                        print "out of function " + node.name
                          
                 elif astutils.is_node_type(node, "OBJECT_INIT"):
                     if ns.in_block[-1] == "IN_OBJECT_INIT":
@@ -308,7 +310,7 @@ class Function(object):
         
     def convert_to_three_address(self):
         #DEBUGGING print_fn_name---
-        print "function name -------------" + self.name
+#        print "function name -------------" + self.name
         if not self._three_address_list:
             # All the statement nodes at this point should only be
             # relevant statements.
@@ -571,18 +573,19 @@ def main(*args):
     
     print "Converting statements into three address codes...",
     convert_functions(global_fn)
-    print "OK"
+    print "OK\n"
     
     print_all_three_addresses(global_fn)
 #    
     #Output Stuff----------------------------------------------------------------------------
-    ASTstring = str(ast)
-    outputfile = open(outputpath + "\\threeac_ast_out.txt", "w")
-    outputfile.write(ASTstring)
-    outputfile.close()
-    
-    import asttrimmer
-    trimmed_AST = asttrimmer.trim_AST_string(ASTstring)
-    outputfile = open(outputpath + "\\threeac_ast_trimmed_out.txt", "w")
-    outputfile.write(trimmed_AST)
-    outputfile.close()
+    if results.outputpath:
+        ASTstring = str(ast)
+        outputfile = open(outputpath + "\\threeac_ast_out.txt", "w")
+        outputfile.write(ASTstring)
+        outputfile.close()
+        
+        import asttrimmer
+        trimmed_AST = asttrimmer.trim_AST_string(ASTstring)
+        outputfile = open(outputpath + "\\threeac_ast_trimmed_out.txt", "w")
+        outputfile.write(trimmed_AST)
+        outputfile.close()
