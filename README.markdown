@@ -7,6 +7,7 @@ The program is developed in Python 2.7 to maintain compatibility with
 pynarcissus.
 
 Table of Contents:  
+
 1.  alpharenamer.py
 2.  analyzer.py
 3.  astutils.py
