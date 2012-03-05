@@ -16,9 +16,9 @@ The program is developed in Python 2.7 to maintain compatibility with
 	6.  fileutils.py
 	7.  threeaddress.py
 2.  Example Runs
-	1   threeaddress.py
+	1.  threeaddress.py
 
-##Sub-Modules of this program:
+##Sub-Modules:
 
 - 	*alpharenamer.py*  
 	Utility to alpha-rename JavaScript files. It has the following core 
