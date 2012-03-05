@@ -6,13 +6,13 @@ was originally developed to analyze Google Chrome extensions.
 The program is developed in Python 2.7 to maintain compatibility with 
 pynarcissus.
 
-Table of Contents:
-1. alpharenamer.py
-2. analyzer.py
-3. astutils.py
-4. converter.py
-5. driver.py
-6. fileutils.py
+Table of Contents:  
+1.  alpharenamer.py
+2.  analyzer.py
+3.  astutils.py
+4.  converter.py
+5.  driver.py
+6.  fileutils.py
 
 Sub-modules of this program:
 - 	alpharenamer.py
