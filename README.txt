@@ -1,4 +1,4 @@
-JavaScript Static Analysis Tool
+**JavaScript Static Analysis Tool**
 
 This package is a suite of tools to analyze JavaScript code statically. This 
 was originally developed to analyze Google Chrome extensions.
