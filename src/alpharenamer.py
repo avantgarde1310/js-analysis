@@ -163,6 +163,8 @@ class Frame(object):
     def set_name(self, new_name):
         self.name = new_name
         if self.function:
+            # Enforces that every function node in the AST have a name. 
+            # HINT: Even lambda functions.
             self.function.name = new_name
         
     def get_global_frame(self):
