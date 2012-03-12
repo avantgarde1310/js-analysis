@@ -351,7 +351,7 @@ class Function(object):
                     else:
                         rhs = "__undefined__"
                     
-                    threeaddress = ThreeAddress("VARDECL", lhs, None, rhs, None)
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
                     self.three_address_list.append(threeaddress)
                 
                 elif astutils.is_node_type(statement_node, "ASSIGN"):
@@ -528,6 +528,9 @@ def analyze_three_address(ast):
             if hasattr(node, "name"):
                 fn_name = node.name
             else:
+                print "Lambda handling should not be performed in threeaddress.py" + \
+                    ", if alpha-renaming has been done properly"
+                
                 global lambda_counter
                 fn_name = "lambda" + str(lambda_counter)
                 # Modifies AST node to contain a name. This line should only
@@ -577,18 +580,26 @@ def pre_print_type(node):
 def post_print_type(node):
     print "post " + getattr(node, "type", "Node has no type.") 
 
-def convert_functions(fn):
-    fn.convert_to_three_address()
+def traverse_function(fn, prefn=None, postfn=None):
+    if callable(prefn): prefn(fn)
+    
     for child_fn in fn.children_functions:
-        convert_functions(child_fn)
+        traverse_function(child_fn, prefn, postfn)
+    
+    if callable(postfn): postfn(fn)
+
+def convert_functions(fn):
+    def convert_helper(fn):
+        fn.convert_to_three_address()
+        return
+    traverse_function(fn, convert_helper, None)
 
 def print_all_three_addresses(fn):
-    print fn
-#    fn.print_relevant_statement_types()
-    fn.print_three_address()
-    print "----------------------------------------\n"
-    for child_fn in fn.children_functions:
-        print_all_three_addresses(child_fn)
+    def print_helper(fn):
+        print fn
+        fn.print_three_address()
+        print "----------------------------------------\n"
+    traverse_function(fn, print_helper, None)
     
 @_main
 def main(*args):

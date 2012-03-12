@@ -30,7 +30,10 @@ Should output:
 var a = 5;
 var b = 7;
 
-var c = chrome.tabs.open(5, process);
+var c = {};
 var d = document.open(12643).process(a, b);
+c.d.e.f = "ghi";
+c.d = "abc";
+c = b;
 var e = a.b.c.d;
 var f = document.close.process(differencer(7,6), adder(5, 6));
