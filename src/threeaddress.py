@@ -56,22 +56,29 @@ Workflow for threeaddress.py
 4.  After step 3, each Function object should have their own list of three
     address codes. We can simply traverse the tree and print them all, or 
     pass the global function object to the next phase of analysis.
+    
+5.  For the next phase for analysis, this module's input/output is as follows:
+    Input   : alpha-renamed AST (alpharenamedAST)
+    
+    Process : global_fn = analyze_three_address(alpharenamedAST)
+              convert_functions(global_fn)
+              
+    Output  : threeaddress.Function object (global_fn) which holds the three
+              address codes for all functions inside the JavaScript module
 
 FIXED: Fix undefined variable declarations.
 FIXED: Add FOR, WHILE in analyze_three_address() -> added
 FIXED: STILL FAILS FNARGS.JS - reduce_exp() on FUNCTION
 FIXED: Return statements that don't return anything -> now returns null.
 FIXED: FOR statements might not contain setup/update/condition -> using ifs.
+FIXED: Handle STORE statements !!!!! Resolve lhs of ASSIGN node using 
+       ref/derefs (create new function reduce_lhs()).
 
 MAYBE FIXED: Running on adblock.js
 MAYBE FIXED: Fix anonymous function handling. (Has to go through 
              alpharenamer + threeaddress check)
 MAYBE FIXED: Take care of indexing (arr[0]) -> handled the same way as dots
 
-
-TODO: 
-TODO: Handle STORE statements !!!!! Resolve lhs of ASSIGN node using 
-      ref/derefs (create new function reduce_lhs()).
 TODO: Handle other assignment operators +=, -=, /=, etc.
 TODO: Fix multiple variable declarations using COMMA.
 TODO: Ternary operators. What do?
@@ -150,6 +157,35 @@ class Function(object):
         Function.tempvar_counter += 1
         return new_tempvar
     
+    def reduce_lhs(self, node):
+        from collections import deque
+        operands_queue = deque([])
+        
+        def add_operand(node):
+            if astutils.is_node_type(node, "IDENTIFIER"):
+                operands_queue.append(node.value)
+        
+        astutils.traverse_AST(node, add_operand, None)
+        
+        # if only one operand in queue, return immediately
+        if len(operands_queue) == 1:
+            return operands_queue
+        
+        while len(operands_queue) > 2:
+            lhs = self.create_temp()
+            rhs1 = operands_queue.popleft()
+            rhs2 = operands_queue.popleft()
+            op = "."
+            
+            threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, op)
+            self.three_address_list.append(threeaddress)
+            
+            operands_queue.appendleft(lhs)
+        
+        # Only 2 identifiers should remain in the queue
+        assert len(operands_queue) == 2, "operands_queue has length > 2."
+        return operands_queue
+        
     def reduce_rhs(self, node, caller_lhs=None):
         """ Reduces the right hand side of an expression to a single variable.
         Very useful in generating three address codes.
@@ -184,18 +220,12 @@ class Function(object):
                 assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT"
                 
                 for object_property in node:
-                    lhs = self.create_temp()
-                    rhs1 = caller_lhs
-                    rhs2 = object_property[0].value
-                    operator = "ref"
-                    
-                    threeaddress = ThreeAddress("REF", lhs, rhs1, rhs2, operator)
-                    self.three_address_list.append(threeaddress)
-                    
+                    lhs1 = caller_lhs
+                    lhs2 = object_property[0].value
+                    lhs = (lhs1, lhs2)
                     rhs = self.reduce_rhs(object_property[1])
-                    operator = "deref"
                     
-                    threeaddress = ThreeAddress("DEREF", lhs, rhs, None, operator)
+                    threeaddress = ThreeAddress("STORE", lhs, rhs, None, None)
                     self.three_address_list.append(threeaddress)
                 
                 #DEBUGGING in_obj_init---
@@ -227,7 +257,7 @@ class Function(object):
                         operands_stack.append(lhs)
                     
                         #DEBUGGING out_func---
-#                        print "out of function " + node.name
+#                    print "out of function " + node.name
                          
                 elif astutils.is_node_type(node, "OBJECT_INIT"):
                     if ns.in_block[-1] == "IN_OBJECT_INIT":
@@ -253,11 +283,10 @@ class Function(object):
 #                    print "---------------TAC-----------------"
                     call_operand = operands_stack.pop()
 
-                    
-                    operator = "(" + str(arglist) + ")"
+                    operator = "("
                     lhs = self.create_temp()
                     
-                    threeaddress = ThreeAddress("CALL", lhs, call_operand, None, operator)
+                    threeaddress = ThreeAddress("CALL", lhs, call_operand, arglist, operator)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
                 
@@ -326,10 +355,14 @@ class Function(object):
                     self.three_address_list.append(threeaddress)
                 
                 elif astutils.is_node_type(statement_node, "ASSIGN"):
-                    lhs = statement_node[0].value
+                    lhs = self.reduce_lhs(statement_node[0])
                     rhs = self.reduce_rhs(statement_node[1], lhs)
                     
-                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
+                    if len(lhs) == 2:
+                        threeaddress = ThreeAddress("STORE", tuple(lhs), rhs, None, None)
+                    elif len(lhs) == 1:
+                        threeaddress = ThreeAddress("ASSIGNMENT", lhs[0], None, rhs, None)
+                    
                     self.three_address_list.append(threeaddress)
                 
                 # Interesting to note that functions that occur as relevant 
@@ -337,9 +370,9 @@ class Function(object):
                 # in an anonymous function declaration.
                 elif astutils.is_node_type(statement_node, "FUNCTION"):
                     lhs = statement_node.name
-                    rhs = "function(" + str(statement_node.params) + "){...}"
-                    
-                    threeaddress = ThreeAddress("FUNCTIONDECL", lhs, None, rhs, None)
+                    params = statement_node.params
+                    operator = "{...}"
+                    threeaddress = ThreeAddress("FUNCTIONDECL", lhs, "function", params, operator)
                     self.three_address_list.append(threeaddress)
                 
                 elif astutils.is_node_type(statement_node, "RETURN"):
@@ -383,44 +416,52 @@ class Function(object):
 
 class ThreeAddress(object):
     """ Holds three address code information about a program. 
-    Here are some of the expected forms of ThreeAddress objects for various
-    AST nodes:
+    Here are some of the expected forms of ThreeAddress objects 
+    for various AST nodes:
     
-    statement_type : "FUNCTIONDECL"
-    lhs            : string containing function name
-    rhs1           : None
-    rhs2           : list containing parameters
-    operator       : "function"
+    [ASSIGNMENT] # Binary Operators
+    lhs  : (str) variable to be assigned the value
+    rhs1 : (str) first operand
+    rhs2 : (str) second operand
+    op   : (str) binary operator
     
-    statement_type : "RETURN"
-    lhs            : None
-    rhs1           : None
-    rhs2           : return value 
-    operator       : "return"
+    [ASSIGNMENT] # Unary Operators
+    lhs  : (str) variable to be assigned the value
+    rhs1 : (None)
+    rhs2 : (str) operand
+    op   : (str) unary operator
     
-    statement_type : "VARDECL"
-    lhs            : string containing variable name
-    rhs1           : None
-    rhs2           : string containing value to be assigned
-    operator       : None
+    [RETURN]
+    lhs  : (None)
+    rhs1 : (None)
+    rhs2 : (str/int) value to be returned
+    op   : (str) "return"
     
-    statement_type : "ASSIGNMENT"
-    lhs            : string containing variable name
-    rhs1           : None
-    rhs2           : string containing value to be assigned
-    operator       : string containing appropriate operator
+    [CONSTRUCTOR]
     
-    statement_type : "LOAD"
-    lhs            : string containing variable name
-    rhs1           : string containing object to load from
-    rhs2           : string containing property of object
-    operator       : "."
+    [CALL]
+    lhs  : (str) variable to be assigned the value
+    rhs1 : (str) call operand (object to be called)
+    rhs2 : (list) arguments of type str 
+    op   : (str) "("
     
-    statement_type : "CALL"
-    lhs            : string containing variable to store result to
-    rhs1           : string containing call operand
-    rhs2           : list containing call arguments
-    operator       : None
+    [LOAD/INDEX]
+    lhs  : (str) variable to be assigned the value
+    rhs1 : (str) object to be accessed
+    rhs2 : (str) object member
+    op   : (str) "."
+    
+    [STORE]
+    lhs  : (tuple) object and member to be stored the value (both strs)
+    rhs1 : (str) value to be stored
+    rhs2 : (None)
+    op   : (None)
+    
+    [FUNCTIONDECL]
+    lhs  : (str) function name
+    rhs1 : (None) 
+    rhs2 : (list) function parameters of type string 
+    op   : (str) "function"
     """   
     def __init__(self, statement_type, lhs, rhs1, rhs2, operator):
         self.statement_type = statement_type
@@ -433,17 +474,42 @@ class ThreeAddress(object):
         return "ThreeAddress({0}, {1}, {2}, {3})".format(self.lhs, self.rhs1, self.rhs2, self.operator)
     
     def __str__(self):
-        result = ""
-        if self.lhs is not None:
-            result += str(self.lhs) + " := "
-        if self.rhs1 is not None:
-            result += str(self.rhs1) + " "
-        if self.operator is not None:
-            result += str(self.operator) + " "
-        if self.rhs2 is not None:
-            result += str(self.rhs2)
+        if self.statement_type == "CALL":
+            argstr = ""
+            for arg in self.rhs2:
+                argstr += str(arg) + ", "
+            # remove the trailing ", " at the end
+            argstr = argstr[:-2]
+            
+            return str(self.lhs) + " := " + str(self.rhs1) + "(" + argstr + ")"
         
-        return result
+        elif self.statement_type == "FUNCTIONDECL":
+            paramstr = ""
+            for param in self.rhs2:
+                paramstr += str(param) + ", "
+            # remove the trailing ", " at the end
+            paramstr = paramstr[:-2]
+            
+            return self.lhs + " := " + self.rhs1 + "(" + paramstr + "){...}"
+        
+        elif self.statement_type == "LOAD":
+            return str(self.lhs) + " := " + str(self.rhs1) + "." + str(self.rhs2)
+        
+        elif self.statement_type == "STORE":
+            return str(self.lhs[0]) + "." + str(self.lhs[1]) + " := " + str(self.rhs1)
+        
+        else:
+            result = ""
+            if self.lhs is not None:
+                result += str(self.lhs) + " := "
+            if self.rhs1 is not None:
+                result += str(self.rhs1) + " "
+            if self.operator is not None:
+                result += str(self.operator) + " "
+            if self.rhs2 is not None:
+                result += str(self.rhs2)
+            
+            return result
 
 #Modules ----------------
 def analyze_three_address(ast):
