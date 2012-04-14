@@ -116,7 +116,6 @@ def generate_datalog_facts(tac_list):
         elif tac.statement_type == "CALL":
             global call_site
             for z, param in enumerate(tac.rhs2, start=1):
-                print z, param
                 datalog_facts.append("actual({0},{1},{2}).".format(call_site, z, param))
                 datalog_facts.append("callRet({0},{1}).".format(call_site, param))
             call_site += 1
@@ -139,29 +138,49 @@ def generate_datalog_rules():
     """ Generates the required rules for the Datalog files generated from the 
     JavaScript file.
     """
-    rules_str = ""
-    rules_str += "%% Basic Rules\n"
-    rules_str += "ptsTo(V,H) :-\n        alloc(V,H).\n"
-    rules_str += "ptsTo(V,H) :-\n        funcDecl(V,H).\n"
-    rules_str += "ptsTo(V_1,H) :-\n        ptsTo(V_2,H),\n        assign(V_1,V_2).\n\n"
-    
-    rules_str += "directHeapStoresTo(H_1,F,H_2) :-\n        store(V_1,F,V_2),\n        ptsTo(V_1,H_1),\n        ptsTo(V_2,H_2).\n"
-    rules_str += "directHeapPointsTo(H_1,F,H_2) :-\n        directHeapStoresTo(H_1,F,H_2).\n"
-    rules_str += "ptsTo(V_2,H_2) :-\n        load(V_2,V_1,F),\n        ptsTo(V_1,H_1),\n        heapPtsTo(H_1,F,H_2).\n\n"
-    
-    rules_str += "heapPtsTo(H_1,F,H_2) :-\n        directHeapPointsTo(H_1,F,H_2).\n\n"
-    
-    # CALL NOT IMPLEMENTED
-    rules_str += "%% Call graph\n"
-    rules_str += "calls(I,M) :-\n        actual(I,0,C),\n        ptsTo(C,M).\n\n"
-    
-    rules_str += "%% Interprocedural assignments\n"
-    rules_str += "assign(V_1,V_2) :-\n        calls(I,M),\n        formal(M,Z,V_1),\n        actual(I,Z,V_2).\n"
-    rules_str += "assign(V_2,V_1) :-\n        calls(I,M),\n        methodRet(M,V_1),\n        callRet(I,V_2).\n\n"
-    
-    rules_str += "%% Prototype handling\n"
-    rules_str += "heapPtsTo(H_1,F,H_2) :-\n        prototype(H_1,H),\n        heapPtsTo(H,F,H_2).\n"
-    
+    rules_str = """%% Basic Rules
+ptsTo(V,H) :-
+        alloc(V,H).
+ptsTo(V,H) :-
+        funcDecl(V,H).
+ptsTo(V_1,H) :-
+        ptsTo(V_2,H),
+        assign(V_1,V_2).
+
+directHeapStoresTo(H_1,F,H_2) :-
+        store(V_1,F,V_2),
+        ptsTo(V_1,H_1),        
+        ptsTo(V_2,H_2).
+directHeapPointsTo(H_1,F,H_2) :-        
+        directHeapStoresTo(H_1,F,H_2).
+ptsTo(V_2,H_2) :-        
+        load(V_2,V_1,F),         
+        ptsTo(V_1,H_1),        
+        heapPtsTo(H_1,F,H_2).
+heapPtsTo(H_1,F,H_2) :-        
+        directHeapPointsTo(H_1,F,H_2).
+
+%% Call graph
+calls(I,M) :-        
+        actual(I,0,C),        
+        ptsTo(C,M).
+
+%% Interprocedural assignments
+assign(V_1,V_2) :-        
+        calls(I,M),        
+        formal(M,Z,V_1),        
+        actual(I,Z,V_2).
+assign(V_2,V_1) :-        
+        calls(I,M),        
+        methodRet(M,V_1),        
+        callRet(I,V_2).
+
+%% Prototype handling
+heapPtsTo(H_1,F,H_2) :-        
+        prototype(H_1,H),        
+        heapPtsTo(H,F,H_2).
+    """
+
     return rules_str
 
 @_main

@@ -336,7 +336,7 @@ class Function(object):
         
     def convert_to_three_address(self):
         #DEBUGGING print_fn_name---
-        print "------ convert_to_three_address:" + self.name + "------"
+        #print "------ convert_to_three_address:" + self.name + "------"
 
         if not self._three_address_list:
             # All the statement nodes at this point should only be
@@ -402,7 +402,8 @@ class Function(object):
                 # statement
                 else:
                     #DEBUGGING print_else_node---
-                    print statement_node
+                    #print statement_node
+
                     lhs = self.create_temp()
                     rhs = self.reduce_rhs(statement_node)
                     
