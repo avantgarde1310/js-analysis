@@ -4,6 +4,7 @@ import astutils
 import pynarcissus.jsparser
 import pynarcissus.sexp
 
+import os
 import argparse
 
 from ucb import main
@@ -70,7 +71,7 @@ def get_extension_name(path):
         for dirpath, dirnames, filenames in fileutils.get_directory_tree(path):
             for filename in filenames:
                 if filename == "manifest.json":
-                    tempstr = open(dirpath + "\\" + filename).read()
+                    tempstr = open(dirpath + os.sep + filename).read()
                     tempstr = tempstr[tempstr.index("\"name\""):]
                     tempstr = tempstr[:tempstr.index("\n")]
                     tempstr = tempstr[9:-2]
@@ -83,10 +84,10 @@ def get_extension_name(path):
     # __MSG_name__
     except Exception, e:
         tag = e[0][6:-2]
-        print "Trying _locales\\en folder...",
+        print "Trying _locales" + os.sep + "en folder...",
         for dirpath, dirnames, filenames in fileutils.get_directory_tree(path):
-            if dirpath.endswith("_locales\\en"):
-                tempstr = open(dirpath + "\\messages.json").read()
+            if dirpath.endswith("_locales" + os.sep + "en") and "__MACOSX" not in dirpath:
+                tempstr = open(dirpath + os.sep + "messages.json").read()
                 tempstr = tempstr[tempstr.index("\"" + tag + "\": {\n      "):]
                 tempstr = tempstr[:tempstr.index("}")]
                 tempstr = tempstr[tempstr.index("\"message\""):]
@@ -99,18 +100,33 @@ def get_extension_name(path):
     
 @main
 def run(*args):
-    print "\n-----------------JavaScript Static Analyzer 1.0-----------------"
+    parser = argparse.ArgumentParser(prog="jsAnalyzer Driver", description="a driver for jsAnalyzer")
     
-    """ A Simple OptParser For This Program """
-    ext_path = args[0]
-    ext = args[1]
-    out_path = args[2]
+    parser.add_argument("filepath", action="store", help="the path to JavaScript file or the file itself")
+    parser.add_argument("-o", action="store", dest="outputpath", help="output path (not the file!)")
+    parser.add_argument("-e", action="store_true", default=False, dest="isextension", help="set if filepath is a path to an extension")
+    
+    results = parser.parse_args()
+
+    filepath = results.filepath
+    if results.outputpath:
+        outputpath = results.outputpath
+        if not os.path.exists(outputpath):
+            os.mkdir(outputpath)
+    isextension = results.isextension
+
+    if isextension:
+        ext_path = filepath
+        ext = ext_path.split(os.sep)[-1]
+        out_path = outputpath
+
     import os
     print "Ext Path: ", ext_path, " Exists:", os.path.exists(ext_path)
     print "Ext: ", ext, " Exists:", os.path.exists(ext_path + "\\" + ext)
     print "Out Path: ", out_path, " Exists:", os.path.exists(out_path)
     
     """ Open and Create AST from Extension """
+    print "\n-----------------JavaScript Static Analyzer 1.0-----------------"
 #    ext_path = 'C:\\PythonProjects\\ExtensionAnalyzer\\Extensions\\CSPfied'
 #    ext = 'aapbdbdomjkkjkaonfhkkikfgjllcleb'
     

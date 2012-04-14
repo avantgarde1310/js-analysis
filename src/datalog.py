@@ -35,6 +35,7 @@ def retrieve_three_address_list(global_fn):
     
     return tac_list
 
+call_site = 0
 def generate_datalog_facts(tac_list):
     """ Generate Datalog facts given a threeaddress.Function object 
     which holds all the three address codes of the module. 
@@ -111,6 +112,14 @@ def generate_datalog_facts(tac_list):
         
         elif tac.statement_type == "RETURN":
             datalog_facts.append("callRet({0}).".format(tac.rhs2))
+        
+        elif tac.statement_type == "CALL":
+            global call_site
+            for z, param in enumerate(tac.rhs2, start=1):
+                print z, param
+                datalog_facts.append("actual({0},{1},{2}).".format(call_site, z, param))
+                datalog_facts.append("callRet({0},{1}).".format(call_site, param))
+            call_site += 1
             
         elif tac.statement_type == "FUNCTIONDECL":
             datalog_facts.append("ptsTo({0},d_{0}).".format(tac.lhs))
@@ -120,33 +129,38 @@ def generate_datalog_facts(tac_list):
             datalog_facts.append("methodRet(d_{0},{0}).".format(tac.lhs))
             for z, param in enumerate(tac.rhs2, start=1):
                 datalog_facts.append("formal(d_{0},{1},{2}).".format(tac.lhs, z, param))
+        
         else:
             fact = "datalog.py: statement_type:{0} not implemented".format(tac.statement_type)
     
     return datalog_facts
     
 def generate_datalog_rules():
+    """ Generates the required rules for the Datalog files generated from the 
+    JavaScript file.
+    """
     rules_str = ""
     rules_str += "%% Basic Rules\n"
-    rules_str += "ptsTo(v,h) :-\n        alloc(v,h).\n"
-    rules_str += "ptsTo(v,h) :-\n        funcDecl(v,h).\n"
-    rules_str += "ptsTo(v_1,h) :-\n        ptsTo(v_2,h),\n        assign(v_1, v_2).\n\n"
+    rules_str += "ptsTo(V,H) :-\n        alloc(V,H).\n"
+    rules_str += "ptsTo(V,H) :-\n        funcDecl(V,H).\n"
+    rules_str += "ptsTo(V_1,H) :-\n        ptsTo(V_2,H),\n        assign(V_1,V_2).\n\n"
     
-    rules_str += "directHeapStoresTo(h_1,f,h_2) :-\n        store(v_1,f,v_2),\n        ptsTo(v_1,h_1),\n        ptsTo(v_2,h_2).\n"
-    rules_str += "directHeapPointsTo(h_1,f,h_2) :-\n        directHeapStoresTo(h_1,f,h_2).\n"
-    rules_str += "ptsTo(v_2,h_2) :-\n        load(v_2,v_1,f),\n        ptsTo(v_1,h_1),\n        heapPtsTo(h_1,f,h_2).\n\n"
+    rules_str += "directHeapStoresTo(H_1,F,H_2) :-\n        store(V_1,F,V_2),\n        ptsTo(V_1,H_1),\n        ptsTo(V_2,H_2).\n"
+    rules_str += "directHeapPointsTo(H_1,F,H_2) :-\n        directHeapStoresTo(H_1,F,H_2).\n"
+    rules_str += "ptsTo(V_2,H_2) :-\n        load(V_2,V_1,F),\n        ptsTo(V_1,H_1),\n        heapPtsTo(H_1,F,H_2).\n\n"
     
-    rules_str += "heapPtsTo(h_1,f,h_2) :-\n        directHeapPointsTo(h_1,f,h_2).\n\n"
+    rules_str += "heapPtsTo(H_1,F,H_2) :-\n        directHeapPointsTo(H_1,F,H_2).\n\n"
     
     # CALL NOT IMPLEMENTED
     rules_str += "%% Call graph\n"
-    rules_str += "%% Call graph not implemented: need info on call site\n\n"
+    rules_str += "calls(I,M) :-\n        actual(I,0,C),\n        ptsTo(C,M).\n\n"
     
     rules_str += "%% Interprocedural assignments\n"
-    rules_str += "%% Interprocedural assignments not implemented: need info on call site.\n\n"
+    rules_str += "assign(V_1,V_2) :-\n        calls(I,M),\n        formal(M,Z,V_1),\n        actual(I,Z,V_2).\n"
+    rules_str += "assign(V_2,V_1) :-\n        calls(I,M),\n        methodRet(M,V_1),\n        callRet(I,V_2).\n\n"
     
     rules_str += "%% Prototype handling\n"
-    rules_str += "heapPtsTo(h_1,f,h_2) :-\n        prototype(h_1,h),\n        heapPtsTo(h,f,h_2).\n"
+    rules_str += "heapPtsTo(H_1,F,H_2) :-\n        prototype(H_1,H),\n        heapPtsTo(H,F,H_2).\n"
     
     return rules_str
 
@@ -176,7 +190,7 @@ def main(*args):
 
         ext_name = get_extension_name(filepath)
         print "Extension Name: ", ext_name
-        ext_id = filepath.split("\\")[-1]
+        ext_id = filepath.split(os.sep)[-1]
         print "Extension ID: ", ext_id
         print
 #        jsout = open(outputpath + "\\jsout.js", "w")
@@ -204,7 +218,7 @@ def main(*args):
     
     #Write Output---
     if results.outputpath:
-        outputfile = open(outputpath + "\\datalog\\{0}.pl".format(filepath.split("\\")[-1][:-3]), "w")
+        outputfile = open(outputpath + os.sep + "datalog" + os.sep + "{0}.pl".format(filepath.split(os.sep)[-1][:-3]), "w")
         outputfile.write(rules_str + "\n\n" + facts_str)
         outputfile.close()
-    
+

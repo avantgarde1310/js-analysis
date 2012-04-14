@@ -82,6 +82,8 @@ MAYBE FIXED: Take care of indexing (arr[0]) -> handled the same way as dots
 TODO: Handle other assignment operators +=, -=, /=, etc.
 TODO: Fix multiple variable declarations using COMMA.
 TODO: Ternary operators. What do?
+TODO: Object literals without assignments as function arguments
+TODO: Handle else cases in reduce_exp
 '''
 
 from ucb import main as _main
@@ -90,26 +92,6 @@ import astutils
 import fileutils
 import os
 import argparse
-
-#NODE_TYPES      = ["SEMICOLON", "COMMA", "HOOK", "COLON", "OR", "AND",
-#                   "BITWISE_OR", "BITWISE_XOR", "BITWISE_AND", "STRICT_EQ",
-#                   "EQ", "ASSIGN", "STRICT_NE", "NE", "LSH", "LE", "LT",
-#                   "URSH", "RSH", "GE", "GT", "INCREMENT", "DECREMENT",
-#                   "PLUS", "MINUS", "MUL", "DIV", "MOD", "NOT", "BITWISE_NOT",
-#                   "DOT", 
-#              
-#                   "RETURN", "FUNCTION", "VAR", "INDEX"]
-#
-#NODE_TOKENS     = [";", ",","?",":","||","&&","|","^","&","===","==","=","!==","!=",
-#                   "<<","<=","<",">>>",">>",">=",">","++","--","+","-","*","/","%","!","~",".",
-#               
-#                   "return","function",":=","["]
-#
-#OPERATOR_DICT = dict()
-#for i in range(len(NODE_TYPES)):
-#    OPERATOR_DICT[NODE_TYPES[i]] = NODE_TOKENS[i]
-
-# DOT is not included in BINARY_OPS because it's a special case.
 
 #Constants ----------------
 BINARY_OPS      = ["OR", "AND", "BITWISE_OR", "BITWISE_XOR", "BITWISE_AND", 
@@ -158,6 +140,10 @@ class Function(object):
         return new_tempvar
     
     def reduce_lhs(self, node):
+        """ Reduces the left hand side of an assignment statement. 
+        Used to generate store statements.
+        """
+
         from collections import deque
         operands_queue = deque([])
         
@@ -190,10 +176,10 @@ class Function(object):
         """ Reduces the right hand side of an expression to a single variable.
         Very useful in generating three address codes.
         
-        node  - an AST node representing the right hand side of an expression to
-                be reduced
-        lhs   - used for OBJECT_INIT, where the reduce_rhs function needs to know
-                about the left hand side.
+        node         - an AST node representing the right hand side of an expression to
+                       be reduced
+        caller_lhs   - used for OBJECT_INIT, where the reduce_rhs function needs to know
+                       about the left hand side.
         """
         class Namespace(object): pass
         ns = Namespace()
@@ -210,13 +196,18 @@ class Function(object):
             if len(ns.in_block) > 0:
                 return 
             
-            if astutils.is_node_type(node, "FUNCTION"):
+            elif astutils.is_node_type(node, "FUNCTION"):
                 #DEBUGGING in_func---
-#                print "in function" + node.name
+#                print "in function: " + node.name
                 
                 ns.in_block.append("IN_FUNCTION_" + node.name)            
 
-            if astutils.is_node_type(node, "OBJECT_INIT"):
+            elif astutils.is_node_type(node, "OBJECT_INIT"):
+                #DEBUGGING in_obj_init---
+#                print "in object init"
+                
+                ns.in_block.append("IN_OBJECT_INIT")
+
                 assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT"
                 
                 for object_property in node:
@@ -226,26 +217,28 @@ class Function(object):
                     rhs = self.reduce_rhs(object_property[1])
                     
                     threeaddress = ThreeAddress("STORE", lhs, rhs, None, None)
+                    
                     self.three_address_list.append(threeaddress)
                 
-                #DEBUGGING in_obj_init---
-#                print "in object init"
-
-                ns.in_block.append("IN_OBJECT_INIT")
-            
-            if astutils.is_node_type(node, ["THIS", "IDENTIFIER", "NUMBER", "STRING", "TRUE", "FALSE", "REGEXP"]):    
+            elif astutils.is_node_type(node, ["THIS", "IDENTIFIER", "NUMBER", "STRING", "TRUE", "FALSE", "REGEXP"]):    
                 operands_stack.append(node.value)
+            else:
+                print "WARNING: Unhandled case in reduce_rhs:add_operand at " + \
+                      "lineno " + str(node.lineno)
+
         # END add_operand
         
         def reduce_exp(node):
-            # The heart of three address code generation. Reduces
-            # complex expressions on the right hand side of an assignment
-            # statement into one temporary variable.
-            
+            """ The heart of three address code generation. Reduces
+            complex expressions on the right hand side of an assignment
+            statement into one temporary variable.
+            """
+
 #            print operands_stack
             
             #DEBUGGING Post---
 #            print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+
             if len(ns.in_block) > 0:
                 if astutils.is_node_type(node, "FUNCTION"):
                     # Every function will have a name, even anonymous functions
@@ -257,7 +250,7 @@ class Function(object):
                         operands_stack.append(lhs)
                     
                         #DEBUGGING out_func---
-#                    print "out of function " + node.name
+#                        print "out of function: " + node.name
                          
                 elif astutils.is_node_type(node, "OBJECT_INIT"):
                     if ns.in_block[-1] == "IN_OBJECT_INIT":
@@ -265,7 +258,7 @@ class Function(object):
                         operands_stack.append("__objectInit__")
                         
                         #DEBUGGING out_obj_init---
-#                    print "out of obj_init"
+#                        print "out of obj_init"
             
             else:
             # Perform reduction only when not inside a function or object
@@ -289,7 +282,7 @@ class Function(object):
                     threeaddress = ThreeAddress("CALL", lhs, call_operand, arglist, operator)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
-                
+                 
                 elif astutils.is_node_type(node, ["DOT", "INDEX"]) and len(operands_stack) >= 2:
                     operator = "."
                     rhs2 = operands_stack.pop()
@@ -299,7 +292,7 @@ class Function(object):
                     threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, operator)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
-                
+                 
                 # Handle reduction of binary operators.
                 elif astutils.is_node_type(node, BINARY_OPS) and len(operands_stack) >= 2:
                     operator = BINARY_DICT[node.type]
@@ -322,7 +315,11 @@ class Function(object):
                     
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
-                
+
+                else:
+                   print "WARNING: Unhandled case in reduce_rhs:reduce_exp" + \
+                         " at lineno " + str(node.lineno)
+
         # END reduce_exp()
         
         astutils.traverse_AST(node, add_operand, reduce_exp)
@@ -339,7 +336,8 @@ class Function(object):
         
     def convert_to_three_address(self):
         #DEBUGGING print_fn_name---
-#        print "function name -------------" + self.name
+        print "------ convert_to_three_address:" + self.name + "------"
+
         if not self._three_address_list:
             # All the statement nodes at this point should only be
             # relevant statements.
@@ -356,15 +354,17 @@ class Function(object):
                 
                 elif astutils.is_node_type(statement_node, "ASSIGN"):
                     lhs = self.reduce_lhs(statement_node[0])
-                    rhs = self.reduce_rhs(statement_node[1], lhs)
                     
+                    # reduce_lhs returns a deque
                     if len(lhs) == 2:
+                        rhs = self.reduce_rhs(statement_node[1], lhs)
                         threeaddress = ThreeAddress("STORE", tuple(lhs), rhs, None, None)
                     elif len(lhs) == 1:
+                        rhs = self.reduce_rhs(statement_node[1], lhs[0])
                         threeaddress = ThreeAddress("ASSIGNMENT", lhs[0], None, rhs, None)
-                    
+
                     self.three_address_list.append(threeaddress)
-                
+
                 # Interesting to note that functions that occur as relevant 
                 # statements cannot be anonymous, because there's no point 
                 # in an anonymous function declaration.
@@ -387,16 +387,30 @@ class Function(object):
                     threeaddress = ThreeAddress("RETURN", None, None, rhs, operator)
                     self.three_address_list.append(threeaddress)
                 
-                else:
-                    #DEBUGGING print_else_node---
-#                    print statement_node
+                # These are statements that stand alone, whose values aren't
+                # assigned to any particular variable. A temporary variable is
+                # created for these statements.
+                elif astutils.is_node_type(statement_node, ["CALL"] + \
+                        BINARY_OPS + UNARY_OPS):
                     lhs = self.create_temp()
-#                    print "lhs ------ " + lhs
                     rhs = self.reduce_rhs(statement_node)
                     
                     threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
                     self.three_address_list.append(threeaddress)
-            
+                
+                # If the else statement is reached, then print a warning
+                # statement
+                else:
+                    #DEBUGGING print_else_node---
+                    print statement_node
+                    lhs = self.create_temp()
+                    rhs = self.reduce_rhs(statement_node)
+                    
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
+                    self.three_address_list.append(threeaddress)
+                    print "WARNING: Unhandled case in convert_to_three_address"
+                    print threeaddress
+                    
             self._three_address_list = True
     
     def print_relevant_statement_types(self):
@@ -523,7 +537,7 @@ def analyze_three_address(ast):
         # statement node so the position where the function was declared
         # is not lost.
         if astutils.is_node_type(node, "FUNCTION"):
-            ns.current_function.statement_node_list.append(node)
+            if node: ns.current_function.statement_node_list.append(node)
             
             if hasattr(node, "name"):
                 fn_name = node.name
@@ -545,25 +559,22 @@ def analyze_three_address(ast):
         # Most of the relevant statements are in VAR and SEMICOLON
         elif astutils.is_node_type(node, "VAR"):
             # For VAR, take the whole thing
-            ns.current_function.statement_node_list.append(node)
+            if node: ns.current_function.statement_node_list.append(node)
         elif astutils.is_node_type(node, "SEMICOLON"):
             # For SEMICOLON, take the expression
-            ns.current_function.statement_node_list.append(node.expression)
+            if node.expression: ns.current_function.statement_node_list.append(node.expression)
         
         # Retrieve RETURN nodes
         elif astutils.is_node_type(node, "RETURN"):
-            ns.current_function.statement_node_list.append(node)
+            if node: ns.current_function.statement_node_list.append(node)
         
         # Extract relevant expressions from IF, FOR, WHILE
         elif astutils.is_node_type(node, ["IF", "WHILE", "DO"]):
-            ns.current_function.statement_node_list.append(node.condition)
+            if node.condition: ns.current_function.statement_node_list.append(node.condition)
         elif astutils.is_node_type(node, "FOR"):
-            if node.condition is not None:
-                ns.current_function.statement_node_list.append(node.condition)
-            if node.setup is not None:
-                ns.current_function.statement_node_list.append(node.setup)
-            if node.update is not None:
-                ns.current_function.statement_node_list.append(node.update)
+            if node.condition: ns.current_function.statement_node_list.append(node.condition)
+            if node.setup: ns.current_function.statement_node_list.append(node.setup)
+            if node.update: ns.current_function.statement_node_list.append(node.update)
                 
     def post_helper(node):
         # Helper function to help keep track of the current_function
@@ -571,7 +582,7 @@ def analyze_three_address(ast):
             ns.current_function = ns.current_function.parent_function
     
     astutils.traverse_AST(ast, pre_helper, post_helper)
-    
+
     return ns.current_function
 
 def pre_print_type(node):
@@ -600,7 +611,7 @@ def print_all_three_addresses(fn):
         fn.print_three_address()
         print "----------------------------------------\n"
     traverse_function(fn, print_helper, None)
-    
+
 @_main
 def main(*args):
     #Parsing Arguments-----------------------------------------------------------------------
@@ -628,7 +639,7 @@ def main(*args):
 
         ext_name = get_extension_name(filepath)
         print "Extension Name: ", ext_name
-        ext_id = filepath.split("\\")[-1]
+        ext_id = filepath.split(os.sep)[-1]
         print "Extension ID: ", ext_id
         print
 #        jsout = open(outputpath + "\\jsout.js", "w")
@@ -647,22 +658,24 @@ def main(*args):
     #ThreeAddressAnalyze---
     global_fn = analyze_three_address(ast)
     print "OK"
+
+    print global_fn
     
     print "Converting statements into three address codes...",
     convert_functions(global_fn)
     print "OK\n"
     
     print_all_three_addresses(global_fn)
-#    
+    
     #Output Stuff----------------------------------------------------------------------------
     if results.outputpath:
         ASTstring = str(ast)
-        outputfile = open(outputpath + "\\threeac_ast_out.txt", "w")
+        outputfile = open(outputpath + os.sep + "threeac_ast_out.txt", "w")
         outputfile.write(ASTstring)
         outputfile.close()
         
         import asttrimmer
         trimmed_AST = asttrimmer.trim_AST_string(ASTstring)
-        outputfile = open(outputpath + "\\threeac_ast_trimmed_out.txt", "w")
+        outputfile = open(outputpath + os.sep + "threeac_ast_trimmed_out.txt", "w")
         outputfile.write(trimmed_AST)
         outputfile.close()
