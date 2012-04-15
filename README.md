@@ -88,11 +88,53 @@ The program is developed in Python 2.7 to maintain compatibility with
 	
 -------------------------------------------------------------------------------
 
--	threeaddress.py  
+-	*threeaddress.py*
 	The latest addition (3/5/2012) to this collection of tools. Performs limited
 	three address conversion of a JavaScript file. This tool ignores control 
 	flow.
 	
+-------------------------------------------------------------------------------
+
+-   *datalog.py* 
+    Implements the Datalog rules found in Microsoft's Gatekeeper paper. This
+    section tries to describe the predicates found in the points-to analysis
+    found in the module.
+
+    Let the following domains be defined for these predicates:
+    +   H : heap-allocated objects and functions
+    +   V : program variables
+    +   I : call sites
+    +   F : fields
+    +   Z : integers
+    
+    The following descriptions of predicates uses the domain definitions
+    described above:
+    +   calls(i : I, m : H)
+        Call site i invokes method m.
+    +   formal(m : H, z : Z, v : V)
+        Indicates that the z-th formal parameter of method m is v.
+    +   methodRet(m : H, v : V)
+        The return parameter of method m is v.
+    +   actual(i : I, z : Z, v : V)
+        At call site i, the z-th actual parameter (argument) is v.
+    +   callRet(i : I, v : V)
+        The return value of a function call at call site i is v.
+    +   declaredIn(i : I, m : H)
+        Call site i is located in method m.
+    +   assign(v1 : V, v2 : V)
+        Records variable assignment of the form v1 = v2.
+    +   load(v1 : V, v2: V, f : F)
+        Records the load operation v1 = v2.f
+    +   store(v1 : V, f : F, v2 : V)
+        Records the store operation v1.f = v2
+    +   ptsTo(v : V, h : H)
+        Variable v **may point to** heap variable h.
+    +   heapPtsTo(h1 : H, f : F, h2 : H)
+        The field f of heap variable h1 (h1.f) may point to heap variable h2.
+    +   prototype(h1 : H, h2 : H)
+        The implicit prototype for object h1 may be h2.
+        
+
 -------------------------------------------------------------------------------
 
 ##Example Runs  

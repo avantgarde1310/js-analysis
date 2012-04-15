@@ -179,9 +179,16 @@ assign(V_2,V_1) :-
 heapPtsTo(H_1,F,H_2) :-        
         prototype(H_1,H),        
         heapPtsTo(H,F,H_2).
-    """
+
+"""
 
     return rules_str
+
+def generate_default_objects():
+    chrome_obj = "%% \"chrome\" handling as default object\n" + \
+                 "ptsTo(chrome, d_chrome).\nheapPtsTo(d_chrome, prototype, p_chrome).\n" + \
+                 "funcDecl(d_chrome).\nprototype(p_chrome, h_FP).\nmethodRet(d_chrome, chrome).\n\n"
+    return chrome_obj
 
 @_main
 def main(*args):
@@ -231,13 +238,14 @@ def main(*args):
     
     facts_str = ""
     for fact in datalog_facts:
-        print fact
+        # DEBUGGING printFacts
+        # print fact
         facts_str += fact + "\n"
-    rules_str = generate_datalog_rules()
+    rules_str = generate_datalog_rules() + "\n" + generate_default_objects()
     
     #Write Output---
     if results.outputpath:
         outputfile = open(outputpath + os.sep + "datalog" + os.sep + "{0}.pl".format(filepath.split(os.sep)[-1][:-3]), "w")
-        outputfile.write(rules_str + "\n\n" + facts_str)
+        outputfile.write(rules_str + facts_str)
         outputfile.close()
 
