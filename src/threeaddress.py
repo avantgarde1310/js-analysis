@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 '''
 Created on Feb 10, 2012
 
@@ -73,6 +75,11 @@ FIXED: Return statements that don't return anything -> now returns null.
 FIXED: FOR statements might not contain setup/update/condition -> using ifs.
 FIXED: Handle STORE statements !!!!! Resolve lhs of ASSIGN node using 
        ref/derefs (create new function reduce_lhs()).
+FIXED: Handled ternary operators by creating a new temp variable for the 
+       condition, and assigning the lhs to either the iftrue or iffalse
+       variables.
+FIXED: Fixed object literals without assignments as function arguments by 
+       creating a new temp variable for the anonymous object literal.
 
 MAYBE FIXED: Running on adblock.js
 MAYBE FIXED: Fix anonymous function handling. (Has to go through 
@@ -81,9 +88,8 @@ MAYBE FIXED: Take care of indexing (arr[0]) -> handled the same way as dots
 
 TODO: Handle other assignment operators +=, -=, /=, etc.
 TODO: Fix multiple variable declarations using COMMA.
-TODO: Ternary operators. What do?
-TODO: Object literals without assignments as function arguments
 TODO: Handle else cases in reduce_exp
+TODO: ARRAY_INIT! Grrr...
 '''
 
 from ucb import main as _main
@@ -163,7 +169,7 @@ class Function(object):
             rhs2 = operands_queue.popleft()
             op = "."
             
-            threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, op)
+            threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, op, self.name, node.lineno)
             self.three_address_list.append(threeaddress)
             
             operands_queue.appendleft(lhs)
@@ -178,8 +184,8 @@ class Function(object):
         
         node         - an AST node representing the right hand side of an expression to
                        be reduced
-        caller_lhs   - used for OBJECT_INIT, where the reduce_rhs function needs to know
-                       about the left hand side.
+        caller_lhs   - used for OBJECT_INIT, HOOK and other places where the reduce_rhs 
+                       function needs to know about the left hand side.
         """
         class Namespace(object): pass
         ns = Namespace()
@@ -205,26 +211,38 @@ class Function(object):
             elif astutils.is_node_type(node, "OBJECT_INIT"):
                 #DEBUGGING in_obj_init---
 #                print "in object init"
-                
-                ns.in_block.append("IN_OBJECT_INIT")
 
-                assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT"
-                
+                # assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT at lineno {0}".format(node.lineno)
+                # If we're dealing with anonymous object literals, use a temp variable.
+                # For example, "browser.canLoad({event:null});
+                if caller_lhs:
+                    lhs1_temp = caller_lhs
+                    ns.in_block.append("IN_OBJECT_INIT")
+                else:
+                    lhs1_temp = self.create_temp()
+                    ns.in_block.append("IN_OBJECT_INIT_" + lhs1_temp)
+
+
                 for object_property in node:
-                    lhs1 = caller_lhs
+                    lhs1 = lhs1_temp 
                     lhs2 = object_property[0].value
                     lhs = (lhs1, lhs2)
                     rhs = self.reduce_rhs(object_property[1])
                     
-                    threeaddress = ThreeAddress("STORE", lhs, rhs, None, None)
+                    threeaddress = ThreeAddress("STORE", lhs, rhs, None, None, self.name, node.lineno)
                     
                     self.three_address_list.append(threeaddress)
                 
             elif astutils.is_node_type(node, ["THIS", "IDENTIFIER", "NUMBER", "STRING", "TRUE", "FALSE", "REGEXP"]):    
                 operands_stack.append(node.value)
+             
+            # These cases are handled by the reduce_exp function below
+            elif astutils.is_node_type(node, ["DOT", "CALL"] + UNARY_OPS + BINARY_OPS):
+                pass
+
             else:
                 print "WARNING: Unhandled case in reduce_rhs:add_operand at " + \
-                      "lineno " + str(node.lineno)
+                      "lineno " + str(node.lineno) + " of type " + str(node.type)
 
         # END add_operand
         
@@ -253,9 +271,12 @@ class Function(object):
 #                        print "out of function: " + node.name
                          
                 elif astutils.is_node_type(node, "OBJECT_INIT"):
-                    if ns.in_block[-1] == "IN_OBJECT_INIT":
-                        ns.in_block.pop()
-                        operands_stack.append("__objectInit__")
+                    if ns.in_block[-1].startswith("IN_OBJECT_INIT"):
+                        temp = ns.in_block.pop()
+                        if temp == "IN_OBJECT_INIT":
+                            operands_stack.append("__objectInit__")
+                        else:
+                            operands_stack.append(temp[len("IN_OBJECT_INIT_"):])
                         
                         #DEBUGGING out_obj_init---
 #                        print "out of obj_init"
@@ -279,7 +300,7 @@ class Function(object):
                     operator = "("
                     lhs = self.create_temp()
                     
-                    threeaddress = ThreeAddress("CALL", lhs, call_operand, arglist, operator)
+                    threeaddress = ThreeAddress("CALL", lhs, call_operand, arglist, operator, self.name, node.lineno)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
                  
@@ -289,7 +310,7 @@ class Function(object):
                     rhs1 = operands_stack.pop()
                     lhs = self.create_temp()
                     
-                    threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, operator)
+                    threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, operator, self.name, node.lineno)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
                  
@@ -300,7 +321,7 @@ class Function(object):
                     rhs1 = operands_stack.pop()
                     lhs = self.create_temp()
                     
-                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, rhs1, rhs2, operator)
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, rhs1, rhs2, operator, self.name, node.lineno)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
                 
@@ -311,14 +332,37 @@ class Function(object):
                     rhs1 = None
                     lhs = self.create_temp()
                     
-                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, rhs1, rhs2, operator)
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, rhs1, rhs2, operator, self.name, node.lineno)
                     
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
 
+                # Handle reduction of ternary operators
+                elif astutils.is_node_type(node, "HOOK"):
+                    # The condition is handled somewhere else
+                    iffalse_rhs = operands_stack.pop() 
+                    iftrue_rhs = operands_stack.pop()
+                    
+                    # Because there is a condition in the HOOK operator, and this 
+                    # function also creates ThreeAddress at some point, this temp variable
+                    # has to be flushed from the operands_stack
+                    flush_tempvar = operands_stack.pop()
+
+                    # Weird handling, only create ThreeAddress object for the True condition
+                    # and let convert_to_three_address handle the False condition by putting 
+                    # it in the operands_stack
+                    threeaddress = ThreeAddress("ASSIGNMENT", caller_lhs, None, iftrue_rhs, None, self.name, node.lineno)
+                    self.three_address_list.append(threeaddress)
+
+                    operands_stack.append(iffalse_rhs)
+                    
+                # This case is already handled by the add_operands (pre_fn) method
+                elif astutils.is_node_type(node, "IDENTIFIER"):
+                    pass
+
                 else:
-                   print "WARNING: Unhandled case in reduce_rhs:reduce_exp" + \
-                         " at lineno " + str(node.lineno)
+                    print "WARNING: Unhandled case in reduce_rhs:reduce_exp" + \
+                          " at lineno " + str(node.lineno) + " of type " + str(node.type)
 
         # END reduce_exp()
         
@@ -329,7 +373,7 @@ class Function(object):
 #        for t in self.three_address_list:
 #            print t
 #        print "---------------TAC-----------------"
-        assert len(operands_stack) == 1, "Junk data exists in operand_stack: " + str(operands_stack)
+        assert len(operands_stack) == 1, "Junk data exists in operand_stack: " + str(operands_stack) + " at lineno: " + str(node.lineno)
         return operands_stack[0]
     
     # END reduce_rhs()    
@@ -349,19 +393,21 @@ class Function(object):
                     else:
                         rhs = "__undefined__"
                     
-                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None, self.name, statement_node.lineno)
                     self.three_address_list.append(threeaddress)
                 
                 elif astutils.is_node_type(statement_node, "ASSIGN"):
                     lhs = self.reduce_lhs(statement_node[0])
                     
-                    # reduce_lhs returns a deque
+                    # reduce_lhs returns a deque, because if the dot operator
+                    # on the left hand side has two identifiers, it needs to put
+                    # a store statement
                     if len(lhs) == 2:
                         rhs = self.reduce_rhs(statement_node[1], lhs)
-                        threeaddress = ThreeAddress("STORE", tuple(lhs), rhs, None, None)
+                        threeaddress = ThreeAddress("STORE", tuple(lhs), rhs, None, None, self.name, statement_node.lineno)
                     elif len(lhs) == 1:
                         rhs = self.reduce_rhs(statement_node[1], lhs[0])
-                        threeaddress = ThreeAddress("ASSIGNMENT", lhs[0], None, rhs, None)
+                        threeaddress = ThreeAddress("ASSIGNMENT", lhs[0], None, rhs, None, self.name, statement_node.lineno)
 
                     self.three_address_list.append(threeaddress)
 
@@ -372,7 +418,7 @@ class Function(object):
                     lhs = statement_node.name
                     params = statement_node.params
                     operator = "{...}"
-                    threeaddress = ThreeAddress("FUNCTIONDECL", lhs, "function", params, operator)
+                    threeaddress = ThreeAddress("FUNCTIONDECL", lhs, "function", params, operator, self.name, statement_node.lineno)
                     self.three_address_list.append(threeaddress)
                 
                 elif astutils.is_node_type(statement_node, "RETURN"):
@@ -384,7 +430,7 @@ class Function(object):
                     else:
                         rhs = self.reduce_rhs(statement_node.value)
                         
-                    threeaddress = ThreeAddress("RETURN", None, None, rhs, operator)
+                    threeaddress = ThreeAddress("RETURN", None, None, rhs, operator, self.name, statement_node.lineno)
                     self.three_address_list.append(threeaddress)
                 
                 # These are statements that stand alone, whose values aren't
@@ -395,7 +441,7 @@ class Function(object):
                     lhs = self.create_temp()
                     rhs = self.reduce_rhs(statement_node)
                     
-                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None, self.name, statement_node.lineno)
                     self.three_address_list.append(threeaddress)
                 
                 # If the else statement is reached, then print a warning
@@ -407,7 +453,7 @@ class Function(object):
                     lhs = self.create_temp()
                     rhs = self.reduce_rhs(statement_node)
                     
-                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None)
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None, self.name, statement_node.lineno)
                     self.three_address_list.append(threeaddress)
                     print "WARNING: Unhandled case in convert_to_three_address"
                     print threeaddress
@@ -430,7 +476,9 @@ class Function(object):
                                                        self.parent_function.name if self.parent_function else "None")
 
 class ThreeAddress(object):
-    """ Holds three address code information about a program. 
+    """ Holds three address code information about a program. In
+    addition, this object also holds the line number of the original 
+    line of code, and the name of the enclosing function.
     Here are some of the expected forms of ThreeAddress objects 
     for various AST nodes:
     
@@ -478,12 +526,15 @@ class ThreeAddress(object):
     rhs2 : (list) function parameters of type string 
     op   : (str) "function"
     """   
-    def __init__(self, statement_type, lhs, rhs1, rhs2, operator):
+    def __init__(self, statement_type, lhs, rhs1, rhs2, operator, enclosing_method=None, lineno=0):
         self.statement_type = statement_type
         self.lhs = lhs
         self.rhs1 = rhs1
         self.rhs2 = rhs2
         self.operator = operator
+
+        self.enclosing_method = enclosing_method
+        self.lineno = lineno
         
     def __repr__(self):
         return "ThreeAddress({0}, {1}, {2}, {3})".format(self.lhs, self.rhs1, self.rhs2, self.operator)
@@ -620,6 +671,8 @@ def main(*args):
     
     parser.add_argument("filepath", action="store", help="the path to JavaScript file or the file")
     parser.add_argument("-o", action="store", dest="outputpath", help="output path (not file!)")
+    parser.add_argument("-wa", action="store_true", default=False, dest="write_AST", help="set if writing the AST to a file is needed")
+    parser.add_argument("-pr", action="store_true", default=False, dest="print_result", help="set if writing the conversion result to a file is needed")
     parser.add_argument("-e", action="store_true", default=False, dest="isextension", help="set if the path given is an extension path")
     
     results = parser.parse_args()
@@ -634,6 +687,8 @@ def main(*args):
         outputpath = os.getcwd()
     
     isextension = results.isextension
+    write_AST = results.write_AST
+    print_result = results.print_result
 
     if isextension:
         from driver import get_extension_name
@@ -655,21 +710,25 @@ def main(*args):
     #Start Doing Stuff With AST-------------------------------------------------------------- 
     print "Three Address Code Module\nIvan Gozali\n"
     
-    print "Creating frame structure...",
-    #ThreeAddressAnalyze---
-    global_fn = analyze_three_address(ast)
-    print "OK"
+    if print_result:
+        print "Creating frame structure...",
+        #ThreeAddressAnalyze---
+        global_fn = analyze_three_address(ast)
+        print "OK"
 
-    print global_fn
-    
-    print "Converting statements into three address codes...",
-    convert_functions(global_fn)
-    print "OK\n"
-    
-    print_all_three_addresses(global_fn)
+        print global_fn
+        
+        print "Converting statements into three address codes...",
+        convert_functions(global_fn)
+        print "OK\n"
+        
+        print_all_three_addresses(global_fn)
+    else:
+        print "Skipping three address conversion..."
     
     #Output Stuff----------------------------------------------------------------------------
-    if results.outputpath:
+    if outputpath and write_AST:
+        print "Writing AST to file...",
         ASTstring = str(ast)
         outputfile = open(outputpath + os.sep + "threeac_ast_out.txt", "w")
         outputfile.write(ASTstring)
@@ -680,3 +739,4 @@ def main(*args):
         outputfile = open(outputpath + os.sep + "threeac_ast_trimmed_out.txt", "w")
         outputfile.write(trimmed_AST)
         outputfile.close()
+        print "OK!"

@@ -111,22 +111,22 @@ The program is developed in Python 2.7 to maintain compatibility with
     described above:  
     +   calls(i : I, m : H)  
         Call site i invokes method m.  
-    +   formal(m : H, z : Z, v : V) 
+    +   formal(m : H, z : Z, v : V)  
         Indicates that the z-th formal parameter of method m is v.  
     +   methodRet(m : H, v : V)  
         The return parameter of method m is v.  
     +   actual(i : I, z : Z, v : V)  
         At call site i, the z-th actual parameter (argument) is v.  
-    +   callRet(i : I, v : V)   
-        The return value of a function call at call site i is v.   
-    +   declaredIn(i : I, m : H)   
-        Call site i is located in method m.   
-    +   assign(v1 : V, v2 : V)   
-        Records variable assignment of the form v1 = v2. 
-    +   load(v1 : V, v2: V, f : F) 
-        Records the load operation v1 = v2.f 
+    +   callRet(i : I, v : V)  
+        The return value of a function call at call site i is v.  
+    +   declaredIn(i : I, m : H)  
+        Call site i is located in method m.  
+    +   assign(v1 : V, v2 : V)  
+        Records variable assignment of the form v1 = v2.  
+    +   load(v1 : V, v2: V, f : F)  
+        Records the load operation v1 = v2.f  
     +   store(v1 : V, f : F, v2 : V)  
-        Records the store operation v1.f = v2 
+        Records the store operation v1.f = v2  
     +   ptsTo(v : V, h : H)  
         Variable v **may point to** heap variable h.  
     +   heapPtsTo(h1 : H, f : F, h2 : H)  

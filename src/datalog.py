@@ -1,3 +1,5 @@
+#! /usr/bin/python
+
 '''
 Created on Mar 10, 2012
 
@@ -36,6 +38,7 @@ def retrieve_three_address_list(global_fn):
     return tac_list
 
 call_site = 0
+#TODO Put line numbers inside the ThreeAddress object
 def generate_datalog_facts(tac_list):
     """ Generate Datalog facts given a threeaddress.Function object 
     which holds all the three address codes of the module. 
@@ -103,92 +106,64 @@ def generate_datalog_facts(tac_list):
         fact = []
         
         if tac.statement_type == "LOAD":
-            datalog_facts.append("load({0},{1},{2}).".format(tac.lhs, tac.rhs1, tac.rhs2))
+            datalog_facts.append("load('{0}','{1}','{2}').".format(tac.lhs, tac.rhs1, tac.rhs2))
         elif tac.statement_type == "STORE":
-            datalog_facts.append("store({0},{1},{2}).".format(tac.lhs[0], tac.lhs[1], tac.rhs1))
+            datalog_facts.append("store('{0}','{1}','{2}').".format(tac.lhs[0], tac.lhs[1], tac.rhs1))
             
         elif tac.statement_type == "ASSIGNMENT":
-            datalog_facts.append("assign({0},{1}).".format(tac.lhs, tac.rhs2))
+            if tac.rhs1 is None:    
+                datalog_facts.append("assign('{0}','{1}').".format(tac.lhs, tac.rhs2))
         
         elif tac.statement_type == "RETURN":
-            datalog_facts.append("callRet({0}).".format(tac.rhs2))
+            datalog_facts.append("methodRet('d_{0}','{1}').".format(tac.enclosing_method, tac.rhs2))
         
         elif tac.statement_type == "CALL":
             global call_site
             for z, param in enumerate(tac.rhs2, start=1):
-                datalog_facts.append("actual({0},{1},{2}).".format(call_site, z, param))
-                datalog_facts.append("callRet({0},{1}).".format(call_site, param))
+                datalog_facts.append("actual('{0}','{1}','{2}').".format(call_site, z, param))
+                datalog_facts.append("callRet('{0}','{1}').".format(call_site, param if param else "None"))
             call_site += 1
             
         elif tac.statement_type == "FUNCTIONDECL":
-            datalog_facts.append("ptsTo({0},d_{0}).".format(tac.lhs))
-            datalog_facts.append("heapPtsTo(d_{0},prototype,p_{0}).".format(tac.lhs))
-            datalog_facts.append("funcDecl(d_{0}).".format(tac.lhs))
-            datalog_facts.append("prototype(p_{0},h_FP).".format(tac.lhs))
-            datalog_facts.append("methodRet(d_{0},{0}).".format(tac.lhs))
+            datalog_facts.append("ptsTo('{0}','d_{0}').".format(tac.lhs))
+            datalog_facts.append("heapPtsTo('d_{0}','prototype','p_{0}').".format(tac.lhs))
+            datalog_facts.append("prototype('p_{0}','h_FP').".format(tac.lhs))
+            datalog_facts.append("methodRet('d_{0}','{0}').".format(tac.lhs))
             for z, param in enumerate(tac.rhs2, start=1):
-                datalog_facts.append("formal(d_{0},{1},{2}).".format(tac.lhs, z, param))
+                datalog_facts.append("formal('d_{0}','{1}','{2}').".format(tac.lhs, z, param))
         
         else:
             fact = "datalog.py: statement_type:{0} not implemented".format(tac.statement_type)
     
     return datalog_facts
-    
+   
+#TODO Discrepancy between number of arguments for funcDecl and callRet predicates.
+#TODO Need to fix recursive rules for the third ptsTo predicate.
 def generate_datalog_rules():
     """ Generates the required rules for the Datalog files generated from the 
     JavaScript file.
+
+    For a general description of what these predicates and rules mean, consult 
+    README.md
     """
-    rules_str = """%% Basic Rules
-ptsTo(V,H) :-
-        alloc(V,H).
-ptsTo(V,H) :-
-        funcDecl(V,H).
-ptsTo(V_1,H) :-
-        ptsTo(V_2,H),
-        assign(V_1,V_2).
+    basicrules_file = open("basicrules.pl", "r")
+    rules_str = basicrules_file.read()
 
-directHeapStoresTo(H_1,F,H_2) :-
-        store(V_1,F,V_2),
-        ptsTo(V_1,H_1),        
-        ptsTo(V_2,H_2).
-directHeapPointsTo(H_1,F,H_2) :-        
-        directHeapStoresTo(H_1,F,H_2).
-ptsTo(V_2,H_2) :-        
-        load(V_2,V_1,F),         
-        ptsTo(V_1,H_1),        
-        heapPtsTo(H_1,F,H_2).
-heapPtsTo(H_1,F,H_2) :-        
-        directHeapPointsTo(H_1,F,H_2).
-
-%% Call graph
-calls(I,M) :-        
-        actual(I,0,C),        
-        ptsTo(C,M).
-
-%% Interprocedural assignments
-assign(V_1,V_2) :-        
-        calls(I,M),        
-        formal(M,Z,V_1),        
-        actual(I,Z,V_2).
-assign(V_2,V_1) :-        
-        calls(I,M),        
-        methodRet(M,V_1),        
-        callRet(I,V_2).
-
-%% Prototype handling
-heapPtsTo(H_1,F,H_2) :-        
-        prototype(H_1,H),        
-        heapPtsTo(H,F,H_2).
-
-"""
-
+    basicrules_file.close()
+    
     return rules_str
 
 def generate_default_objects():
-    chrome_obj = "%% \"chrome\" handling as default object\n" + \
-                 "ptsTo(chrome, d_chrome).\nheapPtsTo(d_chrome, prototype, p_chrome).\n" + \
-                 "funcDecl(d_chrome).\nprototype(p_chrome, h_FP).\nmethodRet(d_chrome, chrome).\n\n"
-    return chrome_obj
+    """ Reads the default chrome.pl file and returns the contents as a string.
+
+    For a description of what chrome.pl means, please consult the file 
+    chrome.pl directly.
+    """
+    chromeobj_file = open("chrome.pl", "r")
+    chrome_str = chromeobj_file.read()
+    chromeobj_file.close();
+    
+    return chrome_str
 
 @_main
 def main(*args):

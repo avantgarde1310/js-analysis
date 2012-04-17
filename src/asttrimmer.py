@@ -12,9 +12,7 @@ def trim_AST_string(AST_string):
     
     AST_lines = AST_string.split("\n")
     for line in AST_lines:
-        if "lineno" in line:
-            continue
-        elif "tokenizer" in line:
+        if "tokenizer" in line:
             continue
         elif "start" in line:
             continue
