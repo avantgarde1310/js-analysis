@@ -1,0 +1,14 @@
+# Compiled sources #
+####################
+
+*.pyc
+
+# VIM Session Files #
+#####################
+
+*.swp
+
+# OS Generated Files #
+######################
+
+.DS_Store*
