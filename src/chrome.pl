@@ -5,11 +5,9 @@
 % of the Chrome API in the environment.
 %
 % Change Logs
-% -    Implemented chrome.tabs.* methods
-% -    Implemented chrome.bookmarks.* methods
-% -    Implemented chrome.extension.* methods
+% -    Implemented all chrome API methods.
+%
 % To-Dos
-% -    Implement other chrome API methods! 
 % -    Implement other chrome API events!
 
 
