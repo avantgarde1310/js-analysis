@@ -14,6 +14,8 @@ def trim_AST_string(AST_string):
     for line in AST_lines:
         if "tokenizer" in line:
             continue
+        elif "readOnly" in line:
+            continue
         elif "start" in line:
             continue
         elif "end" in line:

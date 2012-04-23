@@ -81,7 +81,7 @@ def traverse_AST(node, fn=None, postfn=None):
         
         # Special handling for looping statements, otherwise it 
         # will recurse infinitely (especially the CONTINUE statement)
-        if key == "target":
+        if key == "target": 
             continue
         
         if type(attr) == pynarcissus.jsparser.Node:

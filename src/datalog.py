@@ -1,4 +1,4 @@
-#! /usr/bin/python
+#!/usr/bin/python
 
 '''
 Created on Mar 10, 2012
@@ -38,6 +38,7 @@ def retrieve_three_address_list(global_fn):
     return tac_list
 
 call_site = 0
+constructor_counter = 0
 #TODO Put line numbers inside the ThreeAddress object
 def generate_datalog_facts(tac_list):
     """ Generate Datalog facts given a threeaddress.Function object 
@@ -69,6 +70,7 @@ def generate_datalog_facts(tac_list):
     op   : (str) "return"
     
     [CONSTRUCTOR]
+        
     
     [CALL]
     lhs  : (str) variable to be assigned the value
@@ -119,10 +121,25 @@ def generate_datalog_facts(tac_list):
         
         elif tac.statement_type == "CALL":
             global call_site
+
+            if tac.rhs1 == "eval":
+                datalog_facts.append("eval('{0}').".format(tac.lineno))
+
             for z, param in enumerate(tac.rhs2, start=1):
                 datalog_facts.append("actual('{0}','{1}','{2}').".format(call_site, z, param))
                 datalog_facts.append("callRet('{0}','{1}').".format(call_site, param if param else "None"))
+
             call_site += 1
+            
+        elif tac.statement_type == "NEW":
+            #TODO Check NEW correctness
+            global constructor_counter
+            datalog_facts.append("ptsTo('{0}','n_{1}_{2}').".format(tac.lhs, tac.rhs1, constructor_counter))
+            datalog_facts.append("prototype('n_{0}_{1}', 'p_{0}')".format(tac.rhs1, constructor_counter))
+            for z, param in enumerate(tac.rhs2, start=1):
+                datalog_facts.append("actual('{0}','{1}','{2}').".format(call_site, z, param))
+                datalog_facts.append("callRet('{0}','{1}').".format(call_site, param if param else "None"))
+            constructor_counter += 1
             
         elif tac.statement_type == "FUNCTIONDECL":
             datalog_facts.append("ptsTo('{0}','d_{0}').".format(tac.lhs))
