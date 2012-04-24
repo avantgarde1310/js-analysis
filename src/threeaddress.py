@@ -222,14 +222,14 @@ class Function(object):
                 this function (OBJECT_INIT) or another function (FUNCTION).
             """
             #DEBUGGING Pre---
-#           print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+            print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
 
             if len(ns.in_block) > 0:
                 return 
             
             elif astutils.is_node_type(node, "FUNCTION"):
                 #DEBUGGING in_func---
-#               print "in function: " + node.name
+                print "in function: " + node.name
                 
                 ns.in_block.append("IN_FUNCTION_" + node.name)            
 
@@ -248,7 +248,7 @@ class Function(object):
                  
             elif astutils.is_node_type(node, "OBJECT_INIT"):
                 #DEBUGGING in_obj_init---
-#               print "in object init"
+                print "in object init"
 
                 # assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT at lineno {0}".format(node.lineno)
                 # If we're dealing with anonymous object literals, use a 
@@ -257,18 +257,19 @@ class Function(object):
                 if caller_lhs:
                     lhs1_temp = caller_lhs
                     # property injection to AST node, remember to remove later
-                    node.name = caller_lhs
+                    node.name = lhs1_temp
                     ns.in_block.append("IN_OBJECT_INIT_" + lhs1_temp)
                 else:
                     lhs1_temp = self.create_temp()
                     # property injection to AST node, remember to remove later
-                    node.name = caller_lhs
+                    node.name = lhs1_temp
                     ns.in_block.append("IN_OBJECT_INIT_temp_" + lhs1_temp) 
                 
                 for object_property in node:
                     lhs1 = lhs1_temp 
                     lhs2 = object_property[0].value
                     lhs = (lhs1, lhs2)
+                    print "CRASH HERE"
                     rhs = self.reduce_rhs(object_property[1])
                     
                     threeaddress = ThreeAddress("STORE", lhs, rhs, None, None, self.name, node.lineno)
@@ -295,7 +296,7 @@ class Function(object):
             """
 
 #           #DEBUGGING Post---
-#           print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+            print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
 
             if len(ns.in_block) > 0:
                 if astutils.is_node_type(node, "FUNCTION"):
@@ -318,7 +319,11 @@ class Function(object):
 
                 elif astutils.is_node_type(node, "OBJECT_INIT"):
                     # property injection used here
-                    if ns.in_block[-1].startswith("IN_OBJECT_INIT") and ns.in_block[-1].endswith(getattr(node, "name", "invalid")):
+                    object_name = getattr(node, "name", None)
+                    if object_name is None: object_name = "invalid"
+
+                    print object_name
+                    if ns.in_block[-1].startswith("IN_OBJECT_INIT") and ns.in_block[-1].endswith(object_name):
                         temp = ns.in_block.pop()
                         
                         # if using a temporary variable, append the temporary variable to
@@ -409,6 +414,16 @@ class Function(object):
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
 
+
+                # Handle IN operators
+                elif astutils.is_node_type(node, "IN") and len(operands_stack) >= 2:
+                    # The IN operator leaves two extra operands in the operands_stack,
+                    # and they are both either primitives or reduced variables. So, 
+                    # pop them out of the stack
+                    temp = operands_stack.pop()
+                    operands_stack.pop()
+                    operands_stack.append(temp)
+
                 # Handle reduction of ternary operators
                 elif astutils.is_node_type(node, "HOOK"):
                     # The condition is handled somewhere else
@@ -445,10 +460,12 @@ class Function(object):
         astutils.traverse_AST(node, add_operand, reduce_exp)
         
         #DEBUGGING print_three_address---
-#        print "---------------TAC-----------------"
-#        for t in self.three_address_list:
-#            print t
-#        print "---------------TAC-----------------"
+        print "---------------TAC-----------------"
+        for t in self.three_address_list:
+            print t
+        print "---------------TAC-----------------"
+        assert len(operands_stack) > 0, "Nothing in operand_stack: " + \
+                                         str(operands_stack) + " at lineno: " + str(node.lineno)
         assert len(operands_stack) == 1, "Junk data exists in operand_stack: " + \
                                          str(operands_stack) + " at lineno: " + str(node.lineno)
         return operands_stack[0]
@@ -457,7 +474,7 @@ class Function(object):
         
     def convert_to_three_address(self):
         #DEBUGGING print_fn_name---
-#       print "------ convert_to_three_address:" + self.name + "------"
+        print "------ convert_to_three_address:" + self.name + "------"
 
         if not self._three_address_list:
             # All the statement nodes at this point should only be
@@ -526,7 +543,7 @@ class Function(object):
                 # statement
                 else:
                     #DEBUGGING print_else_node---
-                    #print statement_node
+#                   print statement_node
 
                     lhs = self.create_temp()
                     rhs = self.reduce_rhs(statement_node)
