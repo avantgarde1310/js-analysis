@@ -191,7 +191,7 @@ class Function(object):
             self.three_address_list.append(threeaddress)
             
             operands_queue.appendleft(lhs)
-        
+
         # Only 2 identifiers should remain in the queue
         assert len(operands_queue) == num_dots, "operands_queue has length > " + str(num_dots)
         return operands_queue
@@ -249,6 +249,7 @@ class Function(object):
             elif astutils.is_node_type(node, "OBJECT_INIT"):
                 #DEBUGGING in_obj_init---
                 print "in object init"
+                print "caller_lhs = " + str(caller_lhs)
 
                 # assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT at lineno {0}".format(node.lineno)
                 # If we're dealing with anonymous object literals, use a 
@@ -483,6 +484,7 @@ class Function(object):
                 if astutils.is_node_type(statement_node, "VAR"):
                     for var_node in statement_node:
                         lhs = var_node.value
+
                         if hasattr(var_node, "initializer"):
                             rhs = self.reduce_rhs(var_node.initializer, lhs)
                         else:

@@ -230,8 +230,8 @@ def main(*args):
     
     facts_str = ""
     for fact in datalog_facts:
-        # DEBUGGING printFacts
-        # print fact
+        #DEBUGGING printFacts
+        #print fact
         facts_str += fact + "\n"
     rules_str = generate_datalog_rules() + "\n" + generate_default_objects()
     
