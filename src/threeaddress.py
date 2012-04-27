@@ -147,13 +147,25 @@ class Function(object):
         Function.tempvar_counter += 1
         return new_tempvar
     
-    def reduce_lhs(self, node, object_init=False):
+    def reduce_lhs(self, node):
         """ Reduces the left hand side of an assignment statement. 
-        Used to generate store statements.
+        Used to generate store statements. 
 
-        object_init - indicates whether reduce_lhs is called for 
-                     object initialization, because this needs
-                     special handling
+        This function returns a pair of values, a partially reduced 
+        left hand side expression, and the fully reduced expression. 
+        This is because we need to take care of expressions like 
+        
+            c.ui = someVar || {a:5,b:6};
+        
+        The object initialization needs lhs to be fully reduced,
+        but the assignment of someVar to c.ui needs a store expression.
+
+        This function will then return (c.ui, t0), and will also create
+        the expression t0 = c.ui, then we can handle both cases.
+
+        In the case where the operands_queue has only length 1, 
+        fullyReduced will be that operand, and the partiallyReduced
+        operand will be None.
         """
 
         from collections import deque
@@ -165,23 +177,13 @@ class Function(object):
         
         astutils.traverse_AST(node, add_operand, None)
 
-        # if performing object initialization, need only one variable
-        # on the left hand side, because when initializing the properties,
-        # there's an additional dot. for example:
-        # Function.prototype = {a:5}; -> t0 = Function.prototype;
-        #                             -> t0.a = 5;
-        # But if not object initialization, need two operands on lhs, 
-        # Function.prototpye = 5;     -> Function.prototype = 5;
-        if object_init:
-            num_dots = 1
-        else:
-            num_dots = 2
-
         # if only one operand in queue, return immediately
         if len(operands_queue) == 1:
-            return operands_queue
+            partiallyReduced = None
+            fullyReduced = operands_queue[0]
+            return (partiallyReduced, fullyReduced)
         
-        while len(operands_queue) > num_dots:
+        while len(operands_queue) > 2:
             lhs = self.create_temp()
             rhs1 = operands_queue.popleft()
             rhs2 = operands_queue.popleft()
@@ -192,9 +194,17 @@ class Function(object):
             
             operands_queue.appendleft(lhs)
 
-        # Only 2 identifiers should remain in the queue
-        assert len(operands_queue) == num_dots, "operands_queue has length > " + str(num_dots)
-        return operands_queue
+        lhs = self.create_temp()
+        rhs1 = operands_queue[0]
+        rhs2 = operands_queue[1]
+        op = "."
+        threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, op, self.name, node.lineno)
+        self.three_address_list.append(threeaddress)
+
+        partiallyReduced = operands_queue
+        fullyReduced = lhs
+
+        return (partiallyReduced, fullyReduced) 
         
     def reduce_rhs(self, node, caller_lhs=None):
         """ Reduces the right hand side of an expression to a single variable.
@@ -224,9 +234,16 @@ class Function(object):
             #DEBUGGING Pre---
             print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
 
+            # Unpack caller_lhs, a tuple
+            if caller_lhs:
+                partiallyReduced = caller_lhs[0]
+                fullyReduced = caller_lhs[1]
+            else:
+                partiallyReduced, fullyReduced = None, None
+
             if len(ns.in_block) > 0:
                 return 
-            
+
             elif astutils.is_node_type(node, "FUNCTION"):
                 #DEBUGGING in_func---
                 print "in function: " + node.name
@@ -237,26 +254,27 @@ class Function(object):
                 #TODO Handle ARRAY_INIT
                 ns.in_block.append("IN_ARRAY_INIT")
 
+                lhs1 = fullyReduced if fullyReduced else self.create_temp()
                 for i, array_element in enumerate(node):
-                    lhs1 = caller_lhs
                     lhs2 = str(i)
                     lhs = (lhs1, lhs2)
                     rhs = self.reduce_rhs(array_element)
 
                     threeaddress = ThreeAddress("STORE", lhs, rhs, None, None, self.name, node.lineno)
                     self.three_address_list.append(threeaddress)
+
+                print self.three_address_list
                  
             elif astutils.is_node_type(node, "OBJECT_INIT"):
                 #DEBUGGING in_obj_init---
                 print "in object init"
-                print "caller_lhs = " + str(caller_lhs)
+                print "fullyReduced lhs = " + str(fullyReduced)
 
-                # assert caller_lhs is not None, "reduce_rhs needs information about lhs for OBJECT_INIT at lineno {0}".format(node.lineno)
                 # If we're dealing with anonymous object literals, use a 
                 # temp variable, handled in the else condition.
                 # For example, "browser.canLoad({event:null});
-                if caller_lhs:
-                    lhs1_temp = caller_lhs
+                if fullyReduced:
+                    lhs1_temp = fullyReduced
                     # property injection to AST node, remember to remove later
                     node.name = lhs1_temp
                     ns.in_block.append("IN_OBJECT_INIT_" + lhs1_temp)
@@ -339,9 +357,11 @@ class Function(object):
             
             else:
                 # Perform reduction only when not inside a function or object
-                # initialization , because functions are handled separately.
+                # initialization, because functions are handled separately.
                 if astutils.is_node_type(node, "CALL"):
                     arglist = []
+                    
+                    # Handle assignment statements in call arguments.
                     for _ in range(len(node[1])):
                         arglist.append(operands_stack.pop())
 
@@ -391,7 +411,24 @@ class Function(object):
                     threeaddress = ThreeAddress("LOAD", lhs, rhs1, rhs2, operator, self.name, node.lineno)
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
-                 
+
+                #FIXME Fix assignmentttttt!
+                elif astutils.is_node_type(node, "ASSIGN") and len(operands_stack) >= 2:
+                    operator = None
+                    reduced_rhs = operands_stack.pop()
+                    lhs = operands_stack.pop()
+
+                    threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, reduced_rhs, None, self.name, node.lineno)
+                    self.three_address_list.append(threeaddress)
+                    operands_stack.append(lhs)
+                
+                # Handle COMMA operators
+                # FIXME What should the value of the lhs be after COMMA resolution
+                elif astutils.is_node_type(node, "COMMA"):
+                    for _ in range(len(node) - 1):
+                        operands_stack.pop()
+
+
                 # Handle reduction of binary operators.
                 elif astutils.is_node_type(node, BINARY_OPS) and len(operands_stack) >= 2:
                     operator = BINARY_DICT[node.type]
@@ -414,7 +451,6 @@ class Function(object):
                     
                     self.three_address_list.append(threeaddress)
                     operands_stack.append(lhs)
-
 
                 # Handle IN operators
                 elif astutils.is_node_type(node, "IN") and len(operands_stack) >= 2:
@@ -483,28 +519,36 @@ class Function(object):
             for statement_node in self.statement_node_list:
                 if astutils.is_node_type(statement_node, "VAR"):
                     for var_node in statement_node:
-                        lhs = var_node.value
+                        partiallyReduced = None
+                        fullyReduced = var_node.value
+
+                        lhs = (partiallyReduced, fullyReduced)
 
                         if hasattr(var_node, "initializer"):
                             rhs = self.reduce_rhs(var_node.initializer, lhs)
                         else:
                             rhs = "__undefined__"
                     
-                        threeaddress = ThreeAddress("ASSIGNMENT", lhs, None, rhs, None, self.name, statement_node.lineno)
+                        threeaddress = ThreeAddress("ASSIGNMENT", fullyReduced, None, rhs, None, self.name, statement_node.lineno)
                         self.three_address_list.append(threeaddress)
                 
-                elif astutils.is_node_type(statement_node, "ASSIGN"):
-                    lhs = self.reduce_lhs(statement_node[0], statement_node[1].type == "OBJECT_INIT")
-                    
+                elif astutils.is_node_type(statement_node, "ASSIGN"): 
+                    lhs = self.reduce_lhs(statement_node[0])
+
+                    # lhs = (partiallyReduced, fullyReduced)
+                    partiallyReduced = lhs[0]
+                    fullyReduced = lhs[1]
+
                     # reduce_lhs returns a deque, because if the dot operator
                     # on the left hand side has two identifiers, it needs to put
                     # a store statement
-                    if len(lhs) == 2:
-                        rhs = self.reduce_rhs(statement_node[1], lhs)
-                        threeaddress = ThreeAddress("STORE", tuple(lhs), rhs, None, None, self.name, statement_node.lineno)
-                    elif len(lhs) == 1:
-                        rhs = self.reduce_rhs(statement_node[1], lhs[0])
-                        threeaddress = ThreeAddress("ASSIGNMENT", lhs[0], None, rhs, None, self.name, statement_node.lineno)
+                    rhs = self.reduce_rhs(statement_node[1], lhs)
+                    
+                    # This means, the left hand side has more than 1 dot operator
+                    if partiallyReduced is not None:
+                        threeaddress = ThreeAddress("STORE", tuple(partiallyReduced), rhs, None, None, self.name, statement_node.lineno)
+                    else:
+                        threeaddress = ThreeAddress("ASSIGNMENT", fullyReduced, None, rhs, None, self.name, statement_node.lineno)
 
                     self.three_address_list.append(threeaddress)
 
