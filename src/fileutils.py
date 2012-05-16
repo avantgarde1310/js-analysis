@@ -70,6 +70,16 @@ def is_file_type(filename, extension):
     else:
         return False
 
+def extract_filename(filepath):
+    """ Tries to extract a filename from a path to a file. If the path 
+    provided is not a filename, raise an exception.
+
+    """
+    if not os.path.isfile(filepath):
+        raise TypeError("the argument is not a file, or the file doesn't exist")
+
+    return os.path.splitext(os.path.split(filepath)[1])[0]
+
 def convert_abs_to_rel(filepath):
     if os.path.isabs(filepath):
         return os.path.split(filepath)[1]
@@ -151,3 +161,65 @@ def combine_js_files(path):
         js_string += open(filename).read() + "\n\n\n"
     
     return js_string
+
+def get_extension_name(path):
+    """Given an extension directory, tries to extract the extension name
+    from the manifest.json files, or _locales/en folder
+    
+    path    - an extension directory (e.g. gighgighmmpiobklfepjocnamgkkbiglidom)
+    """
+    try:
+        #print "Trying to find name in manifest.json... ",
+        for dirpath, dirnames, filenames in get_directory_tree(path):
+            for filename in filenames:
+                if filename == "manifest.json":
+                    tempstr = open(dirpath + os.sep + filename).read()
+                    tempstr = tempstr[tempstr.index("\"name\""):]
+                    tempstr = tempstr[:tempstr.index("\n")]
+                    tempstr = tempstr[9:-2]
+                    if "__MSG" not in tempstr:
+                        #print "OK"
+                        return tempstr
+                    else:
+                        #print "Extension name not found in manifest.json"
+                        raise Exception(tempstr)
+    # __MSG_name__
+    except Exception, e:
+        tag = e[0][6:-2]
+        #print "Trying _locales" + os.sep + "en folder...",
+        for dirpath, dirnames, filenames in get_directory_tree(path):
+            if dirpath.endswith("_locales" + os.sep + "en") and "__MACOSX" not in dirpath:
+                tempstr = open(dirpath + os.sep + "messages.json").read()
+                tempstr = tempstr[tempstr.index("\"" + tag + "\": {\n      "):]
+                tempstr = tempstr[:tempstr.index("}")]
+                tempstr = tempstr[tempstr.index("\"message\""):]
+                tempstr = tempstr[:tempstr.index("\n")]
+                tempstr = tempstr[12:-1]
+                #print "OK"
+                return tempstr
+        #print "Name not found."
+        return None
+
+def get_extension_id(path):
+    """Given an extension path, tries to extract the ID of the extension.
+    Otherwise, returns the string "unknownID".
+
+    path    - an extension directory (e.g. gighmmpiobklfepjocnamgkkbiglidom)
+    """
+    split_path = path.split(os.sep)
+
+    # Handles the case where path is like below:
+    # /../extensions/gighmmpiobklfepjocnamgkkbiglidom
+    ext_id = split_path[-1]
+    if ext_id is not None and len(ext_id) == 32:
+        return ext_id
+
+    # Handles the case where the path has an extra slash at the end
+    # /../extensions/gighmmpiobklfepjocnamgkkbiglidom/
+    ext_id = split_path[-2]
+    if ext_id is not None and len(ext_id) == 32:
+        return ext_id 
+
+    return "unknownID"
+    
+

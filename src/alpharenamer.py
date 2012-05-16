@@ -1,19 +1,23 @@
-'''
+#!/usr/bin/python
+
+"""
+alpharenamer.py
+
 Created on Nov 2, 2011
 
 @author: Ivan Gozali
-'''
+"""
 
 import pynarcissus.jsparser
 
-DEBUGGING = False
+# Global Variables ---
+VERBOSE = False
 SEPARATOR = '_R_'
 FUNCSEP   = '_R_'
 
-def debugprint(str=""):
-    global DEBUGGING
-    if DEBUGGING:
-        print(str)
+def printv(string=""):
+    if VERBOSE:
+        print(string)
 
 def traverse_AST_level(node, fn=None, postfn=None, level=0):
     """
@@ -138,8 +142,8 @@ class Frame(object):
         frame_ptr = self
         while frame_ptr is not None:
             var_list = [get_real_identifier(var.identifier) for var in frame_ptr.varDecls]
-            debugprint(frame_ptr)
-            debugprint(var_list)
+            #printv(frame_ptr)
+            #printv(var_list)
             if identifier_to_find in var_list:
                 return frame_ptr.varDecls[var_list.index(identifier_to_find)].identifier
             else:
@@ -297,12 +301,14 @@ class Call(object):
         # traverse down the identifier node, looking for parts of the
         # dot call, and joins them into one.
         complete_name = []
+
         def append_name(node, level):
             if node.type == "IDENTIFIER":
                 complete_name.append(node.value)
+
         traverse_AST_level(node[0], append_name)
         complete_name = ".".join(complete_name)
-#        print(complete_name)
+        #print(complete_name)
         if complete_name.startswith("chrome"):
             self.name = complete_name
         
@@ -322,7 +328,6 @@ class Call(object):
     def __eq__(self, other):
         return self.name == other.name
         
-    
 class Variable(object):
     """
     Represents a generic variable container. It has an identifier and a
@@ -426,7 +431,7 @@ def create_frames(ast):
             
         if is_node_type(node, "VAR"):
             var = VarAssign(node)
-            # debugprint("Before add variable: ", ns.current_frame)
+            # printv("Before add variable: ", ns.current_frame)
             ns.current_frame.add_variable(var)
         
         if is_node_type(node, "CALL"):
@@ -452,6 +457,8 @@ def alpha_rename(frame, ast):
     """
     Executes the alpha-renaming (or alpha-conversion) process on
     the AST and the scope tree.
+
+    After the alpha-renaming process, the AST will be modified.
     
     var assignment statements are assignment statements that use the 
     var keyword. 
@@ -471,10 +478,10 @@ def alpha_rename(frame, ast):
         if type(frame) == Frame:
             for var in frame.varDecls:
                 new_identifier = var.identifier + SEPARATOR + str(frame.id)
-                debugprint("Renaming variable " + var.identifier + " to " + new_identifier)
+                #printv("Renaming variable " + var.identifier + " to " + new_identifier)
                 var.set_identifier(new_identifier)
     
-    debugprint("Phase 1")
+    printv("Phase 1")
     traverse_frames(frame, rename_identifier_var)
     
     # Phase 2: Rename all functions
@@ -484,7 +491,7 @@ def alpha_rename(frame, ast):
             new_name = frame.name + FUNCSEP + str(frame.id)
             frame.set_name(new_name)
     
-    debugprint("Phase 2")
+    printv("Phase 2")
     traverse_frames(frame, rename_function)
     
     # Phase 3: Rename calls
@@ -500,7 +507,8 @@ def alpha_rename(frame, ast):
                 new_name = frame.lookup_function(name)
                 
                 call.set_name(new_name if new_name is not None else (name + FUNCSEP + "?"))
-    debugprint("Phase 4")
+
+    printv("Phase 4")
     traverse_frames(frame, rename_calls)
     
     # Phase 3.5: Retrieve unrenamed identifiers
@@ -526,7 +534,7 @@ def alpha_rename(frame, ast):
                 ns.current_frame.remove_identifier(node.value)
         traverse_AST_level(ast, helper, signal_function_end)
         return # retrieve_unrenamed_identifiers
-    debugprint("Phase 4.5")
+    printv("Phase 4.5")
     retrieve_unrenamed_identifiers(ast, frame)
     
     # Phase 4: Rename unrenamed identifiers
@@ -539,9 +547,9 @@ def alpha_rename(frame, ast):
                 if isprimitive(old_name):
                     continue
                 new_name = frame.lookup_variable(old_name)
-                debugprint("Lookup variable successful. {0}".format(new_name))
+                printv("Lookup variable successful. {0}".format(new_name))
                 identifier.set_name(new_name if new_name is not None else (old_name + SEPARATOR + "?"))
-    debugprint("Phase 5")
+    printv("Phase 5")
     traverse_frames(frame, rename_unrenamed_identifiers)
     
     return frame
@@ -581,4 +589,5 @@ def isprimitive(token):
         return True
     except ValueError, TypeError:
         return False
+
 

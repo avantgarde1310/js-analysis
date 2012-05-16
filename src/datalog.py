@@ -1,10 +1,17 @@
 #!/usr/bin/python
 
-'''
+"""
+datalog.py
+
 Created on Mar 10, 2012
 
 @author: Ivan Gozali
-'''
+
+TODO: Fix rules which have numbers as the first letter of any predicate's 
+      argument.
+TODO: Fix regular expressions
+TODO: Fix nested Nones, and fix None assignments
+"""
 
 from ucb import main as _main
 
@@ -36,6 +43,29 @@ def retrieve_three_address_list(global_fn):
     threeaddress.traverse_function(global_fn, retrieve_helper, None)
     
     return tac_list
+
+def sanitize_datalog_string(string):
+    """ Ensures that the string argument passed is compatible with Datalog's
+    syntax. 
+    """
+    assert type(string) == str, "argument is not a string"
+    
+    # Return empty string
+    if string == "": 
+        return ""
+
+    # Replace all occurrences of ' with "
+
+    newstring = string.replace("'", "\"")
+    
+    # If string is of the form 1px (starts with a number and contains 
+    # alphabets), replace to "1px"
+    if str.isdigit(newstring[0]):
+        for char in newstring[1:]:
+            if str.isalpha(char):
+                newstring = "\"" + newstring + "\""
+
+    return newstring
 
 call_site = 0
 constructor_counter = 0
@@ -103,21 +133,31 @@ def generate_datalog_facts(tac_list):
     output     : (list) containing (str)s of Datalog facts.
     """
     datalog_facts = []
-    
     for tac in tac_list:
-        fact = []
-        
+        if tac.operator in threeaddress.BINARY_OPS:
+            continue
+
         if tac.statement_type == "LOAD":
-            datalog_facts.append("load('{0}','{1}','{2}').".format(tac.lhs, tac.rhs1, tac.rhs2))
+            lhs = sanitize_datalog_string(str(tac.lhs))
+            rhs1 = sanitize_datalog_string(str(tac.rhs1))
+            rhs2 = sanitize_datalog_string(str(tac.rhs2))
+            datalog_facts.append("load('{0}','{1}','{2}').".format(lhs, rhs1, rhs2))
+
         elif tac.statement_type == "STORE":
-            datalog_facts.append("store('{0}','{1}','{2}').".format(tac.lhs[0], tac.lhs[1], tac.rhs1))
+            lhs0 = sanitize_datalog_string(str(tac.lhs[0]))
+            lhs1 = sanitize_datalog_string(str(tac.lhs[1]))
+            rhs1 = sanitize_datalog_string(str(tac.rhs1))
+            datalog_facts.append("store('{0}','{1}','{2}').".format(lhs0, lhs1, rhs1))
             
         elif tac.statement_type == "ASSIGNMENT":
             if tac.rhs1 is None:    
-                datalog_facts.append("assign('{0}','{1}').".format(tac.lhs, tac.rhs2))
+                lhs = sanitize_datalog_string(str(tac.lhs))
+                rhs2 = sanitize_datalog_string(str(tac.rhs2))
+                datalog_facts.append("assign('{0}','{1}').".format(lhs, rhs2))
         
         elif tac.statement_type == "RETURN":
-            datalog_facts.append("methodRet('d_{0}','{1}').".format(tac.enclosing_method, tac.rhs2))
+            rhs2 = sanitize_datalog_string(str(tac.rhs2))
+            datalog_facts.append("methodRet('d_{0}','{1}').".format(tac.enclosing_method, rhs2))
         
         elif tac.statement_type == "CALL":
             global call_site
@@ -126,6 +166,7 @@ def generate_datalog_facts(tac_list):
                 datalog_facts.append("eval('{0}').".format(tac.lineno))
 
             for z, param in enumerate(tac.rhs2, start=1):
+                param = sanitize_datalog_string(str(param))
                 datalog_facts.append("actual('{0}','{1}','{2}').".format(call_site, z, param))
                 datalog_facts.append("callRet('{0}','{1}').".format(call_site, param if param else "None"))
 
@@ -135,8 +176,9 @@ def generate_datalog_facts(tac_list):
             #TODO Check NEW correctness
             global constructor_counter
             datalog_facts.append("ptsTo('{0}','n_{1}_{2}').".format(tac.lhs, tac.rhs1, constructor_counter))
-            datalog_facts.append("prototype('n_{0}_{1}', 'p_{0}')".format(tac.rhs1, constructor_counter))
+            datalog_facts.append("prototype('n_{0}_{1}', 'p_{0}').".format(tac.rhs1, constructor_counter))
             for z, param in enumerate(tac.rhs2, start=1):
+                param = sanitize_datalog_string(str(param))
                 datalog_facts.append("actual('{0}','{1}','{2}').".format(call_site, z, param))
                 datalog_facts.append("callRet('{0}','{1}').".format(call_site, param if param else "None"))
             constructor_counter += 1
@@ -153,10 +195,10 @@ def generate_datalog_facts(tac_list):
             fact = "datalog.py: statement_type:{0} not implemented".format(tac.statement_type)
     
     return datalog_facts
-   
+
 #TODO Discrepancy between number of arguments for funcDecl and callRet predicates.
 #TODO Need to fix recursive rules for the third ptsTo predicate.
-def generate_datalog_rules():
+def generate_default_rules():
     """ Generates the required rules for the Datalog files generated from the 
     JavaScript file.
 
@@ -182,6 +224,21 @@ def generate_default_objects():
     
     return chrome_str
 
+def generate_datalog_string(datalog_facts):
+    """ Combines the facts and rules generated into one large string to be 
+    written to a file. 
+    """
+    datalog_string = ""
+
+    for fact in datalog_facts:
+        datalog_string += fact + "\n"
+
+    datalog_string += generate_default_rules() + "\n"
+    datalog_string += generate_default_objects() + "\n"
+
+
+    return datalog_string
+
 @_main
 def main(*args):
     parser = argparse.ArgumentParser(prog="Datalog Facts Generator", description="datalog.py test module")
@@ -204,16 +261,14 @@ def main(*args):
     isextension = results.isextension
 
     if isextension:
-        from driver import get_extension_name
-
-        ext_name = get_extension_name(filepath)
+        ext_name = fileutils.get_extension_name(filepath)
+        ext_id = filepath.get_extension_id(filepath)
         print "Extension Name: ", ext_name
-        ext_id = filepath.split(os.sep)[-1]
         print "Extension ID: ", ext_id
         print
-#        jsout = open(outputpath + "\\jsout.js", "w")
-#        jsout.write(js_string)
-#        jsout.close()
+        #jsout = open(outputpath + "\\jsout.js", "w")
+        #jsout.write(js_string)
+        #jsout.close()
         
         js_string = fileutils.combine_js_files(filepath)
         ast = astutils.create_AST_from_string(js_string)
@@ -228,16 +283,14 @@ def main(*args):
     tac_list = retrieve_three_address_list(global_fn)
     datalog_facts = generate_datalog_facts(tac_list)
     
-    facts_str = ""
-    for fact in datalog_facts:
-        #DEBUGGING printFacts
-        #print fact
-        facts_str += fact + "\n"
-    rules_str = generate_datalog_rules() + "\n" + generate_default_objects()
-    
+    datalog_string = generate_datalog_string(datalog_facts)  
+
     #Write Output---
     if results.outputpath:
-        outputfile = open(outputpath + os.sep + "datalog" + os.sep + "{0}.pl".format(filepath.split(os.sep)[-1][:-3]), "w")
+        outputname = ext_name if results.isextension else filepath.split(os.sep)[-1][:-3]
+        print "OUTPUTNAME " + outputname
+        outputfile = open(outputpath + os.sep + "datalog" + os.sep + "{0}.pl".format(outputname), "w")
         outputfile.write(rules_str + facts_str)
         outputfile.close()
+
 

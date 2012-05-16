@@ -1,10 +1,11 @@
 #!/usr/bin/python
-'''
+
+"""
+threeaddress.py
+
 Created on Feb 10, 2012
 
 @author: Ivan Gozali
-
-threeaddress.py
 
 A collection of modules to convert specific parts of an AST into three address
 code format. This module will take all statements while ignoring control flow, 
@@ -91,7 +92,7 @@ TODO: Handle other assignment operators +=, -=, /=, etc.
 TODO: Fix multiple variable declarations using COMMA.
 TODO: Handle else cases in reduce_exp
 TODO: Eval handling.
-'''
+"""
 
 from ucb import main as _main
 
@@ -104,12 +105,12 @@ import argparse
 BINARY_OPS      = ["OR", "AND", "BITWISE_OR", "BITWISE_XOR", "BITWISE_AND", 
                    "STRICT_EQ", "EQ", "STRICT_NE", "NE", "LSH", "LE", "LT",
                    "URSH", "RSH", "GE", "GT", 
-                   "PLUS", "MINUS", "MUL", "DIV", "MOD"]
+                   "PLUS", "MINUS", "MUL", "DIV", "MOD", "INSTANCEOF"]
 
 BINARY_TOKENS   = ["||", "&&", "|", "^", "&",
                    "===", "==", "!==", "!=", "<<", "<=", "<",
                    ">>>", ">>", ">=", ">",
-                   "+", "-", "*", "/", "%"]
+                   "+", "-", "*", "/", "%", "instanceof"]
 
 BINARY_DICT = dict()
 for i in range(len(BINARY_OPS)):
@@ -125,8 +126,7 @@ for i in range(len(UNARY_OPS)):
 
 #Global Variables ----------------
 lambda_counter = 0
-objectInit_nest_counter = 0
-verbose = False
+VERBOSE = False
 
 #Classes ----------------
 class Function(object):
@@ -232,7 +232,7 @@ class Function(object):
                 this function (OBJECT_INIT) or another function (FUNCTION).
             """
             #DEBUGGING Pre---
-            print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+            #print "PRE  " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
 
             # Unpack caller_lhs, a tuple
             if caller_lhs:
@@ -246,29 +246,23 @@ class Function(object):
 
             elif astutils.is_node_type(node, "FUNCTION"):
                 #DEBUGGING in_func---
-                print "in function: " + node.name
+                #print "in function: " + node.name
                 
                 ns.in_block.append("IN_FUNCTION_" + node.name)            
 
             elif astutils.is_node_type(node, "ARRAY_INIT"):
                 #TODO Handle ARRAY_INIT
-                ns.in_block.append("IN_ARRAY_INIT")
-
+                
                 lhs1 = fullyReduced if fullyReduced else self.create_temp()
-                for i, array_element in enumerate(node):
-                    lhs2 = str(i)
-                    lhs = (lhs1, lhs2)
-                    rhs = self.reduce_rhs(array_element)
 
-                    threeaddress = ThreeAddress("STORE", lhs, rhs, None, None, self.name, node.lineno)
-                    self.three_address_list.append(threeaddress)
-
-                print self.three_address_list
+                # property injection
+                node.name = lhs1
+                ns.in_block.append("IN_ARRAY_INIT_" + lhs1)
+                    
                  
             elif astutils.is_node_type(node, "OBJECT_INIT"):
                 #DEBUGGING in_obj_init---
-                print "in object init"
-                print "fullyReduced lhs = " + str(fullyReduced)
+                #print "in object init"
 
                 # If we're dealing with anonymous object literals, use a 
                 # temp variable, handled in the else condition.
@@ -288,7 +282,6 @@ class Function(object):
                     lhs1 = lhs1_temp 
                     lhs2 = object_property[0].value
                     lhs = (lhs1, lhs2)
-                    print "CRASH HERE"
                     rhs = self.reduce_rhs(object_property[1])
                     
                     threeaddress = ThreeAddress("STORE", lhs, rhs, None, None, self.name, node.lineno)
@@ -314,8 +307,8 @@ class Function(object):
             statement into one temporary variable.
             """
 
-#           #DEBUGGING Post---
-            print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
+            #DEBUGGING Post---
+            #print "POST " + str(node.type) + " " + str(node.value) + " " + str(node.lineno)
 
             if len(ns.in_block) > 0:
                 if astutils.is_node_type(node, "FUNCTION"):
@@ -328,20 +321,32 @@ class Function(object):
                         operands_stack.append(lhs)
                     
                         #DEBUGGING out_func---
-#                       print "out of function: " + node.name
+                        #print "out of function: " + node.name
                          
                 elif astutils.is_node_type(node, "ARRAY_INIT"):
                     #TODO Handle ARRAY_INIT functionality
-                    if ns.in_block[-1] == "IN_ARRAY_INIT":
+                    array_name = getattr(node, "name", None)
+                    if array_name is None: array_name = "invalid"
+
+                    # property injection in node.name
+                    if ns.in_block[-1] == "IN_ARRAY_INIT_" + array_name:
+                        lhs1 = array_name
+                        for i, array_element in enumerate(node):
+                            lhs2 = str(i)
+                            lhs = (lhs1, lhs2)
+                            rhs = self.reduce_rhs(array_element)
+
+                            threeaddress = ThreeAddress("STORE", lhs, rhs, None, None, self.name, node.lineno)
+                            self.three_address_list.append(threeaddress)
+
                         ns.in_block.pop()
-                        operands_stack.append("__arrayInit__")
+                        operands_stack.append(lhs1)
 
                 elif astutils.is_node_type(node, "OBJECT_INIT"):
                     # property injection used here
                     object_name = getattr(node, "name", None)
                     if object_name is None: object_name = "invalid"
 
-                    print object_name
                     if ns.in_block[-1].startswith("IN_OBJECT_INIT") and ns.in_block[-1].endswith(object_name):
                         temp = ns.in_block.pop()
                         
@@ -353,7 +358,7 @@ class Function(object):
                             operands_stack.append("__objectInit__")
                         
                         #DEBUGGING out_obj_init---
-#                       print "out of obj_init"
+                        #print "out of obj_init"
             
             else:
                 # Perform reduction only when not inside a function or object
@@ -425,8 +430,10 @@ class Function(object):
                 # Handle COMMA operators
                 # FIXME What should the value of the lhs be after COMMA resolution
                 elif astutils.is_node_type(node, "COMMA"):
+                    last_operand = operands_stack.pop()
                     for _ in range(len(node) - 1):
                         operands_stack.pop()
+                    operands_stack.append(last_operand)
 
 
                 # Handle reduction of binary operators.
@@ -497,10 +504,10 @@ class Function(object):
         astutils.traverse_AST(node, add_operand, reduce_exp)
         
         #DEBUGGING print_three_address---
-        print "---------------TAC-----------------"
-        for t in self.three_address_list:
-            print t
-        print "---------------TAC-----------------"
+        #print "---------------TAC-----------------"
+        #for t in self.three_address_list:
+            #print t
+        #print "---------------TAC-----------------"
         assert len(operands_stack) > 0, "Nothing in operand_stack: " + \
                                          str(operands_stack) + " at lineno: " + str(node.lineno)
         assert len(operands_stack) == 1, "Junk data exists in operand_stack: " + \
@@ -511,7 +518,7 @@ class Function(object):
         
     def convert_to_three_address(self):
         #DEBUGGING print_fn_name---
-        print "------ convert_to_three_address:" + self.name + "------"
+        #print "------ convert_to_three_address:" + self.name + "------"
 
         if not self._three_address_list:
             # All the statement nodes at this point should only be
@@ -589,7 +596,7 @@ class Function(object):
                 # statement
                 else:
                     #DEBUGGING print_else_node---
-#                   print statement_node
+                    #print statement_node
 
                     lhs = self.create_temp()
                     rhs = self.reduce_rhs(statement_node)
@@ -598,7 +605,7 @@ class Function(object):
                     self.three_address_list.append(threeaddress)
 
                     printv("WARNING: Unhandled case in convert_to_three_address")
-                    print threeaddress
+                    printv("threeaddress")
                     
             self._three_address_list = True
     
@@ -807,7 +814,7 @@ def traverse_function(fn, prefn=None, postfn=None):
     if callable(postfn): postfn(fn)
 
 def printv(string):
-    if verbose:
+    if VERBOSE:
         print string
 
 def convert_functions(fn):
@@ -832,7 +839,7 @@ def print_all_relevant_statements(fn):
 
 @_main
 def main(*args):
-    #Parsing Arguments-----------------------------------------------------------------------
+    # Parsing Arguments -----------------------------------------------------------------------
     parser = argparse.ArgumentParser(prog="Three Address Generator", description="threeaddress.py test module")
     
     parser.add_argument("filepath", action="store", help="the path to JavaScript file or the file")
@@ -854,25 +861,22 @@ def main(*args):
     else:
         outputpath = os.getcwd()
     
-  
     if results.verbose:
-        global verbose
-        verbose = True
+        global VERBOSE 
+        VERBOSE = True
 
     if not results.isextension and results.dumpscript:
         raise Exception("dumpscript option set without extension as input") 
 
     if results.isextension:
-        from driver import get_extension_name
-
-        ext_name = get_extension_name(filepath)
+        ext_name = fileutils.get_extension_name(filepath)
         print "Extension Name: ", ext_name
-        ext_id = filepath.split(os.sep)[-1]
+        ext_id = fileutils.get_extension_id(filepath)
         print "Extension ID: ", ext_id
         print
-#        jsout = open(outputpath + "\\jsout.js", "w")
-#        jsout.write(js_string)
-#        jsout.close()
+        #jsout = open(outputpath + "\\jsout.js", "w")
+        #jsout.write(js_string)
+        #jsout.close()
         
         js_string = fileutils.combine_js_files(filepath)
         ast = astutils.create_AST_from_string(js_string)
@@ -890,14 +894,14 @@ def main(*args):
         global_fn = analyze_three_address(ast)
         print "OK"
 
-        print global_fn
-        print_all_relevant_statements(global_fn)
+        #print global_fn
+        #print_all_relevant_statements(global_fn)
 
         print "Converting statements into three address codes...",
         convert_functions(global_fn)
         print "OK\n"
         
-        print_all_three_addresses(global_fn)
+        #print_all_three_addresses(global_fn)
     else:
         print "Skipping three address conversion..."
     

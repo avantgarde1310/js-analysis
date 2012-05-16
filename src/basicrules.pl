@@ -2,7 +2,9 @@
 %% This file contains the inference rules needed for the points-to analysis
 %% using Datalog. These rules will be embedded into the .pl file generated
 %% from the JavaScript file/extension.
-:- style_check(-discontiguous).
+
+%% FIXME: style_check directive not available in Datalog 
+%%:- style_check(-discontiguous).
 
 :- dynamic
         alloc/2,
