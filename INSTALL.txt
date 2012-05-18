@@ -1,0 +1,12 @@
+JavaScript Static Analysis Tool
+Installation Guide
+
+Last Updated: May 18, 2012
+
+1.  After downloading the gzipped tarball into a directory, unzip it to a
+    directory of choice. A directory called jsAnalysis should appear. 
+
+2.  All the source files should be located in the directory jsAnalysis/src. 
+
+3.  If the operating system is UNIX, there is a script that can be run for a
+    demonstration, called runanalyzer.sh. 
