@@ -106,7 +106,6 @@ BINARY_OPS      = ["OR", "AND", "BITWISE_OR", "BITWISE_XOR", "BITWISE_AND",
                    "STRICT_EQ", "EQ", "STRICT_NE", "NE", "LSH", "LE", "LT",
                    "URSH", "RSH", "GE", "GT", 
                    "PLUS", "MINUS", "MUL", "DIV", "MOD", "INSTANCEOF"]
-
 BINARY_TOKENS   = ["||", "&&", "|", "^", "&",
                    "===", "==", "!==", "!=", "<<", "<=", "<",
                    ">>>", ">>", ">=", ">",
@@ -117,12 +116,13 @@ for i in range(len(BINARY_OPS)):
     BINARY_DICT[BINARY_OPS[i]] = BINARY_TOKENS[i]
     
 UNARY_OPS       = ["UNARY_MINUS", "INCREMENT", "DECREMENT", "NOT", "BITWISE_NOT"]
-
 UNARY_TOKENS    = ["-", "++", "--", "!", "~"]
 
 UNARY_DICT = dict()
 for i in range(len(UNARY_OPS)):
     UNARY_DICT[UNARY_OPS[i]] = UNARY_TOKENS[i]
+
+PRIMITIVES = ["THIS", "IDENTIFIER", "NUMBER", "STRING", "TRUE", "FALSE", "REGEXP", "NULL"]
 
 #Global Variables ----------------
 lambda_counter = 0
@@ -172,7 +172,7 @@ class Function(object):
         operands_queue = deque([])
         
         def add_operand(node):
-            if astutils.is_node_type(node, "IDENTIFIER"):
+            if astutils.is_node_type(node, PRIMITIVES):
                 operands_queue.append(node.value)
         
         astutils.traverse_AST(node, add_operand, None)
@@ -288,7 +288,7 @@ class Function(object):
                     
                     self.three_address_list.append(threeaddress)
                 
-            elif astutils.is_node_type(node, ["THIS", "IDENTIFIER", "NUMBER", "STRING", "TRUE", "FALSE", "REGEXP", "NULL"]):
+            elif astutils.is_node_type(node, PRIMITIVES):
                 operands_stack.append(node.value)
              
             # These cases are handled by the reduce_exp function below
