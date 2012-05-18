@@ -12,13 +12,14 @@
 # exception or timeout.
 ###############################################################################
 
-# The path where the extensions are located
-ext_path="../../Extensions/CSPfied"
+# The path where the extensions are located (jsAnalysis/test/extensions)
+ext_path="../tests/extensions"
+out_file="../tests_out/results.txt"
 
 # TIMEOUT is the time limit in seconds
 TIMEOUT=120
 
-echo "Analysis Result" > results.txt
+echo "Analysis Result" > $out_file
 
 success_count=0
 total_count=0
@@ -28,7 +29,7 @@ for path in $(ls $ext_path); do
     (( total_count += 1 ))
     
     # Append extension ID to results.txt
-    echo -n "Extension ID: $path | " >> results.txt
+    echo -n "Extension ID: $path | " >> $out_file
 
     # Run module
     echo
@@ -63,23 +64,29 @@ for path in $(ls $ext_path); do
     # If successfully exited the loop, then program did not time out.
     if [ $success -eq 1 ]; then
         if [ $error_code -eq 0 ]; then
-            echo " Status: Success" >> results.txt
+            echo " Status: Success" >> $out_file
+            (( success_count += 1 ))
         elif [ $error_code -eq 2 ]; then
-            echo " Status: Error on AST Creation (pynarcissus)" >> results.txt
+            echo " Status: Error on AST Creation (pynarcissus)" >> $out_file
         elif [ $error_code -eq 4 ]; then
-            echo " Status: Error on alpha-renaming phase" >> results.txt 
+            echo " Status: Error on alpha-renaming phase" >> $out_file 
         elif [ $error_code -eq 5 ]; then
-            echo " Status: Error on three-address code generation" >> results.txt
+            echo " Status: Error on three-address code generation" >> $out_file
         elif [ $error_code -eq 6 ]; then
-            echo " Status: Error on datalog facts generation" >> results.txt
+            echo " Status: Error on datalog facts generation" >> $out_file
         fi
         continue
     fi
 
     echo
-    echo " Status: Timeout (program ran more than $TIMEOUT seconds)" >> results.txt
+    echo " Status: Timeout (program ran more than $TIMEOUT seconds)" >> $out_file
 
     kill -KILL $PID
     echo "Process $PID forcefully killed"
     
 done
+
+echo "$total_count extensions analyzed. Out of $total_count extensions,
+$success_count extensions had their Datalog files successfully
+generated." >> $out_file
+

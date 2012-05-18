@@ -9,4 +9,15 @@ Last Updated: May 18, 2012
 2.  All the source files should be located in the directory jsAnalysis/src. 
 
 3.  If the operating system is UNIX, there is a script that can be run for a
-    demonstration, called runanalyzer.sh. 
+    demonstration, called runanalyzer.sh, which is located in jsAnalysis/src.
+
+    This script will create the Datalog facts for the extensions located in
+    jsAnalysis/tests/extensions, then create a log file describing the results
+    of running the script in jsAnalysis/tests_out/results.txt.
+
+    To check if jsAnalysis has been installed correctly, the output results.txt
+    can be compared with the provided output results_sample.txt. Running a
+    simple diff command on the generated results.txt against the provided sample
+    results_sample.txt should verify if the installation has been done
+    correctly. In addition, there should be a number of Datalog files generated
+    for the extensions that are successful.
