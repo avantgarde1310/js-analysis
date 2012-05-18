@@ -1,5 +1,0 @@
-Var Assignment List Containing Chrome
->   var info_ver = chrome.extension.getBackgroundPage().version_to_notify
-
-Assignment List Containing Chrome
->   flavor = chrome_app

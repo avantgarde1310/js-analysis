@@ -1,6 +1,0 @@
-Extension Name: Download Master
-Extension Identifier: hdjacnejoohiamgmaciljlpniffgkojd
-Number of functions: 11
-Number of anonymous functions: 6
-Number of named functions: 5
-Number of functions that reference chrome: 6

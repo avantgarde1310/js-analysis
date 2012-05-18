@@ -1,6 +1,0 @@
-Extension Name: Screen Capture (by Google)
-Extension Identifier: cpngackimfmofbokmjmljamhdncknpmg
-Number of functions: 269
-Number of anonymous functions: 203
-Number of named functions: 66
-Number of functions that reference chrome: 26

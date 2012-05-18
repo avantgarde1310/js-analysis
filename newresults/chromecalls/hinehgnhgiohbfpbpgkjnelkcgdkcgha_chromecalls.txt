@@ -1,3 +1,0 @@
-chrome.extension.onRequest.addListener
-chrome.extension.sendRequest
-chrome.extension.getURL

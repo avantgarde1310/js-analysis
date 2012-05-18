@@ -1,7 +1,0 @@
-chrome.extension.connect
-chrome.extension.onConnect.addListener
-chrome.extension.onRequest.addListener
-chrome.browserAction.onClicked.addListener
-chrome.extension.sendRequest
-chrome.tabs.executeScript
-chrome.windows.create

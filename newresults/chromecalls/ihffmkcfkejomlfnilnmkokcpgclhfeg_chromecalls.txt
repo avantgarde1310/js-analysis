@@ -1,9 +1,0 @@
-chrome.browserAction.setIcon
-chrome.browserAction.setTitle
-chrome.browserAction.setBadgeText
-chrome.browserAction.setBadgeBackgroundColor
-chrome.extension.getBackgroundPage
-chrome.extension.getURL
-chrome.tabs.create
-chrome.extension.connect
-chrome.extension.onConnect.addListener

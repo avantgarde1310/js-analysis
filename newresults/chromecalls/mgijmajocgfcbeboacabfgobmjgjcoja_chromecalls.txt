@@ -1,8 +1,0 @@
-chrome.extension.getURL
-chrome.tabs.sendRequest
-chrome.tabs.getSelected
-chrome.tabs.detectLanguage
-chrome.extension.onRequest.addListener
-chrome.extension.sendRequest
-chrome.extension.onRequest.removeListener
-chrome.extension.getBackgroundPage

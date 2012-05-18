@@ -1,6 +1,0 @@
-Extension Name: Google Voice (by Google)
-Extension Identifier: kcnhkahnjcbndmmehfkdnkjomaanaooo
-Number of functions: 1653
-Number of anonymous functions: 1607
-Number of named functions: 46
-Number of functions that reference chrome: 14

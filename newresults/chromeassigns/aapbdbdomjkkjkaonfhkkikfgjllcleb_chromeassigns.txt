@@ -1,5 +1,0 @@
-Var Assignment List Containing Chrome
->   var i = chrome
-
-Assignment List Containing Chrome
------EMPTY-----

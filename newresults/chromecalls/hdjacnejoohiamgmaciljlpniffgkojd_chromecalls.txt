@@ -1,6 +1,0 @@
-chrome.contextMenus.create
-chrome.i18n.getMessage
-chrome.extension.onRequest.addListener
-chrome.tabs.sendRequest
-chrome.cookies.getAll
-chrome.tabs.create

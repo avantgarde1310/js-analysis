@@ -1,6 +1,0 @@
-Extension Name: FB Photo Zoom
-Extension Identifier: elioihkkcdgakfbahdoddophfngopipi
-Number of functions: 106
-Number of anonymous functions: 95
-Number of named functions: 11
-Number of functions that reference chrome: 11

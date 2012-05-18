@@ -1,6 +1,0 @@
-Extension Name: Cooliris
-Extension Identifier: noocneohefmdhonidldnlhaainpiomkp
-Number of functions: 8
-Number of anonymous functions: 4
-Number of named functions: 4
-Number of functions that reference chrome: 2

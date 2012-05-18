@@ -1,6 +1,0 @@
-Var Assignment List Containing Chrome
->   var chromeNewTab = chrome://newtab/
-
-Assignment List Containing Chrome
------   CALLS TO CHROME API ASSIGNED TO VARIABLES   -----
------BUT NO CHROME API INSTANCE IS ASSIGNED TO A VAR-----

@@ -1,6 +1,0 @@
-Extension Name: Select To Get Maps
-Extension Identifier: hinehgnhgiohbfpbpgkjnelkcgdkcgha
-Number of functions: 19
-Number of anonymous functions: 8
-Number of named functions: 11
-Number of functions that reference chrome: 3

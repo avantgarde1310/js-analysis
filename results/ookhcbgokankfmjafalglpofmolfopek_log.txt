@@ -1,6 +1,0 @@
-Extension Name: Google Calendar Checker (by Google)
-Extension Identifier: ookhcbgokankfmjafalglpofmolfopek
-Number of functions: 43
-Number of anonymous functions: 26
-Number of named functions: 17
-Number of functions that reference chrome: 11

@@ -1,6 +1,0 @@
-Extension Name: Stylish
-Extension Identifier: fjnbnpbmkenffdnngjfgmeleoegfcffe
-Number of functions: 181
-Number of anonymous functions: 104
-Number of named functions: 77
-Number of functions that reference chrome: 14

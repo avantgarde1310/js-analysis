@@ -1,3 +1,0 @@
-digraph graphname {
-global_R_0;
-}

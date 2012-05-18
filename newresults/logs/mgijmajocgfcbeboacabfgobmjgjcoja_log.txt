@@ -1,6 +1,0 @@
-Extension Name: Google Dictionary (by Google)
-Extension Identifier: mgijmajocgfcbeboacabfgobmjgjcoja
-Number of functions: 80
-Number of anonymous functions: 79
-Number of named functions: 1
-Number of functions that reference chrome: 15

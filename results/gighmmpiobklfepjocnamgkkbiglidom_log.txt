@@ -1,5 +1,0 @@
-Extension gighmmpiobklfepjocnamgkkbiglidom
-Number of functions: 1034
-Number of anonymous functions: 922
-Number of named functions: 112
-Number of functions that reference chrome: 13

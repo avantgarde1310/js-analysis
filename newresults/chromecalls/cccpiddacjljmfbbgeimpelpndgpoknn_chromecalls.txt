@@ -1,3 +1,0 @@
-chrome.extension.onConnect.addListener
-chrome.extension.connect.name.onMessage.addListener
-chrome.extension.getURL

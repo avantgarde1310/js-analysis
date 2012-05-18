@@ -1,9 +1,0 @@
-digraph graphname {
-global_R_0;
-build_url_R_2;
-"chrome.extension.sendRequest";
-getSelectedText_R_1;
-global_R_0 -> getSelectedText_R_1;
-global_R_0 -> build_url_R_2;
-global_R_0 -> "chrome.extension.sendRequest";
-}

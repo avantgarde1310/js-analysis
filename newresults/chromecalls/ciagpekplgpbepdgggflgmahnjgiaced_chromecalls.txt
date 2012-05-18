@@ -1,9 +1,0 @@
-chrome.extension.onRequest.addListener
-chrome.extension.sendRequest
-chrome.browserAction.onClicked.addListener
-chrome.browserAction.setBadgeBackgroundColor
-chrome.browserAction.setBadgeText
-chrome.extension.getURL
-chrome.browserAction.setIcon
-chrome.tabs.executeScript
-chrome.tabs.create

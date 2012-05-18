@@ -1,5 +1,0 @@
-Extension bfipfkeoidmndggnnpobeenlamiclald
-Number of functions: 214
-Number of anonymous functions: 213
-Number of named functions: 1
-Number of functions that reference chrome: 3

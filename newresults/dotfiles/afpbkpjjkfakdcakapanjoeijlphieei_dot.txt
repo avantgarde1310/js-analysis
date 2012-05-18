@@ -1,8 +1,0 @@
-digraph graphname {
-"chrome.tabs.create";
-global_R_0;
-lambda_R_1;
-lambda_R_3;
-lambda_R_2;
-global_R_0 -> "chrome.tabs.create";
-}

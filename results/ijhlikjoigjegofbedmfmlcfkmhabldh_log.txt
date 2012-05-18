@@ -1,6 +1,0 @@
-Extension Name: ESPN Cricinfo
-Extension Identifier: ijhlikjoigjegofbedmfmlcfkmhabldh
-Number of functions: 454
-Number of anonymous functions: 420
-Number of named functions: 34
-Number of functions that reference chrome: 0

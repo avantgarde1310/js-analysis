@@ -1,4 +1,0 @@
-chrome.extension.sendRequest
-chrome.extension.onRequest.addListener
-chrome.extension.getURL
-chrome.i18n.getMessage

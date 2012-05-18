@@ -1,6 +1,0 @@
-Extension Name: Browser Button for AdBlock
-Extension Identifier: picdndbpdnapajibahnnogkjofaeooof
-Number of functions: 1074
-Number of anonymous functions: 1010
-Number of named functions: 64
-Number of functions that reference chrome: 2

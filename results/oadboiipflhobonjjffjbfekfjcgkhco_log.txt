@@ -1,5 +1,0 @@
-Extension oadboiipflhobonjjffjbfekfjcgkhco
-Number of functions: 363
-Number of anonymous functions: 341
-Number of named functions: 22
-Number of functions that reference chrome: 11

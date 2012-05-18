@@ -1,6 +1,0 @@
-Extension Name: Add to Amazon Wish List
-Extension Identifier: ciagpekplgpbepdgggflgmahnjgiaced
-Number of functions: 99
-Number of anonymous functions: 98
-Number of named functions: 1
-Number of functions that reference chrome: 12

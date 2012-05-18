@@ -1,6 +1,0 @@
-Extension Name: Webpage Screenshot
-Extension Identifier: ckibcdccnfeookdmbahgiakhnjcddpki
-Number of functions: 745
-Number of anonymous functions: 616
-Number of named functions: 129
-Number of functions that reference chrome: 25

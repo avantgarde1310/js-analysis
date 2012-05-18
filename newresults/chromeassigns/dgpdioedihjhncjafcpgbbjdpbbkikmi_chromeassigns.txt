@@ -1,6 +1,0 @@
-Var Assignment List Containing Chrome
->   var api = chrome.extension.getBackgroundPage().api
-
-Assignment List Containing Chrome
------   CALLS TO CHROME API ASSIGNED TO VARIABLES   -----
------BUT NO CHROME API INSTANCE IS ASSIGNED TO A VAR-----

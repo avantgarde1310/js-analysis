@@ -1,6 +1,0 @@
-Extension Name: RSS Subscription Extension (by Google)
-Extension Identifier: nlbjncdgjeocebhnmkbbbdekmmmcbfjd
-Number of functions: 75
-Number of anonymous functions: 39
-Number of named functions: 36
-Number of functions that reference chrome: 19

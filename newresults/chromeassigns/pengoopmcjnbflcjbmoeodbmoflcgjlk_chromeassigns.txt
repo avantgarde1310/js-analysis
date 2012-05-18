@@ -1,5 +1,0 @@
-Var Assignment List Containing Chrome
->   var SOURCE_TYPE = chrome
-
-Assignment List Containing Chrome
------EMPTY-----

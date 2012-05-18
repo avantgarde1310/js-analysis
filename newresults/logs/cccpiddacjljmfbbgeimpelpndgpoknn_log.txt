@@ -1,6 +1,0 @@
-Extension Name: SmoothScroll
-Extension Identifier: cccpiddacjljmfbbgeimpelpndgpoknn
-Number of functions: 69
-Number of anonymous functions: 34
-Number of named functions: 35
-Number of functions that reference chrome: 3

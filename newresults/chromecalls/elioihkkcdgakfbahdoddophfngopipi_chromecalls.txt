@@ -1,9 +1,0 @@
-chrome.tabs.onRemoved.addListener
-chrome.extension.onRequest.addListener
-chrome.contextMenus.create
-chrome.extension.getBackgroundPage.updateTabs
-chrome.tabs.create
-chrome.extension.getURL
-chrome.contextMenus.update
-chrome.tabs.sendRequest
-chrome.extension.sendRequest

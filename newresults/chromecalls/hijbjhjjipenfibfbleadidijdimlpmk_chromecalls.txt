@@ -1,8 +1,0 @@
-chrome.extension.getURL
-chrome.extension.onConnect.addListener
-chrome.i18n.getMessage
-chrome.pageAction.show
-chrome.pageAction.onClicked.addListener
-chrome.extension.connect.name.postMessage
-chrome.tabs.connect.tab.id.name.postMessage
-chrome.tabs.getSelected

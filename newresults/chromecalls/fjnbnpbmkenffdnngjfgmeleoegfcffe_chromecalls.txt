@@ -1,8 +1,0 @@
-chrome.extension.sendRequest
-chrome.extension.onRequest.addListener
-chrome.tabs.getSelected
-chrome.i18n.getMessage
-chrome.windows.getAll
-chrome.tabs.sendRequest
-chrome.browserAction.setBadgeText
-chrome.tabs.create

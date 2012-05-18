@@ -1,6 +1,0 @@
-Extension Name: AdBlock
-Extension Identifier: gighmmpiobklfepjocnamgkkbiglidom
-Number of functions: 1291
-Number of anonymous functions: 1141
-Number of named functions: 150
-Number of functions that reference chrome: 46

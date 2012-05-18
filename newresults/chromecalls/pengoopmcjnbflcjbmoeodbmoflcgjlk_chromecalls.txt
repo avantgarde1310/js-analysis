@@ -1,4 +1,0 @@
-chrome.extension.sendRequest
-chrome.browserAction.onClicked.addListener
-chrome.extension.onRequest.addListener
-chrome.tabs.executeScript

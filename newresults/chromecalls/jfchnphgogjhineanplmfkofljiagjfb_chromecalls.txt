@@ -1,4 +1,0 @@
-chrome.browserAction.onClicked.addListener
-chrome.tabs.getAllInWindow
-chrome.tabs.update
-chrome.tabs.create

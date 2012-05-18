@@ -1,6 +1,0 @@
-Extension Name: Mini Google Maps
-Extension Identifier: oeahddlmhbcabnnojadgimmiaaplfpfo
-Number of functions: 14
-Number of anonymous functions: 4
-Number of named functions: 10
-Number of functions that reference chrome: 0
