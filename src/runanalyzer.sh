@@ -13,7 +13,7 @@
 ###############################################################################
 
 # The path where the extensions are located (jsAnalysis/test/extensions)
-ext_path="../tests/extensions"
+ext_path="../../Extensions/CSPfied" #"../tests/extensions"
 out_file="../tests_out/results.txt"
 
 # TIMEOUT is the time limit in seconds
@@ -86,7 +86,8 @@ for path in $(ls $ext_path); do
     
 done
 
-echo "$total_count extensions analyzed. Out of $total_count extensions,
-$success_count extensions had their Datalog files successfully
+echo
+echo "$total_count extensions analyzed. Out of $total_count extensions, \
+$success_count extensions had their Datalog files successfully \
 generated." >> $out_file
 

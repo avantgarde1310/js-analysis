@@ -2,21 +2,21 @@ Analysis Result
 Extension ID: aapbdbdomjkkjkaonfhkkikfgjllcleb |  Status: Success
 Extension ID: afpbkpjjkfakdcakapanjoeijlphieei |  Status: Success
 Extension ID: alelhddbbhepgpmgidjdcjakblofbmce |  Status: Error on AST Creation (pynarcissus)
-Extension ID: amigcgbheognjmfkaieeeadojiibgbdp |  Status: Error on three-address code generation
-Extension ID: bfbameneiokkgbdmiekhjnmfkcnldhhm |  Status: Error on three-address code generation
+Extension ID: amigcgbheognjmfkaieeeadojiibgbdp |  Status: Success
+Extension ID: bfbameneiokkgbdmiekhjnmfkcnldhhm |  Status: Success
 Extension ID: bfbmjmiodbnnpllbbbfblcplfjjepjdn |  Status: Error on AST Creation (pynarcissus)
-Extension ID: bhmmomiinigofkjcapegjjndpbikblnp |  Status: Error on three-address code generation
+Extension ID: bhmmomiinigofkjcapegjjndpbikblnp |  Status: Success
 Extension ID: bmagokdooijbeehmkpknfglimnifench |  Status: Error on alpha-renaming phase
 Extension ID: cccpiddacjljmfbbgeimpelpndgpoknn |  Status: Success
-Extension ID: cfhdojbkjhnklbpkdaibdccddilifddb |  Status: Error on three-address code generation
-Extension ID: cgbogdmdefihhljhfeiklfiedefalcde |  Status: Error on three-address code generation
+Extension ID: cfhdojbkjhnklbpkdaibdccddilifddb |  Status: Success
+Extension ID: cgbogdmdefihhljhfeiklfiedefalcde |  Status: Success
 Extension ID: ciagpekplgpbepdgggflgmahnjgiaced |  Status: Success
-Extension ID: ckibcdccnfeookdmbahgiakhnjcddpki |  Status: Error on three-address code generation
+Extension ID: ckibcdccnfeookdmbahgiakhnjcddpki |  Status: Success
 Extension ID: cpngackimfmofbokmjmljamhdncknpmg |  Status: Success
-Extension ID: dgpdioedihjhncjafcpgbbjdpbbkikmi |  Status: Error on three-address code generation
+Extension ID: dgpdioedihjhncjafcpgbbjdpbbkikmi |  Status: Success
 Extension ID: dmfgkaackkkmmomgmjcjcclniekkgjcd |  Status: Success
 Extension ID: eidogommnbbcgnhfjkcgjnlonijjhmjl |  Status: Success
-Extension ID: elioihkkcdgakfbahdoddophfngopipi |  Status: Error on three-address code generation
+Extension ID: elioihkkcdgakfbahdoddophfngopipi |  Status: Success
 Extension ID: encaiiljifbdbjlphpgpiimidegddhic |  Status: Error on AST Creation (pynarcissus)
 Extension ID: faminaibgiklngmfpfbhmokfmnglamcm |  Status: Success
 Extension ID: fjnbnpbmkenffdnngjfgmeleoegfcffe |  Status: Success
@@ -26,31 +26,33 @@ Extension ID: gighmmpiobklfepjocnamgkkbiglidom |  Status: Success
 Extension ID: gofhjkjmkpinhpoiabjplobcaignabnl |  Status: Error on AST Creation (pynarcissus)
 Extension ID: haebnnbpedcbhciplfhjjkbafijpncjl |  Status: Success
 Extension ID: hdjacnejoohiamgmaciljlpniffgkojd |  Status: Success
-Extension ID: hdokiejnpimakedhajhdlcegeplioahd |  Status: Timeout (program ran more than 120 seconds)\n
+Extension ID: hdokiejnpimakedhajhdlcegeplioahd |  Status: Timeout (program ran more than 120 seconds)
 Extension ID: hehijbfgiekmjfkfjpbkbammjbdenadd |  Status: Success
-Extension ID: hijbjhjjipenfibfbleadidijdimlpmk |  Status: Error on three-address code generation
+Extension ID: hijbjhjjipenfibfbleadidijdimlpmk |  Status: Success
 Extension ID: hinehgnhgiohbfpbpgkjnelkcgdkcgha |  Status: Success
 Extension ID: iabeihobmhlgpkcgjiloemdbofjbdcic |  Status: Error on AST Creation (pynarcissus)
 Extension ID: iblijlcdoidgdpfknkckljiocdbnlagk |  Status: Error on AST Creation (pynarcissus)
 Extension ID: ihffmkcfkejomlfnilnmkokcpgclhfeg |  Status: Success
-Extension ID: ijhlikjoigjegofbedmfmlcfkmhabldh |  Status: Error on three-address code generation
+Extension ID: ijhlikjoigjegofbedmfmlcfkmhabldh |  Status: Success
 Extension ID: jfchnphgogjhineanplmfkofljiagjfb |  Status: Success
 Extension ID: kcahibnffhnnjcedflmchmokndkjnhpg |  Status: Success
 Extension ID: kcnhkahnjcbndmmehfkdnkjomaanaooo |  Status: Success
 Extension ID: lambangeielkjcnmioccboaphdfcffib |  Status: Success
 Extension ID: leekjckogogidfhpejjmaaekecplpdcg |  Status: Success
-Extension ID: lfkgmnnajiljnolcgolmmgnecgldgeld |  Status: Error on three-address code generation
+Extension ID: lfkgmnnajiljnolcgolmmgnecgldgeld |  Status: Success
 Extension ID: mfjkgbjaikamkkojmakjclmkianficch |  Status: Success
 Extension ID: mgijmajocgfcbeboacabfgobmjgjcoja |  Status: Success
 Extension ID: mmffncokckfccddfenhkhnllmlobdahm |  Status: Error on AST Creation (pynarcissus)
 Extension ID: mmgagnmbebdebebbcleklifnobamjonh |  Status: Error on AST Creation (pynarcissus)
 Extension ID: nlbjncdgjeocebhnmkbbbdekmmmcbfjd |  Status: Success
-Extension ID: nnbmlagghjjcbdhgmkedmbmedengocbn |  Status: Error on three-address code generation
+Extension ID: nnbmlagghjjcbdhgmkedmbmedengocbn |  Status: Success
 Extension ID: noocneohefmdhonidldnlhaainpiomkp |  Status: Success
 Extension ID: oadboiipflhobonjjffjbfekfjcgkhco |  Status: Success
 Extension ID: oeahddlmhbcabnnojadgimmiaaplfpfo |  Status: Success
 Extension ID: ookhcbgokankfmjafalglpofmolfopek |  Status: Success
 Extension ID: pengoopmcjnbflcjbmoeodbmoflcgjlk |  Status: Success
 Extension ID: pgphcomnlaojlmmcjmiddhdapjpbgeoc |  Status: Success
-Extension ID: picdndbpdnapajibahnnogkjofaeooof |  Status: Error on three-address code generation
-Extension ID: pioclpoplcdbaefihamjohnefbikjilc |  Status: Timeout (program ran more than 120 seconds)\n
+Extension ID: picdndbpdnapajibahnnogkjofaeooof |  Status: Success
+Extension ID: pioclpoplcdbaefihamjohnefbikjilc |  Status: Timeout (program ran more than 120 seconds)
+
+55 extensions analyzed. Out of 55 extensions, 43 extensions had their Datalog files successfully generated.

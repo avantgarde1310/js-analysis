@@ -9,6 +9,5 @@ Extension ID: hdokiejnpimakedhajhdlcegeplioahd |  Status: Timeout (program ran m
 Extension ID: kcnhkahnjcbndmmehfkdnkjomaanaooo |  Status: Success
 Extension ID: leekjckogogidfhpejjmaaekecplpdcg |  Status: Success
 Extension ID: nlbjncdgjeocebhnmkbbbdekmmmcbfjd |  Status: Success
-10 extensions analyzed. Out of 10 extensions,
-8 extensions had their Datalog files successfully
-generated.
+
+10 extensions analyzed. Out of 10 extensions, 8 extensions had their Datalog files successfully generated.
