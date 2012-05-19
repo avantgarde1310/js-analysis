@@ -1,0 +1,1 @@
+document.write(gs("Mobile number",getlocale()));

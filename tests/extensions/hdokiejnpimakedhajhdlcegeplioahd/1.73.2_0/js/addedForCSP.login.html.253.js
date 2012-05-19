@@ -1,0 +1,1 @@
+document.write("6 "+gs("hours"));

@@ -1,0 +1,1 @@
+sr(document,"createanaccount","value","Create an Account");sr(document,"nothanks","value","No Thanks");

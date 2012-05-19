@@ -1,0 +1,1955 @@
+{
+   "0_9": {
+      "message": "0-9"
+   },
+   "1Password": {
+      "message": "1Password"
+   },
+   "1__Insert_your_YubiKey_in_the_USB_port_with_the_USB_contact_facing_upward": {
+      "message": "1. Steek uw YubiKey in de USB-poort met het USB-contact naar boven gericht"
+   },
+   "1__Run_the_LastPass_Sesame_application_to_generate_a_one_time_password": {
+      "message": "1. Voer de LastPass Sesame applicatie uit voor het genereren van een eenmalig wachtwoord"
+   },
+   "2__Paste_the_one_time_password_in_the_input_box_below_and_click__Authenticate_": {
+      "message": "2. Plak het eenmalige wachtwoord in het tekstvak hieronder en klik op 'Verifieer'"
+   },
+   "2__Wait_until_your_YubiKey_touch_button_shines_with_a_steady_light": {
+      "message": "2. Wacht tot uw YubiKey aanraakknop constant brandt"
+   },
+   "3__Hold_your_fingertip_on_the_touch_button_for_2_seconds": {
+      "message": "3. Houd uw vingertop gedurende 2 seconden op de aanraakknop"
+   },
+   "ACTION": {
+      "message": "ACTIE"
+   },
+   "A_Zupper": {
+      "message": "A-Z"
+   },
+   "A_required_update_is_available_for_LastPass__Please_press_OK_to_begin_download_and_installation_": {
+      "message": "Er is een vereiste update beschikbaar voor LastPass. Klik op OK om te beginnen met downloaden en installeren."
+   },
+   "A_retry_file_has_been_found__This_likely_means_that_not_all_of_your_site_changes_have_been_saved__Would_you_like_to_delete_this_file_and_potentially_lose_some_changes_": {
+      "message": "Een 'herhaalde poging'-bestand is gevonden. Dit betekent waarschijnlijk dat niet al uw wachtwoordveranderingen zijn opgeslagen. Wilt u dit bestand verwijderen en mogelijk daardoor aanpassingen kwijtraken?"
+   },
+   "A_server_error_occurred_while_processing_your_request_": {
+      "message": "Er is een fout op de server opgetreden tijdens het verwerken van uw verzoek."
+   },
+   "About___": {
+      "message": "Over ..."
+   },
+   "Abu_Dhadi__Muscat": {
+      "message": "Abu Dhadi, Muscat"
+   },
+   "Accept": {
+      "message": "Accepteer"
+   },
+   "Account_Settings": {
+      "message": "Accountinstellingen"
+   },
+   "Account_Type": {
+      "message": "Type account"
+   },
+   "Account_number": {
+      "message": "Rekeningnummer"
+   },
+   "Actionproper": {
+      "message": "Actie"
+   },
+   "Add": {
+      "message": "Toevoegen"
+   },
+   "Add_Credit_Card": {
+      "message": "Voeg creditcard toe"
+   },
+   "Add_Credit_Card_profile": {
+      "message": "Voeg Creditcard profiel toe"
+   },
+   "Add_Field": {
+      "message": "Veld toevoegen"
+   },
+   "Add_Form_Fill_profile": {
+      "message": "Voeg Formuliervuller profiel toe"
+   },
+   "Add_Identity": {
+      "message": "Toevoegen identiteit"
+   },
+   "Add_New_Site": {
+      "message": "Nieuwe website toevoegen"
+   },
+   "Add_Profile": {
+      "message": "Toevoegen profiel"
+   },
+   "Add_Secure_Note": {
+      "message": "Veilige aantekening toevoegen"
+   },
+   "Add_Site": {
+      "message": "Website toevoegen"
+   },
+   "Add_another_custom_field": {
+      "message": "Voeg een aangepast veld toe"
+   },
+   "Address": {
+      "message": "Adres"
+   },
+   "Address_1": {
+      "message": "Adres 1"
+   },
+   "Address_2": {
+      "message": "Adres 2"
+   },
+   "Address_3": {
+      "message": "Adres 3"
+   },
+   "Adelaide": {
+      "message": "Adelaide"
+   },
+   "Admin_Tools": {
+      "message": "Hulpmiddelen voor beheerder"
+   },
+   "Advanced": {
+      "message": "Geavanceerd"
+   },
+   "Alaska": {
+      "message": "Alaska"
+   },
+   "Alias": {
+      "message": "Alias"
+   },
+   "All": {
+      "message": "Alles"
+   },
+   "Allow_LastPass_to_find_insecure_data_on_your_computer_": {
+      "message": "Toestaan dat LastPass zoekt naar onveilige gegevens op uw computer?"
+   },
+   "Almaty__Novosibirsk": {
+      "message": "Almaty, Novosibirsk"
+   },
+   "Alt": {
+      "message": "Alt"
+   },
+   "Alter_the_below_information_to_edit_the_Credit_Card_profile": {
+      "message": "Wijzig de onderstaande informatie om het Credit Card profiel te bewerken"
+   },
+   "Alter_the_below_information_to_edit_the_Form_Fill_profile": {
+      "message": "Wijzig de onderstaande informatie om het Formuliervuller profiel te bewerken"
+   },
+   "Always_Choose_Profile_and_Credit_Card": {
+      "message": "Altijd profiel en creditcard kiezen"
+   },
+   "Amman__Athens__Istanbul__Beirut__Cairo__Jerusalem": {
+      "message": "Amman, Athens, Istanbul, Beirut, Cairo, Jerusalem"
+   },
+   "Amsterdam__Berlin__Rome__Vienna__Prague__Brussels": {
+      "message": "Amsterdam, Berlijn, Rome, Wenen, Praag, Brussel"
+   },
+   "An_Update_is_Available__Would_you_like_to_install_": {
+      "message": "Er is een update beschikbaar. Wilt u deze installeren?"
+   },
+   "An_error_has_been_encountered_while_loading_your_sites__Please_relogin_": {
+      "message": "Er is een fout opgetreden terwijl uw websites werden geladen. Logt u alstublieft opnieuw in."
+   },
+   "An_error_occurred": {
+      "message": "Er is een fout opgetreden"
+   },
+   "An_error_occurred_while_importing_your_Google_Chrome_passwords_": {
+      "message": "Er is een fout opgetreden bij het importeren van uw Google Chrome wachtwoorden."
+   },
+   "An_error_occurred_while_re_encrypting_your_data": {
+      "message": "Er is een fout opgetreden bij het opnieuw versleutelen van uw gegevens"
+   },
+   "Appearance": {
+      "message": "Uiterlijk"
+   },
+   "April": {
+      "message": "april"
+   },
+   "Are_you_sure_you_want_to_have_LastPass_remember_your_password___This_will_significantly_decrease_the_security_of_your_LastPass_account_": {
+      "message": "Weet u zeker dat u LastPass uw wachtwoord wilt laten onthouden? Dit zal de veiligheid van uw LastPass account beduidend verminderen!"
+   },
+   "Are_you_sure_you_would_like_to_delete_": {
+      "message": "Weet u zeker dat u wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_the_selected_sites_": {
+      "message": "Weet u zeker dat u de geselecteerde websites wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_field_": {
+      "message": "Weet u zeker dat u dit veld wilt wissen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_form_fill_profile_": {
+      "message": "Bent u er zeker van dat u dit Formuliervuller profiel wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_generated_password_": {
+      "message": "Bent u er zeker van dat u dit gegenereerde wachtwoord wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_group_": {
+      "message": "Weet u zeker dat u deze groep wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_never_URL_": {
+      "message": "Weet u zeker dat u deze nooit-URL wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_secure_note_": {
+      "message": "Weet u zeker dat u deze veilige aantekening wilt verwijderen?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_site_": {
+      "message": "Weet u zeker dat u deze website wilt verwijderen?"
+   },
+   "Arizona": {
+      "message": "Arizona"
+   },
+   "Astana__Dhaka": {
+      "message": "Astana, Dhaka"
+   },
+   "Atlantic_Time__Canada___Manaus__Santiago": {
+      "message": "Atlantic Time (Canada), Manaus, Santiago"
+   },
+   "Auckland__Wellington": {
+      "message": "Auckland, Wellington"
+   },
+   "August": {
+      "message": "augustus"
+   },
+   "Authenticate": {
+      "message": "Verifieer"
+   },
+   "Authentication_Failed_": {
+      "message": "Verificatie Mislukt."
+   },
+   "AutoFill": {
+      "message": "Automatisch invullen"
+   },
+   "AutoLogin": {
+      "message": "AutoLogin"
+   },
+   "Automatically_Fill_Login_Information": {
+      "message": "Automatisch aanmeldingsgegevens invullen"
+   },
+   "Automatically_Logoff_after_idle__mins_": {
+      "message": "Automatisch Afmelden na afwezigheid (minuten)"
+   },
+   "Automatically_Logoff_when_all_browsers_are_closed_and_Chrome_has_been_closed_for__mins_": {
+      "message": "Automatisch Uitloggen wanneer alle browsers zijn gesloten en Chrome is afgesloten gedurende (mins)"
+   },
+   "Automatically_login_to_sites_if_time_since_last_login____seconds_": {
+      "message": "Automatisch inloggen op sites als de tijd sinds de laatste login \u003E (seconden)"
+   },
+   "Avoid_Ambiguous_Characters": {
+      "message": "Vermijd multi-interpretabele karakters"
+   },
+   "Azores": {
+      "message": "Azoren"
+   },
+   "Baghdad__Moscow__St__Petersburg__Volgograd": {
+      "message": "Bagdad, Moskou, St. Petersburg, Volgograd"
+   },
+   "Baku__Yerevan": {
+      "message": "Baku, Yerevan"
+   },
+   "Bangkok__Hanoi__Jakarta": {
+      "message": "Bangkok, Hanoi, Jakarta"
+   },
+   "Bank_Account": {
+      "message": "Bank rekeningnr."
+   },
+   "Bank_accountformfill": {
+      "message": "Bankrekening"
+   },
+   "Bank_name": {
+      "message": "Naam van de bank"
+   },
+   "Before_you_can_use_LastPass__you_must_first_connect_your_fingerprint_reader_and_enroll_one_or_more_fingers_": {
+      "message": "Voordat u LastPass kunt gebruiken moet u eerst verbinding maken met uw vingerafdruklezer en \u00E9\u00E9n of meer vingerafdrukken inlezen."
+   },
+   "Beijing__Hong_Kong__Singapore__Taipei": {
+      "message": "Peking, Hong Kong, Singapore, Taipei"
+   },
+   "Binary_Component_": {
+      "message": "Binary Component:"
+   },
+   "Birthday": {
+      "message": "Geboortedatum"
+   },
+   "Blacklist": {
+      "message": "Uw account is tijdelijk op non-actief gezet (voor 5 minuten) omdat er teveel mislukte aanmeldpogingen zijn geweest."
+   },
+   "Blog": {
+      "message": "Blog"
+   },
+   "Branch_Address": {
+      "message": "Bijkantoor adres"
+   },
+   "Branch_Phone": {
+      "message": "Bijkantoor telefoonnr."
+   },
+   "Brisbane__Guam__Port_Moresby": {
+      "message": "Brisbane, Guam, Port Moresby"
+   },
+   "Browse_the_web_as_you_normally_would_and_LastPass_will_automatically_remember_passwords_as_you_enter_them_": {
+      "message": "Surf over het web zoals u gewend bent en LastPass zal automatisch wachtwoorden onthouden wanneer u ze invult."
+   },
+   "Buenos_Aires__Georgetown": {
+      "message": "Buenos Aires, Georgetown"
+   },
+   "Built_": {
+      "message": "Compilatie:"
+   },
+   "But_I_m_a_forgetful_person___what_should_I_do_if_I_forget_my_password_": {
+      "message": "Maar ik ben een vergeetachtig persoon...wat moet ik doen als ik mijn wachtwoord vergeet?"
+   },
+   "Can_t_find_hidden_LastPass_window": {
+      "message": "Kan verborgen LastPass venster niet vinden"
+   },
+   "Canberra__Melbourne__Sydney__Hobart__Vladivostok": {
+      "message": "Canberra, Melbourne, Sydney, Hobart, Vladivostok"
+   },
+   "Cancel": {
+      "message": "Annuleren"
+   },
+   "Cape_Verde_Is_": {
+      "message": "Kaapverdi\u00EB"
+   },
+   "Caracas": {
+      "message": "Caracas"
+   },
+   "Casablanca__Monrovia__Reykjavik": {
+      "message": "Casablanca, Monrovia, Reykjavik"
+   },
+   "Catalan": {
+      "message": "Catalaans"
+   },
+   "Central_America__Saskatchewan": {
+      "message": "Centraal-Amerika, Saskatchewan"
+   },
+   "Central_Time__US___Canada___Guadalajara__Mexico_City": {
+      "message": "Central Time (VS en Canada), Guadalajara, Mexico City"
+   },
+   "Change": {
+      "message": "Veranderen"
+   },
+   "Change_Group_Name": {
+      "message": "Wijzig groepsnaam"
+   },
+   "Change_Password": {
+      "message": "Verander wachtwoord"
+   },
+   "Check_For_Updates": {
+      "message": "Controleer op updates"
+   },
+   "Checkbox": {
+      "message": "Selectievakje"
+   },
+   "Checking_For_Updates___": {
+      "message": "Controleren op updates ..."
+   },
+   "Chennai__Kolkata__Mumbai__New_Delhi__Sri_Jayawardenepura": {
+      "message": "Chennai, Calcutta, Mumbai, New Delhi, Sri Jayawardenepura"
+   },
+   "Chinese__Simplified_": {
+      "message": "Chinees (vereenvoudigd)"
+   },
+   "Chinese__Traditional_": {
+      "message": "Chinees (Traditioneel)"
+   },
+   "Choose_Profile_and_Credit_Card": {
+      "message": "Kies profiel en creditcard"
+   },
+   "City___Town": {
+      "message": "Stad"
+   },
+   "Clear": {
+      "message": "Leegmaken"
+   },
+   "Clear_Clipboard_after_use__seconds_": {
+      "message": "Leeg Klembord na (seconden) gebruik"
+   },
+   "Clear_Forms": {
+      "message": "Formulier leeg maken"
+   },
+   "Clear_Local_Cache": {
+      "message": "Wis de lokale cache"
+   },
+   "Clear_Recent": {
+      "message": "Recent gebruikte opschonen"
+   },
+   "Click_Continue_to_start_using_LastPass_": {
+      "message": "Klik op doorgaan om LastPass te gebruiken."
+   },
+   "Click_here_to_launch_account_settings": {
+      "message": "Klik hier om account instellingen weer te geven"
+   },
+   "Click_here_to_launch_feedback": {
+      "message": "Klik hier om feedback te geven"
+   },
+   "Click_here_to_watch_a_video_on_basic_usage_": {
+      "message": "Klik hier en bekijk de 'snel aan de slag' video."
+   },
+   "Close": {
+      "message": "Sluit"
+   },
+   "Close_this_window": {
+      "message": "Sluit dit venster"
+   },
+   "Collapse_All": {
+      "message": "Alles inklappen"
+   },
+   "Company": {
+      "message": "Bedrijf"
+   },
+   "CompanyPolicyProhibits": {
+      "message": "Bedrijfsbeleid staat deze deze bewerking niet toe."
+   },
+   "Complete_the_below_information_to_add_a_new_Credit_Card_profile": {
+      "message": "Vul de onderstaande informatie in om een nieuw creditcard profiel toe te voegen"
+   },
+   "Configure_Form_Fill": {
+      "message": "Configureer formuliervuller"
+   },
+   "Confirm": {
+      "message": "Bevestig"
+   },
+   "Confirm_Password": {
+      "message": "Bevestig Wachtwoord"
+   },
+   "Congratulations": {
+      "message": "Gefeliciteerd"
+   },
+   "Contact": {
+      "message": "Contact"
+   },
+   "Continue": {
+      "message": "Ga verder"
+   },
+   "Copy": {
+      "message": "Kopi\u00EBren"
+   },
+   "Copy_Password": {
+      "message": "Kopieer wachtwoord"
+   },
+   "Copy_Username": {
+      "message": "Kopieer gebruikersnaam"
+   },
+   "Copyright_2008_LastPass__All_Rights_Reserved__Portions_of_this_software_were_licensed_from_third_parties_as_described_at_": {
+      "message": "Copyright 2008 LastPass. Alle rechten voorbehouden.\nDelen van deze software werden van derden in licentie genomen zoals beschreven op:"
+   },
+   "Country": {
+      "message": "Land"
+   },
+   "County": {
+      "message": "Regio/Provincie"
+   },
+   "Create_Account": {
+      "message": "Maak een Account"
+   },
+   "Create_Sub_Group": {
+      "message": "Maak Subgroep aan"
+   },
+   "Create_an_Account": {
+      "message": "Maak een account aan"
+   },
+   "Creating_Account___": {
+      "message": "Account aanmaken..."
+   },
+   "Credit_card": {
+      "message": "Credit card"
+   },
+   "Credit_card_number": {
+      "message": "Credit card nummer"
+   },
+   "Ctrl": {
+      "message": "Ctrl"
+   },
+   "Custom_Value": {
+      "message": "Aangepaste waarde"
+   },
+   "Custom_field__": {
+      "message": "Aangepast veld #"
+   },
+   "Custom_fields": {
+      "message": "Aangepaste velden"
+   },
+   "Danish": {
+      "message": "Deens"
+   },
+   "Darwin": {
+      "message": "Darwin"
+   },
+   "Database": {
+      "message": "Database"
+   },
+   "Date_of_Birth": {
+      "message": "Geboortedatum"
+   },
+   "December": {
+      "message": "december"
+   },
+   "Default_Form_Fill_Profile": {
+      "message": "Default Formuliervuller Profiel"
+   },
+   "Delete": {
+      "message": "Verwijderen"
+   },
+   "Delete_Group": {
+      "message": "Groep verwijderen"
+   },
+   "Delete_Selected": {
+      "message": "Verwijder geselecteerde"
+   },
+   "Disable_Insecure_Chrome_Password_Manager": {
+      "message": "Uitschakelen Chrome's Onveilig Wachtwoordbeheer"
+   },
+   "Disable_Multifactor_Authentication": {
+      "message": "Multifactor verificatie uitschakelen"
+   },
+   "Disable_Single_factor_Authentication": {
+      "message": "Single-factor Verificatie Uitschakelen"
+   },
+   "Discard_changes_and_close_this_window": {
+      "message": "Negeer wijzigingen en sluit dit venster"
+   },
+   "Do_not_overwrite_fields_that_are_already_filled": {
+      "message": "Geen velden overschrijven die reeds zijn ingevuld"
+   },
+   "Do_not_re_prompt_for_": {
+      "message": "Niet opnieuw vragen naar"
+   },
+   "Do_you_really_want_to_quit___You_cannot_use_LastPass_without_creating_an_account_": {
+      "message": "Wilt u echt stoppen? U kunt LastPass niet gebruiken zonder een account aan te maken."
+   },
+   "Down": {
+      "message": "Omlaag"
+   },
+   "Dr": {
+      "message": "Dr"
+   },
+   "Driver_s_License": {
+      "message": "Rijbewijs"
+   },
+   "Dutch": {
+      "message": "Nederlands"
+   },
+   "Eastern_Time__US___Canada_": {
+      "message": "Eastern Time (VS en Canada)"
+   },
+   "Edit": {
+      "message": "Bewerken"
+   },
+   "Edit_Credit_Card_profile": {
+      "message": "Wijzig Credit card profiel"
+   },
+   "Edit_Form_Fields": {
+      "message": "Bewerk invulformulier velden"
+   },
+   "Edit_Secure_Notes": {
+      "message": "Bewerk Veilige Notities"
+   },
+   "Edit_Site": {
+      "message": "Bewerk website"
+   },
+   "Ekaterinburg": {
+      "message": "Jekaterinenburg"
+   },
+   "Email": {
+      "message": "E-mail"
+   },
+   "Email_Account": {
+      "message": "E-mail account"
+   },
+   "Email_address": {
+      "message": "E-mailadres"
+   },
+   "Email_already_in_use__have_you_forgotten_your_password_": {
+      "message": "E-mailadres is al in gebruik, bent u uw wachtwoord vergeten?"
+   },
+   "End": {
+      "message": "Einde"
+   },
+   "English": {
+      "message": "Engels"
+   },
+   "English__United_Kingdom_": {
+      "message": "Engels (Groot-Brittanni\u00EB)"
+   },
+   "Enter_arbitrary_notes": {
+      "message": "Voer notities in"
+   },
+   "ErrorGetAcctsMsg": {
+      "message": "Er is een fout opgetreden tijdens het ophalen van uw LastPass websites. Probeer u nog een keer aan te melden om uw websites op te halen."
+   },
+   "ErrorLoginMsg": {
+      "message": "Er is een fout opgetreden tijdens het aanmelden bij LastPass. Controleer uw internetverbinding."
+   },
+   "ErrorSendingMsg": {
+      "message": "Er is een fout opgetreden tijdens het maken van contact met de server. Controleer uw internetverbinding."
+   },
+   "ErrorSessionMsg": {
+      "message": "Uw laatse LastPass sessie is verlopen. Opnieuw inloggen a.u.b."
+   },
+   "Evening_number": {
+      "message": "Avond aantal"
+   },
+   "ExistingUsersOTPPrompt": {
+      "message": "LastPass kan nu een Eenmalig Wachtwoord (EW) lokaal opslaan, dat kan worden gebruikt om uw account te herstellen als u uw HoofdWachtwoord bent vergeten. Dit EW is uitgeschakeld, totdat het wordt geactiveerd op de server.\n\nWilt u account herstel activeren?"
+   },
+   "Expand_All": {
+      "message": "Alles uitklappen"
+   },
+   "Expiration_date": {
+      "message": "Vervaldatum"
+   },
+   "Export_To": {
+      "message": "Exporteer naar"
+   },
+   "Export_To_LastPass_CSV_File": {
+      "message": "Exporteren naar LastPass CSV-bestand"
+   },
+   "Favorite": {
+      "message": "Favoriet"
+   },
+   "Fax_number": {
+      "message": "Faxnummer"
+   },
+   "February": {
+      "message": "februari"
+   },
+   "Feedback": {
+      "message": "Feedback"
+   },
+   "Female": {
+      "message": "Vrouw"
+   },
+   "Fields_": {
+      "message": "Velden:"
+   },
+   "Fiji__Kamchatka__Marshall_Is_": {
+      "message": "Fiji, Kamchatka, Marshalleilanden"
+   },
+   "Fill_Current": {
+      "message": "Vul huidige in"
+   },
+   "Fill_Form": {
+      "message": "Formulier invullen"
+   },
+   "Fill_Forms": {
+      "message": "Formulieren invullen"
+   },
+   "Fill_In_Default_Form_Fill_Profile": {
+      "message": "Vul Standaard Formuliervuller Profiel In"
+   },
+   "Fill_In_Next_Login__When_Multiple_": {
+      "message": "Vul de Volgende Login In (Bij Meerdere Logins)"
+   },
+   "Fill_In_Previous_Login__When_Multiple_": {
+      "message": "Vul de Vorige Login In (Bij Meerdere Logins)"
+   },
+   "Fill_or_Edit_Form_Fill_Data": {
+      "message": "Invullen of Bewerken van het Invulformulier"
+   },
+   "FillableFormDetected": {
+      "message": "Er is een invulformulier op deze pagina ontdekt"
+   },
+   "Find_a_site": {
+      "message": "Vind een website"
+   },
+   "Finnish": {
+      "message": "Fins"
+   },
+   "Firefox_Password_Manager": {
+      "message": "Firefox Wachtwoordbeheer"
+   },
+   "First_3_digits_of_your_phone_number": {
+      "message": "Eerste 3 cijfers van uw telefoonnummer"
+   },
+   "First_name": {
+      "message": "Voornaam"
+   },
+   "For_each_coordinate_listed_below__find_the_value_on_your_grid_and_enter_the_value_": {
+      "message": "Bepaal de waarde op uw grid voor elke hieronder vermelde co\u00F6rdinaat en voer de waarde in."
+   },
+   "Form_Fill": {
+      "message": "Formuliervuller"
+   },
+   "Form_Name_": {
+      "message": "Formulier Naam:"
+   },
+   "Forums": {
+      "message": "Forums"
+   },
+   "French": {
+      "message": "Frans"
+   },
+   "French__Canada_": {
+      "message": "Frans (Canada)"
+   },
+   "GMT__Dublin__Edinburgh__Lisbon__London": {
+      "message": "GMT: Dublin, Edinburgh, Lissabon, Londen"
+   },
+   "Gender": {
+      "message": "Geslacht"
+   },
+   "General": {
+      "message": "Algemeen"
+   },
+   "Generate": {
+      "message": "Genereer"
+   },
+   "GeneratePassword": {
+      "message": "Wanneer u een account aanmaakt of uw wachtwoord verandert, klik dan op genereren om een uniek en veilig wachtwoord met LastPass aan te maken."
+   },
+   "Generate_Secure_Password": {
+      "message": "Genereer veilig wachtwoord"
+   },
+   "Generated_Password_for": {
+      "message": "Gegenereerd wachtwoord voor"
+   },
+   "Generic": {
+      "message": "Algemeen"
+   },
+   "Generic_CSV_File": {
+      "message": "Algemeen CSV-bestand"
+   },
+   "German": {
+      "message": "Duits"
+   },
+   "Go_Premium_": {
+      "message": "Neem een Premium Account!"
+   },
+   "Go_to_URL": {
+      "message": "Ga naar URL"
+   },
+   "Google_Chrome": {
+      "message": "Google Chrome"
+   },
+   "Google_Chrome_Password_Manager": {
+      "message": "Google Chrome Wachtwoord Manager"
+   },
+   "Greenland__Brasilia__Montevideo": {
+      "message": "Groenland, Brasilia, Montevideo"
+   },
+   "Group_": {
+      "message": "Groep:"
+   },
+   "Group_Name": {
+      "message": "Groepsnaam"
+   },
+   "Harare__Pretoria": {
+      "message": "Harare, Pretoria"
+   },
+   "Hawaii": {
+      "message": "Hawaii"
+   },
+   "Height": {
+      "message": "Hoogte"
+   },
+   "Help_Translate": {
+      "message": "Help vertalen"
+   },
+   "Help___": {
+      "message": "Help..."
+   },
+   "Highlight_input_boxes": {
+      "message": "Highlight invoer velden"
+   },
+   "History": {
+      "message": "Geschiedenis"
+   },
+   "Home": {
+      "message": "Home"
+   },
+   "Hostname": {
+      "message": "Naam van host"
+   },
+   "HotKeys": {
+      "message": "Sneltoetsen"
+   },
+   "Hungarian": {
+      "message": "Hongaars"
+   },
+   "IBAN_Number": {
+      "message": "IBAN-nummer"
+   },
+   "IMPORT_": {
+      "message": "IMPORTEREN?"
+   },
+   "IT_IS_CRITICAL_THAT_YOU_NEVER_FORGET_YOUR_NEW_LASTPASS_PASSWORD_": {
+      "message": "ZORG DAT U NOOIT UW NIEUWE LASTPASS WACHTWOORD VERGEET."
+   },
+   "I_forgot_my_password__Help_": {
+      "message": "Ik ben mijn wachtwoord vergeten, Help"
+   },
+   "I_have_read_and_agree_with_the": {
+      "message": "Ik heb gelezen en stem in met de"
+   },
+   "I_understand_that_my_encrypted_data_will_be_sent_to_LastPass": {
+      "message": "Ik begrijp dat mijn versleutelde gegevens verzonden zullen worden naar LastPass"
+   },
+   "Identities": {
+      "message": "Identiteiten"
+   },
+   "Identity": {
+      "message": "Identiteit"
+   },
+   "If_checked__you_will_be_asked_to_re_enter_your_master_password_before_being_able_to_access_this_Form_Fill_profile": {
+      "message": "Indien geselecteerd, zal u gevraagd worden om opnieuw uw hoofdwachtwoord in te voeren\nvoordat u dit Formuliervul profiel kunt benaderen."
+   },
+   "If_you_already_have_a_LastPass_account_you_can_close_this_window_and_login_": {
+      "message": "Als u al een LastPass account heeft kunt u dit venster sluiten en u aanmelden."
+   },
+   "If_you_do_end_up_forgetting_your_LastPass_master_password_": {
+      "message": "Als u toch uw LastPass hoofdwachtwoord vergeten blijkt te zijn,"
+   },
+   "If_you_lost_your_Sesame_device__click_here_to_disable_Sesame_authentication": {
+      "message": "Als u uw Sesame apparaat bent verloren, klik dan hier om Sesame verificatie uit te schakelen"
+   },
+   "If_you_lost_your_YubiKey_device__click_here_to_disable_YubiKey_authentication": {
+      "message": "Als u uw YubiKey stick kwijt bent, klik dan hier om YubiKey verificatie uit te schakelen"
+   },
+   "If_you_lost_your_grid__click_here_to_disable_grid_authentication": {
+      "message": "Als u uw grid verloren bent, klik dan hier om grid verificatie uit te schakelen"
+   },
+   "Import": {
+      "message": "Importeren"
+   },
+   "Import_From": {
+      "message": "Importeren vanuit"
+   },
+   "Import_Your_Data": {
+      "message": "Importeer uw gegevens"
+   },
+   "Importing_your_data_to_your_LastPass_vault_will_secure_it_and_protect_you_against_identity_theft__All_imported_data_remains_COMPLETELY_confidential__the_only_person_who_can_view_YOUR_data_is_YOU_": {
+      "message": "Het importeren van uw gegevens in uw LastPass kluis is veilig en beschermt u tegen identiteitsdiefstal. Alle ge\u00EFmporteerde gegevens blijven VOLLEDIG vertrouwelijk: de enige persoon die UW gegevens kan zien bent U."
+   },
+   "In_order_for_LastPass_to_fill_into_basic_authentication_dialogs__you_need_to_enable_access_for_assistive_devices_": {
+      "message": "Om LastPass de basis authentificatie dialogen in te laten vullen moet u toegang voor hulpmiddelen inschakelen."
+   },
+   "In_order_for_LastPass_to_fill_into_basic_authentication_dialogs__you_need_to_install_the_binary_version_of_LastPass_for_Chrome_": {
+      "message": "Om LastPass de basis authentificatie dialogen in te laten vullen moet u de binaire versie van LastPass voro Chrome installeren."
+   },
+   "Indiana__Bogota__Lima__Quito__Rio_Branco": {
+      "message": "Indiana, Bogota, Lima, Quito, Rio Branco"
+   },
+   "Install": {
+      "message": "Installeren"
+   },
+   "Install_the_binary_version_of_LastPass_for_Chrome_to_enable_automatic_logoff_after_idle": {
+      "message": "Installeer de binaire versie van LastPass voor Chrome voor automatische afmelding bij inactiviteit"
+   },
+   "Install_the_binary_version_of_LastPass_for_Chrome_to_enable_importing_passwords_from_Google_Chrome_password_manager": {
+      "message": "Installeer de binary versie van LastPass voor Chrome om het importeren van wachtwoorden uit de Google Chrome wachtwoord manager mogelijk te maken"
+   },
+   "Install_the_binary_version_of_LastPass_for_Chrome_to_enable_sharing_login_state_between_other_browsers": {
+      "message": "Installeer de binaire versie van LastPass voor Chrome om de login status tussen verschillende browsers te delen"
+   },
+   "Instant_Messenger": {
+      "message": "Instant Messenger"
+   },
+   "Instructions": {
+      "message": "Instructies"
+   },
+   "International_Date_Line_West": {
+      "message": "Internationale westelijke datumgrens"
+   },
+   "Invalid_Password_": {
+      "message": "Ongeldig wachtwoord"
+   },
+   "Invalid_email_address__try_again": {
+      "message": "Ongeldig e-mail adres, probeer het nog eens"
+   },
+   "Irkutsk__Ulaan_Bataar__Perth": {
+      "message": "Irkoetsk, Ulaanbataar, Perth"
+   },
+   "Islamabad__Karachi__Tashkent": {
+      "message": "Islamabad, Karachi, Tasjkent"
+   },
+   "Issue_number": {
+      "message": "Probleem nummer"
+   },
+   "Issued_Date": {
+      "message": "Uitgegeven datum"
+   },
+   "Issuing_Authority": {
+      "message": "Publicerende autoriteit"
+   },
+   "Italian": {
+      "message": "Italiaans"
+   },
+   "January": {
+      "message": "januari"
+   },
+   "Japanese": {
+      "message": "Japans"
+   },
+   "July": {
+      "message": "juli"
+   },
+   "June": {
+      "message": "juni"
+   },
+   "Kabul": {
+      "message": "Kabul"
+   },
+   "Kathmandu": {
+      "message": "Kathmandu"
+   },
+   "KeePass": {
+      "message": "KeePass"
+   },
+   "Keep_a_history_of_my_logins_and_form_fills": {
+      "message": "Houd de geschiedenis van aanmeldingen en formulier invulacties bij"
+   },
+   "Korean": {
+      "message": "Koreaans"
+   },
+   "Krasnoyarsk": {
+      "message": "Krasnojarsk"
+   },
+   "Kuwait__Riyadh__Nairobi__Tbilisi": {
+      "message": "Koeweit, Riyad, Nairobi, Tbilisi"
+   },
+   "La_Paz": {
+      "message": "La Paz"
+   },
+   "Language": {
+      "message": "Taal"
+   },
+   "LastPass": {
+      "message": "LastPass"
+   },
+   "LastPass_CSV_File": {
+      "message": "LastPass CSV Bestand"
+   },
+   "LastPass_Chrome_Toolbar": {
+      "message": "LastPass Chrome Werkbalk"
+   },
+   "LastPass_Encrypted_File": {
+      "message": "LastPass versleuteld bestand"
+   },
+   "LastPass_Grid_Multifactor_Authentication": {
+      "message": "LastPass Grid Multifactor Verificatie"
+   },
+   "LastPass_Menu": {
+      "message": "LastPass Menu"
+   },
+   "LastPass_can_automatically_fill_web_page_forms_with_a_single_click___Using_automatic__Form_Filling__will_not_only_save_you_time__but_will_also_enhance_your_security_when_shopping_online_": {
+      "message": "LastPass kan webpagina formulieren met een enkele klik automatisch invullen. Met behulp van het automatisch 'Formuliervuller' bespaart u niet alleen tijd, maar zal ook uw veiligheid verbeteren bij het online winkelen."
+   },
+   "LastPass_cannot_login_until_cookies_are_allowed_from_lastpass_com": {
+      "message": "LastPass kan zich niet aanmelden totdat cookies van PLastPass.com toegestaan zijn"
+   },
+   "LastPass_detected_a_login_form_that_is_insecure___Would_you_like_to_continue_": {
+      "message": "LastPass heeft een onveilig aanmeldingsformulier ontdekt.\n\nWilt u doorgaan?"
+   },
+   "LastPass_detected_a_login_form_that_is_insecure___Would_you_still_like_LastPass_to_fill_the_form_": {
+      "message": "LastPass heeft een onveilig aanmeldingsformulier ontdekt.\n\nWilt u toch LastPass dit formulier laten invullen?"
+   },
+   "LastPass_detected_a_password_change_for": {
+      "message": "LastPass heeft verandering van wachtwoord ontdekt voor"
+   },
+   "LastPass_detected_a_password_change_for_domain_": {
+      "message": "LastPass heeft een verandering van wachtwoord gedetecteerd voor dit domein:"
+   },
+   "LastPass_detected_a_password_change_for_user_": {
+      "message": "LastPass heeft een verandering van wachtwoord gedetecteerd voor gebruiker:"
+   },
+   "LastPass_has_filled_your_login_information_into_the_form_on_this_page_": {
+      "message": "Uw aanmeldingsgegevens zijn reeds ingevuld in het formulier hieronder."
+   },
+   "LastPass_is_fully_installed___When_you_install_LastPass_on_other_computers_you_will_not_have_to_go_through_this_process_again__you_ll_simply_be_able_to_login____Do_not_share_your_Master_Password_with_anyone__including_LastPass_employees__we_ll_never_ask_for_it___LastPass_encrypts_your_sensitive_data_locally_so_even_LastPass_employees_do_not_have_access_to_it___You_can_get_help_by_clicking_on_the_LastPass_icon_and_going_to_Help_": {
+      "message": "LastPass is volledig ge\u00EFnstalleerd! Wanneer u LastPass op andere computers installeert hoeft u niet meer dit hele proces te doorlopen. U meldt u eenvoudigweg aan. Deel uw hoofdwachtwoord met niemand anders, zelfs niet met werknemers van LastPass: wij vragen er nooit om! LastPass versleutelt gegevens lokaal, dus LastPass werknemers hebben geen toegang. U kunt hulp krijgen door op het LastPass pictogram te klikken en naar Help te gaan."
+   },
+   "LastPass_is_the_last_password_you_ll_ever_have_to_remember___If_you_re_new_to_LastPass__we_ll_just_need_a_few_minutes_of_your_time_to_setup_your_account___You_ll_be_able_to_use_this_account_on_any_other_PC_you_use_to_always_keep_your_personal_data_in_sync___Hit_create_account_to_begin_": {
+      "message": "LastPass is het laatste wachtwoord dat u moet onthouden. Als u nieuw bent bij LastPass, we hebben maar een paar minuten van uw tijd nodig om uw account op te zetten. U zult in staat zijn dit account op welke PC dan ook te gebruiken en zo uw persoonlijk gegevens gesynchroniseerd te houden. Klik op Account aanmaken om te beginnen."
+   },
+   "Last_4_digits_of_your_phone_number": {
+      "message": "Laatste 4 cijfers van uw telefoonnummer"
+   },
+   "Last_Name2": {
+      "message": "Achternaam 2"
+   },
+   "Last_name": {
+      "message": "Achternaam"
+   },
+   "Left": {
+      "message": "Links"
+   },
+   "License_Class": {
+      "message": "Licentie klasse"
+   },
+   "License_Key": {
+      "message": "Licentiesleutel"
+   },
+   "Local": {
+      "message": "Lokale"
+   },
+   "Log_into_a_Site": {
+      "message": "Aanmelden bij website"
+   },
+   "LoggedInOffline": {
+      "message": "LastPass was niet in staat contact te maken met de aanmeldingsserver. U bent dus in Offline modus. sommige functies kunnen beperkt zijn."
+   },
+   "Login": {
+      "message": "Aanmelden"
+   },
+   "LoginError": {
+      "message": "Fout bij het aanmelden bij LastPass. Probeer het nog eens."
+   },
+   "Login_to_LastPass": {
+      "message": "Aanmelden bij LastPass"
+   },
+   "Logoff": {
+      "message": "Afmelden"
+   },
+   "Logoff_": {
+      "message": "Afmelden:"
+   },
+   "MSI_PasswordKeeper": {
+      "message": "MSI PasswordKeeper"
+   },
+   "Magadan__Solomon_Is___New_Caledonia": {
+      "message": "Magadan, Solomoneilanden, Nieuw-Caledoni\u00EB"
+   },
+   "Male": {
+      "message": "Man"
+   },
+   "March": {
+      "message": "maart"
+   },
+   "Master_Password": {
+      "message": "Hoofdwachtwoord"
+   },
+   "May": {
+      "message": "mei"
+   },
+   "Member_Name": {
+      "message": "Lidnaam"
+   },
+   "Membership": {
+      "message": "Lidmaatschap"
+   },
+   "Membership_Number": {
+      "message": "Lidnummer"
+   },
+   "Meta": {
+      "message": "Meta"
+   },
+   "Mid_Atlantic": {
+      "message": "Mid-Atlantic"
+   },
+   "Middle_3_digits_of_your_phone_number": {
+      "message": "Middelste 3 cijfers van uw telefoonnummer"
+   },
+   "Middle_name": {
+      "message": "Middelste naam"
+   },
+   "Midway_Island__Samoa": {
+      "message": "Midway-eilanden, Samoa"
+   },
+   "Minimum_Digit_Count": {
+      "message": "Minimaal aantal cijfers"
+   },
+   "Mobile_Email_Address": {
+      "message": "Mobiel email adres"
+   },
+   "Mobile_number": {
+      "message": "Mobiel nummer"
+   },
+   "More": {
+      "message": "Meer"
+   },
+   "More_Information": {
+      "message": "Meer informatie"
+   },
+   "Mountain_Time__US___Canada_": {
+      "message": "Mountain Time (VS en Canada)"
+   },
+   "Move_Selected_to_Group": {
+      "message": "Verplaats selectie naar groep"
+   },
+   "Move_to_Group": {
+      "message": "Verplaatsen naar groep"
+   },
+   "Mr": {
+      "message": "Dhr"
+   },
+   "Mrs": {
+      "message": "Mw"
+   },
+   "Ms": {
+      "message": "Mej"
+   },
+   "MyPasswordSafe": {
+      "message": "MijnWachtwoordenKluis"
+   },
+   "My_LastPass_Vault": {
+      "message": "Mijn LastPass kluis"
+   },
+   "NAME": {
+      "message": "NAAM"
+   },
+   "Name_": {
+      "message": "Naam:"
+   },
+   "Name_on_card": {
+      "message": "Naam op kaart"
+   },
+   "Nameproper": {
+      "message": "Naam"
+   },
+   "Nationality": {
+      "message": "Nationaliteit"
+   },
+   "Never_Add_Site": {
+      "message": "Nooit Website toevoegen"
+   },
+   "Never_AutoFill": {
+      "message": "Nooit automatisch invullen"
+   },
+   "Never_AutoLogin": {
+      "message": "Nooit AutoLogin"
+   },
+   "Never_Fill_Forms": {
+      "message": "Nooit formulieren invullen"
+   },
+   "Never_For_This_Domain": {
+      "message": "Nooit voor dit domein"
+   },
+   "Never_For_This_Page": {
+      "message": "Nooit voor deze webpagina"
+   },
+   "Never_For_This_Site": {
+      "message": "Nooit Voor Deze Site"
+   },
+   "Never_Generate_Password": {
+      "message": "Nooit Wachtwoord Genereren"
+   },
+   "Never_Show_Again": {
+      "message": "Nooit meer tonen"
+   },
+   "Never___": {
+      "message": "Nooit ..."
+   },
+   "New_Master_Password": {
+      "message": "Nieuw Hoofdwachtwoord"
+   },
+   "Newfoundland": {
+      "message": "Newfoundland"
+   },
+   "No": {
+      "message": "Nee"
+   },
+   "No_Thanks": {
+      "message": "Nee dank u"
+   },
+   "No_Updates_Are_Available": {
+      "message": "Geen updates beschikbaar"
+   },
+   "No__I_do_not_want_LastPass_to_help_me_fill_forms_automatically": {
+      "message": "Nee, ik wil niet dat LastPass mij helpt bij het automatisch invullen van formulieren"
+   },
+   "No__do_not_import_any_of_my_insecure_items": {
+      "message": "Nee, importeer geen enkele van mijn onveilige items"
+   },
+   "None_Available": {
+      "message": "Niets beschikbaar"
+   },
+   "Norwegian_Nynorsk": {
+      "message": "Noors Nynorsk"
+   },
+   "Not_Now": {
+      "message": "Niet nu"
+   },
+   "Note_Type": {
+      "message": "Type notitie"
+   },
+   "Notes": {
+      "message": "Aantekeningen"
+   },
+   "Notes_": {
+      "message": "Opmerkingen:"
+   },
+   "Notifications": {
+      "message": "Mededelingen"
+   },
+   "November": {
+      "message": "november"
+   },
+   "Nuku_alofa": {
+      "message": "Nuku'alofa"
+   },
+   "Number": {
+      "message": "Nummer"
+   },
+   "Number_of_Licenses": {
+      "message": "Aantal licenties"
+   },
+   "OK": {
+      "message": "OK"
+   },
+   "October": {
+      "message": "oktober"
+   },
+   "Offer_to_Generate_Secure_Passwords": {
+      "message": "Bied aanmaken van veilige wachtwoorden aan"
+   },
+   "Old_Password": {
+      "message": "Oude Wachtwoord"
+   },
+   "Open_All": {
+      "message": "Alles openen"
+   },
+   "Open_Favorites": {
+      "message": "Open Favorieten"
+   },
+   "Open_My_LastPass_Vault": {
+      "message": "Open mijn LastPass-kluis"
+   },
+   "Open_New_Pages_in": {
+      "message": "Open Nieuwe Pagina's in"
+   },
+   "Open_login_dialog_when_start_browser": {
+      "message": "Open dialoogvenster aanmelding bij het opstarten van de browser"
+   },
+   "Order_Number": {
+      "message": "Bestelnummer"
+   },
+   "Order_Total": {
+      "message": "Totaal besteld"
+   },
+   "Organization": {
+      "message": "Organisatie"
+   },
+   "Other": {
+      "message": "Overig"
+   },
+   "Other_Sessions": {
+      "message": "Andere Sessies"
+   },
+   "PASSWORDupper": {
+      "message": "WACHTWOORD"
+   },
+   "Pacific_Time__US___Canada_": {
+      "message": "Pacific Time (VS en Canada)"
+   },
+   "Page_Down": {
+      "message": "Pagina Omlaag"
+   },
+   "Page_Up": {
+      "message": "Pagina Omhoog"
+   },
+   "Passpack": {
+      "message": "Passpack"
+   },
+   "Passport": {
+      "message": "Paspoort"
+   },
+   "Password": {
+      "message": "Wachtwoord"
+   },
+   "Password_": {
+      "message": "Wachtwoord:"
+   },
+   "Password_Agent": {
+      "message": "Wachtwoord Agent"
+   },
+   "Password_Keeper": {
+      "message": "Password Keeper"
+   },
+   "Password_Length": {
+      "message": "Wachtwoord Lengte"
+   },
+   "Password_Reminder": {
+      "message": "Wachtwoord geheugensteuntje"
+   },
+   "Password_Safe": {
+      "message": "Wachtwoordkluis"
+   },
+   "Password_reminder_cannot_match_password": {
+      "message": "Wachtwoord geheugensteun mag gelijk zijn aan het wachtwoord."
+   },
+   "Password_updated_": {
+      "message": "Wachtwoord aangepast!"
+   },
+   "Personal": {
+      "message": "Persoonlijk"
+   },
+   "Phone_number": {
+      "message": "Telefoonnummer"
+   },
+   "Pin": {
+      "message": "PIN"
+   },
+   "Please_Make_a_Selection": {
+      "message": "Een selectie maken a.u.b."
+   },
+   "Please_enter_a_Password_Reminder": {
+      "message": "Vul een wachtwoord herinnering in"
+   },
+   "Please_note_that_upgrading_from_LastPass_Local_to_LastPass_Online_will_result_in_your_password_data_being_uploaded_in_its_encrypted_format_to_LastPass_servers___You_will_be_able_to_access_your_data_from_anywhere__and_LastPass_will_not_be_able_to_read_it___Would_you_like_to_continue_": {
+      "message": "Houd er rekening mee dat bij het upgraden van LastPass Local naar LastPass Online uw wachtwoord gegevens in een versleutelde vorm zullen worden ge-upload naar LastPass servers. Zo heeft u toegang tot uw gegevens vanaf elke locatie en LastPass zal niet in staat zijn om ze te lezen. Wilt u doorgaan?"
+   },
+   "Please_provide_this_computer_a_name": {
+      "message": "Geef deze computer een naam"
+   },
+   "Please_reload_the_page_to_view_your_changes_": {
+      "message": "Laad de pagina opnieuw om uw wijzigingen te bekijken."
+   },
+   "Please_restart_all_your_browsers_to_begin_using_LastPass_Online_": {
+      "message": "Herstart uw browser om te beginnen met LastPass Online."
+   },
+   "Please_select": {
+      "message": "Selecteer"
+   },
+   "Please_select_which_sites_you_wish_to_apply_this_change_": {
+      "message": "Selecteer voor welke websites u deze verandering wenst door te voeren."
+   },
+   "Please_visit_https___lastpass_com_to_create_an_account_at_a_later_time_": {
+      "message": "Bezoek https://lastpass.com om later een account aan te maken."
+   },
+   "Polish": {
+      "message": "Pools"
+   },
+   "Poll_Server_for_account_changes__mins_": {
+      "message": "Pols de Server voor account wijzigingen (min.)"
+   },
+   "Port": {
+      "message": "Poort"
+   },
+   "Portuguese": {
+      "message": "Portugees"
+   },
+   "Portuguese__Brazilian_": {
+      "message": "Portugees (Brazili\u00EB)"
+   },
+   "Preferences": {
+      "message": "Voorkeuren"
+   },
+   "Price": {
+      "message": "Prijs"
+   },
+   "Print": {
+      "message": "Afdrukken"
+   },
+   "Print_Secure_Notes": {
+      "message": "Print Veilige Aantekeningen"
+   },
+   "Print_Sites": {
+      "message": "Print Sites"
+   },
+   "Profile": {
+      "message": "Profiel"
+   },
+   "Profile_language": {
+      "message": "Profiel taal"
+   },
+   "Profile_name": {
+      "message": "Profiel naam"
+   },
+   "Publisher": {
+      "message": "Uitgever"
+   },
+   "Purchase_Date": {
+      "message": "Datum van aankoop"
+   },
+   "Re_enter_Password": {
+      "message": "Voer het wachtwoord opnieuw in"
+   },
+   "Recently_Used": {
+      "message": "Onlangs gebruikt"
+   },
+   "Recently_Used_list_size": {
+      "message": "Grootte van lijst Onlangs Gebruikte Items"
+   },
+   "Recheck_Page": {
+      "message": "Controleer Pagina Nogmaals"
+   },
+   "Reencrypting_Data___": {
+      "message": "Opnieuw versleutelen van gegevens ..."
+   },
+   "Refresh_Sites": {
+      "message": "Ververs Websites"
+   },
+   "Reject": {
+      "message": "Afwijzen"
+   },
+   "Remember_Email": {
+      "message": "Onthoud e-mailadres"
+   },
+   "Remember_Password": {
+      "message": "Onthoud Wachtwoord"
+   },
+   "Rename_Group": {
+      "message": "Wijzig Groepsnaam"
+   },
+   "Replace_Existing_Site": {
+      "message": "Vervang bestaande Website"
+   },
+   "Require_Every_Character_Type": {
+      "message": "Vereist Elk Karakter Type"
+   },
+   "Require_Password_Reprompt": {
+      "message": "Vereist Wachtwoord Opnieuw Invoeren"
+   },
+   "Require_security_reprompt_when_": {
+      "message": "In verband met de veiligheid is hernieuwde invoer noodzakelijk als:"
+   },
+   "Respect_AutoComplete_off__allow_websites_to_disable_AutoFill": {
+      "message": "Respecteer AutoAanvullen=uit: sta websites toe om Automatisch Invullen uit te schakelen"
+   },
+   "Right": {
+      "message": "Rechts"
+   },
+   "RoboForm": {
+      "message": "RoboForm"
+   },
+   "Routing_number": {
+      "message": "Banknummer"
+   },
+   "Russian": {
+      "message": "Russisch"
+   },
+   "SID": {
+      "message": "SID"
+   },
+   "SITE": {
+      "message": "SITE"
+   },
+   "SMTP_Port": {
+      "message": "SMTP poort"
+   },
+   "SMTP_Server": {
+      "message": "SMTP Server"
+   },
+   "SWIFT_Code": {
+      "message": "SWIFT code"
+   },
+   "Save": {
+      "message": "Opslaan"
+   },
+   "Save_All_Entered_Data": {
+      "message": "Bewaar alle ingevulde gegevens"
+   },
+   "Save_Credit_Card_profile": {
+      "message": "Bewaar Kredietkaart profiel"
+   },
+   "Save_New_Site": {
+      "message": "Bewaar nieuwe Website"
+   },
+   "Save_Site": {
+      "message": "Website opslaan"
+   },
+   "Save_a_disabled_One_Time_Password_locally_for_Account_Recovery": {
+      "message": "Sla een uitgeschakeld Eenmalig Wachtwoord lokaal op voor Account Herstel"
+   },
+   "Save_your_changes_and_close_this_window": {
+      "message": "Sla uw wijzigingen op en sluit dit venster"
+   },
+   "Screen_Keyboard": {
+      "message": "Virtueel Toetsenbord"
+   },
+   "Search": {
+      "message": "Zoek"
+   },
+   "Search_within_secure_notes__maximum_characters_to_search_": {
+      "message": "Zoek binnen veilige notities (maximaal karakters om te zoeken)"
+   },
+   "Secure_Notes": {
+      "message": "Veilige Aantekeningen"
+   },
+   "Security": {
+      "message": "Beveiliging"
+   },
+   "Security_Check": {
+      "message": "Security Check"
+   },
+   "Security_code": {
+      "message": "Beveiligingscode"
+   },
+   "Select": {
+      "message": "Selecteer"
+   },
+   "Select_All": {
+      "message": "Selecteer alles"
+   },
+   "Select_or_enter_a_new_group_name": {
+      "message": "Selecteer of typ een nieuwe groespnaam"
+   },
+   "Send_anonymous_error_reporting_data_to_help_improve_LastPass": {
+      "message": "Stuur een anoniem foutenrapport om LastPass te verbeteren."
+   },
+   "Seoul__Osaka__Sapporo__Tokyo": {
+      "message": "Seoul, Osaka, Sapporo, Tokio"
+   },
+   "September": {
+      "message": "september"
+   },
+   "Server": {
+      "message": "Server"
+   },
+   "SesameWrongButton": {
+      "message": "Om uw gegevens te zien wanneer u offline bent, dient u Sesame uit te voeren en gebruik te maken van de 'Kopieer Offline Wachtwoord' knop in plaats van de knop 'Genereer Eenmalig Wachtwoord'."
+   },
+   "Sesame_Multifactor_Authentication": {
+      "message": "Sesame Multifactor Verficatie"
+   },
+   "Set_up_custom_form_fields": {
+      "message": "Stel aangepaste formulier velden in"
+   },
+   "Sex": {
+      "message": "Geslacht"
+   },
+   "Share": {
+      "message": "Delen"
+   },
+   "Share_Selected": {
+      "message": "Deel geselecteerde"
+   },
+   "Share_login_state_between_other_browsers": {
+      "message": "Deel login status tussen andere browsers"
+   },
+   "Share_offer_from": {
+      "message": "Deel aanbod van"
+   },
+   "Shift": {
+      "message": "Shift"
+   },
+   "Should_LastPass_remember_this_password_": {
+      "message": "Moet LastPass dit wachtwoord onthouden?"
+   },
+   "Show": {
+      "message": "Tonen"
+   },
+   "Show_Advanced_Options": {
+      "message": "Toon geavanceerde opties"
+   },
+   "Show_Change_Password_Notification_Bar": {
+      "message": "Toon Wachtwoord Wijzigen Kennisgeving Balk"
+   },
+   "Show_Deleted_Sites": {
+      "message": "Toon verwijderde websites"
+   },
+   "Show_Fill_Notification_Bar": {
+      "message": "Toon Formuliervuller Kennisgeving Balk"
+   },
+   "Show_Form_Fill_Notifications": {
+      "message": "Toon Formuliervuller Notificaties"
+   },
+   "Show_My_LastPass_Vault_After_Login": {
+      "message": "Toon mijn LastPass kluis na aanmelden"
+   },
+   "Show_Notifications": {
+      "message": "Toon meldingen"
+   },
+   "Show_Save_Site_Notification_Bar": {
+      "message": "Toon Opslaan Site Kennisgeving Balk"
+   },
+   "Show_Save_Site_Notifications": {
+      "message": "Toon Waarschuwingen Veilige Website"
+   },
+   "Show_Sites_in_Groups": {
+      "message": "Toon Websites in Groepen"
+   },
+   "Show_all_sites": {
+      "message": "Toon alle websites"
+   },
+   "Show_certain_notifications_only_after_click": {
+      "message": "Toon sommige aankondigingen alleen na klikken"
+   },
+   "Shows_another_custom_field_entry": {
+      "message": "Toont een ander aangepast invoerveld"
+   },
+   "Simplify_your_life__Use_LastPass_to_autofill_in_this_site_s_login_info_": {
+      "message": "Maak het u gemakkelijk: Gebruik LastPass om op deze website uw aanmeldingsgegevens automatisch in te vullen!"
+   },
+   "Site_Search": {
+      "message": "Website Zoeken"
+   },
+   "Sites": {
+      "message": "Websites"
+   },
+   "Slovak": {
+      "message": "Slowaaks"
+   },
+   "Social_Security": {
+      "message": "Persoonlijke beveiliging"
+   },
+   "Social_security_number": {
+      "message": "Nummer Sociale zekerheid "
+   },
+   "Software_License": {
+      "message": "Software licentie"
+   },
+   "Spanish": {
+      "message": "Spaans"
+   },
+   "Spanish__Mexico_": {
+      "message": "Spaans (Mexico)"
+   },
+   "Special": {
+      "message": "Speciaal"
+   },
+   "State___Province": {
+      "message": "Provincie"
+   },
+   "Submit_Form": {
+      "message": "Verstuur formulier"
+   },
+   "Support_Email": {
+      "message": "E-mail voor ondersteuning"
+   },
+   "Swedish": {
+      "message": "Zweeds"
+   },
+   "Swipe_current_user_s_finger": {
+      "message": "Druk de vinger van de huidige gebruiker"
+   },
+   "Swipe_finger": {
+      "message": "Vegen met vinger"
+   },
+   "Swipe_your_finger_on_the_fingerprint_sensor": {
+      "message": "Haal uw vinger over de vingerafdruksensor"
+   },
+   "Tabs": {
+      "message": "Tabs"
+   },
+   "Tehran": {
+      "message": "Teheran"
+   },
+   "Telephone": {
+      "message": "Telefoon"
+   },
+   "Text": {
+      "message": "Tekst"
+   },
+   "Text_to_find": {
+      "message": "Tekst te vinden"
+   },
+   "That_group_already_exists_": {
+      "message": "Die groep bestaat reeds."
+   },
+   "The_4_digit_year_the_credit_card_was_issued": {
+      "message": "Het 4-cijferige jaar van wanneer de kredietkaart werd afgegeven"
+   },
+   "The_LastPass_master_password_you_reentered_does_not_match": {
+      "message": "Het LastPass hoofdwachtwoord dat u opnieuw invoerde komt niet overeen"
+   },
+   "The__Old_Password__you_entered_is_not_your_correct_LastPass_master_password": {
+      "message": "Het 'Oude Wachtwoord' dat u heeft ingevoerd is niet het juiste LastPass hoofdwachtwoord"
+   },
+   "The_binary_version_of_the_LastPass_plugin_is_required_for_this_operation__It_can_be_downloaded_from_lastpass_com_": {
+      "message": "De binaire versie van de LastPass plugin is vereist voor deze operatie. Het kan worden gedownload van lastpass.com."
+   },
+   "The_credit_card_number": {
+      "message": "Het kredietkaart nummer"
+   },
+   "The_credit_card_s_4_digit_expiration_year": {
+      "message": "Het 4-cijferige vervaljaar van de kredietkaart"
+   },
+   "The_credit_card_s_expiration_month": {
+      "message": "De maand van de vervaldatum van de kredietkaart"
+   },
+   "The_full_name_printed_on_the_credit_card": {
+      "message": "De volledige naam gedrukt op de kredietkaart"
+   },
+   "The_month_the_credit_card_was_issued": {
+      "message": "De maand dat de kredietkaart werd afgegeven"
+   },
+   "The_name_of_your_bank": {
+      "message": "De naam van uw bank"
+   },
+   "The_value_to_be_filled": {
+      "message": "De waarde om in te vullen"
+   },
+   "The_version_of_Chrome_you_are_currently_running_does_not_have_HTML5_database_support_enabled___As_such__this_login_page_will_not_remember_your_email_and_password__and_other_features_such_as_automatic_login_on_browser_restart_will_not_work___You_may_be_able_to_fix_this_by_adding___enable_databases_as_a_parameter_to_your_Google_Chrome_browser_shortcut_": {
+      "message": "De versie van Chrome die u momenteel draait heeft nog geen HTML5 database ondersteuning ingeschakeld. Daarom zal deze login pagina uw e-mail en wachtwoord niet onthouden en zullen andere functies zoals automatisch inloggen bij een browser herstart niet werken. U kunt dit wellicht verhelpen door het toevoegen van --enable-databases als een parameter aan uw Google Chrome browser snelkoppeling."
+   },
+   "This_computer_is_trusted__do_not_require_a_second_form_of_authentication_": {
+      "message": "Dit is een vertrouwde computer en vereist geen tweede vorm van verificatie."
+   },
+   "This_is_a_shared_site__You_are_not_permitted_to_view_the_password_": {
+      "message": "Dit is een gedeelde website. U hebt geen toestemming het wachtwoord te bekijken."
+   },
+   "Time_Zone": {
+      "message": "Tijdzone"
+   },
+   "Title": {
+      "message": "Titel"
+   },
+   "To_create_your_account__please_re_enter_your_LastPass_master_password": {
+      "message": "Om uw account aan te maken, moet u uw LastPass hoofdwachtwoord nogmaals invullen"
+   },
+   "To_get_started_with_LastPass__you_will_need_to_add_sites_to_your_account_": {
+      "message": "Om te beginnen met LastPass moet u website toevoegen aan uw account."
+   },
+   "To_protect_your_privacy_and_keep_your_data_confidential_": {
+      "message": "Om uw privacy te bewaken en uw gegevens geheim te houden,"
+   },
+   "Tools": {
+      "message": "Extra"
+   },
+   "Try_Again": {
+      "message": "Probeer opnieuw"
+   },
+   "TurboPasswords": {
+      "message": "TurboWachtwoorden"
+   },
+   "Type": {
+      "message": "Type"
+   },
+   "Type_": {
+      "message": "Type:"
+   },
+   "URL_": {
+      "message": "URL:"
+   },
+   "USERNAME": {
+      "message": "GEBRUIKERSNAAM"
+   },
+   "Unselect_All": {
+      "message": "Deselecteer Alles"
+   },
+   "Up": {
+      "message": "Omhoog"
+   },
+   "Upgrade_to_LastPass_Online_": {
+      "message": "Upgrade naar Online LastPass!"
+   },
+   "Uploading_Data___": {
+      "message": "Data uploaden ..."
+   },
+   "User_name": {
+      "message": "Gebruikersnaam"
+   },
+   "Username_": {
+      "message": "Gebruikersnaam:"
+   },
+   "Usernameproper": {
+      "message": "Gebruikersnaam"
+   },
+   "Value_to_fill": {
+      "message": "Waarde om in te vullen"
+   },
+   "Version_": {
+      "message": "Versie"
+   },
+   "View_Passwords": {
+      "message": "Bekijk wachtwoorden"
+   },
+   "Warn_before_filling_insecure_forms": {
+      "message": "Waarschuwen voor onveilige formulieren"
+   },
+   "Watch_a_video_on_basic_usage": {
+      "message": "bekijk video over fundamenteel gebruik"
+   },
+   "We_also_DO_NOT_keep_a_copy_or_backup_of_it_": {
+      "message": "We houden hier ook GEEN kopie of back-up van bij."
+   },
+   "Website": {
+      "message": "Website"
+   },
+   "Welcome_to_LastPass_": {
+      "message": "Welkom bij LastPass!"
+   },
+   "West_Central_Africa": {
+      "message": "West-Centraal Afrika"
+   },
+   "Windows": {
+      "message": "Windows"
+   },
+   "Would_you_like_to_set_up_a_Form_Filling_profile_now_": {
+      "message": "Wilt u nu een FormulierVuller Profiel aanmaken?"
+   },
+   "Yakutsk": {
+      "message": "Jakoetsk"
+   },
+   "Yangon__Rangoon_": {
+      "message": "Yangon (Rangoon)"
+   },
+   "Yes": {
+      "message": "Ja"
+   },
+   "Yes__let_me_choose_which_items_I_want_imported_into_LastPass": {
+      "message": "Ja, laat me kiezen welke items ik wil importeren in LastPass"
+   },
+   "Yes__let_me_enter_and_review_data_that_will_be_used_when_filling_forms": {
+      "message": "Ja, laat mij de gegevens invullen en bekijken die gebruikt zullen worden voor het invullen van formulieren"
+   },
+   "You_cannot_assign_more_than_one_HotKey_the_same_value_": {
+      "message": "U kunt niet meer dan \u00E9\u00E9n SnelToets aan dezelfde waarde koppelen."
+   },
+   "You_currently_have_LastPass_set_to_remember_your_password___Doing_so_essentially_makes_the_automatically_logoff_options_you_ve_chosen_useless___Would_you_like_LastPass_to_stop_remembering_your_password_": {
+      "message": "U heeft momenteel LastPass zo ingesteld dat uw wachtwoord wordt onthouden. Hierdoor is de door u gekozen optie van het automatisch afmelden nutteloos. Wilt u dat LastPass uw wachtwoord niet meer onthoudt?"
+   },
+   "You_have_not_yet_chosen_a_default_form_fill_profile___Would_you_like_to_choose_one_now_": {
+      "message": "U heeft nog geen standaard Formuliervuller profiel gekozen. Wilt u er nu \u00E9\u00E9n kiezen?"
+   },
+   "You_may_also_be_blocking_all_cookies__which_causes_Chrome_to_disallow_HTML5_database_access_": {
+      "message": "U blokkeert wellicht alle cookies, waardoor Chrome HTML5 database toegang verhindert."
+   },
+   "You_must_agree_to_send_your_encrypted_data_to_LastPass_com___LastPass_com_encrypts_your_data_and_sends_it_to_its_secure_servers__No_one_at_LastPass_can_read_your_confidential_data_since_it_is_encrypted_using_your_secret_password_and_you_are_the_only_one_who_knows_your_password_": {
+      "message": "U moet toestaan dat uw versleutelde gegevens naar LastPass.com gestuurd worden.\n\nLasPass.com versleuteld uw gegevens en zend deze naar beveiligde servers.\nNiemand bij LastPass kan uw vertrouwlijke gegevens lezen aangezien deze versleuteld zijn\nmet uw geheime wachtwoord en u de enige bent die uw wachtwoord weet."
+   },
+   "You_must_agree_to_the_terms_to_continue": {
+      "message": "U moet instemmen met de voorwaarden om door te gaan"
+   },
+   "You_must_enter_a_name_": {
+      "message": "U moet een naam invullen."
+   },
+   "You_must_enter_a_unique_name_": {
+      "message": "U moet een unieke naam invullen."
+   },
+   "You_must_restart_Chrome_or_logoff_and_back_in_to_get_logoff_on_browser_close_changes_to_be_reflected": {
+      "message": "U moet Chrome herstarten of af- en weer aanmelden om de verandering naar afmelden bij sluiten van de browser door te voeren"
+   },
+   "You_must_restart_your_browser_before_all_of_the_changes_will_take_effect_": {
+      "message": "U moet uw browser opnieuw opstarten voordat alle veranderingen doorgevoerd worden."
+   },
+   "Your_4_digit_birth_year": {
+      "message": "Uw 4-cijferige geboortejaar"
+   },
+   "Your_Google_Chrome_passwords_have_been_imported_successfully_": {
+      "message": "Uw Google Chrome wachtwoorden zijn succesvol ge\u00EFmporteerd."
+   },
+   "Your_ZIP_or_postal_code": {
+      "message": "Uw postcode"
+   },
+   "Your_bank_account_information": {
+      "message": "Uw bankgegevens"
+   },
+   "Your_bank_account_number__This_number_can_typically_be_found_to_the_right_of_the_routing_number_on_your_personal_checks_": {
+      "message": "Uw bankrekening number.\nDit nummer kan doorgaans gevonden worden rechts van het routing nummer op uw persoonlijke cheques."
+   },
+   "Your_bank_s_routing_number__This_9_digit_number_can_typically_be_found_on_your_personal_checks_in_the_bottom_left_corner_": {
+      "message": "Uw bank routing number.\nDeze 9 cijfers kunt u normaal gezien vinden op uw persoonlijke cheques in de linkerbenedenhoek."
+   },
+   "Your_birth_day": {
+      "message": "Uw verjaardag"
+   },
+   "Your_birth_month": {
+      "message": "Je geboortemaand"
+   },
+   "Your_city_name": {
+      "message": "Naam van uw stad"
+   },
+   "Your_company_s_name": {
+      "message": "Naam van uw bedrijf"
+   },
+   "Your_contact_information": {
+      "message": "Uw contactgegevens"
+   },
+   "Your_country_name": {
+      "message": "Naam van uw land"
+   },
+   "Your_county_name": {
+      "message": "Naam van uw regio"
+   },
+   "Your_credit_card_information": {
+      "message": "Uw kredietkaart informatie"
+   },
+   "Your_current_settings_require_you_to_enter_your_LastPass_password_to_complete_this_action_": {
+      "message": "Uw huidige instellingen vereisen dat u uw LastPass wachtwoord moet invullen om deze actie te voltooien."
+   },
+   "Your_data_has_been_exported_to": {
+      "message": "Uw gegevens zijn ge\u00EBxporteerd naar"
+   },
+   "Your_email_address": {
+      "message": "Uw e-mailadres"
+   },
+   "Your_middle_name": {
+      "message": "Uw middelste naam"
+   },
+   "Your_password_can_not_be_the_same_as_your_email_": {
+      "message": "Uw wachtwoord kan niet hetzelfde zijn als uw e-mail."
+   },
+   "Your_password_is_easily_guessable_": {
+      "message": "Uw wachtwoord is gemakkelijk te raden."
+   },
+   "Your_password_is_too_short__It_must_be_at_least_6_characters_long": {
+      "message": "Uw wachtwoord is te kort. Het moet tenminste 6 karakters lang zijn"
+   },
+   "Your_password_reminder_serves_to_remind_you_of_what_your": {
+      "message": "Uw geheugensteuntje voor uw wachtwoord dient om u te helpen u te herinneren wat uw wachtwoord is"
+   },
+   "Your_passwords_did_not_match_": {
+      "message": "Jullie wachtwoorden kwamen niet overeen"
+   },
+   "Your_phone_number_extension": {
+      "message": "Uw telefoonnummer extensie"
+   },
+   "Your_prefix_or_title": {
+      "message": "Uw prefix of titel"
+   },
+   "Your_selected_Identity_no_longer_exists__Defaulting_to__All__and_logging_off_": {
+      "message": "Uw geselecteerde Idenditeit bestaat niet langer. Terug naar 'Alle' en uitloggen."
+   },
+   "Your_sex": {
+      "message": "Uw geslacht"
+   },
+   "Your_state_or_province_name": {
+      "message": "Naam van uw land of provincie"
+   },
+   "YubiKey_Multifactor_Authentication": {
+      "message": "YubiKey Multifactor Verificatie"
+   },
+   "_Hide_": {
+      "message": "[Verberg]"
+   },
+   "_New_Pending_Share_Offers_": {
+      "message": "(Nieuwe lopende deelvoorstellen)"
+   },
+   "_Show_": {
+      "message": "[Toon]"
+   },
+   "_domain_": {
+      "message": "(Domein)"
+   },
+   "_none_": {
+      "message": "(geen)"
+   },
+   "a_zlower": {
+      "message": "a-z"
+   },
+   "actual_password_is__while_still_maintaining_its_secrecy_": {
+      "message": "huidige wachtwoord is, nog steeds het geheim te houden."
+   },
+   "and": {
+      "message": "en"
+   },
+   "contact_us_and_we_will_email_you_your_password_reminder_": {
+      "message": "maak dan contact met ons en we zullen u een e-mail sturen met uw wachtwoord geheugensteuntje."
+   },
+   "dummy": {
+      "message": "dummy, leave this here so we don't mess up the trailing comma"
+   },
+   "ext_": {
+      "message": "ext."
+   },
+   "favorites": {
+      "message": "favorieten"
+   },
+   "hour": {
+      "message": "uur"
+   },
+   "hours": {
+      "message": "uren"
+   },
+   "minutes": {
+      "message": "minuten"
+   },
+   "privacy_statement": {
+      "message": "Privacy verklaring"
+   },
+   "recently_usedlower": {
+      "message": "recent gebruikt"
+   },
+   "seconds": {
+      "message": "seconden"
+   },
+   "terms_of_service": {
+      "message": "Voorwaarden voor dienstverlening"
+   },
+   "the_current_tab": {
+      "message": "het huidige tabblad"
+   },
+   "we_DO_NOT_know_what_your_LastPass_password_is_": {
+      "message": "we weten NIET wat uw LastPass' wachtwoord is."
+   }
+}

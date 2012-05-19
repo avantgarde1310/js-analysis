@@ -1,0 +1,1 @@
+document.write(gs("Time Zone",getlocale()));

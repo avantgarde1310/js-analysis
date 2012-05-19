@@ -1,0 +1,1 @@
+document.write(gs("No, I do not want LastPass to help me fill forms automatically"));

@@ -1,0 +1,1 @@
+document.write(gs("Your password reminder serves to remind you of what your"));

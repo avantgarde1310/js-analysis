@@ -1,0 +1,1 @@
+document.write(gs("2. Wait until your YubiKey touch-button shines with a steady light"));

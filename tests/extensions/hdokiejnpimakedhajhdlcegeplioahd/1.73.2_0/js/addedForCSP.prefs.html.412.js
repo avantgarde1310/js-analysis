@@ -1,0 +1,1 @@
+document.write(gs("Automatically login to sites if time since last login > (seconds)"));

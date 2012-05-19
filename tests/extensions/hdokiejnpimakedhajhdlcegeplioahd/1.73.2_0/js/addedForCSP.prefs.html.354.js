@@ -1,0 +1,1 @@
+document.write("<label for='idleLogoffEnabled'>"+gs("Automatically Logoff after idle (mins)")+"</label>");

@@ -1,0 +1,1 @@
+document.write(gs("Login to LastPass"));

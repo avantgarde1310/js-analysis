@@ -1,0 +1,1 @@
+document.write("60 "+gs("seconds"));

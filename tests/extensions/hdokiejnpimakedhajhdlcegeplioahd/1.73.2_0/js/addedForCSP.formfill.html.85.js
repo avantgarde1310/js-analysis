@@ -1,0 +1,1 @@
+document.write(gs("Japanese Only -- Last Rom",getlocale()));

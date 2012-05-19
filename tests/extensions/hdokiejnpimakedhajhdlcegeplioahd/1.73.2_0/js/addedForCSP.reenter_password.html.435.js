@@ -1,0 +1,1 @@
+document.write(gs("But I'm a forgetful person...what should I do if I forget my password?"));

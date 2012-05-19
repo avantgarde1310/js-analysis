@@ -1,0 +1,1 @@
+document.write(gs("Importing your data to your LastPass vault will secure it and protect you against identity theft. All imported data remains COMPLETELY confidential: the only person who can view YOUR data is YOU."));

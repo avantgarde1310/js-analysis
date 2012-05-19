@@ -1,0 +1,1 @@
+document.write(gs("actual password is, while still maintaining its secrecy."));

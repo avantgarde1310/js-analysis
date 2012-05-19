@@ -1,0 +1,1 @@
+document.write(gs("Show My LastPass Vault After Login"));

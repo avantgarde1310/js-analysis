@@ -1,0 +1,1 @@
+document.write(gs("1. Run the LastPass Sesame application to generate a one time password"));

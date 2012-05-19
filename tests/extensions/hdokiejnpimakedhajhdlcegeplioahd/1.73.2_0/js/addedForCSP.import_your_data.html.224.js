@@ -1,0 +1,1 @@
+document.write(gs("Yes, let me choose which items I want imported into LastPass"));

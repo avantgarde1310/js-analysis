@@ -1,0 +1,1 @@
+document.write(gs("Address 1",getlocale()));

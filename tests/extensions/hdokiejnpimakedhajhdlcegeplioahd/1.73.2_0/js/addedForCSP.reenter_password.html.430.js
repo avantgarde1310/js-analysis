@@ -1,0 +1,1 @@
+document.write(gs("To create your account, please re-enter your LastPass master password"));

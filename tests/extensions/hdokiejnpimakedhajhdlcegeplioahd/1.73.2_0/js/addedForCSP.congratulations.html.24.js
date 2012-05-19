@@ -1,0 +1,1 @@
+sr(document,"continue","value","Continue");sr(document,"cancel","value","Cancel");function do_close_congratulations(){if(getBG().LPISLOC){alert(gs("Please restart all your browsers to begin using LastPass Online."))}getBG().closecurrenttab("congratulations.html")};

@@ -1,0 +1,1 @@
+if(getBG().LPISLOC){document.getElementById("pollcontainer").style.display=document.getElementById("otpcontainer").style.display="none"};

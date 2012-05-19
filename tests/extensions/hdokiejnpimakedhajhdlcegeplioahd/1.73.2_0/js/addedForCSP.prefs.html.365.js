@@ -1,0 +1,1 @@
+document.write("<label for='showAcctsInGroups'>"+gs("Show Sites in Groups")+"</label>");

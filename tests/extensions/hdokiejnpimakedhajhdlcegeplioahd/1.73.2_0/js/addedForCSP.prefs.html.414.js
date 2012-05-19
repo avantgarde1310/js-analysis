@@ -1,0 +1,1 @@
+document.write("<label for='dontfillautocompleteoff'>"+gs("Respect AutoComplete=off: allow websites to disable AutoFill")+"</label>");

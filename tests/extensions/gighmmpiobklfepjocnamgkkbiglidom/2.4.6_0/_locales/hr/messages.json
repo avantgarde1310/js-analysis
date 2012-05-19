@@ -1,0 +1,1092 @@
+{
+   "adalreadyblocked": {
+      "description": "on the ad report page, telling a user there is nothing to do",
+      "message": "Ne trebate ni\u0161ta poduzeti jer je reklama ve\u0107 blokirana"
+   },
+   "adblock_is_disabled_on_domain": {
+      "description": "Message shown in toolbar button on web pages that have been whitelisted.",
+      "message": "AdBlock je onemogu\u0107en na $domain$.",
+      "placeholders": {
+         "domain": {
+            "content": "$1",
+            "example": "www.google.com"
+         }
+      }
+   },
+   "adblock_is_paused": {
+      "description": "resourceblocking page string",
+      "message": "AdBlock je pauziran. Zbog toga nijedan resurs nije uhva\u0107en pa se ova stranica ne mo\u017Ee koristiti. Prvo odpauzirajte Adblock pa probajte ponovno."
+   },
+   "adblockreportinganad": {
+      "description": "title of ad report page",
+      "message": "AdBlock - Prijavljivanje reklame"
+   },
+   "addthisfilter": {
+      "description": "resourceblocking page string",
+      "message": "Dodaj ovaj filter"
+   },
+   "adreport2": {
+      "description": "Instructions on ad reporting page. 'Customize' should be the same text as the 'tabcustomize' message.",
+      "message": "Upravo ste prona\u0161li reklamu na web stranici? Ja \u0107u Vam pomo\u0107i da je prijavite na pravo mjesto!\u003Cbr/\u003E Zapamtite: prijavljivanje reklama je volontiranje. Ako ne \u017Eelite to napraviti, mo\u017Eete je blokirati samo za sebe tako da dodate njezin filter u kartici 'Prilagodi' u postavkama!"
+   },
+   "adstillappear": {
+      "description": "question on ad reporting page",
+      "message": "Da li se reklama jo\u0161 pojavljuje?"
+   },
+   "advanced": {
+      "description": "Section label for advanced options",
+      "message": "Napredno"
+   },
+   "anysite": {
+      "description": "resourceblocking page string",
+      "message": "Bilo koja stranica"
+   },
+   "app_description1": {
+      "description": "App description used in app version manifest",
+      "message": "Blokira reklame na cijelom internetu! Vole je milijuni Chrome i Safari korisnika!"
+   },
+   "appliedwhenbrowsing": {
+      "description": "resourceblocking page string",
+      "message": "Ovaj filter \u0107e biti primjenjen kada budete pregledavali internet:"
+   },
+   "betalabel": {
+      "description": "Option on first tab page",
+      "message": "Beta"
+   },
+   "blacklistclickmessage": {
+      "description": "Message at the top of the blacklist options tab",
+      "message": "Desni klik na stranici na reklami za blokiranje -- ili ovdje blokiraj ru\u010Dno."
+   },
+   "blacklisterattrwillbe": {
+      "description": "Checkbox label",
+      "message": "$attribute$ \u0107e biti $value$",
+      "placeholders": {
+         "attribute": {
+            "content": "$1",
+            "example": "class"
+         },
+         "value": {
+            "content": "$2",
+            "example": "AdBanner"
+         }
+      }
+   },
+   "blacklisterblockedelement": {
+      "description": "Tells the user what the blocked element is on the slider page",
+      "message": "Blokirani element:"
+   },
+   "blacklisterblocksalloftype": {
+      "description": "Warns the user that all elements of type X will be blocked",
+      "message": "Oprez: Ovaj filter blokira sve $elementtype$ elemente na stranici!",
+      "placeholders": {
+         "elementtype": {
+            "content": "$1",
+            "example": "DIV"
+         }
+      }
+   },
+   "blacklistereditfilter": {
+      "description": "Text if the user wants to manually edit a filter.  'OK' is the standard javascript popup button text.",
+      "message": "Molim Vas da ispravite filter ispod i kliknete OK"
+   },
+   "blacklistereditinvalid1": {
+      "description": "Messagebox if the manually edited filter is invalid. Error messages are not translated.",
+      "message": "Filter je neispravan: $exception$",
+      "placeholders": {
+         "exception": {
+            "content": "$1",
+            "example": "This filter is not supported"
+         }
+      }
+   },
+   "blacklistermatches": {
+      "description": "Tells the user multiple matches were found",
+      "message": "Ovo odgovara $matchcount$ stavki na ovoj stranici.",
+      "placeholders": {
+         "matchcount": {
+            "content": "$1",
+            "example": "5"
+         }
+      }
+   },
+   "blacklisternofilter": {
+      "description": "Warning if the user hasn't specified a filter",
+      "message": "Filter nije unesen!"
+   },
+   "blacklisternotsure": {
+      "description": "Blacklister attribute choosing page message.  'Block it!' must be the same as the text of the 'buttonblockit' message.",
+      "message": "\u003Cb\u003ENiste sigurni?\u003C/b\u003E samo kliknite 'Blokiraj!' ispod."
+   },
+   "blacklisteroptions1": {
+      "description": "Blacklister attribute choosing page message",
+      "message": "\u0160to mislite da \u0107e biti istinito oko ove reklame svaki puta kad posjetite ovu stranicu?"
+   },
+   "blacklisteroptionstitle": {
+      "description": "Blacklister options page title",
+      "message": "Posljednji korak: \u0160to ovo \u010Dini reklamom"
+   },
+   "blacklistersinglematch": {
+      "description": "Tells the user only one match was found",
+      "message": "Ovo odgovara \u003Cb\u003E1\u003C/b\u003E stavci na ovoj stranici."
+   },
+   "blacklisterthefilter": {
+      "description": "Blacklister attribute choosing page message",
+      "message": "Filter, mo\u017Ee se promjeniti u Postavkama:"
+   },
+   "blacklistertype": {
+      "description": "node name is called 'Type'",
+      "message": "Tip"
+   },
+   "blacklisterwarningnofilter": {
+      "description": "Warns the user that no filter was specified",
+      "message": "Upozorenje: filter nije unesen!"
+   },
+   "block_an_ad_on_this_page": {
+      "description": "Toolbar button menu entry and context menu entry",
+      "message": "Blokiraj reklamu na ovoj stranici"
+   },
+   "block_by_url_instead": {
+      "description": "Link on blacklister slider page",
+      "message": "Napredno: blokiraj po URL-u"
+   },
+   "block_this_ad": {
+      "description": "Context and popup menu entry",
+      "message": "Blokiraj ovu reklamu"
+   },
+   "blockanadtitle": {
+      "description": "Title of the first two dialogs of the blacklister",
+      "message": "Blokiraj reklamu"
+   },
+   "blockdomain": {
+      "description": "Message of the url and css -blocking area",
+      "message": "Domena stranice na koju \u017Eelite primijeniti"
+   },
+   "blockeverycontaining": {
+      "description": "resourceblocking page string",
+      "message": "Blokiraj svaki resurs koji sadr\u017Ei:"
+   },
+   "blockmoreads": {
+      "description": "Section header on third tab",
+      "message": "Blokirati jo\u0161 reklama:"
+   },
+   "blockurlwithtext": {
+      "description": "Message of the url-blocking area",
+      "message": "Blokirati URL-ove koji sadr\u017Eavaju ovaj tekst"
+   },
+   "both_are_installed_this_makes_chrome_slower": {
+      "description": "Message displayed if AdBlock app and extension are both installed",
+      "message": "I Adblock aplikacija i Adblock pro\u0161irenje su instalirani. Zbog ovoga je Chrome sporiji."
+   },
+   "brokensite_beta_description": {
+      "description": "description of the brokensite_beta_option.  The link goes to the bug tracker.",
+      "message": "Ako prona\u0111ete reklamu da se pojavljuje samo kad koristite ovu postavku, molim da \u003Ca\u003Eispunite obrazac za prijavu gre\u0161ke\u003C/a\u003E!"
+   },
+   "brokensite_beta_option": {
+      "description": "option on the first options page",
+      "message": "Pomognite testirati novi na\u010Din blokiranja reklama."
+   },
+   "buttonback": {
+      "description": "Back to previous wizard page button",
+      "message": "Nazad"
+   },
+   "buttonblockit": {
+      "description": "Block button",
+      "message": "Blokiraj!"
+   },
+   "buttoncancel": {
+      "description": "Cancel button",
+      "message": "Odustani"
+   },
+   "buttonedit": {
+      "description": "Edit filter manually button",
+      "message": "Promjeni"
+   },
+   "buttonexclude": {
+      "description": "Button for excluding a domain in the whitelister dialog (see 'whitelistertitle' message)",
+      "message": "Isklju\u010Diti"
+   },
+   "buttonlooksgood": {
+      "description": "Looks good button",
+      "message": "Izgleda u redu"
+   },
+   "buttonok": {
+      "description": "OK button",
+      "message": "U redu!"
+   },
+   "cantblockflash": {
+      "description": "Result of the final ad report question",
+      "message": "Jo\u0161 ne mo\u017Eemo blokirati reklame unutar Flash ili drugih dodataka. \u010Cekamo da to podr\u017Ee preglednik ili WebKit."
+   },
+   "cantblockflashwarning": {
+      "description": "Text of the final ad report question",
+      "message": "Da li se reklama pojvljuje u ili prije filma odnosno drugih dodataka kao Flash igre?"
+   },
+   "casesensitive": {
+      "description": "resourceblocking page string",
+      "message": "Ovaj filter je osjetljiv na veli\u010Dinu slova:"
+   },
+   "changelabel": {
+      "description": "link to change resources on the resourceblock page",
+      "message": "promjeni"
+   },
+   "checkinfirefox": {
+      "description": "tell a user to see if a reported ad also appears in firefox",
+      "message": "Provjerite u Firefoxu"
+   },
+   "checkinfirefox1": {
+      "description": "instruction for how to check Firefox for a reported ad",
+      "message": "Instalirajte Firefox ako ga nemate."
+   },
+   "checkinfirefox2": {
+      "description": "instruction for how to check Firefox for a reported ad",
+      "message": "Instalirajte Adblock Plus za Firefox ako ga nemate."
+   },
+   "checkinfirefox3": {
+      "description": "instruction for how to check Firefox for a reported ad",
+      "message": "U Firefoxu se prijavite na iste liste filtera kao ovdje (osim Va\u0161ih AdBlock prilago\u0111enih filtera)."
+   },
+   "checkinfirefox4": {
+      "description": "instruction for how to check Firefox for a reported ad",
+      "message": "U Firefoxu pokrenite stranicu sa reklamom."
+   },
+   "checkinfirefox5": {
+      "description": "instruction for how to check Firefox for a reported ad",
+      "message": "Da li se reklama pojavljuje u Firefoxu?"
+   },
+   "chromebutton_hide_macOSX": {
+      "description": "Message explaining how to hide the AdBlock toolbar button for OS X users.",
+      "message": "Chrome na OS X-u jo\u0161 nekoliko tjedana ne\u0107e potpuno podr\u017Eavati skrivanje dugmadi. Do tada, mo\u017Eete maknuti dugme da Vam ne smete tako da ga povu\u010Dete do desnog ruba adresne trake."
+   },
+   "chromebutton_how_to_hide": {
+      "description": "Message explaining how to hide the AdBlock toolbar button.  'Hide Button' should match the text that Chrome displays when you right click a toolbar button.",
+      "message": "Da biste sakrili dugme, kliknite desnim klikom na njemu i odaberite Sakrij dugme.  Mo\u017Eete ga opet prikazati pod Klju\u010D | Alati | Pro\u0161irenja."
+   },
+   "chromebutton_showoption": {
+      "description": "Message on installation success page",
+      "message": "Smjestite Adblock dugme pokraj klju\u010Da"
+   },
+   "cleanuplist": {
+      "description": "Option at the bottom of the third options tab",
+      "message": "Optimiraj filtere u ovoj listi:"
+   },
+   "clickthead": {
+      "description": "When you have to click the ad to continue",
+      "message": "Kliknite reklamu i ja \u0107u Vas voditi kroz blokiranje."
+   },
+   "clickupdatefilters": {
+      "description": "instruction on ad report page",
+      "message": "Klikni ovo: \u003Ca\u003EA\u017Euriraj moje filtere!\u003C/a\u003E"
+   },
+   "close": {
+      "description": "resourceblocking page string",
+      "message": "Zatvori"
+   },
+   "contextmenuexcludedomain": {
+      "description": "Context menu entry",
+      "message": "Nemoj raditi na ovoj domeni..."
+   },
+   "correctfilters": {
+      "description": "on the ad report page, label describing having the right set of filters",
+      "message": "Ispravni filteri"
+   },
+   "csstomatch": {
+      "description": "Message of the css-hiding area",
+      "message": "Da odgovara CSS-u"
+   },
+   "debuginlogoption": {
+      "description": "Option on first tab page",
+      "message": "Prika\u017Ei izjave uklanjanja pogre\u0161ke u zapisu konzole (usporava Adblock)"
+   },
+   "description1": {
+      "description": "Extension description in manifest",
+      "message": "Najpopularnije Chrome pro\u0161irenje, sa preko 2 milijuna korisnika! Blokira reklame na cijelom internetu."
+   },
+   "did_you_know_this_is_my_full_time_job": {
+      "description": "Text of a donation link on toolbar button",
+      "message": "Jeste li znali da mi je ovo redovni posao?"
+   },
+   "disabled_by_filter_lists": {
+      "description": "Message shown when a user tries to unwhitelist a web page that has been whitelisted by a rule in a subscribed filter list.",
+      "message": "Isprika, Adblock je onemogu\u0107en na ovoj stranici zbog neke od va\u0161ih lista filtera."
+   },
+   "donaterequest2": {
+      "description": "Donation request on installation success page",
+      "message": "Nedavno sam dao otkaz kako bih se potpuno posvetio Adblock-u!  Sada se potpuno pouzdam u va\u0161e donacije u odr\u017Eavanju moje obitelji.  Molim Vas \u003Ca\u003Edonirajte\u003C/a\u003E da mi pomognete platiti ra\u010Dune -- i da doka\u017Eem da \u017Eena i ja (na slici) nismo ludi \u0161to to poku\u0161avamo.  Hvala :) - Michael"
+   },
+   "dont_run_on_domain": {
+      "description": "Menu entry whitelisting the domain of the current tab.",
+      "message": "Nemoj pokretati na $domain$",
+      "placeholders": {
+         "domain": {
+            "content": "$1",
+            "example": "www.google.com"
+         }
+      }
+   },
+   "dont_run_on_this_page": {
+      "description": "Menu entry to whitelist a page",
+      "message": "Nemoj pokretati na ovoj stranici"
+   },
+   "enable": {
+      "description": "Link text to un-whitelist a page, displayed immediately after 'adblock_is_disabled_on_domain'.",
+      "message": "omogu\u0107i"
+   },
+   "enterurloflist": {
+      "description": "Error messagebox",
+      "message": "Molim unesite URL liste filtera na koju se \u017Eelite prijaviti."
+   },
+   "excludedomainorurl": {
+      "description": "Message of the exclude area",
+      "message": "Domena ili URL gdje Adblock ne bi trebao blokirati ni\u0161ta"
+   },
+   "excludefilterremoved": {
+      "description": "Warning when a page exclusion rule was removed in resourceblock.html",
+      "message": "Filter je uklonjen. Molim Vas da ponovno pokrenete originalnu stranicu za generiranje liste resursa."
+   },
+   "failedtofetchfilter": {
+      "description": "Error messagebox",
+      "message": "Neuspjelo dobavljanje ovog filtera!"
+   },
+   "fetchinglabel": {
+      "description": "Status label",
+      "message": "Dobavljam... molim pri\u010Dekajte."
+   },
+   "filecleanerwarning": {
+      "description": "Help for users who use hyperactive file cleaners",
+      "message": "Ako vidite ovu poruku svaki puta kad pokrenete Adblock, molimo provjerite da ne koristite \u010Dista\u010D datoteka koji tako\u0111er \u010Disti i 'localstorage' datoteke."
+   },
+   "filteradblock_custom": {
+      "description": "A filter list. Don't translate 'AdBlock'",
+      "message": "AdBlock prilagodljivi filteri (preporu\u010Deno)"
+   },
+   "filterchinese": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Kineski filteri"
+   },
+   "filterczech": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "\u010Ce\u0161ki filteri"
+   },
+   "filterdanish": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Danski filteri"
+   },
+   "filterdutch": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni nizozemski filteri"
+   },
+   "filtereasylist": {
+      "description": "A filter list. Don't translate 'EasyList'",
+      "message": "EasyList (preporu\u010Deno)"
+   },
+   "filtereasylist_plun_korean": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Korejski filteri"
+   },
+   "filtereasylist_plus_bulgarian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dadatni bugarski filteri"
+   },
+   "filtereasylist_plus_finnish": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni finski filteri"
+   },
+   "filtereasylist_plus_french": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni francuski filteri"
+   },
+   "filtereasylist_plus_german": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni njema\u010Dki filteri"
+   },
+   "filtereasylist_plus_norwegian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni norve\u0161ki filteri"
+   },
+   "filtereasylist_plus_polish": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni poljski filteri"
+   },
+   "filtereasylist_plus_romanian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni rumunjski filteri"
+   },
+   "filtereasylist_plus_spanish": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "\u0160panjolski filteri"
+   },
+   "filtereasylist_plus_vietnamese": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni vijetnamski filteri"
+   },
+   "filterhasbeenadded": {
+      "description": "resourceblocking page string (the 'slash n' is a line break)",
+      "message": "Filter je usoje\u0161no dodan!\nPonovno pokrenite stranicu da vidite rezultate!"
+   },
+   "filterhungarian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Ma\u0111arski filteri"
+   },
+   "filterisraeli": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Israelski filteri"
+   },
+   "filteritalian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Talijanski filteri"
+   },
+   "filterjapanese": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Japanski filteri"
+   },
+   "filterlistlink": {
+      "description": "Explanation of the filter lists",
+      "message": "Nemojte se prijavljivati na vi\u0161e nego Vam je potrebno -- svaka stavka dodatno usporava Adblock! Impresum i druge liste mo\u017Eete prona\u0107i \u003Ca\u003Eovdje\u003C/a\u003E."
+   },
+   "filterlistsrock": {
+      "description": "Header text on the Customize tab.  'Filter lists' should be the same text as the tabfilterlists message.",
+      "message": "Liste filtera blokiraju ve\u010Dinu reklama na internetu. Mo\u017Eete tako\u0111er:"
+   },
+   "filterpolish": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Poljski filteri"
+   },
+   "filterrussian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": " - dodatni ruski filteri"
+   },
+   "filtersavewarning": {
+      "description": "Warning when blacklisting manually",
+      "message": "Budite oprezni: ako ovdje napravite pogre\u0161ku mnogo drugih filtera, uklju\u010Duju\u0107i slu\u017Ebene, se mo\u017Ee pokvariti!\u003Cbr/\u003EPro\u010Ditajte \u003Ca\u003Esintaksni vodi\u010D za filtere\u003C/a\u003E kako bi nau\u010Dili dodavati napredne filtere zabranjuju\u0107ih i dopu\u0161taju\u0107ih lista."
+   },
+   "filterstabtitle": {
+      "description": "Title of the filter list tab",
+      "message": "Prijava na listu filtera"
+   },
+   "filterukranian": {
+      "description": "A filter list. If it's the filter list for your language, please add '(recommended)'",
+      "message": "Ukrajinski filteri"
+   },
+   "findingads": {
+      "description": "When you press ctrl-shift-K the blacklister searches for ads",
+      "message": "Tra\u017Eenje reklama...\u003Cbr/\u003E\u003Cbr/\u003E\u003Ci\u003EOvo \u0107e potrajati trenutak.\u003C/i\u003E"
+   },
+   "fixityourself": {
+      "description": "telling a user who won't report an ad to us how to handle it for herself",
+      "message": "U redu, jo\u0161 mo\u017Eete blokirati ovu reklamu samo za sebe u Postavkama. Hvala!"
+   },
+   "flashads": {
+      "description": "Title of the final ad report question if the ad didn't appear in FF",
+      "message": "Video i Flash"
+   },
+   "generaloptions": {
+      "description": "Title of first tab page",
+      "message": "Op\u0107e postavke"
+   },
+   "googletextads": {
+      "description": "Option on first tab page",
+      "message": "\u017Delim da mi se prika\u017Eu tekstualne reklame kod pretra\u017Eivanja Google-a."
+   },
+   "headerfilter": {
+      "description": "resourceblocking page string",
+      "message": "Odgovaraju\u0107i filter"
+   },
+   "headerresource": {
+      "description": "resourceblocking page string",
+      "message": "Resurs"
+   },
+   "headertype": {
+      "description": "resourceblocking page string",
+      "message": "Tip"
+   },
+   "hide_this_button": {
+      "description": "Toolbar button menu entry to hide the AdBlock button",
+      "message": "Sakrij dugme"
+   },
+   "installedtitle": {
+      "description": "Title for the installation success page",
+      "message": "AdBlock je instaliran!"
+   },
+   "installisdone": {
+      "description": "Message on the installation success page",
+      "message": "Osvje\u017Eite bilo koju otvorenu karticu i gledajte kako reklame nestaju."
+   },
+   "labelshow": {
+      "description": "The label when you click the 'show links to filter lists' option",
+      "message": "prika\u017Ei"
+   },
+   "lang_bulgarian": {
+      "description": "language",
+      "message": "Bugarski"
+   },
+   "lang_chinese": {
+      "description": "language",
+      "message": "Kineski"
+   },
+   "lang_czech": {
+      "description": "language",
+      "message": "\u010Ce\u0161ki"
+   },
+   "lang_danish": {
+      "description": "language",
+      "message": "Danski"
+   },
+   "lang_dutch": {
+      "description": "language",
+      "message": "Nizozemski"
+   },
+   "lang_english": {
+      "description": "language",
+      "message": "Engleski"
+   },
+   "lang_finnish": {
+      "description": "language",
+      "message": "Finski"
+   },
+   "lang_french": {
+      "description": "language",
+      "message": "Francuski"
+   },
+   "lang_german": {
+      "description": "language",
+      "message": "Njema\u010Dki"
+   },
+   "lang_hungarian": {
+      "description": "language",
+      "message": "Ma\u0111arski"
+   },
+   "lang_israeli": {
+      "description": "language",
+      "message": "Izraelski"
+   },
+   "lang_italian": {
+      "description": "language",
+      "message": "Talijanski"
+   },
+   "lang_japanese": {
+      "description": "language",
+      "message": "Japanski"
+   },
+   "lang_korean": {
+      "description": "language",
+      "message": "Korejski"
+   },
+   "lang_norwegian": {
+      "description": "language",
+      "message": "Norve\u0161ki"
+   },
+   "lang_polish": {
+      "description": "language",
+      "message": "Poljski"
+   },
+   "lang_romanian": {
+      "description": "language",
+      "message": "Rumunjski"
+   },
+   "lang_russian": {
+      "description": "language",
+      "message": "Ruski"
+   },
+   "lang_spanish": {
+      "description": "language",
+      "message": "\u0160panjolski"
+   },
+   "lang_ukranian": {
+      "description": "language",
+      "message": "Ukrajinski"
+   },
+   "lang_vietnamese": {
+      "description": "language",
+      "message": "Vijetnamski"
+   },
+   "linkblockadbyurl": {
+      "description": "Link on the third tab",
+      "message": "Blokirati reklamu po njezinom URL-u"
+   },
+   "linkhidesection": {
+      "description": "Link on the third tab",
+      "message": "Sakriti dio stranice"
+   },
+   "linkunblock": {
+      "description": "Link on the third tab",
+      "message": "Prikazati reklame na stranici ili domeni"
+   },
+   "loading": {
+      "description": "resourceblocking page string",
+      "message": "POKRETANJE..."
+   },
+   "manualfilteredit": {
+      "description": "Subtitle on the third tab",
+      "message": "Ru\u010Dno urediti svoje filtere:"
+   },
+   "multipledomainshint": {
+      "description": "resourceblocking page string",
+      "message": "Odvoji razli\u010Dite domene sa zarezima ili razmacima"
+   },
+   "new_version": {
+      "description": "Tooltip on toolbar button when a significant new version is released",
+      "message": "Nova verzija!"
+   },
+   "newtitle": {
+      "description": "Message in popup button telling users about new features",
+      "message": "Novo u ovoj verziji $version$:",
+      "placeholders": {
+         "version": {
+            "content": "$1",
+            "example": "2.3.0"
+         }
+      }
+   },
+   "nextstep": {
+      "description": "resourceblocking page string",
+      "message": "Slijede\u0107i korak"
+   },
+   "no": {
+      "description": "A negative response to a question",
+      "message": "Ne"
+   },
+   "nodefaultfilter1": {
+      "description": "instructions on ad report page pointing users to EasyList subscriptions list. 'Customize' should be the same message as 'tabcustomize'.",
+      "message": "Nemamo zadanu listu filtera za taj jezik.\u003Cbr/\u003EMolim prona\u0111ite odgovaraju\u0107u listu koja podr\u017Eava ovaj jezik $link$ ili blokirajte reklamu samo za sebe na kartici 'Prilagodi'.",
+      "placeholders": {
+         "link": {
+            "content": "$1ovdje$2",
+            "example": "\u003Ca href='http://abp.org'\u003Ehere\u003C/a\u003E"
+         }
+      }
+   },
+   "nolisturllabel": {
+      "description": "Status label",
+      "message": "To nije bila URL lista."
+   },
+   "noresourcessend": {
+      "description": "resourceblocking page string",
+      "message": "Ne\u0161to je po\u0161lo po zlu. Nijedan resurs nije poslan. Ova stranica \u0107e se sada zatvoriti."
+   },
+   "novalidurlpattern": {
+      "description": "resourceblocking page string",
+      "message": "Molim unesite valjani URL uzorak za podudaranje!"
+   },
+   "onlyondomains": {
+      "description": "resourceblocking page string",
+      "message": "SAMO stranice na ovoj domeni: "
+   },
+   "onlyresourcetypes": {
+      "description": "resourceblocking page string",
+      "message": "Ovaj filter se odnosi na resurs ovih tipova:"
+   },
+   "options": {
+      "description": "The text of the link on chrome://extensions that gets you to the Options page for an extension",
+      "message": "Postavke"
+   },
+   "optionschangelog": {
+      "description": "changelog link",
+      "message": "Zapis promjena"
+   },
+   "optionstitle": {
+      "description": "Title for the options page",
+      "message": "AdBlock postavke"
+   },
+   "optionsversion": {
+      "description": "Version number",
+      "message": "Verzija $version$",
+      "placeholders": {
+         "version": {
+            "content": "$1",
+            "example": "2.0.9"
+         }
+      }
+   },
+   "orenteraurl": {
+      "description": "link for custom subscription",
+      "message": "Ili unesite URL:"
+   },
+   "other": {
+      "description": "multiple choice option",
+      "message": "Drugi"
+   },
+   "pagelanguagecheck": {
+      "description": "question on ad report page",
+      "message": "Na kojem je jeziku stranica napisana?"
+   },
+   "pause_adblock": {
+      "description": "Menu entry to pause AdBlock.",
+      "message": "Pauziraj AdBlock"
+   },
+   "refusetocheck": {
+      "description": "user is telling us they don't wish to investigate something for us",
+      "message": "Ne \u017Eelim ovo provjeravati"
+   },
+   "reloadadpage": {
+      "description": "instruction on ad report page",
+      "message": "Ponovno pokreni stranicu sa reklamom."
+   },
+   "removedlabel": {
+      "description": "Status label",
+      "message": "Uklonjeno."
+   },
+   "removefromlist": {
+      "description": "Label to remove a custom filter",
+      "message": "Uklanjanje iz liste"
+   },
+   "removelabel": {
+      "description": "link to remove a filter",
+      "message": "Ukloni"
+   },
+   "reportanad": {
+      "description": "A link for users who found an ad somewhere and want to report it",
+      "message": "\u003Ca\u003EPrijavi reklamu\u003C/a\u003E Adblock-u ili odr\u017Eava\u010Dima liste filtera."
+   },
+   "reportfilterlistproblem": {
+      "description": "telling the user to report an ad to a filter list maintainer",
+      "message": "Ovo je problem sa listom filtera. Prijavi ga ovdje: $link$",
+      "placeholders": {
+         "link": {
+            "content": "$1",
+            "example": "EXAMPLE 1: \u003Ca href='mailto:someguy@list.com'\u003EJohn Doe\u003C/a\u003E  EXAMPLE 2: \u003Ca href='http://easylist.org'\u003EEasyList forums\u003C/a\u003E"
+         }
+      }
+   },
+   "reporttous1": {
+      "description": "NOTE: non-English translations should replace the first sentence and instead say 'If you can speak English, you can report the ad to us $in_the_issue_tracker_link$.'",
+      "message": "Ako govorite engleski mo\u017Eete prijaviti reklamu nama $in_the_issue_tracker_link$.",
+      "placeholders": {
+         "in_the_issue_tracker_link": {
+            "content": "$1u pratitelju pogre\u0161aka$2",
+            "example": "\u003Ca href='issuetracker.html'\u003Ein the issue tracker\u003C/a\u003E"
+         }
+      }
+   },
+   "resourceblocklegend1": {
+      "description": "resourceblocking page string",
+      "message": "Legenda:"
+   },
+   "resourceblocklegend2": {
+      "description": "resourceblocking page string",
+      "message": "blokirani resursi"
+   },
+   "resourceblocklegend3": {
+      "description": "resourceblocking page string",
+      "message": "popis isklju\u010Denih resursa"
+   },
+   "resourceblocklegend4": {
+      "description": "resourceblocking page string",
+      "message": "resursi za blokiranje"
+   },
+   "resourceblocklegend5": {
+      "description": "resourceblocking page string",
+      "message": "primijenjena pravila skrivanja"
+   },
+   "resourceblocktitle": {
+      "description": "resourceblocking page string",
+      "message": "Blokiraj resurs"
+   },
+   "resourceiswhitelisted": {
+      "description": "resourceblocking page string",
+      "message": "Obilje\u017Eeni resurs je dodan na popis isklju\u010Denih. Zbog toga ga ne mo\u017Eete blokirati."
+   },
+   "retryaftersubscribe": {
+      "description": "instructions on ad report page telling users to subscribe to a filter list and then check again to see whether the ad exists",
+      "message": "Prijavite se na ovu listu filtera, pa ponovno poku\u0161ajte: $list_title$",
+      "placeholders": {
+         "list_title": {
+            "content": "$1",
+            "example": "French filters"
+         }
+      }
+   },
+   "savebutton": {
+      "description": "Save button",
+      "message": "Spremi"
+   },
+   "savereminder": {
+      "description": "Reminder to press save",
+      "message": "Ne zaboravite spremiti!"
+   },
+   "selectresources": {
+      "description": "resourceblocking page string",
+      "message": "Obilje\u017Eite resurs koji \u017Eelite blokirati ili odblokirati"
+   },
+   "setotheroptions_chrome_app": {
+      "description": "Message on Chrome app installation success page for extension",
+      "message": "Desnim klikom na web-stranicama (osim ove) mo\u017Eete kontrolirati AdBlock i postaviti ostale postavke."
+   },
+   "setotheroptions_chrome_ext": {
+      "description": "Message on Chrome extension installation success page for extension",
+      "message": "Mo\u017Eete kontrolirati Adblock i namjestiti ostale postavke tako da kliknete na dugme na alatnoj traci."
+   },
+   "setotheroptions_safari": {
+      "description": "Message on Safari installation success page for extension",
+      "message": "Mo\u017Eete namjestiti ostale postavke tako da kliknete na dugme na alatnoj traci."
+   },
+   "showcontextmenus": {
+      "description": "Option on first tab page",
+      "message": "Dodaj stavke na izbornik desnog klika."
+   },
+   "showlinkstolists": {
+      "description": "Option on second tab page",
+      "message": "Prika\u017Ei linkove na liste filtera:"
+   },
+   "sliderexplanation": {
+      "description": "Blacklister slider page message",
+      "message": "Pomaknite kliza\u010D dok reklama nije blokirana ispravno na stranici te blokirani element ne izgleda upotrebljivo."
+   },
+   "slidertitle": {
+      "description": "Blacklister slider page title",
+      "message": "Korak 1: \u0160to blokirati?"
+   },
+   "somequicksetup": {
+      "description": "Title of the options on the installation succes page",
+      "message": "Brze postavke"
+   },
+   "status_disabled": {
+      "description": "Message shown in toolbar button on web pages that disallow extensions, such as the Extensions Gallery or about:blank.",
+      "message": "AdBlock se ne mo\u017Ee pokrenuti na ovoj domeni."
+   },
+   "status_paused": {
+      "description": "Message shown in toolbar button when AdBlock is paused.",
+      "message": "AdBlock je pauziran."
+   },
+   "subscribebutton": {
+      "description": "subscribe to a list button",
+      "message": "Prijavi"
+   },
+   "subscribedlabel": {
+      "description": "Status label",
+      "message": "Prijavljeno."
+   },
+   "subscribingfailed": {
+      "description": "abp: link subscriber result",
+      "message": "Neuspjelo!"
+   },
+   "subscribingfinished": {
+      "description": "abp: link subscriber result",
+      "message": "Zavr\u0161eno!"
+   },
+   "subscribingtitle": {
+      "description": "abp: link subscriber title",
+      "message": "Pretplata na listu filtera..."
+   },
+   "tabcustomize": {
+      "description": "A tab on the options page",
+      "message": "Prilagodi"
+   },
+   "tabcustomizetitle": {
+      "description": "Title of the third tab",
+      "message": "Prilagodi AdBlock"
+   },
+   "tabfilterlists": {
+      "description": "A tab on the options page",
+      "message": "Liste filtera"
+   },
+   "tabgeneral": {
+      "description": "A tab on the options page",
+      "message": "Op\u0107enito"
+   },
+   "thirdpartycheckbox": {
+      "description": "resourceblocking page string",
+      "message": "Sve stranice OSIM stranica na domeni $domain$",
+      "placeholders": {
+         "domain": {
+            "content": "$1",
+            "example": "example.com"
+         }
+      }
+   },
+   "this_toolbar_button": {
+      "description": "The description of what is new in version 2.3.0: a toolbar button was added to the extension",
+      "message": "Ovo dugme alatne trake :)"
+   },
+   "to_fix_both_installed": {
+      "description": "Message displayed if AdBlock app and extension are both installed.  The link will go to chrome://extensions.",
+      "message": "Da ispravite ovo, deinstalirajte Adblock pro\u0161irenje u \u003Ca\u003Eva\u0161im pro\u0161irenjima\u003C/a\u003E."
+   },
+   "translator_credit": {
+      "description": "Credit for your translation with $translator_names$ being your own name below. Multiple names should be separated by a comma.",
+      "message": "Zasluga za prijevod: $translator_names$",
+      "placeholders": {
+         "translator_names": {
+            "content": "Stjepan Treger",
+            "example": "Michael G, Drew R"
+         }
+      }
+   },
+   "typehiding": {
+      "description": "A resource type (lowercase!)",
+      "message": "skrivanje"
+   },
+   "typeimage": {
+      "description": "A resource type (lowercase!)",
+      "message": "slika"
+   },
+   "typemedia": {
+      "description": "A resource type (lowercase!)",
+      "message": "audio/video"
+   },
+   "typeobject": {
+      "description": "A resource type (lowercase!)",
+      "message": "interakivni objekt"
+   },
+   "typepage": {
+      "description": "A resource type (lowercase!)",
+      "message": "stranica"
+   },
+   "typescript": {
+      "description": "A resource type (lowercase!)",
+      "message": "skripta"
+   },
+   "typestylesheet": {
+      "description": "A resource type (lowercase!)",
+      "message": "definicija stila"
+   },
+   "typesubdocument": {
+      "description": "A resource type (lowercase!)",
+      "message": "okvir"
+   },
+   "typeunknown": {
+      "description": "A resource type (lowercase!)",
+      "message": "nepoznato"
+   },
+   "unblocktitle": {
+      "description": "Section header on third tab",
+      "message": "Onemogu\u0107iti Adblock na odre\u0111enim stranicama:"
+   },
+   "undo": {
+      "description": "Button text to undo an action.",
+      "message": "Poni\u0161ti"
+   },
+   "unpause": {
+      "description": "Link text to unpause AdBlock, displayed immediately after 'status_paused'.",
+      "message": "odpauziraj"
+   },
+   "unpause_adblock": {
+      "description": "Context menu entry unpause AdBlock.",
+      "message": "Odpauziraj AdBlock"
+   },
+   "unsubscribedlabel": {
+      "description": "Status label",
+      "message": "Odjavljeno."
+   },
+   "updateddayago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije 1 dan"
+   },
+   "updateddaysago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije $days$ dana",
+      "placeholders": {
+         "days": {
+            "content": "$1",
+            "example": "15"
+         }
+      }
+   },
+   "updatedhourago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije 1 sat"
+   },
+   "updatedhoursago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije $hours$ sati",
+      "placeholders": {
+         "hours": {
+            "content": "$1",
+            "example": "15"
+         }
+      }
+   },
+   "updatedminuteago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije 1 minutu"
+   },
+   "updatedminutesago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije $minutes$ minuta",
+      "placeholders": {
+         "minutes": {
+            "content": "$1",
+            "example": "15"
+         }
+      }
+   },
+   "updatedrightnow": {
+      "description": "Label for subscription",
+      "message": "upravo a\u017Eurirano"
+   },
+   "updatedsecondsago": {
+      "description": "Label for subscription",
+      "message": "a\u017Eurirano prije $seconds$ sekundi",
+      "placeholders": {
+         "seconds": {
+            "content": "$1",
+            "example": "15"
+         }
+      }
+   },
+   "updatefromoldversion": {
+      "description": "ad report page instruction",
+      "message": "Koristite stariju verziju Adblock-a. Molimo prvo $updatelink$ na najnoviju verziju Adblock-a",
+      "placeholders": {
+         "updatelink": {
+            "content": "$1a\u017Eurirajte$2",
+            "example": "\u003Ca href='http://chrome.com/update_here.ctx'\u003Eupdate\u003C/a\u003E"
+         }
+      }
+   },
+   "updatenowmessage": {
+      "description": "update filters text + button",
+      "message": "A\u017Euriranja \u0107e se preuzimati automatski; tako\u0111er mo\u017Eete \u003Ca\u003Ea\u017Eurirati sada\u003C/a\u003E."
+   },
+   "updateyourlists": {
+      "description": "instruction on ad report page",
+      "message": "Provjerite da li su Vam liste a\u017Eurirane"
+   },
+   "warning_adblock_is_installed_twice": {
+      "description": "Message displayed if AdBlock app and extension are both installed",
+      "message": "Upozorenje: AdBlock je instaliran dva puta"
+   },
+   "whitelistertext": {
+      "description": "The message of the whitelister dialog, putting the domain name on a separate line",
+      "message": "AdBlock se ne\u0107e pokrenuti na domenama koje zavr\u0161avaju na\u003Cbr/\u003E$domain$.",
+      "placeholders": {
+         "domain": {
+            "content": "'\u003Ci\u003E$1\u003C/i\u003E'",
+            "example": "'\u003Ci\u003Elive.msn.com\u003C/i\u003E'"
+         }
+      }
+   },
+   "whitelistertitle": {
+      "description": "The title of the whitelister dialog",
+      "message": "Isklju\u010Di ovu domenu?"
+   },
+   "whitelisteverycontaining": {
+      "description": "resourceblocking page string",
+      "message": "Dopusti svaki resurs koji sadr\u017Ei:"
+   },
+   "wildcardhint": {
+      "description": "resourceblocking page string",
+      "message": "Opaska: mo\u017Eete koristiti * kao vi\u0161ezna\u010Dnik"
+   },
+   "yes": {
+      "description": "A positive response to a question",
+      "message": "Da"
+   },
+   "yes_toolbar_button": {
+      "description": "Description of what is new in version 2.3.0, which is shown to users who have the 'Browser Button For AdBlock' extension installed instead of the 'this_toolbar_button' message.  You should not translate the words 'Browser Button For AdBlock'.",
+      "message": "Ovo dugme u pregledniku je sada dio Adblock-a. Vi\u0161e ne trebate drugo 'Browser Button For AdBlock' pro\u0161irenje."
+   },
+   "youtubeads": {
+      "description": "Option on first tab page",
+      "message": "Blokiraj reklame unutar Youtube videa."
+   },
+   "youtubevideomessage": {
+      "description": "Message on the YouTube video page that tells you that it might be the option that blocks the video.  $link$'s text is the title of the AdBlock Options page.",
+      "message": "Nema videa? Ponovno pokrenite stranicu. Ako se to \u010Desto doga\u0111a, onemogu\u0107ite blokiranje reklama na Youtube-u u $link$.",
+      "placeholders": {
+         "link": {
+            "content": "$1",
+            "example": "AdBlock Options"
+         }
+      }
+   }
+}

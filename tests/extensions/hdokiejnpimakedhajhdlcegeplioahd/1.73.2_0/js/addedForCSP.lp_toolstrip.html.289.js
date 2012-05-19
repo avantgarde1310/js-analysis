@@ -1,0 +1,1 @@
+document.write("<label for='mindigits'>"+gs("Minimum Digit Count")+"</label>");

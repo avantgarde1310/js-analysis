@@ -1,0 +1,1 @@
+sr(document,"continue","value","Continue");sr(document,"cancel","value","Cancel");

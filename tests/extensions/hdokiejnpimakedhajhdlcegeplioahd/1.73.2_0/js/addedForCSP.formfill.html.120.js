@@ -1,0 +1,1 @@
+document.write(gs("Mobile Email Address",getlocale()));

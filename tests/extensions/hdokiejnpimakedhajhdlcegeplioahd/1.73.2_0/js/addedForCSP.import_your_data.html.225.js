@@ -1,0 +1,1 @@
+document.write(gs("No, do not import any of my insecure items"));

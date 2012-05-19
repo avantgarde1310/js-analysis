@@ -1,0 +1,1 @@
+document.write(gs("contact us and we will email you your password reminder."));

@@ -1,0 +1,1 @@
+document.write("<label for='storeLostOTP'>"+gs("Save a disabled One Time Password locally for Account Recovery")+"</label>");

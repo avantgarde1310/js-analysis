@@ -1,0 +1,1 @@
+document.write(gs("Enter your smart card PIN:"));

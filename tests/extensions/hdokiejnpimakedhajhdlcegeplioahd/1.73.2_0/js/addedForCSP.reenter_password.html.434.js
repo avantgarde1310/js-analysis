@@ -1,0 +1,1 @@
+document.write(gs("We also DO NOT keep a copy or backup of it."));

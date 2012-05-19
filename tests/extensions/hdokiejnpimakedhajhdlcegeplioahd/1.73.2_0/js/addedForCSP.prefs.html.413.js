@@ -1,0 +1,1 @@
+document.write("<label for='warninsecureforms'>"+gs("Warn before filling insecure forms")+"</label>");

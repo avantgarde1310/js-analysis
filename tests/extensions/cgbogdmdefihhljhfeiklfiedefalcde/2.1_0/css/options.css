@@ -1,0 +1,204 @@
+body {
+    background: #f4f4f4;
+    font: 13px arial, helvetica, sans-serif;
+    color: #464646;
+}
+.clearer {
+	clear:both;
+	font-size:1px;
+}
+#title h1 {
+    font-size:22px;
+    font-weight:normal;
+    margin:0 0 20px 0;
+    background:#3C3F45;
+    color:#fff;
+    padding:30px 20px;
+    text-shadow:0 1px 3px #000000;
+    -moz-border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 5px 5px 0 0;
+}
+#container {
+    width: 600px;
+    margin: 0 auto;
+}
+.wrapper p {
+    font-size:11px;
+}
+#header {
+    position: relative;
+    height: 40px;
+    padding: 10px 20px 0 0;
+}
+#header h1 {
+    background: url(http://cache.addthiscdn.com/www/q0122/style/images/addthis-logo.gif) no-repeat;
+    width: 116px;
+    height: 24px;
+    line-height: 24px;
+    text-indent: -9999px;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+#header h3 {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    font-size: 1.1em;
+    font-style: italic;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+    display: inline;
+    color: #000;
+}
+.content {
+	background: #fff;
+	border: 1px solid #dfdfdf;
+	margin: 0 auto 20px auto;
+	line-height: 1.5em;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+.introtext {
+    padding-left:20px;
+    font-style:normal;
+}
+#services {
+    padding:15px;
+    float:left;
+    height:340px;
+}
+#add-services {
+    padding:15px;
+    height:340px;
+    overflow-y:auto;
+    font-size:12px;
+    float:left;
+    width:170px;
+}
+.service-icon, .service-icon-empty {
+    padding:5px 0 2px 8px;
+    margin:0 2px 2px 0;
+    border:1px solid #E0E0E0;
+    height:20px;
+    width:150px;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+}
+.addthis_service_icon {
+    padding-left:22px !important;
+}
+.service-icon-empty {
+    background-color:#efefef;
+    -moz-border-radius:4px;
+    -webkit-border-radius:4px;
+}
+.ui-sortable-helper {
+	cursor:move !important;
+}
+.selected {
+    background:none repeat scroll 0 0 #FEFFDB;
+    border:1px solid #FFDDB3;
+}
+.service-bg {
+    background:#f0f0f0;
+    -moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+}
+.middrag {
+    opacity:.4;
+}
+.ui-draggable-dragging {
+    border:2px dotted #e0e0e0;
+    cursor:move;
+}
+.wrapper {
+    float:left;
+    border:1px solid #efefef;
+    margin-left:15px;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+.wrapper p {
+    text-align:center;
+    background:none repeat scroll 0 0 #F2F2F2;
+    margin:0;
+    padding:6px;
+    text-align:center;
+    -moz-border-radius: 5px 5px 0 0;
+    -webkit-border-radius: 5px 5px 0 0;
+}
+.move-services {
+    padding-top:165px;
+    height:230px;
+    text-align:center;
+    border:none !important;
+}
+.existing {
+    min-width:182px;
+}
+#controlBtns {
+    margin-top:2em;
+    background:#F2F2F2;
+    border-top:1px solid #E5E5E5;
+    padding:10px 20px;
+    -moz-border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+}
+.lgbtn {
+    -moz-border-radius:16px 16px 16px 16px;
+    -moz-box-shadow:0 1px 2px #CCCCCC;
+    box-shadow:0 1px 2px #CCCCCC;
+    -webkit-border-radius:16px 16px 16px 16px;
+    -webkit-box-shadow:0 1px 2px #CCCCCC;
+    box-shadow:0 1px 2px #CCCCCC;
+    background:url("http://cache.addthiscdn.com/www/q0129/style/images/bkg-btn-grey.gif") repeat-x scroll 0 0 #EDEDED;
+    border:1px solid #B7B7B7;
+    color:#000000;
+    padding:8px 22px;
+    text-shadow:0 1px 2px #FFFFFF;
+}
+.move-services .lgbtn {
+    width:100px;
+    padding:4px 11px;
+    margin: 0 5px 5px 0 ;
+}
+.lgbtn:hover {
+    background-position:0 -35px;
+    background-color:#DFDFDF;
+    border-color:#AFAFAF;
+    color:#000000;
+    cursor:pointer;
+    text-decoration:none;
+}
+.lgbtn:active {
+    background-position:0 -70px;
+    background-color:#D4D3D3;
+    outline:medium none;
+}
+#upBtn, #downBtn {
+    width:30px !important;
+    font-weight:bold !important;
+}
+#resetbtn {
+    float:right;
+    margin:10px 90px 0 0;
+    color:#3B6BEF;
+    cursor:pointer;
+    font-size:11px;
+}
+#resetbtn:hover {
+    text-decoration:underline;
+}
+.savedChanges {
+    -moz-border-radius:4px 4px 4px 4px;
+    -webkit-border-radius:4px 4px 4px 4px;
+    border-radius:4px 4px 4px 4px;
+    background:none repeat scroll 0 0 #FEFFDB;
+    border:1px solid #FFDDB3;
+    margin:20px;
+    overflow:auto;
+    padding:10px;
+    display:none;
+}

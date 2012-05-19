@@ -1,0 +1,536 @@
+{
+   "0_9": {
+      "message": "0-9"
+   },
+   "1Password": {
+      "message": "1Password"
+   },
+   "1__Insert_your_YubiKey_in_the_USB_port_with_the_USB_contact_facing_upward": {
+      "message": "1. Masukkan YubiKey Anda di-port USB dengan kontak-USB menghadap ke atas"
+   },
+   "2__Wait_until_your_YubiKey_touch_button_shines_with_a_steady_light": {
+      "message": "2. Tunggu sampai Anda YubiKey sentuh tombol bersinar dengan cahaya stabil"
+   },
+   "3__Hold_your_fingertip_on_the_touch_button_for_2_seconds": {
+      "message": "3. Pegang ujung jari Anda pada tombol-sentuh selama 2 detik"
+   },
+   "A_Zupper": {
+      "message": "A-Z"
+   },
+   "A_retry_file_has_been_found__This_likely_means_that_not_all_of_your_site_changes_have_been_saved__Would_you_like_to_delete_this_file_and_potentially_lose_some_changes_": {
+      "message": "Sebuah file retry telah ditemukan. Ini berarti tidak semua perubahan di site kamu telah disimpan. Apakah kamu ingin untuk menghapus file ini dan beresiko untuk kehilangan beberapa perubahan?"
+   },
+   "A_server_error_occurred_while_processing_your_request_": {
+      "message": "Ada kesalahan di server ketika sedang memproses permintaan anda."
+   },
+   "About___": {
+      "message": "Tentang..."
+   },
+   "Accept": {
+      "message": "Setuju"
+   },
+   "Account_Settings": {
+      "message": "Pengaturan Account"
+   },
+   "Actionproper": {
+      "message": "Aksi"
+   },
+   "Add": {
+      "message": "Tambahkan"
+   },
+   "Add_Credit_Card": {
+      "message": "Tambahkan Kartu Kredit"
+   },
+   "Add_Field": {
+      "message": "Tambah Field"
+   },
+   "Add_Identity": {
+      "message": "Tambahkan Identitas"
+   },
+   "Add_New_Site": {
+      "message": "Tambah Situs baru"
+   },
+   "Add_Profile": {
+      "message": "Tambahkan Profil"
+   },
+   "Add_Secure_Note": {
+      "message": "Tambahkan Catatan Terkunci"
+   },
+   "Add_Site": {
+      "message": "Tambahkan Situs"
+   },
+   "Address_1": {
+      "message": "Alamat 1"
+   },
+   "Address_2": {
+      "message": "Alamat 2"
+   },
+   "Address_3": {
+      "message": "Alamat 3"
+   },
+   "Admin_Tools": {
+      "message": "Piranti Admin"
+   },
+   "Advanced": {
+      "message": "Tingkat Lanjut"
+   },
+   "All": {
+      "message": "Semua"
+   },
+   "Allow_LastPass_to_find_insecure_data_on_your_computer_": {
+      "message": "Perbolehkan LastPass untuk menemukan data yang tidak aman pada komputer Anda?"
+   },
+   "Alt": {
+      "message": "Alt"
+   },
+   "An_Update_is_Available__Would_you_like_to_install_": {
+      "message": "Sebuah update telah tersedia. Apakah anda ingin menginstalnya?"
+   },
+   "An_error_occurred": {
+      "message": "Ada kesalahan"
+   },
+   "Appearance": {
+      "message": "Penampilan"
+   },
+   "Are_you_sure_you_want_to_have_LastPass_remember_your_password___This_will_significantly_decrease_the_security_of_your_LastPass_account_": {
+      "message": "Apakah Anda yakin menginginkan LastPass untuk mnyimpan password anda? Ini akan mengurangin keamanan akun LastPass Anda!"
+   },
+   "Are_you_sure_you_would_like_to_delete_the_selected_sites_": {
+      "message": "Apakah Anda yakin ingin menghapus situs terpilih?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_generated_password_": {
+      "message": "Apakah Anda yakin ingin menghapus password yang dihasilkan?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_secure_note_": {
+      "message": "Apakah Anda yakin ingin menghapus catatan aman ini?"
+   },
+   "Are_you_sure_you_would_like_to_delete_this_site_": {
+      "message": "Apakah Anda yakin ingin menghapus situs ini?"
+   },
+   "AutoFill": {
+      "message": "Pengisian Otomatis"
+   },
+   "AutoLogin": {
+      "message": "Login Otomatis"
+   },
+   "Automatically_Fill_Login_Information": {
+      "message": "Isi Informasi Login secara Otomatis"
+   },
+   "Automatically_Logoff_after_idle__mins_": {
+      "message": "Logoff secara Otomatis setelah diam (menit)"
+   },
+   "Automatically_login_to_sites_if_time_since_last_login____seconds_": {
+      "message": "Login ke situs secara otomatis jika waktu sejak login terakhir \u003E (detik)"
+   },
+   "Avoid_Ambiguous_Characters": {
+      "message": "Hindari Karakter yang ambigu"
+   },
+   "Bank_Account": {
+      "message": "Rekening Bank"
+   },
+   "Blacklist": {
+      "message": "Account anda di-non-aktifkan sementara (selama 5 menit) karena kegagalan login yang terlalu banyak."
+   },
+   "Built_": {
+      "message": "Versi:"
+   },
+   "Can_t_find_hidden_LastPass_window": {
+      "message": "Tidak dapat menemukan jendela LastPass yang tersembunyi"
+   },
+   "Cancel": {
+      "message": "Batal"
+   },
+   "Change_Group_Name": {
+      "message": "Ubah Nama Grup"
+   },
+   "Clear": {
+      "message": "Jelaskan"
+   },
+   "Clear_Forms": {
+      "message": "Hapus Isi Formulir"
+   },
+   "Clear_Recent": {
+      "message": "Hapus cikeneh"
+   },
+   "Click_here_to_launch_account_settings": {
+      "message": "Klik di sini untuk memulai pengaturan akun"
+   },
+   "Click_here_to_launch_feedback": {
+      "message": "Klik di sini untuk memulai umpan balik"
+   },
+   "Close": {
+      "message": "Tutup"
+   },
+   "Confirm": {
+      "message": "Konfirmasikan"
+   },
+   "Copy_Password": {
+      "message": "Salin Sandi"
+   },
+   "Copy_Username": {
+      "message": "Salin Nama Pengguna"
+   },
+   "Create_Account": {
+      "message": "Buat Akun"
+   },
+   "December": {
+      "message": "Desember"
+   },
+   "Delete": {
+      "message": "Menghapus"
+   },
+   "Delete_Selected": {
+      "message": "Hapus yang Dipilih"
+   },
+   "Disable_Insecure_Chrome_Password_Manager": {
+      "message": "Matikan Chrome Password Manager yang Tidak Aman"
+   },
+   "Do_not_re_prompt_for_": {
+      "message": "Jangan menanyakan kembali untuk"
+   },
+   "Down": {
+      "message": "Turun"
+   },
+   "Dr": {
+      "message": "Dr"
+   },
+   "Dutch": {
+      "message": "Belanda"
+   },
+   "Edit": {
+      "message": "Edit"
+   },
+   "Edit_Form_Fields": {
+      "message": "Edit Formulir Isian"
+   },
+   "Email": {
+      "message": "Email"
+   },
+   "English": {
+      "message": "Bahasa Inggris"
+   },
+   "ErrorSendingMsg": {
+      "message": "Sebuah error terjadi ketika mencoba untuk menghubungi server. Silahkan periksa koneksi Internet anda."
+   },
+   "ErrorSessionMsg": {
+      "message": "Sessi Lastpass anda sepertinya sudah kedalu warsa. Silakan Login kembali."
+   },
+   "Favorite": {
+      "message": "Favorit"
+   },
+   "February": {
+      "message": "Februari"
+   },
+   "Feedback": {
+      "message": "Saran"
+   },
+   "Fill_Forms": {
+      "message": "Isi Formulir"
+   },
+   "FillableFormDetected": {
+      "message": "Halaman ini terdeteksi mempunyai Form isian "
+   },
+   "Find_a_site": {
+      "message": "Cari situs"
+   },
+   "General": {
+      "message": "Umum"
+   },
+   "Generate": {
+      "message": "Hasilkan"
+   },
+   "Generate_Secure_Password": {
+      "message": "Hasilkan Password yang Aman"
+   },
+   "Generated_Password_for": {
+      "message": "Password yang dihasilkan untuk"
+   },
+   "Group_": {
+      "message": "Grup:"
+   },
+   "Help_Translate": {
+      "message": "Bantu Menerjemahkan"
+   },
+   "Help___": {
+      "message": "Bantuan..."
+   },
+   "I_forgot_my_password__Help_": {
+      "message": "Saya lupa password saya, Tolong"
+   },
+   "Identities": {
+      "message": "Identitas"
+   },
+   "Importing_your_data_to_your_LastPass_vault_will_secure_it_and_protect_you_against_identity_theft__All_imported_data_remains_COMPLETELY_confidential__the_only_person_who_can_view_YOUR_data_is_YOU_": {
+      "message": "Mengimpor data Anda ke brankas LastPass akan mengamankannya dan melindunginya dari pencuri identitas. Semua data yang diimpor masih TETAP rahasia: satu-satunya orang yang dapat melihat data ANDA adalah ANDA."
+   },
+   "Instructions": {
+      "message": "Instruksi"
+   },
+   "Invalid_Password_": {
+      "message": "Password salah."
+   },
+   "Invalid_email_address__try_again": {
+      "message": "Alamat email sala, silakan c"
+   },
+   "January": {
+      "message": "Januari"
+   },
+   "Japanese": {
+      "message": "Jepang"
+   },
+   "July": {
+      "message": "Juli"
+   },
+   "June": {
+      "message": "Juni"
+   },
+   "KeePass": {
+      "message": "Keepass"
+   },
+   "Language": {
+      "message": "Bahasa"
+   },
+   "LastPass": {
+      "message": "LastPass"
+   },
+   "LastPass_Chrome_Toolbar": {
+      "message": "LastPass Chrome Toolbar"
+   },
+   "LastPass_Menu": {
+      "message": "Menu LastPass"
+   },
+   "LastPass_cannot_login_until_cookies_are_allowed_from_lastpass_com": {
+      "message": "LastPass tidak bisa login sampai kukis dari lastpass diperbolehkan"
+   },
+   "LastPass_detected_a_login_form_that_is_insecure___Would_you_like_to_continue_": {
+      "message": "LastPass mendeteksi sebuah formulir login yang tidak aman.\n\nApakah Anda ingin melanjutkan?"
+   },
+   "LastPass_detected_a_login_form_that_is_insecure___Would_you_still_like_LastPass_to_fill_the_form_": {
+      "message": "LastPass mendeteksi sebuah formulir login yang tidak aman.\n\nApakah Anda tetap ingin LastPass untuk mengisi formulir ini?"
+   },
+   "Login": {
+      "message": "Login"
+   },
+   "LoginError": {
+      "message": "Error dalam login ke LastPass. Silahkan coba lagi."
+   },
+   "Login_to_LastPass": {
+      "message": "Login ke LastPass"
+   },
+   "Logoff": {
+      "message": "Logoff"
+   },
+   "Logoff_": {
+      "message": "Logoff:"
+   },
+   "March": {
+      "message": "Maret"
+   },
+   "May": {
+      "message": "Mei"
+   },
+   "Minimum_Digit_Count": {
+      "message": "Panjang Digit Minimum "
+   },
+   "My_LastPass_Vault": {
+      "message": "Brankas LastPass Saya"
+   },
+   "NAME": {
+      "message": "NAMA"
+   },
+   "Name_": {
+      "message": "Nama:"
+   },
+   "Nameproper": {
+      "message": "Nama"
+   },
+   "Never_AutoFill": {
+      "message": "Jangan Pernah AutoFill"
+   },
+   "Never___": {
+      "message": "Jangan Pernah..."
+   },
+   "No": {
+      "message": "Tidak"
+   },
+   "No_Updates_Are_Available": {
+      "message": "Tidak Ada Update yang Tersedia"
+   },
+   "No__do_not_import_any_of_my_insecure_items": {
+      "message": "Tidak, jangan mengimpor item tidak aman saya"
+   },
+   "Notes": {
+      "message": "Catatan"
+   },
+   "Notes_": {
+      "message": "Catatan:"
+   },
+   "November": {
+      "message": "November"
+   },
+   "OK": {
+      "message": "OK"
+   },
+   "October": {
+      "message": "Oktober"
+   },
+   "Open_Favorites": {
+      "message": "Buka Favorit"
+   },
+   "PASSWORDupper": {
+      "message": "PASSWORD"
+   },
+   "Password": {
+      "message": "Password"
+   },
+   "Password_": {
+      "message": "Password:"
+   },
+   "Password_Length": {
+      "message": "Panjang Password"
+   },
+   "Please_restart_all_your_browsers_to_begin_using_LastPass_Online_": {
+      "message": "Silakan restart semua browser Anda untuk mulai menggunakan LastPass Online."
+   },
+   "Preferences": {
+      "message": "Pengaturan"
+   },
+   "Price": {
+      "message": "Harga"
+   },
+   "Print_Sites": {
+      "message": "Cetak Situs"
+   },
+   "Publisher": {
+      "message": "Penerbit"
+   },
+   "Purchase_Date": {
+      "message": "Tanggal beli"
+   },
+   "Recently_Used": {
+      "message": "Baru saja Digunakan"
+   },
+   "Remember_Email": {
+      "message": "Ingat Email"
+   },
+   "Remember_Password": {
+      "message": "Ingat Sandi"
+   },
+   "Require_Every_Character_Type": {
+      "message": "Membutuhkan Semua Tipe Karakter"
+   },
+   "Require_Password_Reprompt": {
+      "message": "Membutuhkan Permintaan Ulang Password"
+   },
+   "Save": {
+      "message": "Simpan"
+   },
+   "Save_All_Entered_Data": {
+      "message": "Simpan Semua Data yang Telah Dimasukkan"
+   },
+   "Save_Site": {
+      "message": "Simpan Situs"
+   },
+   "Search": {
+      "message": "Cari"
+   },
+   "Secure_Notes": {
+      "message": "Catatan Terkunci"
+   },
+   "Sesame_Multifactor_Authentication": {
+      "message": "Otentikasi Multifaktor Sesame"
+   },
+   "Sex": {
+      "message": "Jenis Kelamin"
+   },
+   "Share": {
+      "message": "Bagikan"
+   },
+   "Share_Selected": {
+      "message": "Bagikan yang terpilih"
+   },
+   "Share_login_state_between_other_browsers": {
+      "message": "Bagikan status login dengan perambah lain"
+   },
+   "Spanish": {
+      "message": "Spanyol"
+   },
+   "Try_Again": {
+      "message": "Coba Lagi"
+   },
+   "URL_": {
+      "message": "URL:"
+   },
+   "Uploading_Data___": {
+      "message": "Mengunggah data ..."
+   },
+   "Username_": {
+      "message": "Nama Pengguna:"
+   },
+   "Version_": {
+      "message": "Versi:"
+   },
+   "Warn_before_filling_insecure_forms": {
+      "message": "Peringatkan sebelum mengisi formulir yang tidak aman"
+   },
+   "Website": {
+      "message": "Situs Web"
+   },
+   "Yangon__Rangoon_": {
+      "message": "Yangon (Rangoon)"
+   },
+   "Yes": {
+      "message": "Ya"
+   },
+   "You_must_enter_a_name_": {
+      "message": "Anda harus memasukkan nama."
+   },
+   "You_must_restart_Chrome_or_logoff_and_back_in_to_get_logoff_on_browser_close_changes_to_be_reflected": {
+      "message": "Anda harus me-restart Chrome atau logoff dan kembali masuk agar dapat melihat perubahan yang timbul ketika logoff saat menutup browser close"
+   },
+   "Your_address_information": {
+      "message": "Informasi alamat anda"
+   },
+   "Your_current_settings_require_you_to_enter_your_LastPass_password_to_complete_this_action_": {
+      "message": "Setting saat ini mengharuskan anda untuk memasukkan password LastPass untuk melanjutkan."
+   },
+   "Your_street_address": {
+      "message": "Alamat jalan anda"
+   },
+   "Your_time_zone": {
+      "message": "Zona waktu anda"
+   },
+   "YubiKey_Multifactor_Authentication": {
+      "message": "Otentikasi Multifaktor Yubikey"
+   },
+   "_Hide_": {
+      "message": "[Sembunyikan]"
+   },
+   "_New_Pending_Share_Offers_": {
+      "message": "(New Penawaran Saham Pending)"
+   },
+   "_Show_": {
+      "message": "[Tampilkan]"
+   },
+   "_none_": {
+      "message": "(kosong)"
+   },
+   "a_zlower": {
+      "message": "a-z"
+   },
+   "dummy": {
+      "message": "dummy, leave this here so we don't mess up the trailing comma"
+   },
+   "favorites": {
+      "message": "favorit"
+   },
+   "hour": {
+      "message": "jam"
+   },
+   "hours": {
+      "message": "jam"
+   },
+   "minutes": {
+      "message": "menit"
+   }
+}

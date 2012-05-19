@@ -1,0 +1,1 @@
+document.write("<label for='clearClipboardSecsEnabled'>"+gs("Clear Clipboard after use (seconds)")+"</label>");

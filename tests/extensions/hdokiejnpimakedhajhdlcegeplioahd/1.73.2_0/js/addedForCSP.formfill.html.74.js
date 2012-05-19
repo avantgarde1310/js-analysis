@@ -1,0 +1,1 @@
+document.write(gs("Middle name",getlocale()));

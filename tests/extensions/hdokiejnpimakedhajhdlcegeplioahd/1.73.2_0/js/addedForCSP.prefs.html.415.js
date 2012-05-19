@@ -1,0 +1,1 @@
+document.write(gs("Poll Server for account changes (mins)"));

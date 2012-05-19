@@ -1,0 +1,1 @@
+document.write("<label for='automaticallyFill'>"+gs("Automatically Fill Login Information")+"</label>");

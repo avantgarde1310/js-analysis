@@ -1,0 +1,1 @@
+document.write("<label for='showNotifications'>"+gs("Show Notifications")+"</label>");

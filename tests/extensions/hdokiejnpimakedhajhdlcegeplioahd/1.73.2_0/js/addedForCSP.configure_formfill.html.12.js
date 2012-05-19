@@ -1,0 +1,1 @@
+document.write(gs("LastPass can automatically fill web page forms with a single click.  Using automatic 'Form Filling' will not only save you time, but will also enhance your security when shopping online."));

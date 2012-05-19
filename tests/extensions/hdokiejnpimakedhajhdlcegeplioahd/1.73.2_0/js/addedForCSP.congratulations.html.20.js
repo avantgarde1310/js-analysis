@@ -1,0 +1,1 @@
+document.write(gs("Click here to watch a video on basic usage."));

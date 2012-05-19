@@ -1,0 +1,1 @@
+document.write("<label for='reqevery'>"+gs("Require Every Character Type")+"</label>");

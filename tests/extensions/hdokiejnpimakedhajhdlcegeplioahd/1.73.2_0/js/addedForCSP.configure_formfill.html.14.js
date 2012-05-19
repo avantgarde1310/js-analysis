@@ -1,0 +1,1 @@
+document.write(gs("Yes, let me enter and review data that will be used when filling forms"));

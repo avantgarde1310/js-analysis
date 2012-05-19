@@ -1,0 +1,1 @@
+document.write(gs("Disable Insecure Chrome Password Manager"));

@@ -1,0 +1,10 @@
+
+var contextArray={};var chromeNewTab="chrome://newtab/";$(document).ready(function(){isAddThis()?addthis.addEventListener('addthis.ready',AddThisReady):AddThisReady();});function AddThisReady(){addEventListeners();populateContextMenu();}
+function ContextMenuItems(contextItemId,serviceId){this.contextItemId=contextItemId;this.serviceId=serviceId;}
+function shareFromContextMenu(info,tab){sharePage(contextArray[info.menuItemId].serviceId,(typeof(pubIDTabMap[tab.id])!="undefined"&&pubIDTabMap[tab.id]!=null)?pubIDTabMap[tab.id]:"AddThis",tab.url,tab.title,tab.id);}
+function populateContextMenu(){chrome.contextMenus.removeAll();contextArray={};var parentMenu=chrome.contextMenus.create({title:contextMenuTitle});targets={};targets=getFinalPreferredTargets();for(var name in targets){var target=targets[name];var childContextMenu=chrome.contextMenus.create({title:escapeHTMLEncode(target.prompt),onclick:shareFromContextMenu,parentId:parentMenu});contextArray[childContextMenu]=new ContextMenuItems(childContextMenu,target.name);}
+var childMoreContextMenu=chrome.contextMenus.create({title:"More",onclick:shareFromContextMenu,parentId:parentMenu});contextArray[childMoreContextMenu]=new ContextMenuItems(childMoreContextMenu,"more");var separatorContext=chrome.contextMenus.create({type:"separator",parentId:parentMenu});var childOptionsContextMenu=chrome.contextMenus.create({title:"Options",onclick:function(info,tab){chrome.tabs.create({url:"../../options/options.html"});},parentId:parentMenu});}
+function addEventListeners(){chrome.tabs.onCreated.addListener(function(tab){if(tab.url.indexOf()!=chromeNewTab)
+currentTabId=tab.id;injectContentScript(tab.id);});chrome.tabs.onUpdated.addListener(function(tabId,changeInfo,tab){if(tab.url!=chromeNewTab)
+currentTabId=tabId;injectContentScript(tab.id);});chrome.tabs.onRemoved.addListener(function(tabId,removeInfo){delete pubIDTabMap[tabId];});}
+function escapeHTMLEncode(str){if(str.indexOf("&#8209;")>-1)return str.replace("&#8209;","-");var divNode=document.createElement('div');divNode.innerHTML=str;return divNode.innerHTML;}

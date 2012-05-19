@@ -1,0 +1,4 @@
+
+function OExchangeTarget(serviceName,serviceTitle){serviceName=serviceName.toLowerCase();this.oexchangeUrl="http://api.addthis.com/oexchange/0.8/forward/"+serviceName+"/offer";this.name=serviceName;this.icon16Url="http://cache.addthiscdn.com/icons/v1/thumbs/"+serviceName+".gif";this.icon32Url="http://cache.addthiscdn.com/icons/v1/thumbs/32x32/"+serviceName+".png";this.prompt=serviceTitle?serviceTitle:"Send to "+serviceName;this.buildShareUrl=buildShareUrl;}
+function buildShareUrl(urlToShare,titleToShare,pub,productCode){var shareUrl=this.oexchangeUrl+"?url="+urlToShare;if(titleToShare)
+shareUrl+="&title="+titleToShare;shareUrl+="&pubid="+pub;shareUrl+="&pco="+productCode;return shareUrl;}

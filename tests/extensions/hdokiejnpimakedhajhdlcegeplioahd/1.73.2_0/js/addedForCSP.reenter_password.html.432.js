@@ -1,0 +1,1 @@
+document.write(gs("To protect your privacy and keep your data confidential,"));

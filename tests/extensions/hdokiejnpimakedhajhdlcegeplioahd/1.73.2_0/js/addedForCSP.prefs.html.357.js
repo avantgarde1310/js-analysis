@@ -1,0 +1,1 @@
+document.write(gs("Open New Pages in"));

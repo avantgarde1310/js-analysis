@@ -1,0 +1,1 @@
+document.write(gs("Please select which sites you wish to apply this change."));

@@ -1,0 +1,1 @@
+document.write(gs("Log into a Site"));

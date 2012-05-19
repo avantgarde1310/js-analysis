@@ -1,0 +1,1 @@
+document.write("<label for='logoffWhenCloseBrowser'>"+gs("Automatically Logoff when all browsers are closed and Chrome has been closed for (mins)")+"</label>");

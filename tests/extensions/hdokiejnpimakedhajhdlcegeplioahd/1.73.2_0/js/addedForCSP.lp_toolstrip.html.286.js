@@ -1,0 +1,1 @@
+document.write("<label for='lower'>"+gs("a-zlower")+"</label>");

@@ -1,0 +1,1 @@
+document.write("<label for='special'>"+gs("Special")+"</label>");

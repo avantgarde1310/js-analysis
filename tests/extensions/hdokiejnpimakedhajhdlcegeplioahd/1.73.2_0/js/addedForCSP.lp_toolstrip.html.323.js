@@ -1,0 +1,1 @@
+document.write(gs("2. Paste the one time password in the input box below and click 'Authenticate'"));

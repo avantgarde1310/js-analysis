@@ -1,0 +1,1 @@
+document.write("<label for='lptrustyubi'>"+gs("This computer is trusted, do not require a second form of authentication.")+"</label>");

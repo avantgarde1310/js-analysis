@@ -1,0 +1,1 @@
+document.write(gs("I have read and agree with the"));

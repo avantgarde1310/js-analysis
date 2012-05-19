@@ -1,0 +1,1 @@
+document.write(gs("If you do end up forgetting your LastPass master password,"));

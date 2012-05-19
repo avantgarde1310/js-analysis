@@ -1,0 +1,1 @@
+document.write(gs("Bank name",getlocale()));

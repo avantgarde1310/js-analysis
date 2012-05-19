@@ -1,0 +1,1 @@
+document.write(gs("Allow LastPass to find insecure data on your computer?"));

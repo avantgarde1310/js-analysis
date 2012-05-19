@@ -1,0 +1,1 @@
+document.write(gs("Require security reprompt when:"));

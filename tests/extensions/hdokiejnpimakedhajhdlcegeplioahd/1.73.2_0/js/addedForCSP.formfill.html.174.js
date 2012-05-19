@@ -1,0 +1,1 @@
+document.write(gs("Value to fill",getlocale()));

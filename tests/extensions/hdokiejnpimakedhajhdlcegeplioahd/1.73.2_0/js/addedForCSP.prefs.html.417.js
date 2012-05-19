@@ -1,0 +1,1 @@
+document.write("<label for='recentUsed'>"+gs("Recently Used list size")+"</label>");

@@ -1,0 +1,22 @@
+{
+   "background_page": "core/background.html",
+   "browser_action": {
+      "default_icon": "images/19x19-full.png",
+      "default_title": "Share, translate, bookmark, print",
+      "popup": "core/browser-action.html"
+   },
+   "description": "Share, translate, bookmark, print, and more; supports over 300 services with custom personalization.",
+   "icons": {
+      "128": "images/128x128.png",
+      "16": "images/16x16.png",
+      "19": "images/19x19.png",
+      "32": "images/32x32.png",
+      "64": "images/64x64.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC/4mH2Fbva08PwzMy6boq23o2rkQkCpvjbt72C3I0P1NBhCT9xpZENK/VQLzhRlSpvtrCWH6kXabyLicG2C2zMRicwMlJRxqCWjepn7V3rP0wdm2bv5rkh+C4LzqEak+M4N/KCg8bxJkldW8yG1qK0iF2BACtUlZ5QPXkpVnQxRQIDAQAB",
+   "name": "AddThis - Share & Bookmark (new)",
+   "options_page": "options/options.html",
+   "permissions": [ "tabs", "http://*/", "contextMenus", "https://*/" ],
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "2.1"
+}

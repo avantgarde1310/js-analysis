@@ -1,0 +1,1 @@
+document.write(gs("Install the binary version of LastPass for Chrome to enable automatic logoff after idle"));

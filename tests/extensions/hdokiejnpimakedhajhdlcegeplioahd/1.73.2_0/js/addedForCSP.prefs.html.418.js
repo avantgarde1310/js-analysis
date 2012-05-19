@@ -1,0 +1,1 @@
+document.write("<label for='searchNotes'>"+gs("Search within secure notes (maximum characters to search)")+"</label>");

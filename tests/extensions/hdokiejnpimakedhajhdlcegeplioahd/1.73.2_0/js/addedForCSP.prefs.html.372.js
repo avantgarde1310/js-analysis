@@ -1,0 +1,1 @@
+document.write("<label for='showFormFillNotifications'>"+gs("Show Form Fill Notifications")+"</label>");

@@ -1,0 +1,1 @@
+document.write(gs("If you lost your YubiKey device, click here to disable YubiKey authentication"));

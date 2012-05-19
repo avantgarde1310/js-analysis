@@ -1,0 +1,1 @@
+document.write("<label for='showChangeNotificationBar'>"+gs("Show Change Password Notification Bar")+"</label>");

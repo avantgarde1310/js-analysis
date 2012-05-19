@@ -1,0 +1,1 @@
+document.write("<label for='enablenamedpipes'>"+gs("Share login state between other browsers")+"</label>");

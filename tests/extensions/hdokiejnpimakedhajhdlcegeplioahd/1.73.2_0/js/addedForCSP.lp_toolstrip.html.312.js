@@ -1,0 +1,1 @@
+document.write(gs("1. Insert your YubiKey in the USB-port with the USB-contact facing upward"));

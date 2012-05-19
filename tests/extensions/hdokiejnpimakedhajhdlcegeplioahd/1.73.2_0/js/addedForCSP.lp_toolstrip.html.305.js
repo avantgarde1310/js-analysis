@@ -1,0 +1,1 @@
+document.write(gs("LastPass detected a password change for"));

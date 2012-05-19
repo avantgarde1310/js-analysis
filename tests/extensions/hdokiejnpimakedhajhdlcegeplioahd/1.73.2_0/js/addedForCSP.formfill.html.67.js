@@ -1,0 +1,1 @@
+document.write(gs("Custom fields",getlocale()));

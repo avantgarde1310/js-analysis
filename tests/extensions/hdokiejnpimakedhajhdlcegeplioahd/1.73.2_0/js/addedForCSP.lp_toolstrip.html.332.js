@@ -1,0 +1,1 @@
+document.write(gs("For each coordinate listed below, find the value on your grid and enter the value."));

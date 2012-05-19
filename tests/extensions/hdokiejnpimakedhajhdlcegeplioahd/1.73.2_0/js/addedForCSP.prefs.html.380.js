@@ -1,0 +1,1 @@
+document.write(gs("Click here to launch feedback"));

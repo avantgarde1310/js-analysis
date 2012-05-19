@@ -1,0 +1,1 @@
+document.write(gs("Your current settings require you to enter your LastPass password to complete this action."));

@@ -1,0 +1,1 @@
+document.write(gs("I forgot my password, Help!"));

@@ -1,0 +1,1 @@
+document.write("<label for='showFillNotificationBar'>"+gs("Show Fill Notification Bar")+"</label>");

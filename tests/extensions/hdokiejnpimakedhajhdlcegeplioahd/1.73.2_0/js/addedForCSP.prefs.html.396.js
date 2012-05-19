@@ -1,0 +1,1 @@
+document.write(gs("Save All Entered Data"));

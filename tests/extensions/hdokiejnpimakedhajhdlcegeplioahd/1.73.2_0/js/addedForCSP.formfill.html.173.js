@@ -1,0 +1,1 @@
+document.write(gs("Text to find",getlocale()));

@@ -1,0 +1,1 @@
+document.write(gs("Profile language",getlocale()));

@@ -1,0 +1,1 @@
+sr(document,"generatebutton","value","Generate");sr(document,"generatesave","value",g_issafari||g_isopera?"Save":"Copy");sr(document,"generateclose","value","Close");

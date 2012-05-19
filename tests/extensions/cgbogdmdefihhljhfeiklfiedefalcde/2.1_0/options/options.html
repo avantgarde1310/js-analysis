@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>AddThis Chrome Extension Options</title>
+	<link rel="stylesheet" type="text/css" href="../css/options.css"></link>
+	<link rel="stylesheet" href="http://cache.addthiscdn.com/icons/v1/sprites/services.css" type="text/css" media="screen" charset="utf-8" />
+	<script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js"></script>
+	<script type="text/javascript" src="../scripts/utils/jquery/jquery-1.4.2.min.js"></script>
+	<script type="text/javascript" src="../scripts/utils/jquery/jquery.tinysort.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.2/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../scripts/options/options.js"></script>
+	<script src="http://cache.addthiscdn.com/services/v1/sharing.en.jsonp#jsonpcallback=displayResponse" type="text/javascript"></script>
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <a href="http://www.addthis.com"><h1>AddThis</h1></a>
+    </div>
+    <div class="content">
+        <div id="title"><h1>Customize Your AddThis Sharing Menu</h1></div>
+        <p class="introtext">Select which services should appear in your sharing menu. A total of 11 services can be added.</p>
+        <div class="wrapper add-new"><p>All Available Services</p><div id="add-services"></div></div>
+        <div class="wrapper move-services">
+            <input type="button" class="lgbtn" value="Add &gt;&gt;" id="addServiceBtn" />
+            <div class="clearer"></div>
+            <input type="button" class="lgbtn" value="&lt;&lt; Remove" id="removeServiceBtn" />
+        </div>
+        <div class="wrapper existing"><p>My Favorite Services</p><div id="services"></div></div>
+        <div class="wrapper move-services">
+            <input type="button" class="lgbtn" value="&#8593;" id="upBtn" />
+            <div class="clearer"></div>
+            <input type="button" class="lgbtn" value="&#8595" id="downBtn" />
+        </div>
+        <div class="clearer"></div>
+        <a id="resetbtn">reset services to default</a>
+        <div class="clearer"></div>
+        <div class="savedChanges"></div>
+        <div id="controlBtns">
+            <input type="button" class="lgbtn" value="Save Changes" id="submitbtn" />&nbsp;
+        </div>
+    </div>
+</div>
+</body>
+</html>

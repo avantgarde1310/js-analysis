@@ -1,0 +1,1 @@
+document.write("<label for='digits'>"+gs("0-9")+"</label>");

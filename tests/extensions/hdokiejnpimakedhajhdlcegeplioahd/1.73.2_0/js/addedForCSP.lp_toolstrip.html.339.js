@@ -1,0 +1,1 @@
+document.write(gs("Please provide this computer a name"));

@@ -1,0 +1,1 @@
+document.write("<label for='upper'>"+gs("A-Zupper")+"</label>");

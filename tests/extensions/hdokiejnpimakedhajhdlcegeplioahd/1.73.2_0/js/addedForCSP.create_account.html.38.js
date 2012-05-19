@@ -1,0 +1,1 @@
+document.write(gs("I understand that my encrypted data will be sent to LastPass"));

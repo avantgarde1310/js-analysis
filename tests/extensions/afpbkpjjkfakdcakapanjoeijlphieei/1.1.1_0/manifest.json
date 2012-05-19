@@ -1,0 +1,20 @@
+{
+   "background_page": "background.html",
+   "content_scripts": [ {
+      "js": [ "rapidshare.js" ],
+      "matches": [ "http://*.rapidshare.com/*" ],
+      "run_at": "document_end"
+   } ],
+   "description": "No More Countdowns - Automatic Downloads.",
+   "icons": {
+      "128": "icon-128x128.png",
+      "16": "icon-16x16.png",
+      "32": "icon-32x32.png",
+      "48": "icon-48x48.png"
+   },
+   "key": "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDDda2vHSqjNL8Sx9M8bwk+YWvmuHRBCPi4XZrN9ZyvvVgjiSOym/rVa7sFphhWL5DMkuDMePIv4BCw/YD1MwcEQ4Y54qeAiwkmNd9/cTYa98ALAsnSyLieMLNeBY1P6e4LVEDCyVVX1l0ZNe2Pr59R/JslHuKUnOnb8Ru8DCYULQIDAQAB",
+   "name": "RapidShare DownloadHelper",
+   "permissions": [ "tabs" ],
+   "update_url": "http://clients2.google.com/service/update2/crx",
+   "version": "1.1.1"
+}

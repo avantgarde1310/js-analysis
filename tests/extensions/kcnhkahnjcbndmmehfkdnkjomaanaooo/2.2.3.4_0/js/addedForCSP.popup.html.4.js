@@ -1,0 +1,2 @@
+
+var voicePopup = new VoicePopup();

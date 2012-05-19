@@ -1,0 +1,1 @@
+document.write("<label for='showNotificationsAfterClick'>"+gs("Show certain notifications only after click")+"</label>");

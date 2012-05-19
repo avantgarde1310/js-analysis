@@ -1,0 +1,1 @@
+document.write("<label for='showSaveNotificationBar'>"+gs("Show Save Site Notification Bar")+"</label>");

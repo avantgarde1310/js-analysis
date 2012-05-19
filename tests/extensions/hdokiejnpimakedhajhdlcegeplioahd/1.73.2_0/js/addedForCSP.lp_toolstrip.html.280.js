@@ -1,0 +1,1 @@
+sr(document,"notifyyesbtn","value","Yes");sr(document,"notifynobtn","value","No");
