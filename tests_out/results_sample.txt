@@ -1,0 +1,14 @@
+Analysis Result
+Extension ID: aapbdbdomjkkjkaonfhkkikfgjllcleb |  Status: Success
+Extension ID: afpbkpjjkfakdcakapanjoeijlphieei |  Status: Success
+Extension ID: alelhddbbhepgpmgidjdcjakblofbmce |  Status: Error on AST Creation (pynarcissus)
+Extension ID: cgbogdmdefihhljhfeiklfiedefalcde |  Status: Success
+Extension ID: gighmmpiobklfepjocnamgkkbiglidom |  Status: Success
+Extension ID: haebnnbpedcbhciplfhjjkbafijpncjl |  Status: Success
+Extension ID: hdokiejnpimakedhajhdlcegeplioahd |  Status: Timeout (program ran more than 120 seconds)
+Extension ID: kcnhkahnjcbndmmehfkdnkjomaanaooo |  Status: Success
+Extension ID: leekjckogogidfhpejjmaaekecplpdcg |  Status: Success
+Extension ID: nlbjncdgjeocebhnmkbbbdekmmmcbfjd |  Status: Success
+10 extensions analyzed. Out of 10 extensions,
+8 extensions had their Datalog files successfully
+generated.
