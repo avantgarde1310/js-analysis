@@ -13,7 +13,7 @@
 ###############################################################################
 
 # The path where the extensions are located (jsAnalysis/test/extensions)
-ext_path="../../Extensions/CSPfied" #"../tests/extensions"
+ext_path="../tests/extensions"
 out_file="../tests_out/results.txt"
 
 # TIMEOUT is the time limit in seconds
