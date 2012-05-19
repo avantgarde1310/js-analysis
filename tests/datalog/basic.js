@@ -6,7 +6,3 @@ d = a;
 c();
 e();
 
-function e(abc, def){
-    c();
-    return abc + def;
-}
