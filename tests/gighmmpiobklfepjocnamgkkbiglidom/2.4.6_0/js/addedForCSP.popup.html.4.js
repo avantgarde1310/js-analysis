@@ -1,1 +1,0 @@
-$("#newtitle").text(translate("newtitle", ["2.3.0"]));

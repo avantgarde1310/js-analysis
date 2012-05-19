@@ -23,6 +23,20 @@ The program is developed in Python 2.7 to maintain compatibility with
 
 ##Sub-Modules:
 
+-	*driver.py*  
+    This is the main module of this suite of analysis tools, and should be used
+    as the starting point. Use the following command:
+        
+        `python driver.py -h`
+
+    to learn about the various options provided by driver.py
+
+    This module takes a JavaScript file or an extension folder, performs alpha-
+    renaming on the code, then generates three-address code representations of
+    the whole JavaScript code, then turns it into a list of Datalog facts. 
+	
+-------------------------------------------------------------------------------
+
 - 	*alpharenamer.py*  
 	Utility to alpha-rename JavaScript files. It has the following core 
 	functions:
@@ -79,13 +93,6 @@ The program is developed in Python 2.7 to maintain compatibility with
 
 -------------------------------------------------------------------------------
 
--	*driver.py*  
-	The core module of this package. It looks for all the JavaScript files in 
-	an extension folder (a folder with the 32-character identifier), combines 
-	all of them into one large string, and performs alpha-renaming.
-	
--------------------------------------------------------------------------------
-	
 -	*fileutils.py*  
 	A generic utility to work with files and directories.
 	

@@ -8,16 +8,91 @@ Last Updated: May 18, 2012
 
 2.  All the source files should be located in the directory jsAnalysis/src. 
 
-3.  If the operating system is UNIX, there is a script that can be run for a
-    demonstration, called runanalyzer.sh, which is located in jsAnalysis/src.
+Example Run: 
+If the operating system is UNIX, there is a script that can be run
+for a demonstration, called runanalyzer.sh, which is located in jsAnalysis/src.
 
-    This script will create the Datalog facts for the extensions located in
-    jsAnalysis/tests/extensions, then create a log file describing the results
-    of running the script in jsAnalysis/tests_out/results.txt.
+This script will create the Datalog facts for the extensions located in
+jsAnalysis/tests/extensions, then create a log file describing the results
+of running the script in jsAnalysis/tests_out/results.txt.
 
-    To check if jsAnalysis has been installed correctly, the output results.txt
-    can be compared with the provided output results_sample.txt. Running a
-    simple diff command on the generated results.txt against the provided sample
-    results_sample.txt should verify if the installation has been done
-    correctly. In addition, there should be a number of Datalog files generated
-    for the extensions that are successful.
+To check if jsAnalysis has been installed correctly, the output results.txt
+can be compared with the provided output results_sample.txt. Running a
+simple diff command on the generated results.txt against the provided sample
+results_sample.txt should verify if the installation has been done
+correctly. In addition, there should be a number of Datalog files generated
+for the extensions that are successful.
+
+Another Example Run:
+To understand how to use the module, please directly consult driver.py,
+located in jsAnalysis/src, by typing the following command in UNIX:
+        
+    ./driver.py -h
+
+or, in Windows:
+
+    python driver.py -h
+
+The driver allows some options to be set during conversion and should be the
+starting point of any JavaScript conversion. 
+
+Another Example Run:
+Here's the big picture of how the module should be used. First, examine the file
+basic.js in jsAnalysis/tests/datalog. It should contain the following
+
+    a = chrome;
+    b = a.tabs;
+    f = a["tabs"];
+    c = a.tabs.getCurrent;
+    d = a;
+    c();
+    e();
+
+We can see that the variables a and d point to chrome. We are going to convert
+this small snippet of code into Datalog facts, then use Datalog to perform
+points-to analysis. First, use the driver.py module to convert this into a .pl
+file. Navigate into the jsAnalysis/src directory, then type:
+    
+./driver.py -o ../tests_out/datalog -w datalogfacts ../tests/datalog/basic.js
+
+The -o option specifies the output path, while the -w option specifies the
+output files to be written to the output path (in this example, we are going to
+choose only the datalog facts). The positional argument is simply the file we
+want to convert. 
+
+After executing the command, the output file (basic_datalog.pl) should be
+located in jsAnalysis/tests_out/datalog. The program that we are going to use to
+perform points-to analysis is called DES (Datalog Educational System), and
+should be located in jsAnalysis/src as well. So stay in the same directory, and
+type:
+
+    des/des
+
+This will launch the DES executable on UNIX. On the prompt of the DES program,
+type:
+
+    DES> /consult ../tests_out/datalog/basic_datalog.pl
+
+This will tell DES to examine the Datalog facts we have generated for basic.js.
+After the compilation is done, perform the following query:
+
+    DES> ptsTo(X, d_chrome). 
+
+This asks Datalog to find all variables that are pointing to the chrome heap
+object. Datalog should return the following:
+
+    {                                           
+      ptsTo('a_R_?',d_chrome),
+      ptsTo(chrome,d_chrome),
+      ptsTo('d_R_?',d_chrome)
+    }
+    Info: 3 tuples computed.
+
+Ignore the question mark, it is a property of alpharenamer.py that if the
+variable a has never been declared in any scope, then the module will append a
+question mark to indicate that the scope of that variable cannot be resolved.
+The important thing is, we can see that there are 3 variables pointing to
+chrome heap object, the identifier chrome itself, and the two variables, a and
+b.
+
+This concludes the example.

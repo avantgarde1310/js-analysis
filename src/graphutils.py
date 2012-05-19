@@ -79,39 +79,6 @@ def count_chrome_reference(frame):
     alpharenamer.traverse_frames(frame, count_chrome_reference_helper)
     return count[0]
 
-def get_extension_name(path):
-    try:
-        print "Trying to find name in manifest.json... ",
-        for dirpath, dirnames, filenames in fileutils.get_directory_tree(path):
-            for filename in filenames:
-                if filename == "manifest.json":
-                    tempstr = open(dirpath + os.sep + filename).read()
-                    tempstr = tempstr[tempstr.index("\"name\""):]
-                    tempstr = tempstr[:tempstr.index("\n")]
-                    tempstr = tempstr[9:-2]
-                    if "__MSG" not in tempstr:
-                        print "OK"
-                        return tempstr
-                    else:
-                        print "Extension name not found in manifest.json"
-                        raise Exception(tempstr)
-    # __MSG_name__
-    except Exception, e:
-        tag = e[0][6:-2]
-        print "Trying _locales" + os.sep + "en folder...",
-        for dirpath, dirnames, filenames in fileutils.get_directory_tree(path):
-            if dirpath.endswith("_locales" + os.sep + "en") and "__MACOSX" not in dirpath:
-                tempstr = open(dirpath + os.sep + "messages.json").read()
-                tempstr = tempstr[tempstr.index("\"" + tag + "\": {\n      "):]
-                tempstr = tempstr[:tempstr.index("}")]
-                tempstr = tempstr[tempstr.index("\"message\""):]
-                tempstr = tempstr[:tempstr.index("\n")]
-                tempstr = tempstr[12:-1]
-                print "OK"
-                return tempstr
-        print "Name not found."
-        return None
-    
 @main
 def run(*args):
     parser = argparse.ArgumentParser(prog="jsAnalyzer Driver", description="a driver for jsAnalyzer")
@@ -145,7 +112,7 @@ def run(*args):
     #ext = 'aapbdbdomjkkjkaonfhkkikfgjllcleb'
     
     try:
-        ext_name = get_extension_name(ext_path + "\\" + ext)
+        ext_name = fileutils.get_extension_name(ext_path + "\\" + ext)
         if ext_name is None:
             raise Exception()
     except:

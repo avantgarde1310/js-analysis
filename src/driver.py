@@ -15,6 +15,7 @@ Workflow:
     JS file/extension -> pynarcissus/jsparser.py -> AST -> alpharenamer.py ->
     alpha-renamed AST -> threeaddress.py -> list of three-address codes ->
     datalog.py -> datalog facts
+
 """
 
 import alpharenamer

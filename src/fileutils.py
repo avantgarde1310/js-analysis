@@ -1,11 +1,13 @@
 """
 fileutils.py
 
-Created on 
+Created on Oct 12, 2011.
 
+@author: Ivan Gozali
 
 A file utility module to work with files and directories. In particular,
-this module is used to work in conjunction with the ExtensionAnalyzer.
+this module is used to work in conjunction with the ExtensionAnalyzer, which
+explains why some of the functions have very specific uses.
 """
 
 import os
@@ -104,8 +106,7 @@ def get_chrome_extensions_path():
         return "Directory does not exist."
 
 def get_chrome_extensions_path_list(ext_dir=None):
-    """
-    Gets the absolute paths of the extensions inside an Extension directory.
+    """Gets the absolute paths of the extensions inside an Extension directory.
     An extension directory is the directory that contains the folders of the
     extensions with unique names that are 32 characters long.
     """
@@ -123,6 +124,9 @@ def get_chrome_extensions_path_list(ext_dir=None):
     return path_list
 
 def print_all_javascript_files_in_current_directory():
+    """Prints all the JavaScript file names in the current directory in a tidy
+    fashion.
+    """
     dir_tree = get_directory_tree()
     
     for dirpath, dirnames, filenames in dir_tree:
@@ -133,8 +137,7 @@ def print_all_javascript_files_in_current_directory():
         print("------------------------------------")
 
 def get_all_javascript_files_absolute(dir):
-    """
-    Returns a list of absolute paths to JavaScript files.
+    """Returns a list of absolute paths to JavaScript files.
     
     dir - absolute path to the directory to be analyzed
     """
@@ -150,8 +153,7 @@ def get_all_javascript_files_absolute(dir):
     return js_list
 
 def combine_js_files(path):
-    """
-    Given a path, combines all the JavaScript files found in that path into
+    """Given a path, combines all the JavaScript files found in that path into
     one huge string.
     
     path     - a directory where the JavaScript files are contained
@@ -160,9 +162,13 @@ def combine_js_files(path):
     js_string = ""
     
     for filename in file_list:
+        current_file = open(filename)
+
         js_string += "//" + filename + "\n\n"
-        js_string += open(filename).read() + "\n\n\n"
-    
+        js_string += current_file.read() + "\n\n\n"
+
+        current_file.close() 
+
     return js_string
 
 def get_extension_name(path):
