@@ -7,6 +7,14 @@ Created on Mar 10, 2012
 
 @author: Ivan Gozali
 
+Module to generate datalog facts from a list of three-address codes.
+
+Workflow:
+    list of three-address codes -> datalog.py -> datalog facts
+
+Implementation Details:
+1.  Receive a list of three-address codes, and call this tac_list.
+
 TODO: Fix rules which have numbers as the first letter of any predicate's 
       argument.
 TODO: Fix regular expressions

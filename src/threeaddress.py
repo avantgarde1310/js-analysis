@@ -11,8 +11,10 @@ A collection of modules to convert specific parts of an AST into three address
 code format. This module will take all statements while ignoring control flow, 
 and convert them into three address format.
 
-Workflow for threeaddress.py
+Workflow:
+    AST -> threeaddress.py -> list of three-address codes
 
+Implementation Details:
 1.  Receive AST
 
 2.  AST is input into the function analyze_three_address(ast). A global

@@ -6,6 +6,15 @@ driver.py
 Created on Apr 27, 2012
 
 @author: Ivan Gozali
+
+This module uses the three main modules to generate Datalog facts from
+JavaScript files or extension folders containing JavaScript files, namely
+alpharenamer.py, threeaddress.py and datalog.py.
+
+Workflow:
+    JS file/extension -> pynarcissus/jsparser.py -> AST -> alpharenamer.py ->
+    alpha-renamed AST -> threeaddress.py -> list of three-address codes ->
+    datalog.py -> datalog facts
 """
 
 import alpharenamer

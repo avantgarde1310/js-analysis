@@ -1,5 +1,8 @@
 """
-Module fileutils
+fileutils.py
+
+Created on 
+
 
 A file utility module to work with files and directories. In particular,
 this module is used to work in conjunction with the ExtensionAnalyzer.
