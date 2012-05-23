@@ -1,0 +1,39 @@
+Instructions for Sample Queries for the Datalog Facts
+
+1.  First, open the DES program, which is located in jsAnalysis/src/des. The
+    binary executable file is called "des" as well. 
+    
+    For convenience, we can navigate to the jsAnalysis/datalog_facts directory,
+    then type:
+
+    ../src/des/des
+
+    to launch the DES program.
+
+2.  Once in the program, we can process the datalog facts using the consult
+    directive. Type this on the DES interactive prompt:
+    
+    DES> /consult <filename>
+
+    and replace <filename> with the file containing the Datalog facts. 
+
+3.  The following basic example queries are useful to find out chrome
+    occurrences in the JavaScript program we're trying to analyze. 
+
+    -   ptsTo(X, d_chrome). 
+        Finds out all variables that are pointing to the real chrome object.
+        Usually computationally intensive. Can replace d_chrome with other
+        chrome APIs such as d_chrome_tabs, or d_chrome_tabs_detectLanguage.
+
+    -   assign(X, chrome).
+    -   load(X, chrome, Y).
+        Finds all the variables that are being assigned the value of chrome, or
+        in the second query, chrome.*.
+
+    -   loadExtendedTwo(chrome, X, Y).
+        Finds all the occurrences of chrome.*.* in the program. For example,
+        chrome.tabs.detectLanguage
+
+    -   loadExtendedThree(chrome, X, Y, Z).
+        Finds all the occurrences of chrome.*.*.* in the program. For example,
+        chrome.extension.onRequest.addListener
