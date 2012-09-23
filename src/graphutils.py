@@ -1,3 +1,18 @@
+"""
+@file graphutils.py
+@brief A module to work with call graphs in a JavaScript file.
+
+This module provides a way to generate call graphs in the form of a DOT file,
+from a JavaScript file. The call graph generated from this file is incomplete,
+which means that this module cannot infer calls made by an alias. For example,
+this will not be detected:
+
+    var a = chrome;
+    a.extension.getURL();
+
+Ivan Gozali <gozaliivan@berkeley.edu>
+
+"""
 import fileutils
 import alpharenamer
 import astutils
@@ -81,11 +96,20 @@ def count_chrome_reference(frame):
 
 @main
 def run(*args):
-    parser = argparse.ArgumentParser(prog="jsAnalyzer Driver", description="a driver for jsAnalyzer")
+    parser = argparse.ArgumentParser(prog="graphutils.py", 
+            description="Generates incomplete call graphs from JavaScript files.")
     
-    parser.add_argument("filepath", action="store", help="the path to JavaScript file or the file itself")
-    parser.add_argument("-o", action="store", dest="outputpath", help="output path (not the file!)")
-    parser.add_argument("-e", action="store_true", default=False, dest="isextension", help="set if filepath is a path to an extension")
+    parser.add_argument("filepath", action="store", 
+            help="the path to JavaScript file or a Chrome extension itself")
+
+    parser.add_argument("-o", action="store", dest="outputpath", 
+            help="""output path (not the file!). the output file name will be the
+            same as the extension or original JS file name.""")
+
+    parser.add_argument("-e", action="store_true", 
+            default=False, dest="isextension", 
+            help="""indicates that filepath is a path to a single extension
+            (e.g. extensions/aapbdbdomjkkjkaonfhkkikfgjllcleb)""")
     
     results = parser.parse_args()
 
@@ -94,40 +118,43 @@ def run(*args):
         outputpath = results.outputpath
         if not os.path.exists(outputpath):
             os.mkdir(outputpath)
-    isextension = results.isextension
+    else:
+        outputpath = "." # current directory
 
+    isextension = results.isextension
     if isextension:
         ext_path = filepath
-        ext = ext_path.split(os.sep)[-1]
-        out_path = outputpath
+        ext = os.path.basename(filepath)
+        outputname = ext
 
-    import os
-    print "Ext Path: ", ext_path, " Exists:", os.path.exists(ext_path)
-    print "Ext: ", ext, " Exists:", os.path.exists(ext_path + "\\" + ext)
-    print "Out Path: ", out_path, " Exists:", os.path.exists(out_path)
+        try:
+            ext_name = fileutils.get_extension_name(os.path.join(ext_path, ext))
+            if ext_name is None:
+                raise Exception()
+        except:
+            ext_name = "Unknown"
+        print(ext_name)
     
-    """ Open and Create AST from Extension """
-    print "\n-----------------JavaScript Static Analyzer 1.0-----------------"
-    #ext_path = 'C:\\PythonProjects\\ExtensionAnalyzer\\Extensions\\CSPfied'
-    #ext = 'aapbdbdomjkkjkaonfhkkikfgjllcleb'
-    
-    try:
-        ext_name = fileutils.get_extension_name(ext_path + "\\" + ext)
-        if ext_name is None:
-            raise Exception()
-    except:
-        ext_name = "Unknown"
-    print(ext_name)
-    
-    print "Combining extension .js files...",
-    js_string = fileutils.combine_js_files(ext_path + "\\" + ext)
-    print "OK"
-    
+        print "Combining extension .js files...",
+        js_string = fileutils.combine_js_files(os.path.join(ext_path, ext))
+        print "OK"
+    else:
+        # Take the filename without extension
+        outputname = os.path.splitext(os.path.basename(filepath))[0]
+        
+        print "Reading JS file...",
+        js_file = open(filepath, "r")
+        js_string = js_file.read()
+        js_file.close()
+        print "OK"
+
+    # ------------------- SETUP PHASE -------------------
+    # --- Open and Create AST from Extension ---
     print "Creating AST...",
     ast = astutils.create_AST_from_string(js_string)
     print "OK"
     
-    """ Create Frame object and execute alpha-rename """
+    # --- Create Frame object and execute alpha-rename ---
     print "Creating frames...",
     fr = alpharenamer.create_frames(ast)
     print "OK"
@@ -136,65 +163,57 @@ def run(*args):
     fr = alpharenamer.alpha_rename(fr, ast)
     print "OK"
 
-    """ Clean Call List """
+    # --- Clean Call List ---
     print "Cleaning call list of frames...",
     alpharenamer.traverse_frames(fr, clean_call_list)
     print "OK"
 
-    """ ------------------- OUTPUT PHASE ------------------- """
-#    out_path = "C:\\PythonProjects\\ExtensionAnalyzer\\newresults"
-    
-    """ Create Call Graph and DOT Format """
+    # ------------------- OUTPUT PHASE -------------------
+    # --- Create Call Graph in DOT Format ---
     print "Writing DOT file... ",
     # node_list : list of all the function calls in the source
     # edge_list : list of tuples denoting edges between calls
     node_list, edge_list = generate_nodes_edges(fr)
+
     call_gr = create_call_graph(node_list, edge_list)
-    dot_file = open(out_path + "\\" + ext + "_dot.txt", "w")
+
+    dot_file = open(os.path.join(outputpath, outputname + "_dot.txt"), "w")
     dot = write(call_gr)
     dot_file.write(dot)
     print "OK"
     
-    """ Create Separate Chrome API Calls """
-    print "Writing Unique Chrome API Calls...",
-    chromecalls_file = dot_file = open(out_path + "\\" + ext + "_chromecalls.txt", "w")
-    chrome_call_str = ""
-    for chromecall in node_list:
-        if "chrome" in chromecall and chromecall not in chrome_call_str:
-            chrome_call_str += chromecall + "\n"
-    chromecalls_file.write(chrome_call_str)
-    print "OK"
+    # --- Create Separate Chrome API Calls ---
+    # TODO: Might want to move this to another module
+    #print "Writing Unique Chrome API Calls...",
+    #chromecalls_file = dot_file = open(out_path + "\\" + ext + "_chromecalls.txt", "w")
+    #chrome_call_str = ""
+    #for chromecall in node_list:
+    #    if "chrome" in chromecall and chromecall not in chrome_call_str:
+    #        chrome_call_str += chromecall + "\n"
+    #chromecalls_file.write(chrome_call_str)
+    #print "OK"
     
-#    """ Write AST representation to file """
-#    ast_out = open("ast_out_newTest2.txt", "w")
-#    ast_out.write(str(ast))
+    # --- Write AST representation to file ---
+    #ast_out = open("ast_out_newTest2.txt", "w")
+    #ast_out.write(str(ast))
     
-    """ Print Source Code """
-    print "Writing source code... ",
-    try:
-        source_out = open(out_path + "\\" + ext + "_src_renamed.txt", "w")
-        source = pynarcissus.sexp.convert(ast)
-        source_out.write(source)
-        print "OK"
-    except Exception, e:
-        print "An error occurred while writing the renamed source code."
-    
-    """ Generate log file """
-    print "Generating log file..."
-    log_string = ""
-    log_string += "Extension Name: " + ext_name + "\n"
-    log_string += "Extension Identifier: " + ext + "\n"
-    
-    fn_count = fr.new_id
-    lambda_count = count_lambda(fr)
-    chrome_count = count_chrome_reference(fr)
-    log_string += "Number of functions: " + str(fn_count) + "\n"
-    log_string += "Number of anonymous functions: " + str(lambda_count) + "\n"
-    log_string += "Number of named functions: " + str(fn_count - lambda_count) + "\n"
-    log_string += "Number of functions that reference chrome: " + str(chrome_count) + "\n"
-    
-    print(log_string)
-    log_file = open(out_path + "\\" + ext + "_log.txt", "w")
-    log_file.write(log_string)
-    print "Generation of log file OK"
-    print "Program successfully completed"
+    # --- Generate log file ---
+    # TODO: Might want to move this to another module
+    #print "Generating log file..."
+    #log_string = ""
+    #log_string += "Extension Name: " + ext_name + "\n"
+    #log_string += "Extension Identifier: " + ext + "\n"
+    #
+    #fn_count = fr.new_id
+    #lambda_count = count_lambda(fr)
+    #chrome_count = count_chrome_reference(fr)
+    #log_string += "Number of functions: " + str(fn_count) + "\n"
+    #log_string += "Number of anonymous functions: " + str(lambda_count) + "\n"
+    #log_string += "Number of named functions: " + str(fn_count - lambda_count) + "\n"
+    #log_string += "Number of functions that reference chrome: " + str(chrome_count) + "\n"
+    #
+    #print(log_string)
+    #log_file = open(out_path + "\\" + ext + "_log.txt", "w")
+    #log_file.write(log_string)
+    #print "Generation of log file OK"
+    #print "Program successfully completed"
