@@ -15,21 +15,37 @@ import os
 # ------- General Functions -------
 
 def get_directory_tree(dir = os.getcwd()):
-    """
-    Returns a generator object containing the directory tree. If no arguments
-    are specified, the function returns a directory tree for the current 
-    directory.
+    """Returns a generator object containing the directory tree. If no
+    arguments are specified, the function returns a directory tree for the
+    current directory.
     
     A directory tree is a sequence of 3-tuples, where each 3-tuple contains:
-    - dirpath:   the absolute directory path of all the directories and 
+    - dirpath  : the absolute directory path of all the directories and 
                  subdirectories in dir
-    - dirnames:  a list of relative subdirectories in the current dirpath
+    - dirnames : a list of relative subdirectories in the current dirpath
     - filenames: a list of relative filenames in the current dirpath
     
     dir - absolute directory path from which the directory tree object
           is to be obtained
     """
     return os.walk(dir)
+
+def get_directories(directory):
+    """ Returns a list of first-level directories contained in the directory. 
+    This is not recursive. 
+    """
+
+    relative_directories = None
+    absolute_directories = []
+    for dirpath, dirnames, filenames in get_directory_tree(directory):
+        # get the first dirnames in the directory tree 
+        relative_directories = dirnames 
+        break
+
+    for reldir in relative_directories:
+        absolute_directories.append(os.path.join(directory, reldir))
+
+    return absolute_directories
 
 def print_directory_tree(dir_tree):
     """
@@ -90,6 +106,7 @@ def convert_abs_to_rel(filepath):
         return os.path.split(filepath)[1]
     
     return filepath
+
 
 # ------- Functions Specific to ExtensionAnalyzer -------
 
